@@ -74,7 +74,7 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor
         VisualElement m_EditorToolbarDiv;
 
         IMGUIContainer m_InspectorContainer;
-          
+
         Label m_PathLabel;
         Label m_ModeLabel;
 
@@ -96,7 +96,7 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor
 
         private void OnUndoOperationPreformed()
         {
-            if(System != null)
+            if (System != null)
                 UpdateSelectionMenu();
         }
 
@@ -522,7 +522,7 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor
                     DrawPropertyField(selectedNodeProperty, "name");
                     DrawAllFieldsWithoutFoldout(nodeProperty);
 
-                    for(int i = 0;i < referencesProperty.arraySize; i++)
+                    for (int i = 0; i < referencesProperty.arraySize; i++)
                     {
                         var subProp = referencesProperty.GetArrayElementAtIndex(i);
                         EditorGUILayout.PropertyField(subProp);
@@ -669,7 +669,7 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor
 
         private void DrawAllFieldsWithoutFoldout(SerializedProperty property)
         {
-            foreach(var prop in property.GetChildProperties())
+            foreach (var prop in property.GetChildProperties())
             {
                 EditorGUILayout.PropertyField(prop, includeChildren: true);
             }
@@ -704,6 +704,6 @@ namespace BehaviourAPI.UnityToolkit.GUIDesigner.Editor
         #endregion
     }
 
-    // TODO: Use undo in add/delete graph operations can throw errors.
+    // Use undo in add/delete graph operations can throw errors.
     // Undo is disabled for that operations.
 }

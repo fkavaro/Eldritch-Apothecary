@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3955542940858554986}
   - component: {fileID: 658487987542923087}
+  - component: {fileID: 1910676917024120669}
   m_Layer: 0
   m_Name: Client
   m_TagString: Untagged
@@ -47,6 +48,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   executeOnLoop: 0
   interruptOptions: 0
+--- !u!114 &1910676917024120669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024366006334272345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1726e9fdb9ff2d4baa8710d607b31ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eventHandler:
+    debugStatusChanges: 1
+    identifier: Client
 --- !u!1 &5217665950082615590
 GameObject:
   m_ObjectHideFlags: 0
