@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ApothecaryManager : MonoBehaviour
 {
-    public static ApothecaryManager Instance { get; private set; }
+    public static ApothecaryManager Instance;
     public Transform target1, target2;
 
     void Awake()

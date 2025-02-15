@@ -5,7 +5,7 @@ namespace BehaviourAPI.UnityToolkit
 {
     public class NavmeshAgentMovement : MonoBehaviour, IMovementComponent
     {
-        [SerializeField] float speed;
+        [SerializeField] float speed = 3.5f;
         [SerializeField] float targetThreshold = 1f;
         [SerializeField] float minDistanceToTarget = 0.3f;
 

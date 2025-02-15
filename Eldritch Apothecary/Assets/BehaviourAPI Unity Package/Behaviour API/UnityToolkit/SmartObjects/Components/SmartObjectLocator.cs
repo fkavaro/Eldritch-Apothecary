@@ -43,10 +43,10 @@ namespace BehaviourAPI.UnityToolkit
             // Actualizar el temporizador
             _timer += Time.deltaTime;
 
-            // Verificar si ha pasado el tiempo suficiente para realizar una comprobación
+            // Verificar si ha pasado el tiempo suficiente para realizar una comprobaciï¿½n
             if (_timer >= intervalTime)
             {
-                LocateObjects();                
+                LocateObjects();
             }
         }
 
@@ -57,7 +57,7 @@ namespace BehaviourAPI.UnityToolkit
         {
             _availableSmartObjects.Clear();
 
-            SmartObject[] allSmartObjects = FindObjectsOfType<SmartObject>();
+            SmartObject[] allSmartObjects = FindObjectsByType<SmartObject>(FindObjectsSortMode.None);
 
             foreach (SmartObject obj in allSmartObjects)
             {
@@ -67,7 +67,7 @@ namespace BehaviourAPI.UnityToolkit
                     _availableSmartObjects.Add(obj);
                 }
             }
-            _timer = 0; 
+            _timer = 0;
         }
 
         /// <summary>

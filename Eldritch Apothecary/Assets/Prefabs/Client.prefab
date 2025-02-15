@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3955542940858554986}
   - component: {fileID: 658487987542923087}
   - component: {fileID: 1910676917024120669}
+  - component: {fileID: 6115269646202860474}
+  - component: {fileID: 4053196112941016520}
   m_Layer: 0
   m_Name: Client
   m_TagString: Untagged
@@ -48,6 +50,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   executeOnLoop: 0
   interruptOptions: 0
+  wantedService: 0
+  maxMinutesWaiting: 2
+  scareProbability: 3
+  maxScares: 3
 --- !u!114 &1910676917024120669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +69,45 @@ MonoBehaviour:
   _eventHandler:
     debugStatusChanges: 1
     identifier: Client
+--- !u!195 &6115269646202860474
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024366006334272345}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &4053196112941016520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024366006334272345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81016613ea3feb04b8c61c0b1124211a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3.5
+  targetThreshold: 1
+  minDistanceToTarget: 2
+  drawGizmos: 1
+  targetColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &5217665950082615590
 GameObject:
   m_ObjectHideFlags: 0

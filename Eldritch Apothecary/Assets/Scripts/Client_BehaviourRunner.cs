@@ -31,7 +31,6 @@ public class Client_BehaviourRunner : BehaviourRunner
 
 	int _scaresCount = 0, minDistanceToCat = 3;
 	float _maxSecondsWaiting;
-	Collider _visionCollider;
 	Transform _cat;
 	BSRuntimeDebugger _debugger;
 
@@ -64,7 +63,7 @@ public class Client_BehaviourRunner : BehaviourRunner
 		// Takes products on the stands (Optional)
 		State Shopping = clientFSM.CreateState("Shopping", shopping);
 		// Waits in line to be attended by the receptionist 
-		State WaitingForReceptionist = clientFSM.CreateState("WaitingForReceptionist", new WalkAction(ApothecaryManager.Instance.target2.position));
+		State WaitingForReceptionist = clientFSM.CreateState("WaitingForReceptionist", waitingInLine);
 		// Attended by the receptionist
 		State TalkingToReceptionist = clientFSM.CreateState("AttendedByReceptionist");
 		// Complains to the receptionist if waited too much time
@@ -109,14 +108,14 @@ public class Client_BehaviourRunner : BehaviourRunner
 		#endregion
 
 		#region TRANSITIONS
-		clientFSM.CreateTransition("Shopping -> WaitingForReceptionist", Shopping, WaitingForReceptionist, statusFlags: StatusFlags.Finished);
-		clientFSM.CreateTransition("WaitingForReceptionist -> TalkingToReceptionist", WaitingForReceptionist, TalkingToReceptionist, receptionistTurn);
-		clientFSM.CreateTransition("TalkingToReceptionist -> WaitingForService", TalkingToReceptionist, WaitingForService, anyServiceIsWanted);
-		clientFSM.CreateTransition("TalkingToReceptionist -> Leaving", TalkingToReceptionist, Leaving, anyServiceIsWanted); //!FIX: !anyServiceIsWanted
-		clientFSM.CreateTransition("WaitingForService -> VisitingSorcerer", WaitingForService, VisitingSorcerer, sorcererTurn);
-		clientFSM.CreateTransition("WaitingForService -> CollectingPotion", WaitingForService, CollectingPotion, isPotionReady);
-		clientFSM.CreateTransition("VisitingSorcerer -> Leaving", VisitingSorcerer, Leaving, statusFlags: StatusFlags.Finished);
-		clientFSM.CreateTransition("CollectingPotion -> Leaving", CollectingPotion, Leaving, statusFlags: StatusFlags.Finished);
+		clientFSM.CreateTransition(Shopping, WaitingForReceptionist, statusFlags: StatusFlags.Success);
+		clientFSM.CreateTransition(WaitingForReceptionist, TalkingToReceptionist, receptionistTurn);
+		clientFSM.CreateTransition(TalkingToReceptionist, WaitingForService, anyServiceIsWanted);
+		clientFSM.CreateTransition(TalkingToReceptionist, Leaving, anyServiceIsWanted); //!FIX: !anyServiceIsWanted
+		clientFSM.CreateTransition(WaitingForService, VisitingSorcerer, sorcererTurn);
+		clientFSM.CreateTransition(WaitingForService, CollectingPotion, isPotionReady);
+		clientFSM.CreateTransition(VisitingSorcerer, Leaving, statusFlags: StatusFlags.Finished);
+		clientFSM.CreateTransition(CollectingPotion, Leaving, statusFlags: StatusFlags.Finished);
 		// TODO: StunnedByCat transitions FROM ALL with StackFSM?
 		#endregion
 
