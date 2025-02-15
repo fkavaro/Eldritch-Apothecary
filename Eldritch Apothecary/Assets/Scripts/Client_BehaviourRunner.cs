@@ -29,7 +29,8 @@ public class Client_BehaviourRunner : BehaviourRunner
 	public int maxScares = 3;
 	#endregion
 
-	int _scaresCount = 0;
+	int _scaresCount = 0, minDistanceToCat = 3;
+	float _maxSecondsWaiting;
 	Collider _visionCollider;
 	Transform _cat;
 	BSRuntimeDebugger _debugger;
@@ -41,20 +42,29 @@ public class Client_BehaviourRunner : BehaviourRunner
 		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
+
+		_maxSecondsWaiting = maxMinutesWaiting * 60; // From minutes to seconds
+
 		base.Init(); // Calls the base class method
 	}
 
 	protected override BehaviourGraph CreateGraph()
 	{
-		FSM clientFSM = new();
+		#region ACTIONS
+		WalkAction shopping = new(ApothecaryManager.Instance.target1.position);
+		WalkAction waitingInLine = new(ApothecaryManager.Instance.target2.position);
+		#endregion
 
 		#region STATES
-		// Takes products on the stands (Optional)
-		State Shopping = clientFSM.CreateState("Shopping");
+		FSM clientFSM = new();
+
 		// Is startled by the grumpy cat 
 		State StunnedByCat = clientFSM.CreateState("StunnedByCat");
+
+		// Takes products on the stands (Optional)
+		State Shopping = clientFSM.CreateState("Shopping", shopping);
 		// Waits in line to be attended by the receptionist 
-		State WaitingForReceptionist = clientFSM.CreateState("WaitingForReceptionist");
+		State WaitingForReceptionist = clientFSM.CreateState("WaitingForReceptionist", new WalkAction(ApothecaryManager.Instance.target2.position));
 		// Attended by the receptionist
 		State TalkingToReceptionist = clientFSM.CreateState("AttendedByReceptionist");
 		// Complains to the receptionist if waited too much time
@@ -80,11 +90,12 @@ public class Client_BehaviourRunner : BehaviourRunner
 		#endregion
 
 		#region PULL PERCEPTIONS
+		// Cat is close and client is scared
 		ConditionPerception stunnedByCat = new(ReactToCat);
-		UnityTimePerception desperate = new(maxMinutesWaiting * 60); // From minutes to seconds
-
+		// Timer
+		UnityTimePerception desperate = new(_maxSecondsWaiting);
 		// Turn for receptionist
-		//ConditionPerception receptionistTurn = new(CheckReceptionistTurn);
+		ConditionPerception receptionistTurn = new(CheckReceptionistTurn);
 		// Something else (bool)
 		ConditionPerception anyServiceIsWanted = new(CheckIfWantedService);
 		// Turn for sorcerer
@@ -99,7 +110,7 @@ public class Client_BehaviourRunner : BehaviourRunner
 
 		#region TRANSITIONS
 		clientFSM.CreateTransition("Shopping -> WaitingForReceptionist", Shopping, WaitingForReceptionist, statusFlags: StatusFlags.Finished);
-		clientFSM.CreateTransition("WaitingForReceptionist -> TalkingToReceptionist", WaitingForReceptionist, TalkingToReceptionist, statusFlags: StatusFlags.Finished);
+		clientFSM.CreateTransition("WaitingForReceptionist -> TalkingToReceptionist", WaitingForReceptionist, TalkingToReceptionist, receptionistTurn);
 		clientFSM.CreateTransition("TalkingToReceptionist -> WaitingForService", TalkingToReceptionist, WaitingForService, anyServiceIsWanted);
 		clientFSM.CreateTransition("TalkingToReceptionist -> Leaving", TalkingToReceptionist, Leaving, anyServiceIsWanted); //!FIX: !anyServiceIsWanted
 		clientFSM.CreateTransition("WaitingForService -> VisitingSorcerer", WaitingForService, VisitingSorcerer, sorcererTurn);
@@ -137,22 +148,16 @@ public class Client_BehaviourRunner : BehaviourRunner
 	}
 
 	/// <summary>
-	/// Checks if the client is stunned by the cat
+	/// Checks if the cat is close enough to scare the client
 	/// </summary>
 	private bool ReactToCat()
 	{
-		// TODO: Check colission with tag //////////////////
-		if (_visionCollider.bounds.Contains(_cat.position))
+		// Cat is close and is scared
+		if (Vector3.Distance(transform.position, _cat.transform.position) < minDistanceToCat &&
+			UnityEngine.Random.Range(0, 10) < scareProbability)
 		{
-			Vector3 direction = (_cat.position - transform.position).normalized;
-			Ray ray = new Ray(transform.position + transform.up, direction * 20);
-
-			bool watchingCat = Physics.Raycast(ray, out RaycastHit hit, 20) && hit.collider.gameObject.transform == _cat;
-
-			if (watchingCat)
-				// Calculate random number and check if it's less than fear property
-				if (UnityEngine.Random.Range(0, 10) < scareProbability)
-					return true;
+			_scaresCount++;
+			return true;
 		}
 		return false;
 	}
