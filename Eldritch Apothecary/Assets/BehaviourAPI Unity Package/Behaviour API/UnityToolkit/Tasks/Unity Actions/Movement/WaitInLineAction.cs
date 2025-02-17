@@ -1,4 +1,5 @@
 using UnityEngine;
+using Apothecary.NPCs;
 
 namespace BehaviourAPI.UnityToolkit
 {
@@ -13,26 +14,38 @@ namespace BehaviourAPI.UnityToolkit
     public class WaitInLineAction : UnityAction
     {
         public Transform[] positions;
-        int positionIndex;
+        private int positionIndex;
 
         /// <summary>
         /// Create a new WaitInLineAction
         /// </summary>
-        public WaitInLineAction(Transform[] positions)
+        public WaitInLineAction()
         {
-            this.positions = positions;
+            positionIndex = 0;
         }
 
         public override void Start()
         {
-            context.Movement.SetTarget(positions[0].position);
+            // Move to the last position in line (behind the last client)
+            context.Movement.SetTarget(ApothecaryManager.Instance.nextClientPosition.position);
         }
 
         public override Status Update()
         {
             if (context.Movement.HasArrived())
             {
-                return Status.Success;
+                // Is first in line
+                if (positionIndex == 0)
+                {
+                    return Status.Success;
+                }
+                else // Is not first in line
+                {
+                    // Move to the next position
+                    positionIndex--;
+                    context.Movement.SetTarget(positions[positionIndex].position);
+                    return Status.Running;
+                }
             }
             else
             {
