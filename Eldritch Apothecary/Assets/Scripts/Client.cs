@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using BehaviourAPI.Core;
-using BehaviourAPI.Core.Actions;
 using BehaviourAPI.Core.Perceptions;
 using BehaviourAPI.UnityToolkit;
 using BehaviourAPI.StateMachines;
@@ -15,7 +13,7 @@ public enum Service
 	Alchemist
 }
 
-public class Client_BehaviourRunner : BehaviourRunner
+public class Client : BehaviourRunner
 {
 	#region VARIABLES
 	[Header("Client Properties")]
@@ -50,8 +48,8 @@ public class Client_BehaviourRunner : BehaviourRunner
 	protected override BehaviourGraph CreateGraph()
 	{
 		#region ACTIONS
-		WalkAction shopping = new(ApothecaryManager.Instance.target1.position);
-		WalkAction waitingInLine = new(ApothecaryManager.Instance.target2.position);
+		WalkAction shopping = new(ApothecaryManager.Instance.shopStands[0].position);
+		WaitInLineAction waitingInLine = new(ApothecaryManager.Instance.queuePositions);
 		#endregion
 
 		#region STATES
