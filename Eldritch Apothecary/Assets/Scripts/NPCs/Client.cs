@@ -6,7 +6,7 @@ using BehaviourAPI.UnityToolkit;
 using BehaviourAPI.StateMachines;
 using BehaviourAPI.UnityToolkit.GUIDesigner.Runtime;
 
-namespace Apothecary
+namespace Apothecary.NPCs
 {
 	public enum Service
 	{

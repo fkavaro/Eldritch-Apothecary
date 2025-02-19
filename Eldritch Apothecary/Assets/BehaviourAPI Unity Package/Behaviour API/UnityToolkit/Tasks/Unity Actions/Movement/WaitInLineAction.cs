@@ -1,5 +1,5 @@
 using UnityEngine;
-using Apothecary.NPCs;
+using Apothecary;
 
 namespace BehaviourAPI.UnityToolkit
 {

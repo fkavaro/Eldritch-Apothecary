@@ -265,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 366250716}
-  - component: {fileID: 366250715}
+  - component: {fileID: 366250717}
   m_Layer: 0
   m_Name: ApothecaryManager
   m_TagString: Untagged
@@ -273,26 +273,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &366250715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366250714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 671802ec17969604787ed3826b4e17c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stands:
-  - {fileID: 1346645571}
-  - {fileID: 1414814867}
-  - {fileID: 1926948409}
-  queuePositions:
-  - {fileID: 2059796919}
-  - {fileID: 720755767}
-  - {fileID: 2097898622}
 --- !u!4 &366250716
 Transform:
   m_ObjectHideFlags: 0
@@ -308,6 +288,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &366250717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366250714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 671802ec17969604787ed3826b4e17c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shopStands:
+  - {fileID: 1346645571}
+  - {fileID: 1414814867}
+  - {fileID: 1926948409}
+  queuePositions:
+  - {fileID: 2059796919}
+  - {fileID: 720755767}
+  - {fileID: 2097898622}
+  nextClientPosition: {fileID: 0}
 --- !u!1 &382578883
 GameObject:
   m_ObjectHideFlags: 0

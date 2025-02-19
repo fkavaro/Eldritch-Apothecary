@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace Apothecary
 {
     public class ApothecaryManager : MonoBehaviour
     {
         public static ApothecaryManager Instance;
         public Transform[] shopStands, queuePositions;
-        public Queue<Client> clientsWaiting = new();
+        public Queue<int> clientsIdWaiting = new();
         public Transform nextClientPosition;
 
         void Awake()
@@ -33,24 +34,24 @@ namespace Apothecary
 
         }
 
-        public void EnqueueClient(Client client)
+        public void EnqueueClient(int clientId)
         {
-            clientsWaiting.Enqueue(client);
+            clientsIdWaiting.Enqueue(clientId);
             UpdateNextPosition();
         }
 
         public void DequeueClient()
         {
-            if (clientsWaiting.Count > 0)
+            if (clientsIdWaiting.Count > 0)
             {
-                clientsWaiting.Dequeue();
+                clientsIdWaiting.Dequeue();
                 UpdateNextPosition();
             }
         }
 
         private void UpdateNextPosition()
         {
-            nextClientPosition = queuePositions[clientsWaiting.Count - 1];
+            nextClientPosition = queuePositions[clientsIdWaiting.Count - 1];
         }
     }
 }
