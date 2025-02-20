@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FiniteStateMachine : ADecisionSystem
 {
+    List<AState> states = new List<AState>();
+
     /// <summary>
     /// The current active state of the state machine
     /// </summary>
@@ -21,6 +23,34 @@ public class FiniteStateMachine : ADecisionSystem
         }
     }
 
+    public void CreateState(AState state)
+    {
+        states.Add(state);
+    }
+
+    public void SetInitialState(AState state)
+    {
+        currentState = state;
+    }
+
+    public void CreateTransition(AState from, AState to, bool condition)
+    {
+        from.AddTransition(to, condition);
+    }
+
+    /// <summary>
+    /// Switchs to another state after exiting the current.
+    /// </summary>
+    public virtual void SwitchState(AState state)
+    {
+        currentState.ExitState();
+        currentState = state;
+        currentState.StartState();
+
+        if (debug) Debug.LogWarning(currentState.ToString());
+    }
+
+    #region UNITY EXECUTION EVENTS
     public override void Awake()
     {
         currentState?.AwakeState();
@@ -36,7 +66,9 @@ public class FiniteStateMachine : ADecisionSystem
     {
         currentState?.UpdateState();
     }
+    #endregion
 
+    # region COLLISION AND TRIGGER EVENTS
     public override void OnCollisionEnter(Collision collision)
     {
         currentState?.OnCollisionEnter(collision);
@@ -66,16 +98,5 @@ public class FiniteStateMachine : ADecisionSystem
     {
         currentState?.OnTriggerExit(other);
     }
-
-    /// <summary>
-    /// Switchs to another state after exiting the current.
-    /// </summary>
-    public virtual void SwitchState(AState state)
-    {
-        currentState.ExitState();
-        currentState = state;
-        currentState.StartState();
-
-        if (debug) Debug.LogWarning(currentState.ToString());
-    }
+    #endregion
 }
