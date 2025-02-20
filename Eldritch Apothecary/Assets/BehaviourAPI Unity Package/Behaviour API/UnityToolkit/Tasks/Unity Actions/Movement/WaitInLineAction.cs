@@ -1,5 +1,4 @@
 using UnityEngine;
-using Apothecary;
 
 namespace BehaviourAPI.UnityToolkit
 {
@@ -27,7 +26,7 @@ namespace BehaviourAPI.UnityToolkit
         public override void Start()
         {
             // Move to the last position in line (behind the last client)
-            context.Movement.SetTarget(ApothecaryManager.Instance.nextClientPosition.position);
+            //context.Movement.SetTarget(ApothecaryManager.Instance.nextClientPosition.position);
         }
 
         public override Status Update()
