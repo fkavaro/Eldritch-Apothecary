@@ -1,15 +1,20 @@
 using UnityEngine;
 
 /// <summary>
-/// Defines common functionalities in all states.
+/// Base class with common functionalities for all states.
 /// </summary>
 public abstract class AState
 {
-    public virtual void Enter() { }
-    public virtual void Enter(string info) { }
-    public virtual void Update() { }
-    public virtual void OnTriggerEnter(Collider other) { }
-    public virtual void OnTriggerStay(Collider other) { }
-    public virtual void OnCollisionEnter(Collision collision) { }
-    public virtual void Exit() { }
+    public virtual void AwakeState() { } // Optionally implemented in subclasses
+    public abstract void StartState(); // Implemented in subclasses
+    public abstract void UpdateState(); // Implemented in subclasses
+    public abstract void ExitState(); // Implemented in subclasses
+
+    public virtual void OnTriggerEnter(Collider other) { } // Optionally implemented in subclasses
+    public virtual void OnTriggerStay(Collider other) { } // Optionally implemented in subclasses
+    public virtual void OnTriggerExit(Collider other) { } // Optionally implemented in subclasses
+
+    public virtual void OnCollisionEnter(Collision collision) { } // Optionally implemented in subclasses
+    public virtual void OnCollisionStay(Collision collision) { } // Optionally implemented in subclasses
+    public virtual void OnCollisionExit(Collision collision) { } // Optionally implemented in subclasses
 }

@@ -5,14 +5,14 @@ using UnityEngine;
 /// Handles animation transitions.
 /// </summary>
 [RequireComponent(typeof(Animator))]
-public abstract class AAnimationController : AStateController
+public abstract class AAnimationController : ABehaviourController
 {
     protected Animator animator;
     protected int currentAnimation;
 
     // Specific animations must be defined in derived classes
 
-    public override void Awake()
+    protected override void OnAwake()
     {
         animator = GetComponent<Animator>();
 
@@ -21,11 +21,8 @@ public abstract class AAnimationController : AStateController
 
     public virtual void AwakeFrame() { }
 
-    public override void Update()
+    protected override void OnUpdate()
     {
-        currentState?.Update();
-
-        UpdateFrame();
 
         CheckAnimation();
     }
