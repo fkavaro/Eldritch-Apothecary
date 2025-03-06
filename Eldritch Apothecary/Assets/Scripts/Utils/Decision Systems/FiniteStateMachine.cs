@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FiniteStateMachine : ADecisionSystem
 {
-    List<AState> states = new List<AState>();
+    //List<AState> states = new();
+
+    public FiniteStateMachine(ABehaviourController controller) : base(controller) { }
+
 
     /// <summary>
     /// The current active state of the state machine
@@ -19,24 +23,29 @@ public class FiniteStateMachine : ADecisionSystem
             currentState = value;
             currentState.StartState();
 
-            if (debug) Debug.LogWarning(currentState.ToString());
+            if (controller.debug) DebugState();
         }
     }
 
-    public void CreateState(AState state)
+    protected void DebugState()
     {
-        states.Add(state);
+        Debug.Log(controller.transform.name + " changed to " + currentState.ToString());
     }
+
+    // public void CreateState(AState state)
+    // {
+    //     states.Add(state);
+    // }
 
     public void SetInitialState(AState state)
     {
         currentState = state;
     }
 
-    public void CreateTransition(AState from, AState to, bool condition)
-    {
-        from.AddTransition(to, condition);
-    }
+    // public void CreateTransition(AState from, AState to, bool condition)
+    // {
+    //     from.AddTransition(to, condition);
+    // }
 
     /// <summary>
     /// Switchs to another state after exiting the current.
@@ -47,7 +56,7 @@ public class FiniteStateMachine : ADecisionSystem
         currentState = state;
         currentState.StartState();
 
-        if (debug) Debug.LogWarning(currentState.ToString());
+        if (controller.debug) DebugState();
     }
 
     #region UNITY EXECUTION EVENTS
@@ -58,7 +67,6 @@ public class FiniteStateMachine : ADecisionSystem
 
     public override void Start()
     {
-        //currentState = SetInitialState();
         currentState?.StartState();
     }
 

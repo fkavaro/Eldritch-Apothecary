@@ -8,6 +8,8 @@ public class StackFiniteStateMachine : FiniteStateMachine
     /// </summary>
     public AState previousState;
 
+    public StackFiniteStateMachine(ABehaviourController controller) : base(controller) { }
+
     /// <summary>
     /// Switchs to another state after exiting the current,
     /// storing the previous state.
@@ -19,7 +21,7 @@ public class StackFiniteStateMachine : FiniteStateMachine
         currentState = state;
         currentState.StartState();
 
-        if (debug) Debug.LogWarning(currentState.ToString());
+        if (controller.debug) DebugState();
     }
 
     /// <summary>
@@ -31,6 +33,6 @@ public class StackFiniteStateMachine : FiniteStateMachine
         currentState = previousState;
         currentState.StartState();
 
-        if (debug) Debug.LogWarning(currentState.ToString());
+        if (controller.debug) DebugState();
     }
 }

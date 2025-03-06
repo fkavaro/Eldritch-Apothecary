@@ -7,7 +7,16 @@ using UnityEngine;
 /// </summary>
 public abstract class AState
 {
-    List<AState> transitions = new(); // TODO: All checked in Update to Exit
+    protected FiniteStateMachine fsm;
+
+    // protected List<AState> transitions = new(); // TODO: All checked in Update to Exit
+
+    // Constructor given a FiniteStateMachine
+    public AState(FiniteStateMachine fsm)
+    {
+        this.fsm = fsm;
+        //this.fsm.CreateState(this); // Adds this state to the list of states
+    }
 
     public virtual void AwakeState() { } // Optionally implemented in subclasses
     public abstract void StartState(); // Implemented in subclasses
@@ -22,8 +31,8 @@ public abstract class AState
     public virtual void OnCollisionStay(Collision collision) { } // Optionally implemented in subclasses
     public virtual void OnCollisionExit(Collision collision) { } // Optionally implemented in subclasses
 
-    internal void AddTransition(AState to, bool condition)
-    {
-        transitions.Add(to);
-    }
+    // internal void AddTransition(AState to, bool condition)
+    // {
+    //     transitions.Add(to);
+    // }
 }

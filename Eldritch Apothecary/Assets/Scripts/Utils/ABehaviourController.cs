@@ -37,14 +37,7 @@ public abstract class ABehaviourController : MonoBehaviour
 
     private void Update()
     {
-        if (_decisionSystem != null)
-        {
-            // Maintain debug mode updated
-            if (_decisionSystem.debug != debug)
-                _decisionSystem.debug = debug;
-
-            _decisionSystem.Update();
-        }
+        _decisionSystem?.Update();
         OnUpdate();
     }
     protected abstract void OnUpdate(); // Implemented in subclasses

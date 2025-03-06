@@ -3,10 +3,12 @@ using UnityEngine;
 
 public abstract class ADecisionSystem
 {
-    /// <summary>
-    /// Debug mode - from ABehaviourController
-    /// </summary>
-    public bool debug;
+    public ABehaviourController controller;
+
+    public ADecisionSystem(ABehaviourController controller)
+    {
+        this.controller = controller;
+    }
 
     public abstract void Awake(); // Implemented in subclasses
     public abstract void Start();
