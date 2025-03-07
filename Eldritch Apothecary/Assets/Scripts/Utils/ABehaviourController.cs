@@ -10,7 +10,7 @@ public abstract class ABehaviourController : MonoBehaviour
     /// <summary>
     /// Debug mode
     /// </summary>
-    public bool debug = true;
+    public bool debugMode = true;
 
     ADecisionSystem _decisionSystem;
 
@@ -22,23 +22,23 @@ public abstract class ABehaviourController : MonoBehaviour
     #region UNITY EXECUTION EVENTS
     private void Awake()
     {
+        OnAwake();
         _decisionSystem = CreateDecisionSystem();
         _decisionSystem?.Awake();
-        OnAwake();
     }
     protected abstract void OnAwake(); // Implemented in subclasses
 
     private void Start()
     {
-        _decisionSystem?.Start();
         OnStart();
+        _decisionSystem?.Start();
     }
     protected abstract void OnStart(); // Implemented in subclasses
 
     private void Update()
     {
-        _decisionSystem?.Update();
         OnUpdate();
+        _decisionSystem?.Update();
     }
     protected abstract void OnUpdate(); // Implemented in subclasses
     # endregion

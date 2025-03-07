@@ -12,24 +12,11 @@ public class FiniteStateMachine : ADecisionSystem
     /// <summary>
     /// The current active state of the state machine
     /// </summary>
-    public AState currentState
-    {
-        get
-        {
-            return currentState;
-        }
-        protected set
-        {
-            currentState = value;
-            currentState.StartState();
-
-            if (controller.debug) DebugState();
-        }
-    }
+    public AState currentState;
 
     protected void DebugState()
     {
-        Debug.Log(controller.transform.name + " changed to " + currentState.ToString());
+        Debug.Log(controller.transform.name + " is " + currentState.ToString());
     }
 
     // public void CreateState(AState state)
@@ -40,6 +27,9 @@ public class FiniteStateMachine : ADecisionSystem
     public void SetInitialState(AState state)
     {
         currentState = state;
+        currentState.StartState();
+
+        if (controller.debugMode) DebugState();
     }
 
     // public void CreateTransition(AState from, AState to, bool condition)
@@ -56,7 +46,7 @@ public class FiniteStateMachine : ADecisionSystem
         currentState = state;
         currentState.StartState();
 
-        if (controller.debug) DebugState();
+        if (controller.debugMode) DebugState();
     }
 
     #region UNITY EXECUTION EVENTS

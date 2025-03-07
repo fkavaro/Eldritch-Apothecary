@@ -6,9 +6,7 @@ using BehaviourAPI.UnityToolkit;
 using BehaviourAPI.StateMachines;
 using BehaviourAPI.UnityToolkit.GUIDesigner.Runtime;
 
-
-
-public class Client : ABehaviourController
+public class Client : ANPC
 {
 	public enum WantedService
 	{
@@ -34,11 +32,9 @@ public class Client : ABehaviourController
 	Transform _cat;
 
 	#region STATES
-
 	public Stunned_ClientState stunned; // Is startled by the grumpy cat 
 	public Shopping_ClientState shopping; // Takes products on the stands (Optional)
 	public WaitForReceptionist_ClientState waitForReceptionist;// Waits in line to be attended by the receptionist 
-
 	#endregion
 
 	protected override void OnAwake()
@@ -49,6 +45,8 @@ public class Client : ABehaviourController
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 
 		_maxSecondsWaiting = maxMinutesWaiting * 60; // From minutes to seconds
+
+		SetAgentComponent();
 	}
 
 	protected override void OnStart()

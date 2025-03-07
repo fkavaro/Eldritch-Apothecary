@@ -21,7 +21,7 @@ public class StackFiniteStateMachine : FiniteStateMachine
         currentState = state;
         currentState.StartState();
 
-        if (controller.debug) DebugState();
+        if (controller.debugMode) DebugState();
     }
 
     /// <summary>
@@ -33,6 +33,6 @@ public class StackFiniteStateMachine : FiniteStateMachine
         currentState = previousState;
         currentState.StartState();
 
-        if (controller.debug) DebugState();
+        if (controller.debugMode) DebugState();
     }
 }

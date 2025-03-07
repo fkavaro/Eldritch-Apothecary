@@ -9,10 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3955542940858554986}
-  - component: {fileID: 658487987542923087}
-  - component: {fileID: 1910676917024120669}
   - component: {fileID: 6115269646202860474}
-  - component: {fileID: 4053196112941016520}
+  - component: {fileID: 658487987542923087}
   m_Layer: 0
   m_Name: Client
   m_TagString: Untagged
@@ -36,39 +34,6 @@ Transform:
   - {fileID: 1615911272091838672}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &658487987542923087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024366006334272345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f87f8a03aece0dd4790b145eb731b828, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  executeOnLoop: 0
-  interruptOptions: 0
-  wantedService: 0
-  maxMinutesWaiting: 2
-  scareProbability: 3
-  maxScares: 3
---- !u!114 &1910676917024120669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024366006334272345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1726e9fdb9ff2d4baa8710d607b31ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _eventHandler:
-    debugStatusChanges: 1
-    identifier: Client
 --- !u!195 &6115269646202860474
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -91,7 +56,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
---- !u!114 &4053196112941016520
+--- !u!114 &658487987542923087
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,14 +65,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2024366006334272345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81016613ea3feb04b8c61c0b1124211a, type: 3}
+  m_Script: {fileID: 11500000, guid: f87f8a03aece0dd4790b145eb731b828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3.5
+  debugMode: 1
+  agentSpeed: 3.5
   targetThreshold: 1
-  minDistanceToTarget: 2
-  drawGizmos: 1
-  targetColor: {r: 1, g: 0, b: 0, a: 1}
+  minDistanceToTarget: 0.3
+  drawGizmos: 0
+  targetColor: {r: 0, g: 1, b: 0, a: 1}
+  wantedService: 0
+  maxMinutesWaiting: 2
+  scareProbability: 3
+  maxScares: 3
 --- !u!1 &5217665950082615590
 GameObject:
   m_ObjectHideFlags: 0
