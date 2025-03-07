@@ -7,9 +7,9 @@ using UnityEngine;
 /// </summary>
 public abstract class ABehaviourController : MonoBehaviour
 {
-    /// <summary>
-    /// Debug mode
-    /// </summary>
+
+    [Header("Behaviour Controller Properties")]
+    [Tooltip("Whether to show debug messages in the console")]
     public bool debugMode = true;
 
     ADecisionSystem _decisionSystem;

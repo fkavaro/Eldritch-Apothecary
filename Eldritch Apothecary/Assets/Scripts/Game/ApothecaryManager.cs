@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,8 +6,7 @@ public class ApothecaryManager : MonoBehaviour
 {
     public static ApothecaryManager Instance;
     public Transform[] shopStands, queuePositions;
-    public Queue<int> clientsIdWaiting = new();
-    public Transform nextClientPosition;
+    private Queue<Client> clientQueue = new();
 
     void Awake()
     {
@@ -29,26 +29,30 @@ public class ApothecaryManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //UpdateQueuePositions();
     }
 
-    public void EnqueueClient(int clientId)
+    public void AddToQueue(Client client)
     {
-        clientsIdWaiting.Enqueue(clientId);
-        UpdateNextPosition();
+        clientQueue.Enqueue(client);
+        UpdateQueuePositions();
     }
 
-    public void DequeueClient()
+    public void DeQueue(Client client)
     {
-        if (clientsIdWaiting.Count > 0)
+        clientQueue.Dequeue();
+        UpdateQueuePositions();
+    }
+
+    void UpdateQueuePositions()
+    {
+        if (clientQueue.Count == 0) return;
+
+        int index = 0;
+        foreach (Client client in clientQueue)
         {
-            clientsIdWaiting.Dequeue();
-            UpdateNextPosition();
+            client.SetTarget(queuePositions[index].position);
+            index++;
         }
-    }
-
-    private void UpdateNextPosition()
-    {
-        nextClientPosition = queuePositions[clientsIdWaiting.Count - 1];
     }
 }

@@ -10,7 +10,7 @@ public abstract class ANPC : ABehaviourController
 {
     protected NavMeshAgent _agent;
 
-    [Header("Agent properties")]
+    [Header("Agent Properties")]
     [Tooltip("Agent speed"), Range(0f, 5f)]
     public float agentSpeed = 3.5f;
     [Tooltip("Threshold for target position sampling"), Range(0f, 1f)]
@@ -18,9 +18,9 @@ public abstract class ANPC : ABehaviourController
     [Tooltip("Minimum distance to the target to consider the agent has arrived"), Range(0f, 1f)]
     public float minDistanceToTarget = 0.3f;
     [Tooltip("Whether to draw debug gizmos in the scene view")]
-    [SerializeField] bool drawGizmos;
+    [SerializeField] bool drawDebugGizmos;
     [Tooltip("Color of the debug target gizmo")]
-    [SerializeField] Color targetColor = Color.green;
+    [SerializeField] Color targetDebugColor = Color.green;
 
     /// <summary>
     /// Sets the NavMeshAgent component and initializes its speed.
@@ -48,6 +48,18 @@ public abstract class ANPC : ABehaviourController
     public bool HasArrived()
     {
         if (Vector3.Distance(transform.position, _agent.destination) < minDistanceToTarget)
+            return true;
+        else
+            return false;
+    }
+
+    /// <summary>
+    /// Checks if the NavMeshAgent has arrived at certain destination.
+    /// </summary>
+    /// <returns>True if the agent has arrived, otherwise false.</returns>
+    public bool HasArrived(Vector3 destination)
+    {
+        if (Vector3.Distance(transform.position, destination) < minDistanceToTarget)
             return true;
         else
             return false;
@@ -86,9 +98,9 @@ public abstract class ANPC : ABehaviourController
     /// </summary>
     void OnDrawGizmos()
     {
-        if (_agent != null && drawGizmos)
+        if (_agent != null && drawDebugGizmos)
         {
-            Gizmos.color = targetColor;
+            Gizmos.color = targetDebugColor;
             var target = GetTarget();
             Gizmos.DrawLine(transform.position, target);
             Gizmos.DrawSphere(target, 0.5f);

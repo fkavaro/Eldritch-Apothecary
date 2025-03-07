@@ -8,7 +8,7 @@ public class Shopping_ClientState : AClientState
     {
         // Randomly switch state if client wants any other service
         if (clientController.wantedService != Client.WantedService.OnlyShop &&
-            Random.Range(0, 2) == 0)
+            Random.Range(0, 5) == 0)
         {
             fsm.SwitchState(clientController.waitForReceptionist);
         }
@@ -23,6 +23,8 @@ public class Shopping_ClientState : AClientState
 
     public override void UpdateState()
     {
+        // Walk animation
+
         // If client has reached the stand
         if (clientController.HasArrived())
         {
