@@ -5,8 +5,11 @@ using UnityEngine;
 public class ApothecaryManager : MonoBehaviour
 {
     public static ApothecaryManager Instance;
+    public Transform cat, complainingPosition, entrancePosition;
     public Transform[] shopStands, queuePositions;
-    private Queue<Client> clientQueue = new();
+
+    Queue<Client> clientQueue = new();
+
 
     void Awake()
     {

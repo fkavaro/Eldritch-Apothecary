@@ -70,7 +70,7 @@ public abstract class ANPC : ABehaviourController
     /// </summary>
     /// <param name="targetPos">The target position in world coordinates.</param>
     /// <returns>True if the agent can move to the target position, otherwise false.</returns>
-    public bool CanMove(Vector3 targetPos)
+    public bool CanReachTarget(Vector3 targetPos)
     {
         return NavMesh.SamplePosition(targetPos, out var _, targetThreshold, NavMesh.AllAreas);
     }
@@ -90,7 +90,15 @@ public abstract class ANPC : ABehaviourController
     public void StopAgent()
     {
         _agent.isStopped = true;
-        _agent.ResetPath();
+        //_agent.ResetPath();
+    }
+
+    /// <summary>
+    /// Reactivates the agent movement.
+    /// </summary>
+    public void ReactivateAgent()
+    {
+        _agent.isStopped = false;
     }
 
     /// <summary>

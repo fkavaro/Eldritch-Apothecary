@@ -8,14 +8,18 @@ using UnityEngine;
 public abstract class AState
 {
     protected FiniteStateMachine fsm;
-
-    // protected List<AState> transitions = new(); // TODO: All checked in Update to Exit
+    protected StackFiniteStateMachine stackFsm;
 
     // Constructor given a FiniteStateMachine
     public AState(FiniteStateMachine fsm)
     {
         this.fsm = fsm;
-        //this.fsm.CreateState(this); // Adds this state to the list of states
+    }
+
+    // Constructor given a StackFiniteStateMachine
+    public AState(StackFiniteStateMachine stackFsm)
+    {
+        this.stackFsm = stackFsm;
     }
 
     public virtual void AwakeState() { } // Optionally implemented in subclasses
@@ -30,9 +34,4 @@ public abstract class AState
     public virtual void OnCollisionEnter(Collision collision) { } // Optionally implemented in subclasses
     public virtual void OnCollisionStay(Collision collision) { } // Optionally implemented in subclasses
     public virtual void OnCollisionExit(Collision collision) { } // Optionally implemented in subclasses
-
-    // internal void AddTransition(AState to, bool condition)
-    // {
-    //     transitions.Add(to);
-    // }
 }

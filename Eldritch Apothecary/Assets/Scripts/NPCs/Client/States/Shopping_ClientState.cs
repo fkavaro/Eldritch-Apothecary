@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Shopping_ClientState : AClientState
 {
-    public Shopping_ClientState(FiniteStateMachine fsm, Client clientController) : base(fsm, clientController) { }
+    public Shopping_ClientState(StackFiniteStateMachine stackFsm, Client clientController) : base(stackFsm, clientController) { }
 
     public override void AwakeState()
     {
@@ -10,7 +10,7 @@ public class Shopping_ClientState : AClientState
         if (clientController.wantedService != Client.WantedService.OnlyShop &&
             Random.Range(0, 5) == 0)
         {
-            fsm.SwitchState(clientController.waitForReceptionist);
+            stackFsm.SwitchState(clientController.waitForReceptionistState);
         }
     }
 
@@ -28,10 +28,10 @@ public class Shopping_ClientState : AClientState
         // If client has reached the stand
         if (clientController.HasArrived())
         {
-            // Take product animation
+            // Taking product animation
 
-            // Switch state to wait for receptionist
-            fsm.SwitchState(clientController.waitForReceptionist);
+            // Switch state to waiting in line for receptionist
+            stackFsm.SwitchState(clientController.waitForReceptionistState);
         }
     }
 

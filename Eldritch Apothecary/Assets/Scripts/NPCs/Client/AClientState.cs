@@ -4,7 +4,7 @@ public abstract class AClientState : AState
 {
     protected Client clientController;
 
-    public AClientState(FiniteStateMachine fsm, Client clientController) : base(fsm)
+    public AClientState(StackFiniteStateMachine stackFsm, Client clientController) : base(stackFsm)
     {
         this.clientController = clientController;
     }

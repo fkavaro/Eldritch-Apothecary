@@ -19,22 +19,25 @@ public class Client : ANPC
 	[Header("Client Properties")]
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
-	[Tooltip("Maximum minutes willing to wait"), Range(2, 10)]
+	[Tooltip("Maximum waitin minutes"), Range(2, 10)]
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
 	public int scareProbability = 3;
 	[Tooltip("Maximum number of scares supported"), Range(1, 5)]
 	public int maxScares = 3;
+	[Tooltip("Triggering distance to cat"), Range(0f, 4f)]
+	public float minDistanceToCat = 3f;
 	#endregion
 
-	int _scaresCount = 0, minDistanceToCat = 3;
-	float _maxSecondsWaiting;
-	Transform _cat;
+	int _scaresCount = 0;
+
+	StackFiniteStateMachine clientSFSM;
 
 	#region STATES
-	public Stunned_ClientState stunned; // Is startled by the grumpy cat 
-	public Shopping_ClientState shopping; // Takes products on the stands (Optional)
-	public WaitForReceptionist_ClientState waitForReceptionist;// Waits in line to be attended by the receptionist 
+	public Stunned_ClientState stunnedState; // Is startled by the grumpy cat 
+	public Shopping_ClientState shoppingState; // Takes products on the stands (Optional)
+	public WaitForReceptionist_ClientState waitForReceptionistState;// Waits in line to be attended by the receptionist 
+	public Complaining_ClientState complainingState; // Complains to the receptionist
 	#endregion
 
 	protected override void OnAwake()
@@ -43,8 +46,6 @@ public class Client : ANPC
 		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
-
-		_maxSecondsWaiting = maxMinutesWaiting * 60; // From minutes to seconds
 
 		SetAgentComponent();
 	}
@@ -56,7 +57,7 @@ public class Client : ANPC
 
 	protected override void OnUpdate()
 	{
-
+		if (!HasReachedMaxScares()) ReactToCat();
 	}
 
 	protected override ADecisionSystem CreateDecisionSystem()
@@ -67,25 +68,24 @@ public class Client : ANPC
 		#endregion
 
 		#region STATES
-		StackFiniteStateMachine clientSFSM = new(this);
+		clientSFSM = new(this);
 
 		// Is startled by the grumpy cat 
 		//State StunnedByCat = clientFSM.CreateState("StunnedByCat");
-		stunned = new(clientSFSM, this);
-
+		stunnedState = new(clientSFSM, this);
 
 		// Takes products on the stands (Optional)
 		//State Shopping = clientFSM.CreateState("Shopping", shopping);
-		shopping = new(clientSFSM, this);
+		shoppingState = new(clientSFSM, this);
 
 		// Waits in line to be attended by the receptionist 
 		//State WaitingForReceptionist = clientFSM.CreateState("WaitingForReceptionist", waitingInLine);
-		waitForReceptionist = new(clientSFSM, this);
+		waitForReceptionistState = new(clientSFSM, this);
 
 		// Attended by the receptionist
 		//State TalkingToReceptionist = clientFSM.CreateState("AttendedByReceptionist");
 		// Complains to the receptionist if waited too much time
-		//State Complaining = clientFSM.CreateState("Complaining");
+		complainingState = new(clientSFSM, this);
 		// Waits sat down to be attended by the sorcerer
 		//State WaitingForService = clientFSM.CreateState("WaitingForService");
 
@@ -103,7 +103,7 @@ public class Client : ANPC
 		//State Leaving = clientFSM.CreateState("Leaving");
 
 		// Initial state
-		clientSFSM.SetInitialState(shopping);
+		clientSFSM.SetInitialState(shoppingState);
 		#endregion
 
 		#region PULL PERCEPTIONS
@@ -141,43 +141,22 @@ public class Client : ANPC
 		return clientSFSM;
 	}
 
-	private bool CheckReceptionistTurn()
-	{
-		throw new NotImplementedException();
-	}
-
-	/// <summary>
-	/// Checks if the client wants the sorcerer or alchemist service
-	/// </summary>
-	/// <returns></returns>
-	private bool CheckIfWantedService()
-	{
-		return wantedService == WantedService.Sorcerer || wantedService == WantedService.Alchemist;
-	}
-
-	private bool CheckSorcererTurn()
-	{
-		throw new NotImplementedException();
-	}
-	private bool IsPotionReady()
-	{
-		throw new NotImplementedException();
-	}
-
 	/// <summary>
 	/// Checks if the cat is close enough to scare the client
 	/// </summary>
-	private bool ReactToCat()
+	private void ReactToCat()
 	{
 		// Cat is close and is scared
-		if (Vector3.Distance(transform.position, _cat.transform.position) < minDistanceToCat &&
+		if (Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position) < minDistanceToCat &&
 			UnityEngine.Random.Range(0, 10) < scareProbability)
 		{
 			_scaresCount++;
-			return true;
+			clientSFSM.SwitchState(stunnedState);
 		}
-		return false;
 	}
 
-
+	public bool HasReachedMaxScares()
+	{
+		return _scaresCount >= maxScares;
+	}
 }
