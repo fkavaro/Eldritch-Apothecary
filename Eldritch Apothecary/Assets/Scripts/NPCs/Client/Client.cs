@@ -5,6 +5,8 @@ using BehaviourAPI.Core.Perceptions;
 using BehaviourAPI.UnityToolkit;
 using BehaviourAPI.StateMachines;
 using BehaviourAPI.UnityToolkit.GUIDesigner.Runtime;
+using UnityEditor;
+
 
 public class Client : ANPC
 {
@@ -14,6 +16,9 @@ public class Client : ANPC
 		Sorcerer,
 		Alchemist
 	}
+	int _scaresCount = 0;
+	bool isTalking, isWaiting;
+	StackFiniteStateMachine clientSFSM;
 
 	#region VARIABLES
 	[Header("Client Properties")]
@@ -29,15 +34,21 @@ public class Client : ANPC
 	public float minDistanceToCat = 3f;
 	#endregion
 
-	int _scaresCount = 0;
-
-	StackFiniteStateMachine clientSFSM;
-
 	#region STATES
 	public Stunned_ClientState stunnedState; // Is startled by the grumpy cat 
 	public Shopping_ClientState shoppingState; // Takes products on the stands (Optional)
 	public WaitForReceptionist_ClientState waitForReceptionistState;// Waits in line to be attended by the receptionist 
 	public Complaining_ClientState complainingState; // Complains to the receptionist
+	#endregion
+
+	#region ANIMATIONS
+	readonly int Idle = Animator.StringToHash("Idle"),
+		Moving = Animator.StringToHash("Moving"),
+		Talking = Animator.StringToHash("Talking"),
+		PickUp = Animator.StringToHash("PickUp"),
+		Complaining = Animator.StringToHash("Complaining"),
+		Stunned = Animator.StringToHash("Stunned"),
+		SatDown = Animator.StringToHash("SatDown");
 	#endregion
 
 	protected override void OnAwake()
@@ -47,7 +58,7 @@ public class Client : ANPC
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 
-		SetAgentComponent();
+		base.OnAwake(); // Sets agent and animator components
 	}
 
 	protected override void OnStart()
@@ -58,6 +69,8 @@ public class Client : ANPC
 	protected override void OnUpdate()
 	{
 		if (!HasReachedMaxScares()) ReactToCat();
+
+		base.OnUpdate(); // Checks animation
 	}
 
 	protected override ADecisionSystem CreateDecisionSystem()
@@ -159,4 +172,21 @@ public class Client : ANPC
 	{
 		return _scaresCount >= maxScares;
 	}
+
+	// public override void CheckAnimation()
+	// {
+	// 	if (isTalking)
+	// 	{
+	// 		ChangeAnimationTo(Talking);
+	// 		StopAgent();
+	// 		//RotateTowardsNPC(otherNPC.position);
+	// 	}
+	// 	else
+	// 	{
+	// 		if (isWaiting)
+	// 			ChangeAnimationTo(Idle);
+	// 		else
+	// 			ChangeAnimationTo(Moving);
+	// 	}
+	// }
 }

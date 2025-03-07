@@ -6,9 +6,9 @@ using UnityEngine.AI;
 /// Requires a NavMeshAgent component to be attached to the GameObject.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class ANPC : ABehaviourController
+public abstract class ANPC : AAnimationController
 {
-    protected NavMeshAgent _agent;
+    NavMeshAgent _agent;
 
     [Header("Agent Properties")]
     [Tooltip("Agent speed"), Range(0f, 5f)]
@@ -25,10 +25,12 @@ public abstract class ANPC : ABehaviourController
     /// <summary>
     /// Sets the NavMeshAgent component and initializes its speed.
     /// </summary>
-    protected void SetAgentComponent()
+    protected override void OnAwake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = agentSpeed;
+
+        base.OnAwake(); // Sets the animator component
     }
 
     /// <summary>
@@ -101,18 +103,18 @@ public abstract class ANPC : ABehaviourController
         _agent.isStopped = false;
     }
 
-    /// <summary>
-    /// Draws debug gizmos in the scene view to visualize the target position.
-    /// </summary>
-    void OnDrawGizmos()
-    {
-        if (_agent != null && drawDebugGizmos)
-        {
-            Gizmos.color = targetDebugColor;
-            var target = GetTarget();
-            Gizmos.DrawLine(transform.position, target);
-            Gizmos.DrawSphere(target, 0.5f);
-        }
-    }
+    // /// <summary>
+    // /// Draws debug gizmos in the scene view to visualize the target position.
+    // /// </summary>
+    // void OnDrawGizmos()
+    // {
+    //     if (_agent != null && drawDebugGizmos)
+    //     {
+    //         Gizmos.color = targetDebugColor;
+    //         var target = GetTarget();
+    //         Gizmos.DrawLine(transform.position, target);
+    //         Gizmos.DrawSphere(target, 0.5f);
+    //     }
+    // }
 }
 

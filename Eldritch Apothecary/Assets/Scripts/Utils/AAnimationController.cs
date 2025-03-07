@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Defines a common class for all animation controlles.
+/// Defines a common class for all animation controllers.
 /// Handles animation transitions.
 /// </summary>
 [RequireComponent(typeof(Animator))]
@@ -15,22 +15,17 @@ public abstract class AAnimationController : ABehaviourController
     protected override void OnAwake()
     {
         animator = GetComponent<Animator>();
-
-        AwakeFrame();
     }
-
-    public virtual void AwakeFrame() { }
 
     protected override void OnUpdate()
     {
-
         CheckAnimation();
     }
 
     /// <summary>
     /// Checks animation conditions.
     /// </summary>
-    public abstract void CheckAnimation();
+    public virtual void CheckAnimation() { }
 
     /// <summary>
     /// Crossfade to new animation.
