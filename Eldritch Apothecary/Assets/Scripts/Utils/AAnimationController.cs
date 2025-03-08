@@ -13,7 +13,7 @@ public abstract class AAnimationController : ABehaviourController
 
     #region COMMON ANIMATIONS
     readonly public int Idle = Animator.StringToHash("Idle"),
-        Moving = Animator.StringToHash("Moving");
+        Walk = Animator.StringToHash("Walk");
     #endregion
 
     // Specific animations must be defined in derived classes

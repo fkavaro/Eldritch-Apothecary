@@ -10,7 +10,7 @@ public class Stunned_ClientState : AClientState
         clientContext.StopAgent();
 
         // Stunned animation
-        clientContext.ChangeAnimationTo(clientContext.Talking); // TODO: Change to stunned animation
+        clientContext.ChangeAnimationTo(clientContext.Talk); // TODO: Change to stunned animation
     }
 
     public override void UpdateState()

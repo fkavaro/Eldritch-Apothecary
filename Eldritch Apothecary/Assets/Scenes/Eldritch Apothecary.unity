@@ -9252,6 +9252,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 658487987542923087, guid: 3e5149a37ac0fea4d85ede349845dbba, type: 3}
+      propertyPath: agentSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2024366006334272345, guid: 3e5149a37ac0fea4d85ede349845dbba, type: 3}
       propertyPath: m_Name
       value: Client
@@ -30905,7 +30909,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -30913,7 +30917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13
+      value: -16
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalRotation.w

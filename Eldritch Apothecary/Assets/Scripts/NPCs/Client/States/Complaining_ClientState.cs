@@ -22,7 +22,7 @@ public class Complaining_ClientState : AClientState
         else if (clientContext.HasArrived())
         {
             // Complaining animation
-            clientContext.ChangeAnimationTo(clientContext.Talking); // TODO: Change to complaining animation
+            clientContext.ChangeAnimationTo(clientContext.Talk); // TODO: Change to complaining animation
 
             // Leave apothecary
             clientContext.SetTarget(ApothecaryManager.Instance.entrancePosition.position);

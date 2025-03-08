@@ -13,15 +13,18 @@ public abstract class ANPC : AAnimationController
     #region VARIABLES
     [Header("Agent Properties")]
     [Tooltip("Agent speed"), Range(0f, 5f)]
-    public float agentSpeed = 3.5f;
+    public float speed = 3f;
+    [Tooltip("Agent rotation speed"), Range(0f, 5f)]
+    public float rotationSpeed = 3f;
     [Tooltip("Threshold for target position sampling"), Range(0f, 1f)]
     public float targetThreshold = 1f;
     [Tooltip("Minimum distance to the target to consider the agent has arrived"), Range(0f, 1f)]
     public float minDistanceToTarget = 0.3f;
-    [Tooltip("Whether to draw debug gizmos in the scene view")]
-    [SerializeField] bool drawDebugGizmos;
-    [Tooltip("Color of the debug target gizmo")]
-    [SerializeField] Color targetDebugColor = Color.green;
+
+    // [Tooltip("Whether to draw debug gizmos in the scene view")]
+    // [SerializeField] bool drawDebugGizmos;
+    // [Tooltip("Color of the debug target gizmo")]
+    // [SerializeField] Color targetDebugColor = Color.green;
     #endregion
 
     /// <summary>
@@ -30,7 +33,8 @@ public abstract class ANPC : AAnimationController
     protected override void OnAwake()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _agent.speed = agentSpeed;
+        _agent.speed = speed;
+        _agent.angularSpeed = rotationSpeed * 100f;
 
         base.OnAwake(); // Sets the animator component
     }
@@ -43,7 +47,7 @@ public abstract class ANPC : AAnimationController
     {
         _agent.isStopped = false;
         _agent.SetDestination(targetPos);
-        ChangeAnimationTo(Moving);
+        ChangeAnimationTo(Walk);
     }
 
     /// <summary>
@@ -53,10 +57,8 @@ public abstract class ANPC : AAnimationController
     public bool HasArrived()
     {
         if (Vector3.Distance(transform.position, _agent.destination) < minDistanceToTarget)
-        {
-            //ChangeAnimationTo(Idle);
             return true;
-        }
+
         else
             return false;
     }
@@ -68,10 +70,7 @@ public abstract class ANPC : AAnimationController
     public bool HasArrived(Vector3 destination)
     {
         if (Vector3.Distance(transform.position, destination) < minDistanceToTarget)
-        {
-            //ChangeAnimationTo(Idle);
             return true;
-        }
         else
             return false;
     }

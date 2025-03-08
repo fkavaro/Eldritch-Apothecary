@@ -18,7 +18,7 @@ public class WaitForReceptionist_ClientState : AClientState
         // If client has reached the receptionist counter, first position in line
         if (clientContext.HasArrived(ApothecaryManager.Instance.queuePositions[0].position))
         {
-            clientContext.ChangeAnimationTo(clientContext.Talking);
+            clientContext.ChangeAnimationTo(clientContext.Talk);
             clientContext.StartCoroutine(WaitAndSwitchState(clientContext.shoppingState)); // TODO: Change to waiting for service
         }
         // Has been waiting for too long

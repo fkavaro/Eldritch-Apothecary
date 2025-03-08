@@ -42,11 +42,11 @@ public class Client : ANPC
 	#endregion
 
 	#region ANIMATIONS
-	readonly public int Talking = Animator.StringToHash("Talking"),
+	readonly public int Talk = Animator.StringToHash("Talk"),
 		PickUp = Animator.StringToHash("PickUp"),
-		Complaining = Animator.StringToHash("Complaining"),
+		Complain = Animator.StringToHash("Complain"),
 		Stunned = Animator.StringToHash("Stunned"),
-		SatDown = Animator.StringToHash("SatDown");
+		SitDown = Animator.StringToHash("SitDown");
 	#endregion
 
 	protected override void OnAwake()
