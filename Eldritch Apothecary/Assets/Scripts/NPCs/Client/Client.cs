@@ -42,9 +42,7 @@ public class Client : ANPC
 	#endregion
 
 	#region ANIMATIONS
-	readonly int Idle = Animator.StringToHash("Idle"),
-		Moving = Animator.StringToHash("Moving"),
-		Talking = Animator.StringToHash("Talking"),
+	readonly public int Talking = Animator.StringToHash("Talking"),
 		PickUp = Animator.StringToHash("PickUp"),
 		Complaining = Animator.StringToHash("Complaining"),
 		Stunned = Animator.StringToHash("Stunned"),

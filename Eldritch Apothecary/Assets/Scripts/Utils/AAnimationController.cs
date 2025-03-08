@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// Defines a common class for all animation controllers.
@@ -9,6 +10,11 @@ public abstract class AAnimationController : ABehaviourController
 {
     protected Animator animator;
     protected int currentAnimation;
+
+    #region COMMON ANIMATIONS
+    readonly public int Idle = Animator.StringToHash("Idle"),
+        Moving = Animator.StringToHash("Moving");
+    #endregion
 
     // Specific animations must be defined in derived classes
 
@@ -39,5 +45,14 @@ public abstract class AAnimationController : ABehaviourController
             // Interpolate transition to new animation
             animator.CrossFade(newAnimation, duration);
         }
+    }
+
+    /// <summary>
+    /// Waits for a specified number of seconds.
+    /// </summary>
+    public IEnumerator Wait(float seconds)
+    {
+
+        yield return new WaitForSeconds(seconds);
     }
 }

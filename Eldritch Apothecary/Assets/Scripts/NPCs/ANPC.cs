@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
-/// Abstract base class for NPC (Non-Player Character) behavior control.
+/// Abstract base class for NPC (Non-Player Character).
 /// Requires a NavMeshAgent component to be attached to the GameObject.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
@@ -10,6 +10,7 @@ public abstract class ANPC : AAnimationController
 {
     NavMeshAgent _agent;
 
+    #region VARIABLES
     [Header("Agent Properties")]
     [Tooltip("Agent speed"), Range(0f, 5f)]
     public float agentSpeed = 3.5f;
@@ -21,6 +22,7 @@ public abstract class ANPC : AAnimationController
     [SerializeField] bool drawDebugGizmos;
     [Tooltip("Color of the debug target gizmo")]
     [SerializeField] Color targetDebugColor = Color.green;
+    #endregion
 
     /// <summary>
     /// Sets the NavMeshAgent component and initializes its speed.
@@ -41,6 +43,7 @@ public abstract class ANPC : AAnimationController
     {
         _agent.isStopped = false;
         _agent.SetDestination(targetPos);
+        ChangeAnimationTo(Moving);
     }
 
     /// <summary>
@@ -50,7 +53,10 @@ public abstract class ANPC : AAnimationController
     public bool HasArrived()
     {
         if (Vector3.Distance(transform.position, _agent.destination) < minDistanceToTarget)
+        {
+            //ChangeAnimationTo(Idle);
             return true;
+        }
         else
             return false;
     }
@@ -62,7 +68,10 @@ public abstract class ANPC : AAnimationController
     public bool HasArrived(Vector3 destination)
     {
         if (Vector3.Distance(transform.position, destination) < minDistanceToTarget)
+        {
+            //ChangeAnimationTo(Idle);
             return true;
+        }
         else
             return false;
     }
@@ -93,6 +102,7 @@ public abstract class ANPC : AAnimationController
     {
         _agent.isStopped = true;
         //_agent.ResetPath();
+        //ChangeAnimationTo(Idle);
     }
 
     /// <summary>

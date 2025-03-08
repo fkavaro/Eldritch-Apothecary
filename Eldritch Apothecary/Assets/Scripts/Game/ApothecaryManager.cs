@@ -58,4 +58,9 @@ public class ApothecaryManager : MonoBehaviour
             index++;
         }
     }
+
+    public Vector3 RandomShopStand()
+    {
+        return shopStands[UnityEngine.Random.Range(0, shopStands.Length)].position;
+    }
 }

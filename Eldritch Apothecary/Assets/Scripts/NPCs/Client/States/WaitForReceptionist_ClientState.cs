@@ -2,38 +2,42 @@ using UnityEngine;
 
 public class WaitForReceptionist_ClientState : AClientState
 {
-    float _secondsWaiting = 0f;
-    public WaitForReceptionist_ClientState(StackFiniteStateMachine stackFsm, Client clientController) : base(stackFsm, clientController) { }
+    public WaitForReceptionist_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext) { }
 
     public override void StartState()
     {
         // Add client to the queue
-        ApothecaryManager.Instance.AddToQueue(clientController);
+        ApothecaryManager.Instance.AddToQueue(clientContext);
     }
 
     public override void UpdateState()
     {
-        _secondsWaiting += Time.deltaTime;
+        // Update state time
+        _stateTime += Time.deltaTime;
 
         // If client has reached the receptionist counter, first position in line
-        if (clientController.HasArrived(ApothecaryManager.Instance.queuePositions[0].position))
+        if (clientContext.HasArrived(ApothecaryManager.Instance.queuePositions[0].position))
         {
-            // Talk animation
-
-            // Switch state to waiting for service
-            stackFsm.SwitchState(clientController.shoppingState); // TODO: Change to waiting for service
+            clientContext.ChangeAnimationTo(clientContext.Talking);
+            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.shoppingState)); // TODO: Change to waiting for service
         }
         // Has been waiting for too long
-        else if (clientController.maxMinutesWaiting <= _secondsWaiting / 60f)
+        else if (clientContext.maxMinutesWaiting <= _stateTime / 60f)
         {
-            // Switch to complaining state
-            stackFsm.SwitchState(clientController.complainingState);
+            stackFsm.SwitchState(clientContext.complainingState);
+        }
+        // Has advanced in the queue and arrived to a new position
+        else if (clientContext.HasArrived())
+        {
+            clientContext.ChangeAnimationTo(clientContext.Idle);
         }
     }
 
     public override void ExitState()
     {
         // Remove client from the queue
-        ApothecaryManager.Instance.DeQueue(clientController);
+        ApothecaryManager.Instance.DeQueue(clientContext);
+
+        _stateTime = 0f;
     }
 }

@@ -3,7 +3,6 @@ using UnityEngine;
 
 /// <summary>
 /// Defines context methods. Implements MonoBehaviour.
-/// Controls states' actions (switching states, detect collisions...)
 /// </summary>
 public abstract class ABehaviourController : MonoBehaviour
 {

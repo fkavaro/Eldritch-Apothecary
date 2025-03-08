@@ -10,6 +10,11 @@ public abstract class AState
     protected FiniteStateMachine fsm;
     protected StackFiniteStateMachine stackFsm;
 
+    /// <summary>
+    /// The time the state has been active.
+    /// </summary>
+    protected float _stateTime = 0f;
+
     // Constructor given a FiniteStateMachine
     public AState(FiniteStateMachine fsm)
     {
