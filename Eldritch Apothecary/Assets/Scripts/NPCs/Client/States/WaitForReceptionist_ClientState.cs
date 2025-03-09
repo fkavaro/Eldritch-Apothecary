@@ -16,7 +16,7 @@ public class WaitForReceptionist_ClientState : AClientState
         _stateTime += Time.deltaTime;
 
         // If client has reached the receptionist counter, first position in line
-        if (clientContext.HasArrived(ApothecaryManager.Instance.queuePositions[0].position))
+        if (clientContext.HasArrived(ApothecaryManager.Instance.FirstInLine()))
         {
             clientContext.ChangeAnimationTo(clientContext.Talk);
             clientContext.StartCoroutine(WaitAndSwitchState(clientContext.shoppingState)); // TODO: Change to waiting for service
@@ -29,14 +29,14 @@ public class WaitForReceptionist_ClientState : AClientState
         // Has advanced in the queue and arrived to a new position
         else if (clientContext.HasArrived())
         {
-            clientContext.ChangeAnimationTo(clientContext.Idle);
+            clientContext.ChangeAnimationTo(clientContext.Wait);
         }
     }
 
     public override void ExitState()
     {
         // Remove client from the queue
-        ApothecaryManager.Instance.DeQueue(clientContext);
+        ApothecaryManager.Instance.LeaveQueue(clientContext);
 
         _stateTime = 0f;
     }

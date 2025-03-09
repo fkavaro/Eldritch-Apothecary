@@ -17,9 +17,19 @@ public abstract class AClientState : AState
     {
         this.clientContext = clientContext;
     }
-
     /// <summary>
     /// Coroutine to wait for a specified amount of time before switching to the next state.
+    /// </summary>
+    protected IEnumerator WaitAndSwitchState(float waitTime, AClientState nextState)
+    {
+        coroutineStarted = true;
+        Debug.Log("Waiting for " + waitTime + " seconds...");
+        yield return new WaitForSeconds(waitTime);
+        stackFsm.SwitchState(nextState);
+        coroutineStarted = false;
+    }
+    /// <summary>
+    /// Coroutine to wait for a random amount of time before switching to the next state.
     /// </summary>
     protected IEnumerator WaitAndSwitchState(AClientState nextState)
     {

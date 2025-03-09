@@ -23,14 +23,14 @@ public abstract class ABehaviourController : MonoBehaviour
     {
         OnAwake();
         _decisionSystem = CreateDecisionSystem();
-        _decisionSystem?.Awake();
+        //_decisionSystem?.Awake();
     }
     protected abstract void OnAwake(); // Implemented in subclasses
 
     private void Start()
     {
         OnStart();
-        _decisionSystem?.Start();
+        //_decisionSystem?.Start();
     }
     protected abstract void OnStart(); // Implemented in subclasses
 

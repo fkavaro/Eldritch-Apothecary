@@ -6653,6 +6653,7 @@ MonoBehaviour:
   cat: {fileID: 1509477254}
   complainingPosition: {fileID: 1332325583}
   entrancePosition: {fileID: 2064085851}
+  exitPosition: {fileID: 1671213725}
   shopStands:
   - {fileID: 1346645571}
   - {fileID: 1414814867}
@@ -6673,6 +6674,7 @@ MonoBehaviour:
   - {fileID: 1836415733}
   - {fileID: 826351224}
   - {fileID: 499557990}
+  clientsWaiting: 0
 --- !u!1 &379722256
 GameObject:
   m_ObjectHideFlags: 0

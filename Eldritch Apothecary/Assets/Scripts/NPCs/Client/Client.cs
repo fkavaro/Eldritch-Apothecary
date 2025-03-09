@@ -1,14 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using BehaviourAPI.Core;
-using BehaviourAPI.Core.Perceptions;
-using BehaviourAPI.UnityToolkit;
-using BehaviourAPI.StateMachines;
-using BehaviourAPI.UnityToolkit.GUIDesigner.Runtime;
-using UnityEditor;
 
-
-public class Client : ANPC
+public class Client : AHumanoid
 {
 	public enum WantedService
 	{
@@ -17,7 +10,6 @@ public class Client : ANPC
 		Alchemist
 	}
 	int _scaresCount = 0;
-	bool isTalking, isWaiting;
 	StackFiniteStateMachine clientSFSM;
 
 	#region VARIABLES
@@ -39,14 +31,6 @@ public class Client : ANPC
 	public Shopping_ClientState shoppingState; // Takes products on the stands (Optional)
 	public WaitForReceptionist_ClientState waitForReceptionistState;// Waits in line to be attended by the receptionist 
 	public Complaining_ClientState complainingState; // Complains to the receptionist
-	#endregion
-
-	#region ANIMATIONS
-	readonly public int Talk = Animator.StringToHash("Talk"),
-		PickUp = Animator.StringToHash("PickUp"),
-		Complain = Animator.StringToHash("Complain"),
-		Stunned = Animator.StringToHash("Stunned"),
-		SitDown = Animator.StringToHash("SitDown");
 	#endregion
 
 	protected override void OnAwake()
@@ -140,12 +124,11 @@ public class Client : ANPC
 		// clientFSM.CreateTransition(Shopping, WaitingForReceptionist, statusFlags: StatusFlags.Success);
 		// clientFSM.CreateTransition(WaitingForReceptionist, TalkingToReceptionist, receptionistTurn);
 		// clientFSM.CreateTransition(TalkingToReceptionist, WaitingForService, anyServiceIsWanted);
-		// clientFSM.CreateTransition(TalkingToReceptionist, Leaving, anyServiceIsWanted); //TODO!FIX: !anyServiceIsWanted
+		// clientFSM.CreateTransition(TalkingToReceptionist, Leaving, anyServiceIsWanted);
 		// clientFSM.CreateTransition(WaitingForService, VisitingSorcerer, sorcererTurn);
 		// clientFSM.CreateTransition(WaitingForService, CollectingPotion, isPotionReady);
 		// clientFSM.CreateTransition(VisitingSorcerer, Leaving, statusFlags: StatusFlags.Finished);
 		// clientFSM.CreateTransition(CollectingPotion, Leaving, statusFlags: StatusFlags.Finished);
-		// TODO: StunnedByCat transitions FROM ALL with StackFSM?
 		#endregion
 
 		//_debugger.RegisterGraph(clientFSM, "Client_FSM");
@@ -166,25 +149,9 @@ public class Client : ANPC
 		}
 	}
 
+	/// <returns>If client has been scared enough times</returns>
 	public bool HasReachedMaxScares()
 	{
 		return _scaresCount >= maxScares;
 	}
-
-	// public override void CheckAnimation()
-	// {
-	// 	if (isTalking)
-	// 	{
-	// 		ChangeAnimationTo(Talking);
-	// 		StopAgent();
-	// 		//RotateTowardsNPC(otherNPC.position);
-	// 	}
-	// 	else
-	// 	{
-	// 		if (isWaiting)
-	// 			ChangeAnimationTo(Idle);
-	// 		else
-	// 			ChangeAnimationTo(Moving);
-	// 	}
-	// }
 }

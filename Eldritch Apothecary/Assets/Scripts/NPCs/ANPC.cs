@@ -95,7 +95,7 @@ public abstract class ANPC : AAnimationController
     }
 
     /// <summary>
-    /// Stops the agent from moving and resets its destination.
+    /// Stops the agent from moving.
     /// </summary>
     public void StopAgent()
     {
@@ -111,19 +111,5 @@ public abstract class ANPC : AAnimationController
     {
         _agent.isStopped = false;
     }
-
-    // /// <summary>
-    // /// Draws debug gizmos in the scene view to visualize the target position.
-    // /// </summary>
-    // void OnDrawGizmos()
-    // {
-    //     if (_agent != null && drawDebugGizmos)
-    //     {
-    //         Gizmos.color = targetDebugColor;
-    //         var target = GetTarget();
-    //         Gizmos.DrawLine(transform.position, target);
-    //         Gizmos.DrawSphere(target, 0.5f);
-    //     }
-    // }
 }
 

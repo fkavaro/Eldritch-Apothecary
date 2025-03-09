@@ -16,12 +16,13 @@ public class StackFiniteStateMachine : FiniteStateMachine
     /// </summary>
     public override void SwitchState(AState state)
     {
+        if (state == currentState) return;
+
         previousState = currentState;
         currentState.ExitState();
         currentState = state;
+        DebugCurrentState();
         currentState.StartState();
-
-        if (controller.debugMode) DebugState();
     }
 
     /// <summary>
@@ -31,8 +32,7 @@ public class StackFiniteStateMachine : FiniteStateMachine
     {
         currentState.ExitState();
         currentState = previousState;
+        DebugCurrentState();
         currentState.StartState();
-
-        if (controller.debugMode) DebugState();
     }
 }

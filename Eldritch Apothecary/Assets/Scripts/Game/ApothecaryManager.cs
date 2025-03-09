@@ -5,11 +5,13 @@ using UnityEngine;
 public class ApothecaryManager : MonoBehaviour
 {
     public static ApothecaryManager Instance;
-    public Transform cat, complainingPosition, entrancePosition;
+    public Transform cat, complainingPosition, entrancePosition, exitPosition;
+
     public Transform[] shopStands, queuePositions;
 
     Queue<Client> clientQueue = new();
 
+    public int clientsWaiting;
 
     void Awake()
     {
@@ -32,7 +34,7 @@ public class ApothecaryManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UpdateQueuePositions();
+
     }
 
     public void AddToQueue(Client client)
@@ -41,7 +43,7 @@ public class ApothecaryManager : MonoBehaviour
         UpdateQueuePositions();
     }
 
-    public void DeQueue(Client client)
+    public void LeaveQueue(Client client)
     {
         clientQueue.Dequeue();
         UpdateQueuePositions();
@@ -49,6 +51,7 @@ public class ApothecaryManager : MonoBehaviour
 
     void UpdateQueuePositions()
     {
+        clientsWaiting = clientQueue.Count;
         if (clientQueue.Count == 0) return;
 
         int index = 0;
@@ -62,5 +65,10 @@ public class ApothecaryManager : MonoBehaviour
     public Vector3 RandomShopStand()
     {
         return shopStands[UnityEngine.Random.Range(0, shopStands.Length)].position;
+    }
+
+    public Vector3 FirstInLine()
+    {
+        return queuePositions[0].position;
     }
 }

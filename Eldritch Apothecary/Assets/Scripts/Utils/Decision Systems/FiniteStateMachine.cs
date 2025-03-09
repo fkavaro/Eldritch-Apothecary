@@ -4,60 +4,49 @@ using UnityEngine;
 
 public class FiniteStateMachine : ADecisionSystem
 {
-    //List<AState> states = new();
-
     public FiniteStateMachine(ABehaviourController controller) : base(controller) { }
-
 
     /// <summary>
     /// The current active state of the state machine
     /// </summary>
     public AState currentState;
 
-    protected void DebugState()
+    protected void DebugCurrentState()
     {
-        Debug.Log(controller.transform.name + " is " + currentState.ToString());
+        if (controller.debugMode) Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
     }
-
-    // public void CreateState(AState state)
-    // {
-    //     states.Add(state);
-    // }
 
     public void SetInitialState(AState state)
     {
+        if (state == currentState) return;
+
         currentState = state;
+        DebugCurrentState();
         currentState.StartState();
-
-        if (controller.debugMode) DebugState();
     }
-
-    // public void CreateTransition(AState from, AState to, bool condition)
-    // {
-    //     from.AddTransition(to, condition);
-    // }
 
     /// <summary>
     /// Switchs to another state after exiting the current.
     /// </summary>
     public virtual void SwitchState(AState state)
     {
+        if (state == currentState) return;
+
         currentState.ExitState();
         currentState = state;
+        DebugCurrentState();
         currentState.StartState();
-
-        if (controller.debugMode) DebugState();
     }
 
     #region UNITY EXECUTION EVENTS
     public override void Awake()
     {
-        currentState?.AwakeState();
+        //currentState?.AwakeState();
     }
 
     public override void Start()
     {
-        currentState?.StartState();
+        //currentState?.StartState();
     }
 
     public override void Update()

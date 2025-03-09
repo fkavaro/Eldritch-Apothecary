@@ -4,20 +4,14 @@ public class Shopping_ClientState : AClientState
 {
     public Shopping_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext) { }
 
-    public override void AwakeState()
-    {
-        // Randomly switch state if client wants any other service
-        if (clientContext.wantedService != Client.WantedService.OnlyShop &&
-            Random.Range(0, 5) == 0)
-        {
-            stackFsm.SwitchState(clientContext.waitForReceptionistState);
-        }
-    }
-
     public override void StartState()
     {
-        // Choose random stand
-        clientContext.SetTarget(ApothecaryManager.Instance.RandomShopStand());
+        // Switch state if client wants any other service: sorcerer or alchemist
+        if (clientContext.wantedService != Client.WantedService.OnlyShop)
+            stackFsm.SwitchState(clientContext.waitForReceptionistState);
+        else
+            // Choose random stand
+            clientContext.SetTarget(ApothecaryManager.Instance.RandomShopStand());
     }
 
     public override void UpdateState()
@@ -31,6 +25,6 @@ public class Shopping_ClientState : AClientState
 
     public override void ExitState()
     {
-        clientContext.StopAgent();
+        //clientContext.StopAgent();
     }
 }

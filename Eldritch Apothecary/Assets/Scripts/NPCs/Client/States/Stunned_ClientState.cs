@@ -9,25 +9,20 @@ public class Stunned_ClientState : AClientState
     {
         clientContext.StopAgent();
 
-        // Stunned animation
-        clientContext.ChangeAnimationTo(clientContext.Talk); // TODO: Change to stunned animation
+        clientContext.ChangeAnimationTo(clientContext.Stunned);
+
+        clientContext.StartCoroutine(WaitAndSwitchState(3f, clientContext.complainingState));
+
+        if (clientContext.HasReachedMaxScares())
+            stackFsm.SwitchState(clientContext.complainingState);
+        else
+            stackFsm.ReturnToPreviousState();
+
     }
 
     public override void UpdateState()
     {
-        clientContext.Wait(3f); // Wait for animation to play
 
-        // If client has been scared enough times
-        if (clientContext.HasReachedMaxScares())
-        {
-            // Switch to complaining state
-            stackFsm.SwitchState(clientContext.complainingState);
-        }
-        else
-        {
-            // Return to previous state
-            stackFsm.ReturnToPreviousState();
-        }
     }
 
     public override void ExitState()

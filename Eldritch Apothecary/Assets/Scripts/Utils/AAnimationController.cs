@@ -46,13 +46,4 @@ public abstract class AAnimationController : ABehaviourController
             animator.CrossFade(newAnimation, duration);
         }
     }
-
-    /// <summary>
-    /// Waits for a specified number of seconds.
-    /// </summary>
-    public IEnumerator Wait(float seconds)
-    {
-
-        yield return new WaitForSeconds(seconds);
-    }
 }
