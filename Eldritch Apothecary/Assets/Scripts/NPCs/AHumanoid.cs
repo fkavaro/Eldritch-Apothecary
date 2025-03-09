@@ -3,17 +3,17 @@ using UnityEngine;
 public abstract class AHumanoid : ANPC
 {
     #region HUMANOID ANIMATIONS
-    readonly public int Talk = Animator.StringToHash("Talk"),
-        PickUp = Animator.StringToHash("PickUp"),
-        Complain = Animator.StringToHash("Complain"),
-        Stunned = Animator.StringToHash("Stunned"),
-        SitDown = Animator.StringToHash("SitDown"),
-        StandUp = Animator.StringToHash("StandUp"),
-        Argue = Animator.StringToHash("Argue"),
-        Yell = Animator.StringToHash("Yell"),
-        CastSpell = Animator.StringToHash("CastSpell"),
-        MixIngredients = Animator.StringToHash("MixIngredients"),
-        Wait = Animator.StringToHash("Wait"),
-        Disbelief = Animator.StringToHash("Disbelief");
+    readonly public int talkAnim = Animator.StringToHash("Talk"),
+        pickUpAnim = Animator.StringToHash("PickUp"),
+        complainAnim = Animator.StringToHash("Complain"),
+        stunnedAnim = Animator.StringToHash("Stunned"),
+        sitDownAnim = Animator.StringToHash("SitDown"),
+        standUpAnim = Animator.StringToHash("StandUp"),
+        argueAnim = Animator.StringToHash("Argue"),
+        yellAnim = Animator.StringToHash("Yell"),
+        castSpellAnim = Animator.StringToHash("CastSpell"),
+        mixIngredientsAnim = Animator.StringToHash("MixIngredients"),
+        waitAnim = Animator.StringToHash("Wait"),
+        disbeliefAnim = Animator.StringToHash("Disbelief");
     #endregion
 }

@@ -47,7 +47,7 @@ public abstract class ANPC : AAnimationController
     {
         _agent.isStopped = false;
         _agent.SetDestination(targetPos);
-        ChangeAnimationTo(Walk);
+        ChangeAnimationTo(walkAnim);
     }
 
     /// <summary>

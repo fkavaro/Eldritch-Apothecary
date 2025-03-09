@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Picks up a product or waits in line directly
+/// </summary>
 public class Shopping_ClientState : AClientState
 {
     public Shopping_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext) { }
@@ -10,16 +13,17 @@ public class Shopping_ClientState : AClientState
         if (clientContext.wantedService != Client.WantedService.OnlyShop)
             stackFsm.SwitchState(clientContext.waitForReceptionistState);
         else
-            // Choose random stand
             clientContext.SetTarget(ApothecaryManager.Instance.RandomShopStand());
     }
 
     public override void UpdateState()
     {
-        if (clientContext.HasArrived() && !coroutineStarted)
+        if (coroutineStarted) return;
+
+        if (clientContext.HasArrived())
         {
-            clientContext.ChangeAnimationTo(clientContext.PickUp);
-            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.waitForReceptionistState));
+            clientContext.ChangeAnimationTo(clientContext.pickUpAnim);
+            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.waitForReceptionistState, "Picking up objects"));
         }
     }
 

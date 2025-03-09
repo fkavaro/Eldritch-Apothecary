@@ -11,20 +11,13 @@ public class Complaining_ClientState : AClientState
 
     public override void UpdateState()
     {
-        // Walk animation
-        // If client has reached the exit after complained
-        if (clientContext.HasArrived(ApothecaryManager.Instance.exitPosition.position))
-        {
-            // Destroy gameobject
-            GameObject.Destroy(clientContext.gameObject); // TODO: Return to clients pool
-        }
-        // If client has reached the complaining position
-        else if (clientContext.HasArrived())
-        {
-            clientContext.ChangeAnimationTo(clientContext.Complain);
+        if (coroutineStarted) return;
 
-            // Leave apothecary
-            clientContext.SetTarget(ApothecaryManager.Instance.exitPosition.position);
+        // Has reached the complaining position
+        if (clientContext.HasArrived())
+        {
+            clientContext.ChangeAnimationTo(clientContext.complainAnim);
+            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.leavingState, "Complaining"));
         }
     }
 

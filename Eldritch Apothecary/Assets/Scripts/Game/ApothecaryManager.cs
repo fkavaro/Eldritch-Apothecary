@@ -6,9 +6,16 @@ public class ApothecaryManager : MonoBehaviour
 {
     public static ApothecaryManager Instance;
     public Transform cat, complainingPosition, entrancePosition, exitPosition;
+    public Transform shopStandsParent,
+        queuePositionsParent,
+        seatsPositionsParent,
+        pickUpPositionsParent,
+        sorcererSeat;
 
-    public Transform[] shopStands, queuePositions;
-
+    List<Transform> shopStands = new(),
+        queuePositions = new(),
+        seatsPositions = new(),
+        pickUpPositions = new();
     Queue<Client> clientQueue = new();
 
     public int clientsWaiting;
@@ -20,33 +27,33 @@ public class ApothecaryManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+        FillChildrenList(shopStandsParent, shopStands);
+        FillChildrenList(queuePositionsParent, queuePositions);
+        FillChildrenList(seatsPositionsParent, seatsPositions);
+        FillChildrenList(pickUpPositionsParent, pickUpPositions);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (shopStands.Length == 0 || queuePositions.Length == 0)
-        {
-            Debug.LogError("Shop stands or queue positions are not assigned in the ApothecaryManager.");
-        }
+        if (shopStands.Count == 0 || queuePositions.Count == 0 || seatsPositions.Count == 0)
+            Debug.LogError("Shop stands, queue or seats positions are empty.");
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
 
-    public void AddToQueue(Client client)
+    void FillChildrenList(Transform parent, List<Transform> childrenList)
     {
-        clientQueue.Enqueue(client);
-        UpdateQueuePositions();
+        foreach (Transform child in parent)
+            childrenList.Add(child);
     }
 
-    public void LeaveQueue(Client client)
+    Vector3 RandomPosition(List<Transform> positions)
     {
-        clientQueue.Dequeue();
-        UpdateQueuePositions();
+        return positions[UnityEngine.Random.Range(0, positions.Count)].position;
     }
 
     void UpdateQueuePositions()
@@ -62,9 +69,31 @@ public class ApothecaryManager : MonoBehaviour
         }
     }
 
+    public void AddToQueue(Client client)
+    {
+        clientQueue.Enqueue(client);
+        UpdateQueuePositions();
+    }
+
+    public void LeaveQueue()
+    {
+        clientQueue.Dequeue();
+        UpdateQueuePositions();
+    }
+
     public Vector3 RandomShopStand()
     {
-        return shopStands[UnityEngine.Random.Range(0, shopStands.Length)].position;
+        return RandomPosition(shopStands);
+    }
+
+    public Vector3 RandomSeat()
+    {
+        return RandomPosition(seatsPositions);
+    }
+
+    public Vector3 RandomPickUp()
+    {
+        return RandomPosition(pickUpPositions);
     }
 
     public Vector3 FirstInLine()

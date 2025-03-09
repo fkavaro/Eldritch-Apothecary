@@ -12,8 +12,8 @@ public abstract class AAnimationController : ABehaviourController
     protected int currentAnimation;
 
     #region COMMON ANIMATIONS
-    readonly public int Idle = Animator.StringToHash("Idle"),
-        Walk = Animator.StringToHash("Walk");
+    readonly public int idleAnim = Animator.StringToHash("Idle"),
+        walkAnim = Animator.StringToHash("Walk");
     #endregion
 
     // Specific animations must be defined in derived classes
@@ -42,6 +42,7 @@ public abstract class AAnimationController : ABehaviourController
         if (currentAnimation != newAnimation)
         {
             currentAnimation = newAnimation;
+
             // Interpolate transition to new animation
             animator.CrossFade(newAnimation, duration);
         }

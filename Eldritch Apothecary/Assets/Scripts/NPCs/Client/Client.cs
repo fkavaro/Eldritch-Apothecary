@@ -27,10 +27,14 @@ public class Client : AHumanoid
 	#endregion
 
 	#region STATES
-	public Stunned_ClientState stunnedState; // Is startled by the grumpy cat 
-	public Shopping_ClientState shoppingState; // Takes products on the stands (Optional)
-	public WaitForReceptionist_ClientState waitForReceptionistState;// Waits in line to be attended by the receptionist 
-	public Complaining_ClientState complainingState; // Complains to the receptionist
+	public Stunned_ClientState stunnedState;
+	public Shopping_ClientState shoppingState;
+	public WaitForReceptionist_ClientState waitForReceptionistState;
+	public Complaining_ClientState complainingState;
+	public WaitForService_ClientState waitForServiceState;
+	public AtSorcerer_ClientState atSorcererState;
+	public PickPotionUp_ClientState pickPotionUpState;
+	public Leaving_ClientState leavingState;
 	#endregion
 
 	protected override void OnAwake()
@@ -57,81 +61,19 @@ public class Client : AHumanoid
 
 	protected override ADecisionSystem CreateDecisionSystem()
 	{
-		#region ACTIONS
-		//WalkAction shopping = new(ApothecaryManager.Instance.shopStands[0].position);
-		//WaitInLineAction waitingInLine = new();
-		#endregion
-
-		#region STATES
 		clientSFSM = new(this);
 
-		// Is startled by the grumpy cat 
-		//State StunnedByCat = clientFSM.CreateState("StunnedByCat");
 		stunnedState = new(clientSFSM, this);
-
-		// Takes products on the stands (Optional)
-		//State Shopping = clientFSM.CreateState("Shopping", shopping);
 		shoppingState = new(clientSFSM, this);
-
-		// Waits in line to be attended by the receptionist 
-		//State WaitingForReceptionist = clientFSM.CreateState("WaitingForReceptionist", waitingInLine);
 		waitForReceptionistState = new(clientSFSM, this);
-
-		// Attended by the receptionist
-		//State TalkingToReceptionist = clientFSM.CreateState("AttendedByReceptionist");
-		// Complains to the receptionist if waited too much time
 		complainingState = new(clientSFSM, this);
-		// Waits sat down to be attended by the sorcerer
-		//State WaitingForService = clientFSM.CreateState("WaitingForService");
+		waitForServiceState = new(clientSFSM, this);
+		atSorcererState = new(clientSFSM, this);
+		pickPotionUpState = new(clientSFSM, this);
+		leavingState = new(clientSFSM, this);
 
-		// a. SORCERER
-		// Goes to the sorcerer's room
-		//State GoingToSorcererRoom = clientFSM.CreateState("GoingToSorcererRoom");
-		// Attended by sorcerer
-		//State VisitingSorcerer = clientFSM.CreateState("VisitingSorcerer");
-
-		// b. ALCHEMIST
-		// Takes the prepared potion
-		//State CollectingPotion = clientFSM.CreateState("TakingPotion");
-
-		// Leaves the apothecary | Cancels the purchase if stunned too many times by the cat
-		//State Leaving = clientFSM.CreateState("Leaving");
-
-		// Initial state
 		clientSFSM.SetInitialState(shoppingState);
-		#endregion
 
-		#region PULL PERCEPTIONS
-		// Cat is close and client is scared
-		//ConditionPerception stunnedByCat = new(ReactToCat);
-		// Timer
-		//UnityTimePerception desperate = new(_maxSecondsWaiting);
-		// Turn for receptionist
-		//ConditionPerception receptionistTurn = new(CheckReceptionistTurn);
-		// Something else (bool)
-		//ConditionPerception anyServiceIsWanted = new(CheckIfWantedService);
-		// Turn for sorcerer
-		//ConditionPerception sorcererTurn = new(CheckSorcererTurn);
-		// Potion ready
-		//ConditionPerception isPotionReady = new(IsPotionReady);
-		#endregion
-
-		#region PUSH PERCEPTIONS
-
-		#endregion
-
-		#region TRANSITIONS
-		// clientFSM.CreateTransition(Shopping, WaitingForReceptionist, statusFlags: StatusFlags.Success);
-		// clientFSM.CreateTransition(WaitingForReceptionist, TalkingToReceptionist, receptionistTurn);
-		// clientFSM.CreateTransition(TalkingToReceptionist, WaitingForService, anyServiceIsWanted);
-		// clientFSM.CreateTransition(TalkingToReceptionist, Leaving, anyServiceIsWanted);
-		// clientFSM.CreateTransition(WaitingForService, VisitingSorcerer, sorcererTurn);
-		// clientFSM.CreateTransition(WaitingForService, CollectingPotion, isPotionReady);
-		// clientFSM.CreateTransition(VisitingSorcerer, Leaving, statusFlags: StatusFlags.Finished);
-		// clientFSM.CreateTransition(CollectingPotion, Leaving, statusFlags: StatusFlags.Finished);
-		#endregion
-
-		//_debugger.RegisterGraph(clientFSM, "Client_FSM");
 		return clientSFSM;
 	}
 
