@@ -14,7 +14,7 @@ public class Stunned_ClientState : AClientState
 
         clientContext.ChangeAnimationTo(clientContext.stunnedAnim);
 
-        clientContext.StartCoroutine(WaitAndSwitchState(3f, clientContext.complainingState, "Stunned"));
+        clientContext.StartCoroutine(WaitAndSwitchState(3f, clientContext.complainingState, "Stunned")); // TODO: Just wait until animation is executed
 
         if (clientContext.HasReachedMaxScares())
             stackFsm.SwitchState(clientContext.complainingState);

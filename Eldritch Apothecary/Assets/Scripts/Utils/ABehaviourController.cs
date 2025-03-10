@@ -9,7 +9,7 @@ public abstract class ABehaviourController : MonoBehaviour
 
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console")]
-    public bool debugMode = true;
+    public bool debugMode = false;
 
     ADecisionSystem _decisionSystem;
 

@@ -1,86 +1,83 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
-public class ApothecaryManager : MonoBehaviour
+/// <summary>
+/// Manages the Apothecary information and systems
+/// </summary>
+public class ApothecaryManager : Singleton<ApothecaryManager>
 {
-    public static ApothecaryManager Instance;
-    public Transform cat, complainingPosition, entrancePosition, exitPosition;
-    public Transform shopStandsParent,
-        queuePositionsParent,
-        seatsPositionsParent,
-        pickUpPositionsParent,
-        sorcererSeat;
+    #region VARIABLES
+    [Header("Positions")]
+
+    public Transform cat;
+    public Transform complainingPosition;
+    public Transform entrancePosition;
+    public Transform exitPosition;
+    public Transform shopStandsParent;
+    public Transform queuePositionsParent;
+    public Transform seatsPositionsParent;
+    public Transform pickUpPositionsParent;
+    public Transform clientsParent;
+    public Transform sorcererSeat;
 
     List<Transform> shopStands = new(),
         queuePositions = new(),
         seatsPositions = new(),
         pickUpPositions = new();
-    Queue<Client> clientQueue = new();
 
-    public int clientsWaiting;
+    [Header("Clients pool")]
+    public GameObject clientPrefab;
+    public int maxClients = 10;
+    public ObjectPool<Client> clientsPool;
 
-    void Awake()
+    [Header("Clients queue")]
+    public WaitingQueue waitingQueue;
+    #endregion
+
+    #region EXECUTION METHODS
+    protected override void Awake()
     {
-        // Creates one instance if there isn't any (Singleton)
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
+        base.Awake();// Ensures the Singleton logic runs
 
         FillChildrenList(shopStandsParent, shopStands);
         FillChildrenList(queuePositionsParent, queuePositions);
         FillChildrenList(seatsPositionsParent, seatsPositions);
         FillChildrenList(pickUpPositionsParent, pickUpPositions);
+
+        waitingQueue = new WaitingQueue(queuePositions);
+        clientsPool = new ObjectPool<Client>(
+            createFunc: () => Instantiate(clientPrefab, entrancePosition.position, Quaternion.identity).GetComponent<Client>(),
+            actionOnGet: (client) => client.gameObject.SetActive(true),
+            actionOnRelease: (client) => client.gameObject.SetActive(false),
+            actionOnDestroy: (client) => Destroy(client.gameObject),
+            maxSize: maxClients
+        );
     }
 
     void Start()
     {
-        if (shopStands.Count == 0 || queuePositions.Count == 0 || seatsPositions.Count == 0)
-            Debug.LogError("Shop stands, queue or seats positions are empty.");
+        if (shopStands.Count == 0 ||
+            queuePositions.Count == 0 ||
+            seatsPositions.Count == 0 ||
+            pickUpPositions.Count == 0)
+            Debug.LogError("A positions list is empty.");
     }
 
     void Update()
     {
-
-    }
-
-    void FillChildrenList(Transform parent, List<Transform> childrenList)
-    {
-        foreach (Transform child in parent)
-            childrenList.Add(child);
-    }
-
-    Vector3 RandomPosition(List<Transform> positions)
-    {
-        return positions[UnityEngine.Random.Range(0, positions.Count)].position;
-    }
-
-    void UpdateQueuePositions()
-    {
-        clientsWaiting = clientQueue.Count;
-        if (clientQueue.Count == 0) return;
-
-        int index = 0;
-        foreach (Client client in clientQueue)
+        // Instantiate clients every 20 seconds if there are less than 10 clients
+        if (Time.time % 20 == 0 && clientsPool.CountActive < maxClients)
         {
-            client.SetTarget(queuePositions[index].position);
-            index++;
+            Client client = clientsPool.Get();
+            client.transform.position = entrancePosition.position;
+            client.gameObject.SetActive(true);
         }
     }
+    #endregion
 
-    public void AddToQueue(Client client)
-    {
-        clientQueue.Enqueue(client);
-        UpdateQueuePositions();
-    }
-
-    public void LeaveQueue()
-    {
-        clientQueue.Dequeue();
-        UpdateQueuePositions();
-    }
-
+    #region PUBLIC METHODS
     public Vector3 RandomShopStand()
     {
         return RandomPosition(shopStands);
@@ -95,9 +92,18 @@ public class ApothecaryManager : MonoBehaviour
     {
         return RandomPosition(pickUpPositions);
     }
+    #endregion
 
-    public Vector3 FirstInLine()
+    #region PRIVATE METHODS
+    void FillChildrenList(Transform parent, List<Transform> childrenList)
     {
-        return queuePositions[0].position;
+        foreach (Transform child in parent)
+            childrenList.Add(child);
     }
+
+    Vector3 RandomPosition(List<Transform> positions)
+    {
+        return positions[UnityEngine.Random.Range(0, positions.Count)].position;
+    }
+    #endregion
 }

@@ -80,7 +80,7 @@ public class Client : AHumanoid
 	/// <summary>
 	/// Checks if the cat is close enough to scare the client
 	/// </summary>
-	private void ReactToCat()
+	void ReactToCat()
 	{
 		// Cat is close and is scared
 		if (Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position) < minDistanceToCat &&
@@ -95,5 +95,10 @@ public class Client : AHumanoid
 	public bool HasReachedMaxScares()
 	{
 		return _scaresCount >= maxScares;
+	}
+
+	public void Release()
+	{
+		ApothecaryManager.Instance.clientsPool.Release(this);
 	}
 }

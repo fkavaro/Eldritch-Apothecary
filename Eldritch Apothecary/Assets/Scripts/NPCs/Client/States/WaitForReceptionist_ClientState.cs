@@ -10,7 +10,7 @@ public class WaitForReceptionist_ClientState : AClientState
     public override void StartState()
     {
         // Add client to the queue
-        ApothecaryManager.Instance.AddToQueue(clientContext);
+        ApothecaryManager.Instance.waitingQueue.Add(clientContext);
     }
 
     public override void UpdateState()
@@ -21,7 +21,7 @@ public class WaitForReceptionist_ClientState : AClientState
         _stateTime += Time.deltaTime;
 
         // If client has reached the receptionist counter, first position in line
-        if (clientContext.HasArrived(ApothecaryManager.Instance.FirstInLine()))
+        if (clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
         {
             clientContext.ChangeAnimationTo(clientContext.talkAnim);
             clientContext.StartCoroutine(WaitAndSwitchState(clientContext.waitForServiceState, "Talking"));
@@ -41,7 +41,7 @@ public class WaitForReceptionist_ClientState : AClientState
     public override void ExitState()
     {
         // Remove client from the queue
-        ApothecaryManager.Instance.LeaveQueue();
+        ApothecaryManager.Instance.waitingQueue.Leave();
 
         _stateTime = 0f;
     }
