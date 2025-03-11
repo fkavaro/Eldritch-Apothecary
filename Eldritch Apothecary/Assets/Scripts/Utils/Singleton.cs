@@ -56,7 +56,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             }
             else if (_instance != this) // If an instance already exists and it's not this one, destroy this object.
             {
-                Destroy(gameObject); // Prevents duplicate instances.
+                Debug.LogWarning($"Duplicate Singleton<{typeof(T).Name}> found. Destroying...");
+                DestroyImmediate(gameObject);
             }
         }
     }

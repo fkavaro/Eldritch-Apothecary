@@ -6661,7 +6661,18 @@ MonoBehaviour:
   pickUpPositionsParent: {fileID: 1421520633}
   clientsParent: {fileID: 463564834}
   sorcererSeat: {fileID: 526172422}
-  clientPrefab: {fileID: 2024366006334272345, guid: 3e5149a37ac0fea4d85ede349845dbba, type: 3}
+  clientPrefabs:
+  - {fileID: 2024366006334272345, guid: 3e5149a37ac0fea4d85ede349845dbba, type: 3}
+  - {fileID: 2024366006334272345, guid: 0e2b48090a649c84bacd7d6785990753, type: 3}
+  - {fileID: 2024366006334272345, guid: aec57e782515d1c42925454d1d4dfc05, type: 3}
+  - {fileID: 2024366006334272345, guid: 54cea40846d886347add7b12e7f608b8, type: 3}
+  - {fileID: 2024366006334272345, guid: 6319c3f083e7bf74d83b94c269db4654, type: 3}
+  - {fileID: 2024366006334272345, guid: 80b5fcd377af75d49966962c1e6c0437, type: 3}
+  - {fileID: 2024366006334272345, guid: 6a5e83eb54934b0449ed1683bc4d22bd, type: 3}
+  - {fileID: 2024366006334272345, guid: 4ef0e09680577d441b2ea7979cd8526d, type: 3}
+  - {fileID: 2024366006334272345, guid: 11172f71038ffd8479dd06cdb8f13cb7, type: 3}
+  - {fileID: 2024366006334272345, guid: 2248078768a35cd44aae43f1aeff026a, type: 3}
+  - {fileID: 2024366006334272345, guid: a9fcc64e2bc92b04ca4b1e8ead587fa1, type: 3}
   maxClients: 10
 --- !u!1 &379722256
 GameObject:

@@ -24,6 +24,7 @@ public class Client : AHumanoid
 	public int maxScares = 3;
 	[Tooltip("Triggering distance to cat"), Range(0f, 4f)]
 	public float minDistanceToCat = 3f;
+	//public GameObject[] clientModels;
 	#endregion
 
 	#region STATES
@@ -43,6 +44,10 @@ public class Client : AHumanoid
 		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
+
+		// Instantiates a random model
+		//Instantiate(clientModels[UnityEngine.Random.Range(0, clientModels.Length)], transform.position, Quaternion.identity, transform);
+		//clientModels[UnityEngine.Random.Range(0, clientModels.Length)].SetActive(true);
 
 		base.OnAwake(); // Sets agent and animator components
 	}

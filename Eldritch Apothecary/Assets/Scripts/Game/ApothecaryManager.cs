@@ -27,7 +27,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         pickUpPositions = new();
 
     [Header("Clients pool")]
-    public GameObject clientPrefab;
+    public GameObject[] clientPrefabs;
     public int maxClients = 10;
     public ObjectPool<Client> clientsPool;
 
@@ -109,8 +109,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     Client CreateClient()
     {
-        Client client = Instantiate(clientPrefab, entrancePosition.position, Quaternion.identity).GetComponent<Client>();
-        client.transform.parent = clientsParent;
+        Client client = Instantiate(
+            clientPrefabs[UnityEngine.Random.Range(0, clientPrefabs.Length)],
+            entrancePosition.position,
+            Quaternion.identity,
+            clientsParent)
+        .GetComponent<Client>();
         return client;
     }
     #endregion
