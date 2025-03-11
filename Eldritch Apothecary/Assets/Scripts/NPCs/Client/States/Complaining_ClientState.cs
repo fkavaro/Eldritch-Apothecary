@@ -6,18 +6,18 @@ public class Complaining_ClientState : AClientState
 
     public override void StartState()
     {
-        clientContext.SetTarget(ApothecaryManager.Instance.complainingPosition.position);
+        _clientContext.SetTarget(ApothecaryManager.Instance.complainingPosition.position);
     }
 
     public override void UpdateState()
     {
-        if (coroutineStarted) return;
+        if (_coroutineStarted) return;
 
         // Has reached the complaining position
-        if (clientContext.HasArrived())
+        if (_clientContext.HasArrived())
         {
-            clientContext.ChangeAnimationTo(clientContext.complainAnim);
-            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.leavingState, "Complaining"));
+            _clientContext.ChangeAnimationTo(_clientContext.complainAnim);
+            _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.leavingState, "Complaining"));
         }
     }
 

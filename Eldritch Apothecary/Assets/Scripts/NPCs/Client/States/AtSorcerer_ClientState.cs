@@ -9,18 +9,18 @@ public class AtSorcerer_ClientState : AClientState
 
     public override void StartState()
     {
-        clientContext.SetTarget(ApothecaryManager.Instance.sorcererSeat.position);
+        _clientContext.SetTarget(ApothecaryManager.Instance.sorcererSeat.position);
     }
 
     public override void UpdateState()
     {
-        if (coroutineStarted) return;
+        if (_coroutineStarted) return;
 
         // Has reached the sorcerer seat
-        if (clientContext.HasArrived())
+        if (_clientContext.HasArrived())
         {
-            clientContext.ChangeAnimationTo(clientContext.sitDownAnim); // TODO: stand up animation
-            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.leavingState, "Sitting down"));
+            _clientContext.ChangeAnimationTo(_clientContext.sitDownAnim); // TODO: stand up animation
+            _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.leavingState, "Sitting down"));
         }
     }
 }

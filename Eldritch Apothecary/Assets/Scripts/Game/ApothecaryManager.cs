@@ -10,7 +10,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 {
     #region VARIABLES
     [Header("Positions")]
-
     public Transform cat;
     public Transform complainingPosition;
     public Transform entrancePosition;
@@ -36,6 +35,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public WaitingQueue waitingQueue;
     #endregion
 
+    float nextClientTime = 0f;
+
     #region EXECUTION METHODS
     protected override void Awake()
     {
@@ -48,7 +49,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
         waitingQueue = new WaitingQueue(queuePositions);
         clientsPool = new ObjectPool<Client>(
-            createFunc: () => Instantiate(clientPrefab, entrancePosition.position, Quaternion.identity).GetComponent<Client>(),
+            createFunc: CreateClient,
             actionOnGet: (client) => client.gameObject.SetActive(true),
             actionOnRelease: (client) => client.gameObject.SetActive(false),
             actionOnDestroy: (client) => Destroy(client.gameObject),
@@ -67,12 +68,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     void Update()
     {
-        // Instantiate clients every 20 seconds if there are less than 10 clients
-        if (Time.time % 20 == 0 && clientsPool.CountActive < maxClients)
+        // Instantiate clients every 5 seconds
+        if (Time.time >= nextClientTime && clientsPool.CountActive < maxClients)
         {
+            nextClientTime = Time.time + 5f; // Reset timer
             Client client = clientsPool.Get();
-            client.transform.position = entrancePosition.position;
-            client.gameObject.SetActive(true);
+            client.transform.parent = clientsParent; // Set parent after getting from pool
         }
     }
     #endregion
@@ -104,6 +105,13 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     Vector3 RandomPosition(List<Transform> positions)
     {
         return positions[UnityEngine.Random.Range(0, positions.Count)].position;
+    }
+
+    Client CreateClient()
+    {
+        Client client = Instantiate(clientPrefab, entrancePosition.position, Quaternion.identity).GetComponent<Client>();
+        client.transform.parent = clientsParent;
+        return client;
     }
     #endregion
 }

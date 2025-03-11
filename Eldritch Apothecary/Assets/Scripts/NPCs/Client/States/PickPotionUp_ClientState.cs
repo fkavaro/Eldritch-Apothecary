@@ -9,18 +9,18 @@ public class PickPotionUp_ClientState : AClientState
 
     public override void StartState()
     {
-        clientContext.SetTarget(ApothecaryManager.Instance.RandomPickUp());
+        _clientContext.SetTarget(ApothecaryManager.Instance.RandomPickUp());
     }
 
     public override void UpdateState()
     {
-        if (coroutineStarted) return;
+        if (_coroutineStarted) return;
 
         // Has reached pick up position
-        if (clientContext.HasArrived())
+        if (_clientContext.HasArrived())
         {
-            clientContext.ChangeAnimationTo(clientContext.pickUpAnim);
-            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.leavingState, "Picking up the potion")); // TODO: Just wait until animation is executed
+            _clientContext.ChangeAnimationTo(_clientContext.pickUpAnim);
+            _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.leavingState, "Picking up the potion")); // TODO: Just wait until animation is executed
         }
     }
 }

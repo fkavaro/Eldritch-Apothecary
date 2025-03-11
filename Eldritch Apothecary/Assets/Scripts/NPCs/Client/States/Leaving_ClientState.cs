@@ -9,16 +9,16 @@ public class Leaving_ClientState : AClientState
 
     public override void StartState()
     {
-        clientContext.SetTarget(ApothecaryManager.Instance.exitPosition.position);
+        _clientContext.SetTarget(ApothecaryManager.Instance.exitPosition.position);
     }
 
     public override void UpdateState()
     {
         // If client has reached the exit
-        if (clientContext.HasArrived(ApothecaryManager.Instance.exitPosition.position))
+        if (_clientContext.HasArrived())
         {
-            // Destroy gameobject
-            GameObject.Destroy(clientContext.gameObject); // TODO: Return to clients pool
+            // Return to clients pool
+            ApothecaryManager.Instance.clientsPool.Release(_clientContext);
         }
     }
 }

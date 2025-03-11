@@ -10,16 +10,16 @@ public class Stunned_ClientState : AClientState
 
     public override void StartState()
     {
-        clientContext.StopAgent();
+        _clientContext.StopAgent();
 
-        clientContext.ChangeAnimationTo(clientContext.stunnedAnim);
+        _clientContext.ChangeAnimationTo(_clientContext.stunnedAnim);
 
-        clientContext.StartCoroutine(WaitAndSwitchState(3f, clientContext.complainingState, "Stunned")); // TODO: Just wait until animation is executed
+        _clientContext.StartCoroutine(WaitAndSwitchState(3f, _clientContext.complainingState, "Stunned")); // TODO: Just wait until animation is executed
 
-        if (clientContext.HasReachedMaxScares())
-            stackFsm.SwitchState(clientContext.complainingState);
+        if (_clientContext.HasReachedMaxScares())
+            _stackFsm.SwitchState(_clientContext.complainingState);
         else
-            stackFsm.ReturnToPreviousState();
+            _stackFsm.ReturnToPreviousState();
 
     }
 
@@ -30,6 +30,6 @@ public class Stunned_ClientState : AClientState
 
     public override void ExitState()
     {
-        clientContext.ReactivateAgent();
+        _clientContext.ReactivateAgent();
     }
 }

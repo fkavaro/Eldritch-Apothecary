@@ -9,28 +9,28 @@ public class WaitForService_ClientState : AClientState
 
     public override void StartState()
     {
-        clientContext.SetTarget(ApothecaryManager.Instance.RandomSeat());
+        _clientContext.SetTarget(ApothecaryManager.Instance.RandomSeat());
     }
 
     public override void UpdateState()
     {
-        if (coroutineStarted) return;
+        if (_coroutineStarted) return;
 
         // Has reached the waiting seat
-        if (clientContext.HasArrived())
+        if (_clientContext.HasArrived())
         {
-            clientContext.ChangeAnimationTo(clientContext.sitDownAnim); // TODO: stand up animation
+            _clientContext.ChangeAnimationTo(_clientContext.sitDownAnim); // TODO: stand up animation
 
-            switch (clientContext.wantedService)
+            switch (_clientContext.wantedService)
             {
                 case Client.WantedService.Sorcerer:
-                    clientContext.StartCoroutine(WaitAndSwitchState(clientContext.atSorcererState, "Sitting down"));
+                    _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.atSorcererState, "Sitting down"));
                     break;
                 case Client.WantedService.Alchemist:
-                    clientContext.StartCoroutine(WaitAndSwitchState(clientContext.pickPotionUpState, "Sitting down"));
+                    _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.pickPotionUpState, "Sitting down"));
                     break;
                 default:
-                    clientContext.StartCoroutine(WaitAndSwitchState(clientContext.leavingState, "Sitting down"));
+                    _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.leavingState, "Sitting down"));
                     break;
             }
 

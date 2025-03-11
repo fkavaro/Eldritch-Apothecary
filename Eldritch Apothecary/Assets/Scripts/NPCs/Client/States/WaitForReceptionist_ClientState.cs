@@ -10,31 +10,31 @@ public class WaitForReceptionist_ClientState : AClientState
     public override void StartState()
     {
         // Add client to the queue
-        ApothecaryManager.Instance.waitingQueue.Add(clientContext);
+        ApothecaryManager.Instance.waitingQueue.Add(_clientContext);
     }
 
     public override void UpdateState()
     {
-        if (coroutineStarted) return;
+        if (_coroutineStarted) return;
 
         // Update state time
         _stateTime += Time.deltaTime;
 
         // If client has reached the receptionist counter, first position in line
-        if (clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
+        if (_clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
         {
-            clientContext.ChangeAnimationTo(clientContext.talkAnim);
-            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.waitForServiceState, "Talking"));
+            _clientContext.ChangeAnimationTo(_clientContext.talkAnim);
+            _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForServiceState, "Talking"));
         }
         // Has been waiting for too long
-        else if (clientContext.maxMinutesWaiting <= _stateTime / 60f)
+        else if (_clientContext.maxMinutesWaiting <= _stateTime / 60f)
         {
-            stackFsm.SwitchState(clientContext.complainingState);
+            _stackFsm.SwitchState(_clientContext.complainingState);
         }
         // Has advanced in the queue and arrived to a new position
-        else if (clientContext.HasArrived())
+        else if (_clientContext.HasArrived())
         {
-            clientContext.ChangeAnimationTo(clientContext.waitAnim);
+            _clientContext.ChangeAnimationTo(_clientContext.waitAnim);
         }
     }
 

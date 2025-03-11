@@ -7,13 +7,15 @@ using UnityEngine;
 /// </summary>
 public abstract class AState
 {
-    protected FiniteStateMachine fsm;
-    protected StackFiniteStateMachine stackFsm;
+    protected FiniteStateMachine _fsm;
+    protected StackFiniteStateMachine _stackFsm;
+
+    protected ABehaviourController _behaviourController;
 
     /// <summary>
     /// Flag to check if the coroutine has started.
     /// </summary>
-    protected bool coroutineStarted = false;
+    protected bool _coroutineStarted = false;
 
     /// <summary>
     /// The time the state has been active.
@@ -23,26 +25,26 @@ public abstract class AState
     // Constructor given a FiniteStateMachine
     public AState(FiniteStateMachine fsm)
     {
-        this.fsm = fsm;
+        this._fsm = fsm;
     }
 
     // Constructor given a StackFiniteStateMachine
     public AState(StackFiniteStateMachine stackFsm)
     {
-        this.stackFsm = stackFsm;
+        this._stackFsm = stackFsm;
     }
 
     /// <summary>
     /// Coroutine to wait for a specified amount of time before switching to the next state.
     /// </summary>
-    protected IEnumerator WaitAndSwitchState(float waitTime, AState nextState, string action = "Executing animation")
+    protected virtual IEnumerator WaitAndSwitchState(float waitTime, AState nextState, string action = "Executing animation")
     {
-        coroutineStarted = true;
-        Debug.Log(action + " for " + waitTime + " seconds...");
+        _coroutineStarted = true;
+        if (_behaviourController.debugMode) Debug.Log(action + " for " + waitTime + " seconds...");
         yield return new WaitForSeconds(waitTime);
-        fsm?.SwitchState(nextState);
-        stackFsm?.SwitchState(nextState);
-        coroutineStarted = false;
+        _fsm?.SwitchState(nextState);
+        _stackFsm?.SwitchState(nextState);
+        _coroutineStarted = false;
     }
     /// <summary>
     /// Coroutine to wait for a random amount of time before switching to the next state.

@@ -10,20 +10,20 @@ public class Shopping_ClientState : AClientState
     public override void StartState()
     {
         // Switch state if client wants any other service: sorcerer or alchemist
-        if (clientContext.wantedService != Client.WantedService.OnlyShop)
-            stackFsm.SwitchState(clientContext.waitForReceptionistState);
+        if (_clientContext.wantedService != Client.WantedService.OnlyShop)
+            _stackFsm.SwitchState(_clientContext.waitForReceptionistState);
         else
-            clientContext.SetTarget(ApothecaryManager.Instance.RandomShopStand());
+            _clientContext.SetTarget(ApothecaryManager.Instance.RandomShopStand());
     }
 
     public override void UpdateState()
     {
-        if (coroutineStarted) return;
+        if (_coroutineStarted) return;
 
-        if (clientContext.HasArrived())
+        if (_clientContext.HasArrived())
         {
-            clientContext.ChangeAnimationTo(clientContext.pickUpAnim);
-            clientContext.StartCoroutine(WaitAndSwitchState(clientContext.waitForReceptionistState, "Picking up objects"));
+            _clientContext.ChangeAnimationTo(_clientContext.pickUpAnim);
+            _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForReceptionistState, "Picking up objects"));
         }
     }
 

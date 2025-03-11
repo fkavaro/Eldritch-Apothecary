@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 
 public abstract class AClientState : AState
@@ -6,10 +7,11 @@ public abstract class AClientState : AState
     /// <summary>
     /// The referenced Client gameobject.
     /// </summary>
-    protected Client clientContext;
+    protected Client _clientContext;
 
     public AClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm)
     {
-        this.clientContext = clientContext;
+        _behaviourController = clientContext;
+        _clientContext = clientContext;
     }
 }
