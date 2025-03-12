@@ -5,7 +5,10 @@ using UnityEngine;
 /// </summary>
 public class Shopping_ClientState : AClientState
 {
-    public Shopping_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext) { }
+    public Shopping_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext)
+    {
+        name = "Shopping";
+    }
 
     public override void StartState()
     {

@@ -1,16 +1,18 @@
 using System;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Defines context methods. Implements MonoBehaviour.
 /// </summary>
 public abstract class ABehaviourController : MonoBehaviour
 {
-
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console")]
     public bool debugMode = false;
 
+    protected Transform debugCanvas;
+    [HideInInspector] public TextMeshProUGUI stateText, actionText;
     ADecisionSystem _decisionSystem;
 
     /// <summary>
@@ -18,24 +20,44 @@ public abstract class ABehaviourController : MonoBehaviour
     /// </summary>
     protected abstract ADecisionSystem CreateDecisionSystem(); // Implemented in subclasses
 
+    /// <summary>
+    /// Resets the decision system.
+    /// </summary>
+    public void ResetBehaviour()
+    {
+        _decisionSystem?.Reset();
+    }
+
     #region UNITY EXECUTION EVENTS
     private void Awake()
     {
+        debugCanvas = transform.Find("DebugCanvas").transform;
+        stateText = debugCanvas?.Find("StateText").GetComponent<TextMeshProUGUI>();
+        actionText = debugCanvas?.Find("ActionText").GetComponent<TextMeshProUGUI>();
+
         OnAwake();
+
         _decisionSystem = CreateDecisionSystem();
-        //_decisionSystem?.Awake();
+        stateText.gameObject.SetActive(debugMode);
+        //_decisionSystem?.Awake(); NO
     }
     protected abstract void OnAwake(); // Implemented in subclasses
 
     private void Start()
     {
         OnStart();
-        //_decisionSystem?.Start();
+        //_decisionSystem?.Start(); NO
     }
     protected abstract void OnStart(); // Implemented in subclasses
 
     private void Update()
     {
+        if (stateText.gameObject.activeSelf != debugMode)
+        {
+            stateText.gameObject.SetActive(debugMode);
+            actionText.gameObject.SetActive(debugMode);
+        }
+
         OnUpdate();
         _decisionSystem?.Update();
     }

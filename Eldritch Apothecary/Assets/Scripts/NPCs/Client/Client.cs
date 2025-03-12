@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using TMPro;
 
 public class Client : AHumanoid
 {
@@ -16,6 +17,8 @@ public class Client : AHumanoid
 	[Header("Client Properties")]
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
+	[Tooltip("Debug text field to show the current state of the FSM (if any)")]
+	TextMeshProUGUI serviceText;
 	[Tooltip("Maximum waitin minutes"), Range(2, 10)]
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
@@ -45,11 +48,10 @@ public class Client : AHumanoid
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 
-		// Instantiates a random model
-		//Instantiate(clientModels[UnityEngine.Random.Range(0, clientModels.Length)], transform.position, Quaternion.identity, transform);
-		//clientModels[UnityEngine.Random.Range(0, clientModels.Length)].SetActive(true);
-
 		base.OnAwake(); // Sets agent and animator components
+
+		serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
+		serviceText.text = wantedService.ToString();
 	}
 
 	protected override void OnStart()
@@ -59,9 +61,12 @@ public class Client : AHumanoid
 
 	protected override void OnUpdate()
 	{
+		//if (serviceText.gameObject.activeSelf != debugMode)
+		serviceText.gameObject.SetActive(debugMode);
+
 		if (!HasReachedMaxScares()) ReactToCat();
 
-		base.OnUpdate(); // Checks animation
+		//base.OnUpdate(); // No need: Checks animation
 	}
 
 	protected override ADecisionSystem CreateDecisionSystem()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class FiniteStateMachine : ADecisionSystem
@@ -11,15 +12,20 @@ public class FiniteStateMachine : ADecisionSystem
     /// </summary>
     public AState currentState;
 
+    AState initialState;
+
     protected void DebugCurrentState()
     {
-        if (controller.debugMode) Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
+        //if (controller.debugMode)
+        //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
+        controller.stateText.text = currentState.name;
     }
 
     public void SetInitialState(AState state)
     {
         if (state == currentState) return;
 
+        initialState = state;
         currentState = state;
         DebugCurrentState();
         currentState.StartState();
@@ -36,6 +42,14 @@ public class FiniteStateMachine : ADecisionSystem
         currentState = state;
         DebugCurrentState();
         currentState.StartState();
+    }
+
+    /// <summary>
+    /// Switchs back to initial state
+    /// </summary>
+    public override void Reset()
+    {
+        SwitchState(initialState);
     }
 
     #region UNITY EXECUTION EVENTS
@@ -85,5 +99,7 @@ public class FiniteStateMachine : ADecisionSystem
     {
         currentState?.OnTriggerExit(other);
     }
+
+
     #endregion
 }

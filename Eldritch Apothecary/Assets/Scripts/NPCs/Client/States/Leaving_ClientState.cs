@@ -5,7 +5,10 @@ using UnityEngine;
 /// </summary>
 public class Leaving_ClientState : AClientState
 {
-    public Leaving_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client) { }
+    public Leaving_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
+    {
+        name = "Leaving";
+    }
 
     public override void StartState()
     {
@@ -17,8 +20,8 @@ public class Leaving_ClientState : AClientState
         // If client has reached the exit
         if (_clientContext.HasArrived())
         {
-            // Return to clients pool
-            ApothecaryManager.Instance.clientsPool.Release(_clientContext);
+            // Release to clients pool
+            _clientContext.Release();
         }
     }
 }

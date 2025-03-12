@@ -9,33 +9,51 @@ using UnityEngine.Pool;
 public class ApothecaryManager : Singleton<ApothecaryManager>
 {
     #region VARIABLES
+    [Tooltip("Simulation speed"), Range(0, 5)]
+    public int simSpeed = 1;
+
     [Header("Positions")]
+    [Tooltip("Grumpy cat")]
     public Transform cat;
+    [Tooltip("Spot where clients complain")]
     public Transform complainingPosition;
+    [Tooltip("Spot where clients enter the apothecary")]
     public Transform entrancePosition;
+    [Tooltip("Spot where clients leave the apothecary")]
     public Transform exitPosition;
+    [Tooltip("Parent of all shop stands gameobjects")]
     public Transform shopStandsParent;
+    [Tooltip("Parent of all queue positions gameobjects")]
     public Transform queuePositionsParent;
+    [Tooltip("Parent of all waiting seats gameobjects")]
     public Transform seatsPositionsParent;
+    [Tooltip("Parent of all potion pick-up positions gameobjects")]
     public Transform pickUpPositionsParent;
+    [Tooltip("Parent of all instantiated clients")]
     public Transform clientsParent;
+    [Tooltip("Spot where clients sit while attended by the sorcerer")]
     public Transform sorcererSeat;
 
+    [Header("Clients pool")]
+    [Tooltip("All clients models to be spawned randomly")]
+    public GameObject[] clientPrefabs;
+    [Tooltip("Maximum number of clients in the apothecary at once")]
+    public int maxClients = 10;
+    [Tooltip("Maximum number of clients in the apothecary at once"), Range(5, 20)]
+    public float spawnTimer = 5f;
+    public ObjectPool<Client> clientsPool;
+
+    [Header("Clients waiting queue")]
+    public WaitingQueue waitingQueue;
+    #endregion
+
+    #region PRIVATE PROPERTIES
     List<Transform> shopStands = new(),
         queuePositions = new(),
         seatsPositions = new(),
         pickUpPositions = new();
-
-    [Header("Clients pool")]
-    public GameObject[] clientPrefabs;
-    public int maxClients = 10;
-    public ObjectPool<Client> clientsPool;
-
-    [Header("Clients queue")]
-    public WaitingQueue waitingQueue;
-    #endregion
-
     float nextClientTime = 0f;
+    #endregion
 
     #region EXECUTION METHODS
     protected override void Awake()
@@ -50,7 +68,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         waitingQueue = new WaitingQueue(queuePositions);
         clientsPool = new ObjectPool<Client>(
             createFunc: CreateClient,
-            actionOnGet: (client) => client.gameObject.SetActive(true),
+            actionOnGet: GetClient,
             actionOnRelease: (client) => client.gameObject.SetActive(false),
             actionOnDestroy: (client) => Destroy(client.gameObject),
             maxSize: maxClients
@@ -68,12 +86,14 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     void Update()
     {
-        // Instantiate clients every 5 seconds
+        if (Time.timeScale != simSpeed)
+            Time.timeScale = simSpeed;
+
+        // Clients keep coming if there's room for them
         if (Time.time >= nextClientTime && clientsPool.CountActive < maxClients)
         {
-            nextClientTime = Time.time + 5f; // Reset timer
-            Client client = clientsPool.Get();
-            client.transform.parent = clientsParent; // Set parent after getting from pool
+            nextClientTime = Time.time + spawnTimer; // Reset timer
+            clientsPool.Get();
         }
     }
     #endregion
@@ -84,7 +104,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         return RandomPosition(shopStands);
     }
 
-    public Vector3 RandomSeat()
+    public Vector3 RandomWaitingSeat()
     {
         return RandomPosition(seatsPositions);
     }
@@ -107,6 +127,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         return positions[UnityEngine.Random.Range(0, positions.Count)].position;
     }
 
+    /// <summary>
+    /// Creation method for clients pool: instantiates a random client prefab.
+    /// </summary>
+    /// <returns>Instantiated client.</returns>
     Client CreateClient()
     {
         Client client = Instantiate(
@@ -116,6 +140,18 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             clientsParent)
         .GetComponent<Client>();
         return client;
+    }
+
+    /// <summary>
+    /// Get method for clients pool: resets client position and behaviour.
+    /// </summary>>
+    void GetClient(Client client)
+    {
+        client.transform.position = entrancePosition.position;
+        client.ResetBehaviour();
+        client.ReactivateAgent();
+        client.gameObject.SetActive(true);
+
     }
     #endregion
 }

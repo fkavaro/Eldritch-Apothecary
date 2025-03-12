@@ -5,11 +5,14 @@ using UnityEngine;
 /// </summary>
 public class WaitForService_ClientState : AClientState
 {
-    public WaitForService_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client) { }
+    public WaitForService_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
+    {
+        name = "Waiting for service";
+    }
 
     public override void StartState()
     {
-        _clientContext.SetTarget(ApothecaryManager.Instance.RandomSeat());
+        _clientContext.SetTarget(ApothecaryManager.Instance.RandomWaitingSeat());
     }
 
     public override void UpdateState()

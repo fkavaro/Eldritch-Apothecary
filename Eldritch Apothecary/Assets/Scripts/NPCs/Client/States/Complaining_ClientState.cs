@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class Complaining_ClientState : AClientState
 {
-    public Complaining_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext) { }
+    public Complaining_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext)
+    {
+        name = "Complaining";
+    }
 
     public override void StartState()
     {

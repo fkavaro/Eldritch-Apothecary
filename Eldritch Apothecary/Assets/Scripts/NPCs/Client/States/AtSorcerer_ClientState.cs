@@ -5,7 +5,10 @@ using UnityEngine;
 /// </summary>
 public class AtSorcerer_ClientState : AClientState
 {
-    public AtSorcerer_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client) { }
+    public AtSorcerer_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
+    {
+        name = "At Sorcerer";
+    }
 
     public override void StartState()
     {

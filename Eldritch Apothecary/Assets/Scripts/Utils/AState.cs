@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 /// <summary>
@@ -7,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public abstract class AState
 {
+    public string name;
+
     protected FiniteStateMachine _fsm;
     protected StackFiniteStateMachine _stackFsm;
 
@@ -40,10 +43,13 @@ public abstract class AState
     protected virtual IEnumerator WaitAndSwitchState(float waitTime, AState nextState, string action = "Executing animation")
     {
         _coroutineStarted = true;
-        if (_behaviourController.debugMode) Debug.Log(action + " for " + waitTime + " seconds...");
+
+        _behaviourController.actionText.text = action + " for " + waitTime + " seconds...";
+
         yield return new WaitForSeconds(waitTime);
         _fsm?.SwitchState(nextState);
         _stackFsm?.SwitchState(nextState);
+        _behaviourController.actionText.text = "";
         _coroutineStarted = false;
     }
     /// <summary>

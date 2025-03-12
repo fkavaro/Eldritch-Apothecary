@@ -5,7 +5,10 @@ using UnityEngine;
 /// </summary>
 public class WaitForReceptionist_ClientState : AClientState
 {
-    public WaitForReceptionist_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext) { }
+    public WaitForReceptionist_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext)
+    {
+        name = "Wait for receptionist";
+    }
 
     public override void StartState()
     {
