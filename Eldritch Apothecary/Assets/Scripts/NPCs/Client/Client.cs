@@ -12,13 +12,13 @@ public class Client : AHumanoid
 	}
 	int _scaresCount = 0;
 	StackFiniteStateMachine clientSFSM;
+	TextMeshProUGUI serviceText;
 
-	#region VARIABLES
+	#region PROPERTIES
 	[Header("Client Properties")]
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
-	[Tooltip("Debug text field to show the current state of the FSM (if any)")]
-	TextMeshProUGUI serviceText;
+
 	[Tooltip("Maximum waitin minutes"), Range(2, 10)]
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
@@ -43,15 +43,9 @@ public class Client : AHumanoid
 
 	protected override void OnAwake()
 	{
-		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
-		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
-		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
-		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
+		RandomizeProperties();
 
 		base.OnAwake(); // Sets agent and animator components
-
-		serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
-		serviceText.text = wantedService.ToString();
 	}
 
 	protected override void OnStart()
@@ -61,13 +55,39 @@ public class Client : AHumanoid
 
 	protected override void OnUpdate()
 	{
-		//if (serviceText.gameObject.activeSelf != debugMode)
-		serviceText.gameObject.SetActive(debugMode);
+		if (serviceText.gameObject.activeSelf != debugMode)
+			serviceText.gameObject.SetActive(debugMode);
 
 		if (!HasReachedMaxScares()) ReactToCat();
 
 		//base.OnUpdate(); // No need: Checks animation
 	}
+
+	#region PUBLIC METHODS
+	/// <returns>If client has been scared enough times</returns>
+	public bool HasReachedMaxScares()
+	{
+		return _scaresCount >= maxScares;
+	}
+
+	/// <summary>
+	/// Releases the client back to the pool
+	/// </summary>
+	public void Release()
+	{
+		ApothecaryManager.Instance.clientsPool.Release(this);
+	}
+
+	/// <summary>
+	/// Resets the client's properties and behaviour
+	/// </summary>
+	public void Reset()
+	{
+		RandomizeProperties();
+		ResetBehaviour();
+		ReactivateAgent();
+	}
+	#endregion
 
 	protected override ADecisionSystem CreateDecisionSystem()
 	{
@@ -92,7 +112,7 @@ public class Client : AHumanoid
 	/// </summary>
 	void ReactToCat()
 	{
-		// Cat is close and is scared
+		// Cat is close and client is scared
 		if (Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position) < minDistanceToCat &&
 			UnityEngine.Random.Range(0, 10) < scareProbability)
 		{
@@ -101,14 +121,14 @@ public class Client : AHumanoid
 		}
 	}
 
-	/// <returns>If client has been scared enough times</returns>
-	public bool HasReachedMaxScares()
+	void RandomizeProperties()
 	{
-		return _scaresCount >= maxScares;
-	}
+		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
+		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
+		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
+		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 
-	public void Release()
-	{
-		ApothecaryManager.Instance.clientsPool.Release(this);
+		serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
+		serviceText.text = wantedService.ToString();
 	}
 }

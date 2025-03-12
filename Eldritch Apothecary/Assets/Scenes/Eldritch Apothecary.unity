@@ -6651,6 +6651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
+  simSpeed: 5
   cat: {fileID: 1509477254}
   complainingPosition: {fileID: 1332325583}
   entrancePosition: {fileID: 2064085851}
@@ -6673,7 +6674,7 @@ MonoBehaviour:
   - {fileID: 2024366006334272345, guid: 11172f71038ffd8479dd06cdb8f13cb7, type: 3}
   - {fileID: 2024366006334272345, guid: 2248078768a35cd44aae43f1aeff026a, type: 3}
   - {fileID: 2024366006334272345, guid: a9fcc64e2bc92b04ca4b1e8ead587fa1, type: 3}
-  maxClients: 4
+  maxClients: 1
   spawnTimer: 5
 --- !u!1 &379722256
 GameObject:

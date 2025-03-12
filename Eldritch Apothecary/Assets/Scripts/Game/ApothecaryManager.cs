@@ -148,10 +148,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     void GetClient(Client client)
     {
         client.transform.position = entrancePosition.position;
-        client.ResetBehaviour();
-        client.ReactivateAgent();
+        client.Reset();
         client.gameObject.SetActive(true);
-
     }
     #endregion
 }
