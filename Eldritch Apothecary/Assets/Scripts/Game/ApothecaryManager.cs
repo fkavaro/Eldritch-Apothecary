@@ -69,7 +69,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         clientsPool = new ObjectPool<Client>(
             createFunc: CreateClient,
             actionOnGet: GetClient,
-            actionOnRelease: (client) => client.gameObject.SetActive(false),
+            actionOnRelease: ReleaseClient,
             actionOnDestroy: (client) => Destroy(client.gameObject),
             maxSize: maxClients
         );
@@ -148,6 +148,15 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     void GetClient(Client client)
     {
         client.transform.position = entrancePosition.position;
+        client.Reset();
+        client.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void ReleaseClient(Client client)
+    {
         client.Reset();
         client.gameObject.SetActive(true);
     }

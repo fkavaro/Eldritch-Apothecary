@@ -12,7 +12,7 @@ public class FiniteStateMachine : ADecisionSystem
     /// </summary>
     public AState currentState;
 
-    AState initialState;
+    protected AState initialState;
 
     protected void DebugCurrentState()
     {

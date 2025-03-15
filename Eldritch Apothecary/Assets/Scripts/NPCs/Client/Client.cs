@@ -84,8 +84,8 @@ public class Client : AHumanoid
 	public void Reset()
 	{
 		RandomizeProperties();
-		ResetBehaviour();
-		ReactivateAgent();
+		ReactivateAgent(); // ANPC
+		ResetBehaviour(); // ABehaviourController
 	}
 	#endregion
 
@@ -121,6 +121,9 @@ public class Client : AHumanoid
 		}
 	}
 
+	/// <summary>
+	/// Randomizes client properties: wanted service, max minutes waiting, scare probability and max scares
+	/// </summary>
 	void RandomizeProperties()
 	{
 		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly

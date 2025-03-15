@@ -45,6 +45,12 @@ public abstract class ANPC : AAnimationController
     /// <param name="targetPos">The target position in world coordinates.</param>
     public void SetTarget(Vector3 targetPos)
     {
+        if (!_agent.isOnNavMesh)
+        {
+            Debug.LogError("SetTarget(): NavMeshAgent is not on a NavMesh.");
+            return;
+        }
+
         _agent.isStopped = false;
         _agent.SetDestination(targetPos);
         if (HasArrived()) return;
@@ -59,7 +65,6 @@ public abstract class ANPC : AAnimationController
     {
         if (Vector3.Distance(transform.position, _agent.destination) < minDistanceToTarget)
             return true;
-
         else
             return false;
     }
@@ -100,6 +105,12 @@ public abstract class ANPC : AAnimationController
     /// </summary>
     public void StopAgent()
     {
+        if (!_agent.isOnNavMesh)
+        {
+            Debug.LogError("StopAgent(): NavMeshAgent is not on a NavMesh.");
+            return;
+        }
+
         _agent.isStopped = true;
         //_agent.ResetPath();
         //ChangeAnimationTo(Idle);
@@ -110,6 +121,12 @@ public abstract class ANPC : AAnimationController
     /// </summary>
     public void ReactivateAgent()
     {
+        if (!_agent.isOnNavMesh)
+        {
+            Debug.LogError("ReactivateAgent(): NavMeshAgent is not on a NavMesh.");
+            return;
+        }
+
         _agent.isStopped = false;
     }
 }

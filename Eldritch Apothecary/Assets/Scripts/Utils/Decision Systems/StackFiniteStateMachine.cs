@@ -6,7 +6,7 @@ public class StackFiniteStateMachine : FiniteStateMachine
     /// <summary>
     /// The last active state of the state machine
     /// </summary>
-    public AState previousState;
+    AState previousState;
 
     public StackFiniteStateMachine(ABehaviourController controller) : base(controller) { }
 
@@ -34,5 +34,13 @@ public class StackFiniteStateMachine : FiniteStateMachine
         currentState = previousState;
         DebugCurrentState();
         currentState.StartState();
+    }
+
+    /// <summary>
+    /// Switchs back to initial state
+    /// </summary>
+    public override void Reset()
+    {
+        SwitchState(initialState);
     }
 }
