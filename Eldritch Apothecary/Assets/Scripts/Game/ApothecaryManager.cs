@@ -9,13 +9,17 @@ using UnityEngine.Pool;
 public class ApothecaryManager : Singleton<ApothecaryManager>
 {
     #region VARIABLES
+    [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 5)]
     public int simSpeed = 1;
 
-    [Header("Positions")]
-    [Tooltip("Grumpy cat")]
-    public Transform cat;
+    [Header("Staff members")]
+    public GameObject cat;
+    [Tooltip("Receptionist position")]
+    public GameObject receptionist;
     [Tooltip("Spot where clients complain")]
+
+    [Header("Positions")]
     public Transform complainingPosition;
     [Tooltip("Spot where clients enter the apothecary")]
     public Transform entrancePosition;
@@ -45,6 +49,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     [Header("Clients waiting queue")]
     public WaitingQueue waitingQueue;
+    public int clientsInQueue; //! TODO: DELETE
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -148,17 +153,18 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     void GetClient(Client client)
     {
         client.transform.position = entrancePosition.position;
-        client.Reset();
         client.gameObject.SetActive(true);
+        client.Reset();
     }
 
     /// <summary>
     /// 
     /// </summary>
-    private void ReleaseClient(Client client)
+    void ReleaseClient(Client client)
     {
-        client.Reset();
-        client.gameObject.SetActive(true);
+        //client.Reset();
+        client.gameObject.SetActive(false);
+        //client.transform.position = entrancePosition.position;
     }
     #endregion
 }

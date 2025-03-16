@@ -47,6 +47,7 @@ public abstract class AState
         _behaviourController.actionText.text = action + " for " + waitTime + " seconds...";
 
         yield return new WaitForSeconds(waitTime);
+
         _fsm?.SwitchState(nextState);
         _stackFsm?.SwitchState(nextState);
         _behaviourController.actionText.text = "";

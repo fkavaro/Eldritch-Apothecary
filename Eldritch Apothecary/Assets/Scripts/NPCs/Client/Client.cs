@@ -27,7 +27,8 @@ public class Client : AHumanoid
 	public int maxScares = 3;
 	[Tooltip("Triggering distance to cat"), Range(0f, 4f)]
 	public float minDistanceToCat = 3f;
-	//public GameObject[] clientModels;
+
+	[SerializeField] string stateName; //! TODO: DELETE
 	#endregion
 
 	#region STATES
@@ -43,6 +44,8 @@ public class Client : AHumanoid
 
 	protected override void OnAwake()
 	{
+		serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
+
 		RandomizeProperties();
 
 		base.OnAwake(); // Sets agent and animator components
@@ -55,6 +58,9 @@ public class Client : AHumanoid
 
 	protected override void OnUpdate()
 	{
+		if (stateName != clientSFSM.currentState.name)
+			stateName = clientSFSM.currentState.name;
+
 		if (serviceText.gameObject.activeSelf != debugMode)
 			serviceText.gameObject.SetActive(debugMode);
 
@@ -71,14 +77,6 @@ public class Client : AHumanoid
 	}
 
 	/// <summary>
-	/// Releases the client back to the pool
-	/// </summary>
-	public void Release()
-	{
-		ApothecaryManager.Instance.clientsPool.Release(this);
-	}
-
-	/// <summary>
 	/// Resets the client's properties and behaviour
 	/// </summary>
 	public void Reset()
@@ -91,8 +89,10 @@ public class Client : AHumanoid
 
 	protected override ADecisionSystem CreateDecisionSystem()
 	{
+		// Stack Finite State Machine
 		clientSFSM = new(this);
 
+		// States initialization
 		stunnedState = new(clientSFSM, this);
 		shoppingState = new(clientSFSM, this);
 		waitForReceptionistState = new(clientSFSM, this);
@@ -102,7 +102,11 @@ public class Client : AHumanoid
 		pickPotionUpState = new(clientSFSM, this);
 		leavingState = new(clientSFSM, this);
 
-		clientSFSM.SetInitialState(shoppingState);
+		// Initial state according to client's wanted service
+		if (wantedService == WantedService.OnlyShop)
+			clientSFSM.SetInitialState(shoppingState);
+		else
+			clientSFSM.SetInitialState(waitForReceptionistState);
 
 		return clientSFSM;
 	}
@@ -130,8 +134,6 @@ public class Client : AHumanoid
 		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
-
-		serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
 		serviceText.text = wantedService.ToString();
 	}
 }

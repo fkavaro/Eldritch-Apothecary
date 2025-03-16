@@ -23,16 +23,16 @@ public class WaitForReceptionist_ClientState : AClientState
         // Update state time
         _stateTime += Time.deltaTime;
 
-        // If client has reached the receptionist counter, first position in line
-        if (_clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
+        // Has been waiting for too long
+        if (_clientContext.maxMinutesWaiting <= _stateTime / 60f)
+        {
+            _stackFsm.SwitchState(_clientContext.complainingState);
+        }
+        // Has reached the receptionist counter, first position in line
+        else if (_clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
         {
             _clientContext.ChangeAnimationTo(_clientContext.talkAnim);
             _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForServiceState, "Talking"));
-        }
-        // Has been waiting for too long
-        else if (_clientContext.maxMinutesWaiting <= _stateTime / 60f)
-        {
-            _stackFsm.SwitchState(_clientContext.complainingState);
         }
         // Has advanced in the queue and arrived to a new position
         else if (_clientContext.HasArrived())

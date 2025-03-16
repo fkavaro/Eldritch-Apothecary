@@ -12,17 +12,15 @@ public class Shopping_ClientState : AClientState
 
     public override void StartState()
     {
-        // Switch state if client wants any other service: sorcerer or alchemist
-        if (_clientContext.wantedService != Client.WantedService.OnlyShop)
-            _stackFsm.SwitchState(_clientContext.waitForReceptionistState);
-        else
-            _clientContext.SetTarget(ApothecaryManager.Instance.RandomShopStand());
+        // Set target to a random shop stand
+        _clientContext.SetTarget(ApothecaryManager.Instance.RandomShopStand());
     }
 
     public override void UpdateState()
     {
         if (_coroutineStarted) return;
 
+        // Arrived at shop stand
         if (_clientContext.HasArrived())
         {
             _clientContext.ChangeAnimationTo(_clientContext.pickUpAnim);
@@ -32,6 +30,6 @@ public class Shopping_ClientState : AClientState
 
     public override void ExitState()
     {
-        //clientContext.StopAgent();
+
     }
 }

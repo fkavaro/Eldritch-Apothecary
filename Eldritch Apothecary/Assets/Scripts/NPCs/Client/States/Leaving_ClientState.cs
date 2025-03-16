@@ -21,7 +21,7 @@ public class Leaving_ClientState : AClientState
         if (_clientContext.HasArrived())
         {
             // Release to clients pool
-            _clientContext.Release();
+            ApothecaryManager.Instance.clientsPool.Release(_clientContext);
         }
     }
 }
