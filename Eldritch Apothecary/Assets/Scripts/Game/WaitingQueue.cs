@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class WaitingQueue
 {
@@ -80,12 +81,16 @@ public class WaitingQueue
 
     internal void FixRotation(Client clientContext)
     {
-        throw new NotImplementedException();
+        lock (queueLock)
+        {
+            int index = clientsQueue.ToArray().ToList().IndexOf(clientContext);
+            if (index == -1 || index == 0) return;
 
-        // if (index == 0)
-        //     client.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
-        // else
-        //     client.transform.LookAt(queuePositions[index - 1].position);
+            // Rotate smoothly to next position
+            Vector3 direction = (queuePositions[index - 1].position - clientContext.transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            clientContext.transform.rotation = Quaternion.Slerp(clientContext.transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
     }
     #endregion
 }

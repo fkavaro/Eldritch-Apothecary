@@ -42,6 +42,7 @@ public class WaitForReceptionist_ClientState : AClientState
         else if (_clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
         {
             // Talks before changing state
+            _clientContext.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
             _clientContext.ChangeAnimationTo(_clientContext.talkAnim);
             _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForServiceState, "Talking"));
         }
