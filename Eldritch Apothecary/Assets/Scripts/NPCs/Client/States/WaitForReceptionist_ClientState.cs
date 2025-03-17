@@ -48,7 +48,7 @@ public class WaitForReceptionist_ClientState : AClientState
         // Destination is the next queue position
         else if (_clientContext.HasArrived())
         {
-            // Waits
+            ApothecaryManager.Instance.waitingQueue.FixRotation(_clientContext);
             _clientContext.ChangeAnimationTo(_clientContext.waitAnim);
         }
 

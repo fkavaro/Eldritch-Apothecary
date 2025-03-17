@@ -73,15 +73,19 @@ public class WaitingQueue
             foreach (Client client in clientsQueue)
             {
                 client.SetTarget(queuePositions[index].position);
-
-                if (index == 0)
-                    client.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
-                else
-                    client.transform.LookAt(queuePositions[index - 1].position);
-
                 index++;
             }
         }
+    }
+
+    internal void FixRotation(Client clientContext)
+    {
+        throw new NotImplementedException();
+
+        // if (index == 0)
+        //     client.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
+        // else
+        //     client.transform.LookAt(queuePositions[index - 1].position);
     }
     #endregion
 }
