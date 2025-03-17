@@ -4,7 +4,7 @@ public class Complaining_ClientState : AClientState
 {
     public Complaining_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext)
     {
-        name = "Complaining";
+        stateName = "Complaining";
     }
 
     public override void StartState()

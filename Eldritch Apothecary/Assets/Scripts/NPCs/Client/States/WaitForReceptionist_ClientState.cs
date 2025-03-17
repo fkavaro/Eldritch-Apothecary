@@ -7,13 +7,16 @@ public class WaitForReceptionist_ClientState : AClientState
 {
     public WaitForReceptionist_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext)
     {
-        name = "Wait for receptionist";
+        stateName = "Wait for receptionist";
     }
 
     public override void StartState()
     {
         // Add client to the queue
-        ApothecaryManager.Instance.waitingQueue.Add(_clientContext);
+        //ApothecaryManager.Instance.EnterQueue(_clientContext);
+
+        // Set target to the last position in line
+        _clientContext.SetTarget(ApothecaryManager.Instance.waitingQueue.LastInLine());
     }
 
     public override void UpdateState()
@@ -28,23 +31,33 @@ public class WaitForReceptionist_ClientState : AClientState
         {
             _stackFsm.SwitchState(_clientContext.complainingState);
         }
-        // Has reached the receptionist counter, first position in line
+        // Destination is the last position in line and is not in the queue
+        else if (_clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.LastInLine())
+                && !ApothecaryManager.Instance.waitingQueue.Contains(_clientContext))
+        {
+            // Enters queue
+            ApothecaryManager.Instance.waitingQueue.Enter(_clientContext);
+        }
+        // Destination is the receptionist counter, first position in line
         else if (_clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
         {
+            // Talks before changing state
             _clientContext.ChangeAnimationTo(_clientContext.talkAnim);
             _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForServiceState, "Talking"));
         }
-        // Has advanced in the queue and arrived to a new position
+        // Destination is the next queue position
         else if (_clientContext.HasArrived())
         {
+            // Waits
             _clientContext.ChangeAnimationTo(_clientContext.waitAnim);
         }
+
     }
 
     public override void ExitState()
     {
-        // Remove client from the queue
-        ApothecaryManager.Instance.waitingQueue.Leave();
+        // Leave the queue for next turn
+        ApothecaryManager.Instance.waitingQueue.NextTurn();
 
         _stateTime = 0f;
     }

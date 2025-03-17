@@ -8,7 +8,11 @@ using UnityEngine.Pool;
 /// </summary>
 public class ApothecaryManager : Singleton<ApothecaryManager>
 {
-    #region VARIABLES
+    #region PUBLIC PROPERTIES
+    public ObjectPool<Client> clientsPool;
+    public WaitingQueue waitingQueue;
+    public Shop shop;
+
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 5)]
     public int simSpeed = 1;
@@ -45,19 +49,14 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public int maxClients = 10;
     [Tooltip("Maximum number of clients in the apothecary at once"), Range(5, 20)]
     public float spawnTimer = 5f;
-    public ObjectPool<Client> clientsPool;
-
-    [Header("Clients waiting queue")]
-    public WaitingQueue waitingQueue;
-    public int clientsInQueue; //! TODO: DELETE
     #endregion
 
     #region PRIVATE PROPERTIES
-    List<Transform> shopStands = new(),
-        queuePositions = new(),
-        seatsPositions = new(),
-        pickUpPositions = new();
-    float nextClientTime = 0f;
+    List<Transform> _shopStands = new(),
+        _queuePositions = new(),
+        _seatsPositions = new(),
+        _pickUpPositions = new();
+    float _nextClientTime = 0f;
     #endregion
 
     #region EXECUTION METHODS
@@ -65,12 +64,13 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         base.Awake();// Ensures the Singleton logic runs
 
-        FillChildrenList(shopStandsParent, shopStands);
-        FillChildrenList(queuePositionsParent, queuePositions);
-        FillChildrenList(seatsPositionsParent, seatsPositions);
-        FillChildrenList(pickUpPositionsParent, pickUpPositions);
+        FillChildrenList(shopStandsParent, _shopStands);
+        FillChildrenList(queuePositionsParent, _queuePositions);
+        FillChildrenList(seatsPositionsParent, _seatsPositions);
+        FillChildrenList(pickUpPositionsParent, _pickUpPositions);
 
-        waitingQueue = new WaitingQueue(queuePositions);
+        waitingQueue = new WaitingQueue(_queuePositions);
+        shop = new Shop(_shopStands);
         clientsPool = new ObjectPool<Client>(
             createFunc: CreateClient,
             actionOnGet: GetClient,
@@ -82,10 +82,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     void Start()
     {
-        if (shopStands.Count == 0 ||
-            queuePositions.Count == 0 ||
-            seatsPositions.Count == 0 ||
-            pickUpPositions.Count == 0)
+        if (_shopStands.Count == 0 ||
+            _queuePositions.Count == 0 ||
+            _seatsPositions.Count == 0 ||
+            _pickUpPositions.Count == 0)
             Debug.LogError("A positions list is empty.");
     }
 
@@ -95,28 +95,23 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             Time.timeScale = simSpeed;
 
         // Clients keep coming if there's room for them
-        if (Time.time >= nextClientTime && clientsPool.CountActive < maxClients)
+        if (Time.time >= _nextClientTime && clientsPool.CountActive < maxClients)
         {
-            nextClientTime = Time.time + spawnTimer; // Reset timer
+            _nextClientTime = Time.time + spawnTimer; // Reset timer
             clientsPool.Get();
         }
     }
     #endregion
 
     #region PUBLIC METHODS
-    public Vector3 RandomShopStand()
-    {
-        return RandomPosition(shopStands);
-    }
-
     public Vector3 RandomWaitingSeat()
     {
-        return RandomPosition(seatsPositions);
+        return RandomPosition(_seatsPositions);
     }
 
     public Vector3 RandomPickUp()
     {
-        return RandomPosition(pickUpPositions);
+        return RandomPosition(_pickUpPositions);
     }
     #endregion
 
@@ -158,7 +153,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     }
 
     /// <summary>
-    /// 
+    /// Release method for clients pool: deactivates client gameobject.
     /// </summary>
     void ReleaseClient(Client client)
     {

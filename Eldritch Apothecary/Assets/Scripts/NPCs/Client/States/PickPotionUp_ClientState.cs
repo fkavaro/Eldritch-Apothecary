@@ -7,7 +7,7 @@ public class PickPotionUp_ClientState : AClientState
 {
     public PickPotionUp_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
     {
-        name = "Picking potion";
+        stateName = "Picking potion";
     }
 
     public override void StartState()

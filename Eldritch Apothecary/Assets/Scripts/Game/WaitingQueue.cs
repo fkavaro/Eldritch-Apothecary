@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class WaitingQueue
 {
@@ -12,39 +13,19 @@ public class WaitingQueue
         this.queuePositions = queuePositions;
     }
 
-    void UpdateQueuePositions()
+    #region PUBLIC METHODS
+    public void Enter(Client client)
     {
         lock (queueLock)
         {
-            if (clientsQueue.Count == 0) return;
+            if (clientsQueue.Contains(client)) return;
 
-            ApothecaryManager.Instance.clientsInQueue = clientsQueue.Count;
-
-            int index = 0;
-            foreach (Client client in clientsQueue)
-            {
-                client.SetTarget(queuePositions[index].position);
-
-                if (index == 0)
-                    client.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
-                else
-                    client.transform.LookAt(queuePositions[index - 1].position);
-
-                index++;
-            }
-        }
-    }
-
-    public void Add(Client client)
-    {
-        lock (queueLock)
-        {
             clientsQueue.Enqueue(client);
             UpdateQueuePositions();
         }
     }
 
-    public void Leave()
+    public void NextTurn()
     {
         lock (queueLock)
         {
@@ -71,4 +52,36 @@ public class WaitingQueue
             return queuePositions[^1].position;
         }
     }
+
+    public bool Contains(Client clientContext)
+    {
+        lock (queueLock)
+        {
+            return clientsQueue.Contains(clientContext);
+        }
+    }
+    #endregion
+
+    #region PRIVATE METHODS
+    void UpdateQueuePositions()
+    {
+        lock (queueLock)
+        {
+            if (clientsQueue.Count == 0) return;
+
+            int index = 0;
+            foreach (Client client in clientsQueue)
+            {
+                client.SetTarget(queuePositions[index].position);
+
+                if (index == 0)
+                    client.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
+                else
+                    client.transform.LookAt(queuePositions[index - 1].position);
+
+                index++;
+            }
+        }
+    }
+    #endregion
 }

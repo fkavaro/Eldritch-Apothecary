@@ -1,3 +1,4 @@
+using BehaviourAPI.StateMachines.StackFSMs;
 using UnityEngine;
 
 /// <summary>
@@ -5,15 +6,24 @@ using UnityEngine;
 /// </summary>
 public class Shopping_ClientState : AClientState
 {
+    Vector3 stand;
+
     public Shopping_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext)
     {
-        name = "Shopping";
+        stateName = "Shopping";
     }
 
     public override void StartState()
     {
-        // Set target to a random shop stand
-        _clientContext.SetTarget(ApothecaryManager.Instance.RandomShopStand());
+        // Try to get a random shop stand
+        stand = ApothecaryManager.Instance.shop.RandomStand(_clientContext);
+
+        // Leave if no available stands
+        if (stand == Vector3.zero)
+            _stackFsm.SwitchState(_clientContext.leavingState);
+        // Go to available stand
+        else
+            _clientContext.SetTarget(stand);
     }
 
     public override void UpdateState()

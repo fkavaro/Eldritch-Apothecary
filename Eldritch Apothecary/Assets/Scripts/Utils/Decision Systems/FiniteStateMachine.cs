@@ -18,7 +18,7 @@ public class FiniteStateMachine : ADecisionSystem
     {
         //if (controller.debugMode)
         //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
-        controller.stateText.text = currentState.name;
+        controller.stateText.text = currentState.stateName;
     }
 
     public void SetInitialState(AState state)

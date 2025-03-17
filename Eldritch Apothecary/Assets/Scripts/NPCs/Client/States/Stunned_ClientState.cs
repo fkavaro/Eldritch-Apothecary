@@ -8,7 +8,7 @@ public class Stunned_ClientState : AClientState
 
     public Stunned_ClientState(StackFiniteStateMachine fsm, Client clientContext) : base(fsm, clientContext)
     {
-        name = "Stunned";
+        stateName = "Stunned";
     }
 
     public override void StartState()

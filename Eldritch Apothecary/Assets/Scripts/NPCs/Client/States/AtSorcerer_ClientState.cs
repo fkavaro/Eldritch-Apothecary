@@ -7,7 +7,7 @@ public class AtSorcerer_ClientState : AClientState
 {
     public AtSorcerer_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
     {
-        name = "At Sorcerer";
+        stateName = "At Sorcerer";
     }
 
     public override void StartState()

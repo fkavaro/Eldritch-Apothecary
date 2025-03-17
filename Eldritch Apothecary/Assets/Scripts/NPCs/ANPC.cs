@@ -9,6 +9,7 @@ using UnityEngine.AI;
 public abstract class ANPC : AAnimationController
 {
     NavMeshAgent _agent;
+    const float MIN_DISTANCE_TO_TARGET = 0.3f;
 
     #region VARIABLES
     [Header("Agent Properties")]
@@ -18,13 +19,6 @@ public abstract class ANPC : AAnimationController
     public float rotationSpeed = 3f;
     [Tooltip("Threshold for target position sampling"), Range(0f, 1f)]
     public float targetThreshold = 1f;
-    [Tooltip("Minimum distance to the target to consider the agent has arrived"), Range(0f, 1f)]
-    public float minDistanceToTarget = 0.3f;
-
-    // [Tooltip("Whether to draw debug gizmos in the scene view")]
-    // [SerializeField] bool drawDebugGizmos;
-    // [Tooltip("Color of the debug target gizmo")]
-    // [SerializeField] Color targetDebugColor = Color.green;
     #endregion
 
     /// <summary>
@@ -61,9 +55,9 @@ public abstract class ANPC : AAnimationController
     /// Checks if the NavMeshAgent has arrived at its destination.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived()
+    public bool HasArrived(float minDistance = MIN_DISTANCE_TO_TARGET)
     {
-        if (Vector3.Distance(transform.position, _agent.destination) < minDistanceToTarget)
+        if (Vector3.Distance(transform.position, _agent.destination) < minDistance)
             return true;
         else
             return false;
@@ -73,9 +67,9 @@ public abstract class ANPC : AAnimationController
     /// Checks if the NavMeshAgent has arrived at certain destination.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived(Vector3 destination)
+    public bool HasArrived(Vector3 destination, float minDistance = MIN_DISTANCE_TO_TARGET)
     {
-        if (Vector3.Distance(transform.position, destination) < minDistanceToTarget)
+        if (Vector3.Distance(transform.position, destination) < minDistance)
             return true;
         else
             return false;

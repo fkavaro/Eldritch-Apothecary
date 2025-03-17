@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public abstract class AState
 {
-    public string name;
+    public string stateName;
 
     protected FiniteStateMachine _fsm;
     protected StackFiniteStateMachine _stackFsm;

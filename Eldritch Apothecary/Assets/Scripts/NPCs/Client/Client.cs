@@ -10,11 +10,8 @@ public class Client : AHumanoid
 		Sorcerer,
 		Alchemist
 	}
-	int _scaresCount = 0;
-	StackFiniteStateMachine clientSFSM;
-	TextMeshProUGUI serviceText;
 
-	#region PROPERTIES
+	#region PUBLIC PROPERTIES
 	[Header("Client Properties")]
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
@@ -29,6 +26,12 @@ public class Client : AHumanoid
 	public float minDistanceToCat = 3f;
 
 	[SerializeField] string stateName; //! TODO: DELETE
+	#endregion
+
+	#region PRIVATE PROPERTIES
+	int _scaresCount = 0;
+	StackFiniteStateMachine clientSFSM;
+	TextMeshProUGUI serviceText;
 	#endregion
 
 	#region STATES
@@ -58,8 +61,8 @@ public class Client : AHumanoid
 
 	protected override void OnUpdate()
 	{
-		if (stateName != clientSFSM.currentState.name)
-			stateName = clientSFSM.currentState.name;
+		if (stateName != clientSFSM.currentState.stateName)
+			stateName = clientSFSM.currentState.stateName;
 
 		if (serviceText.gameObject.activeSelf != debugMode)
 			serviceText.gameObject.SetActive(debugMode);
@@ -87,6 +90,7 @@ public class Client : AHumanoid
 	}
 	#endregion
 
+	#region PRIVATE	METHODS
 	protected override ADecisionSystem CreateDecisionSystem()
 	{
 		// Stack Finite State Machine
@@ -136,4 +140,5 @@ public class Client : AHumanoid
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 		serviceText.text = wantedService.ToString();
 	}
+	#endregion
 }

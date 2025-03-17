@@ -7,7 +7,7 @@ public class WaitForService_ClientState : AClientState
 {
     public WaitForService_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
     {
-        name = "Waiting for service";
+        stateName = "Waiting for service";
     }
 
     public override void StartState()

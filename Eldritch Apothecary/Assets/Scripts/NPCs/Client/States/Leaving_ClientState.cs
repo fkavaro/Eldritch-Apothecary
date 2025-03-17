@@ -7,7 +7,7 @@ public class Leaving_ClientState : AClientState
 {
     public Leaving_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
     {
-        name = "Leaving";
+        stateName = "Leaving";
     }
 
     public override void StartState()
@@ -18,10 +18,7 @@ public class Leaving_ClientState : AClientState
     public override void UpdateState()
     {
         // If client has reached the exit
-        if (_clientContext.HasArrived())
-        {
-            // Release to clients pool
+        if (_clientContext.HasArrived(1f))
             ApothecaryManager.Instance.clientsPool.Release(_clientContext);
-        }
     }
 }
