@@ -44,7 +44,11 @@ public class WaitForReceptionist_ClientState : AClientState
             // Talks before changing state
             _clientContext.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
             _clientContext.ChangeAnimationTo(_clientContext.talkAnim);
-            _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForServiceState, "Talking"));
+
+            if (_clientContext.wantedService == Client.WantedService.OnlyShop)
+                _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.leavingState, "Talking"));
+            else
+                _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForServiceState, "Talking"));
         }
         // Destination is the next queue position
         else if (_clientContext.HasArrived())

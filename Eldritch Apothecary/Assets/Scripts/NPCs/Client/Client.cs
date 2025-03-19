@@ -134,7 +134,7 @@ public class Client : AHumanoid
 	/// </summary>
 	void RandomizeProperties()
 	{
-		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
+		wantedService = WantedService.OnlyShop;//(WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
 		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares

@@ -52,10 +52,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #endregion
 
     #region PRIVATE PROPERTIES
-    List<Transform> _shopStands = new(),
-        _queuePositions = new(),
+    List<Transform> _queuePositions = new(),
         _seatsPositions = new(),
         _pickUpPositions = new();
+
+    List<Position> _shopStands = new();
     float _nextClientTime = 0f;
     #endregion
 
@@ -69,8 +70,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillChildrenList(seatsPositionsParent, _seatsPositions);
         FillChildrenList(pickUpPositionsParent, _pickUpPositions);
 
-        waitingQueue = new WaitingQueue(_queuePositions);
         shop = new Shop(_shopStands);
+        waitingQueue = new WaitingQueue(_queuePositions);
+
         clientsPool = new ObjectPool<Client>(
             createFunc: CreateClient,
             actionOnGet: GetClient,
@@ -120,6 +122,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         foreach (Transform child in parent)
             childrenList.Add(child);
+    }
+
+    void FillChildrenList(Transform parent, List<Position> childrenList)
+    {
+        foreach (Transform child in parent)
+            childrenList.Add(child.GetComponent<Position>());
     }
 
     Vector3 RandomPosition(List<Transform> positions)

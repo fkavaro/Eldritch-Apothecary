@@ -1193,6 +1193,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 115652969}
+  - component: {fileID: 115652970}
   m_Layer: 0
   m_Name: Stand (9)
   m_TagString: Untagged
@@ -1215,6 +1216,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &115652970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115652968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  occupied: 0
 --- !u!1 &125054269 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2319246586507088084, guid: 5d819315111dc474f9d90945e99826ca, type: 3}
@@ -2967,6 +2982,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 174178511}
+  - component: {fileID: 174178512}
   m_Layer: 0
   m_Name: Stand (11)
   m_TagString: Untagged
@@ -2989,6 +3005,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &174178512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174178510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  occupied: 0
 --- !u!43 &213287469
 Mesh:
   m_ObjectHideFlags: 0
@@ -6742,7 +6772,7 @@ MonoBehaviour:
   - {fileID: 2024366006334272345, guid: 11172f71038ffd8479dd06cdb8f13cb7, type: 3}
   - {fileID: 2024366006334272345, guid: 2248078768a35cd44aae43f1aeff026a, type: 3}
   - {fileID: 2024366006334272345, guid: a9fcc64e2bc92b04ca4b1e8ead587fa1, type: 3}
-  maxClients: 10
+  maxClients: 20
   spawnTimer: 10
 --- !u!1 &379722256
 GameObject:
@@ -8611,6 +8641,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 498116031}
+  - component: {fileID: 498116032}
   m_Layer: 0
   m_Name: Stand (5)
   m_TagString: Untagged
@@ -8633,6 +8664,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &498116032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 498116030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  occupied: 0
 --- !u!1 &499557989
 GameObject:
   m_ObjectHideFlags: 0
@@ -10971,6 +11016,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 710102946}
+  - component: {fileID: 710102947}
   m_Layer: 0
   m_Name: Stand (4)
   m_TagString: Untagged
@@ -10993,6 +11039,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &710102947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710102945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 3
+  occupied: 0
 --- !u!43 &712109411
 Mesh:
   m_ObjectHideFlags: 0
@@ -12914,6 +12974,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 808525090}
+  - component: {fileID: 808525091}
   m_Layer: 0
   m_Name: Stand (3)
   m_TagString: Untagged
@@ -12936,6 +12997,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &808525091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808525089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  occupied: 0
 --- !u!1 &821924529
 GameObject:
   m_ObjectHideFlags: 0
@@ -14174,6 +14249,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 908846139}
+  - component: {fileID: 908846140}
   m_Layer: 0
   m_Name: Stand (10)
   m_TagString: Untagged
@@ -14196,6 +14272,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &908846140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908846138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 3
+  occupied: 0
 --- !u!1 &913590100
 GameObject:
   m_ObjectHideFlags: 0
@@ -16465,6 +16555,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1052534009}
+  - component: {fileID: 1052534010}
   m_Layer: 0
   m_Name: Stand (6)
   m_TagString: Untagged
@@ -16487,6 +16578,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1052534010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052534008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 3
+  occupied: 0
 --- !u!43 &1058010864
 Mesh:
   m_ObjectHideFlags: 0
@@ -21220,6 +21325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1346645571}
+  - component: {fileID: 1346645572}
   m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
@@ -21242,6 +21348,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1346645572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346645570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 3
+  occupied: 0
 --- !u!1 &1353550699
 GameObject:
   m_ObjectHideFlags: 0
@@ -21251,6 +21371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1353550700}
+  - component: {fileID: 1353550701}
   m_Layer: 0
   m_Name: Stand (14)
   m_TagString: Untagged
@@ -21273,6 +21394,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1353550701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353550699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 3
+  occupied: 0
 --- !u!1 &1354139759
 GameObject:
   m_ObjectHideFlags: 0
@@ -21995,6 +22130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1396477189}
+  - component: {fileID: 1396477190}
   m_Layer: 0
   m_Name: Stand (8)
   m_TagString: Untagged
@@ -22017,6 +22153,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1396477190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396477188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 3
+  occupied: 0
 --- !u!1 &1414814866
 GameObject:
   m_ObjectHideFlags: 0
@@ -22026,6 +22176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1414814867}
+  - component: {fileID: 1414814868}
   m_Layer: 0
   m_Name: Stand (1)
   m_TagString: Untagged
@@ -22048,6 +22199,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1414814868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414814866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  occupied: 0
 --- !u!1 &1421520632
 GameObject:
   m_ObjectHideFlags: 0
@@ -23456,6 +23621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1465864222}
+  - component: {fileID: 1465864223}
   m_Layer: 0
   m_Name: Stand (7)
   m_TagString: Untagged
@@ -23478,6 +23644,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1465864223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465864221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  occupied: 0
 --- !u!1 &1480170981
 GameObject:
   m_ObjectHideFlags: 0
@@ -26134,6 +26314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1629105316}
+  - component: {fileID: 1629105317}
   m_Layer: 0
   m_Name: Stand (13)
   m_TagString: Untagged
@@ -26156,6 +26337,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1629105317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629105315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  occupied: 0
 --- !u!1 &1646374265
 GameObject:
   m_ObjectHideFlags: 0
@@ -28444,6 +28639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1926948409}
+  - component: {fileID: 1926948410}
   m_Layer: 0
   m_Name: Stand (2)
   m_TagString: Untagged
@@ -28466,6 +28662,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1926948410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926948408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 3
+  occupied: 0
 --- !u!43 &1937067630
 Mesh:
   m_ObjectHideFlags: 0
@@ -30088,6 +30298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2046902958}
+  - component: {fileID: 2046902959}
   m_Layer: 0
   m_Name: Stand (15)
   m_TagString: Untagged
@@ -30110,6 +30321,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2046902959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046902957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 2
+  occupied: 0
 --- !u!1 &2047209737
 GameObject:
   m_ObjectHideFlags: 0
@@ -30119,6 +30344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2047209738}
+  - component: {fileID: 2047209739}
   m_Layer: 0
   m_Name: Stand (12)
   m_TagString: Untagged
@@ -30141,6 +30367,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1859481377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2047209739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047209737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: 3
+  occupied: 0
 --- !u!43 &2048896493
 Mesh:
   m_ObjectHideFlags: 0

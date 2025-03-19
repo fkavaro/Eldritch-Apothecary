@@ -57,8 +57,9 @@ public abstract class ANPC : AAnimationController
     /// <returns>True if the agent has arrived, otherwise false.</returns>
     public bool HasArrived(float minDistance = MIN_DISTANCE_TO_TARGET)
     {
-        return !_agent.pathPending && _agent.remainingDistance <= minDistance &&
-        (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f);
+        return Vector3.Distance(transform.position, _agent.destination) < minDistance;
+        // return !_agent.pathPending && _agent.remainingDistance <= minDistance &&
+        // (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f);
     }
 
     /// <summary>
