@@ -1,16 +1,14 @@
 using UnityEngine;
+using System.Collections;
 
-public class AnAlchemistState : MonoBehaviour
+public abstract class AnAlchemistState : AState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    protected Alchemist _alchemistContext;
+    
+    public AnAlchemistState(StackFiniteStateMachine stackfsm, Alchemist alchemistContext) : base(stackfsm)
     {
-        
+        _behaviourController = alchemistContext;
+        _alchemistContext = alchemistContext;
     }
 }
