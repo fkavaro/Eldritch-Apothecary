@@ -21,14 +21,18 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public GameObject cat;
     [Tooltip("Receptionist position")]
     public GameObject receptionist;
-    [Tooltip("Spot where clients complain")]
 
-    [Header("Positions")]
+    [Header("Concrete positions")]
+    [Tooltip("Spot where clients complain")]
     public Transform complainingPosition;
     [Tooltip("Spot where clients enter the apothecary")]
     public Transform entrancePosition;
     [Tooltip("Spot where clients leave the apothecary")]
     public Transform exitPosition;
+    [Tooltip("Spot where clients leave the queue")]
+    public Transform queueExitPosition;
+
+    [Header("Positions parents")]
     [Tooltip("Parent of all shop stands gameobjects")]
     public Transform shopStandsParent;
     [Tooltip("Parent of all queue positions gameobjects")]

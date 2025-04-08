@@ -17,6 +17,8 @@ public class WaitingQueue
     #region PUBLIC METHODS
     public void Enter(Client client)
     {
+        Debug.Log($"Client {client.name} entered the queue.");
+
         lock (queueLock)
         {
             if (clientsQueue.Contains(client)) return;
@@ -61,6 +63,19 @@ public class WaitingQueue
             return clientsQueue.Contains(clientContext);
         }
     }
+
+    public void FixRotation(Client clientContext)
+    {
+        lock (queueLock)
+        {
+            int index = clientsQueue.ToArray().ToList().IndexOf(clientContext);
+            if (index == -1 || index == 0) return;
+
+            // Rotate to next position
+            Vector3 lookDirection = (queuePositions[index - 1].position - clientContext.transform.position).normalized;
+            clientContext.transform.rotation = Quaternion.Euler(lookDirection);
+        }
+    }
     #endregion
 
     #region PRIVATE METHODS
@@ -76,20 +91,6 @@ public class WaitingQueue
                 client.SetTarget(queuePositions[index].position);
                 index++;
             }
-        }
-    }
-
-    internal void FixRotation(Client clientContext)
-    {
-        lock (queueLock)
-        {
-            int index = clientsQueue.ToArray().ToList().IndexOf(clientContext);
-            if (index == -1 || index == 0) return;
-
-            // Rotate smoothly to next position
-            Vector3 direction = (queuePositions[index - 1].position - clientContext.transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            clientContext.transform.rotation = Quaternion.Slerp(clientContext.transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
     }
     #endregion

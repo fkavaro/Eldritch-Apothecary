@@ -9,7 +9,7 @@ using UnityEngine.AI;
 public abstract class ANPC : AAnimationController
 {
     NavMeshAgent _agent;
-    const float MIN_DISTANCE_TO_TARGET = 0.3f;
+    Position _targetPosition;
 
     #region VARIABLES
     [Header("Agent Properties")]
@@ -19,6 +19,8 @@ public abstract class ANPC : AAnimationController
     public float rotationSpeed = 3f;
     [Tooltip("Threshold for target position sampling"), Range(0f, 1f)]
     public float targetThreshold = 1f;
+    [Tooltip("Distance to which it's considered as arrived"), Range(0f, 1f)]
+    public float minDistanceToTarget = 0.3f;
     #endregion
 
     /// <summary>
@@ -37,6 +39,27 @@ public abstract class ANPC : AAnimationController
     /// Sets the target position for the NavMeshAgent to navigate to.
     /// </summary>
     /// <param name="targetPos">The target position in world coordinates.</param>
+    public void SetTarget(Position targetPos)
+    {
+        if (!_agent.isOnNavMesh)
+        {
+            Debug.LogError("SetTarget(): NavMeshAgent is not on a NavMesh.");
+            return;
+        }
+
+        _agent.isStopped = false;
+        _agent.updateRotation = true;
+        _agent.SetDestination(targetPos.transform.position);
+
+        if (_targetPosition != null)
+            _targetPosition.SetOccupied(false);
+        _targetPosition = targetPos; // Update the target position
+        _targetPosition.SetOccupied(true);
+
+        if (HasArrived()) return;
+        else ChangeAnimationTo(walkAnim);
+    }
+
     public void SetTarget(Vector3 targetPos)
     {
         if (!_agent.isOnNavMesh)
@@ -46,18 +69,30 @@ public abstract class ANPC : AAnimationController
         }
 
         _agent.isStopped = false;
+        _agent.updateRotation = true;
         _agent.SetDestination(targetPos);
+        _targetPosition = null;
+
         if (HasArrived()) return;
-        ChangeAnimationTo(walkAnim);
+        else ChangeAnimationTo(walkAnim);
     }
 
     /// <summary>
     /// Checks if the NavMeshAgent has arrived at its destination.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived(float minDistance = MIN_DISTANCE_TO_TARGET)
+    public bool HasArrived()
     {
-        return Vector3.Distance(transform.position, _agent.destination) < minDistance;
+        if (Vector3.Distance(transform.position, _agent.destination) < minDistanceToTarget)
+        {
+            if (_targetPosition != null)
+            {
+                _agent.updateRotation = false; // Disable automatic rotation
+                transform.rotation = Quaternion.Euler(_targetPosition.DirectionToVector());
+            }
+            return true;
+        }
+        else return false;
         // return !_agent.pathPending && _agent.remainingDistance <= minDistance &&
         // (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f);
     }
@@ -66,9 +101,13 @@ public abstract class ANPC : AAnimationController
     /// Checks if the NavMeshAgent has arrived at certain destination.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived(Vector3 destination, float minDistance = MIN_DISTANCE_TO_TARGET)
+    public bool HasArrived(Vector3 destination)
     {
-        return Vector3.Distance(transform.position, destination) < minDistance;
+        return Vector3.Distance(transform.position, destination) < minDistanceToTarget;
+
+        //if (destination == _agent.destination)
+        //    return HasArrived();
+        //else return false;
     }
 
     /// <summary>

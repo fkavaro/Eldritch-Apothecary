@@ -12,13 +12,16 @@ public class Leaving_ClientState : AClientState
 
     public override void StartState()
     {
-        _clientContext.SetTarget(ApothecaryManager.Instance.exitPosition.position);
+        _clientContext.SetTarget(ApothecaryManager.Instance.queueExitPosition.position);
     }
 
     public override void UpdateState()
     {
         // If client has reached the exit
-        if (_clientContext.HasArrived(1f))
+        if (_clientContext.HasArrived(ApothecaryManager.Instance.exitPosition.position))
             ApothecaryManager.Instance.clientsPool.Release(_clientContext);
+        else if (_clientContext.HasArrived(ApothecaryManager.Instance.queueExitPosition.position))
+            _clientContext.SetTarget(ApothecaryManager.Instance.exitPosition.position);
+
     }
 }
