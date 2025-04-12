@@ -6,11 +6,11 @@ public class Shop
 {
     // Dictionary of shop stands and their ocupant
     //readonly Dictionary<Position, Client> shopStands = new();
-    readonly List<Position> _shopStands = new();
+    readonly List<Spot> _shopStands = new();
     readonly object _shopLock = new();
 
     // Constructor given list
-    public Shop(List<Position> shopStands)
+    public Shop(List<Spot> shopStands)
     {
         this._shopStands = shopStands;
         // foreach (Position stand in shopStands)
@@ -19,14 +19,14 @@ public class Shop
         // }
     }
 
-    public Position RandomStand(Client client)
+    public Spot RandomStand(Client client)
     {
         lock (_shopLock)
         {
-            List<Position> availableStands = new();
+            List<Spot> availableStands = new();
 
             // Find available shop stands
-            foreach (Position stand in _shopStands)
+            foreach (Spot stand in _shopStands)
             {
                 if (!stand.IsOccupied())
                     availableStands.Add(stand);
@@ -35,7 +35,7 @@ public class Shop
             if (availableStands.Count > 0)
             {
                 // Select a random stand
-                Position randomStand = availableStands[Random.Range(0, availableStands.Count)];
+                Spot randomStand = availableStands[Random.Range(0, availableStands.Count)];
                 // Set client target to shop stand
                 //client.SetTarget(randomStand.position);
                 // Set shop stand as ocupied

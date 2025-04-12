@@ -36,9 +36,6 @@ public abstract class ABehaviourController : MonoBehaviour
         actionText = debugCanvas?.Find("ActionText").GetComponent<TextMeshProUGUI>();
 
         OnAwake();
-
-        _decisionSystem = CreateDecisionSystem();
-        stateText.gameObject.SetActive(debugMode);
         //_decisionSystem?.Awake(); NO
     }
     protected abstract void OnAwake(); // Implemented in subclasses
@@ -46,6 +43,8 @@ public abstract class ABehaviourController : MonoBehaviour
     private void Start()
     {
         OnStart();
+        _decisionSystem = CreateDecisionSystem();
+        stateText.gameObject.SetActive(debugMode);
         //_decisionSystem?.Start(); NO
     }
     protected abstract void OnStart(); // Implemented in subclasses

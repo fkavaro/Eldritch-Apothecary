@@ -17,7 +17,7 @@ public class WaitingQueue
     #region PUBLIC METHODS
     public void Enter(Client client)
     {
-        Debug.Log($"Client {client.name} entered the queue.");
+        //Debug.Log($"Client {client.name} entered the queue.");
 
         lock (queueLock)
         {

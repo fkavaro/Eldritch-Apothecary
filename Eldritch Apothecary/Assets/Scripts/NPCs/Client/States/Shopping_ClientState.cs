@@ -14,7 +14,7 @@ public class Shopping_ClientState : AClientState
     public override void StartState()
     {
         // Try to get a random shop stand
-        Position _stand = ApothecaryManager.Instance.shop.RandomStand(_clientContext);
+        Spot _stand = ApothecaryManager.Instance.shop.RandomStand(_clientContext);
 
         // Leave if no available stands
         if (_stand == null)

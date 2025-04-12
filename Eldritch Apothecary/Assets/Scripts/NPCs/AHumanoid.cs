@@ -2,6 +2,10 @@ using UnityEngine;
 
 public abstract class AHumanoid : ANPC
 {
+    [Header("Humanoid Properties")]
+    [Tooltip("Triggering distance to cat"), Range(0f, 4f)]
+    public float minDistanceToCat = 3f;
+
     #region HUMANOID ANIMATIONS
     readonly public int talkAnim = Animator.StringToHash("Talk"),
         pickUpAnim = Animator.StringToHash("PickUp"),

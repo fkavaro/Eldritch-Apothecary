@@ -23,16 +23,6 @@ public abstract class AAnimationController : ABehaviourController
         animator = GetComponent<Animator>();
     }
 
-    protected override void OnUpdate()
-    {
-        CheckAnimation();
-    }
-
-    /// <summary>
-    /// Checks animation conditions.
-    /// </summary>
-    public virtual void CheckAnimation() { }
-
     /// <summary>
     /// Crossfade to new animation.
     /// </summary>

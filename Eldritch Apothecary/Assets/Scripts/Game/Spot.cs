@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Position : MonoBehaviour
+public class Spot : MonoBehaviour
 {
     public enum Direction
     {

@@ -16,16 +16,12 @@ public class Client : AHumanoid
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
 
-	[Tooltip("Maximum waitin minutes"), Range(2, 10)]
+	[Tooltip("Maximum waiting minutes"), Range(2, 10)]
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
 	public int scareProbability = 3;
 	[Tooltip("Maximum number of scares supported"), Range(1, 5)]
 	public int maxScares = 3;
-	[Tooltip("Triggering distance to cat"), Range(0f, 4f)]
-	public float minDistanceToCat = 3f;
-
-	[SerializeField] string stateName; //! TODO: DELETE
 	#endregion
 
 	#region PRIVATE PROPERTIES
@@ -45,31 +41,39 @@ public class Client : AHumanoid
 	public Leaving_ClientState leavingState;
 	#endregion
 
-	protected override void OnAwake()
+	protected override ADecisionSystem CreateDecisionSystem()
 	{
-		serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
+		// Stack Finite State Machine
+		clientSFSM = new(this);
 
-		RandomizeProperties();
+		// States initialization
+		stunnedState = new(clientSFSM, this);
+		shoppingState = new(clientSFSM, this);
+		waitForReceptionistState = new(clientSFSM, this);
+		complainingState = new(clientSFSM, this);
+		waitForServiceState = new(clientSFSM, this);
+		atSorcererState = new(clientSFSM, this);
+		pickPotionUpState = new(clientSFSM, this);
+		leavingState = new(clientSFSM, this);
 
-		base.OnAwake(); // Sets agent and animator components
+		// Initial state according to client's wanted service
+		// TODO: can shop although wanted service is sorcerer or alchemist
+		if (wantedService == WantedService.OnlyShop)
+			clientSFSM.SetInitialState(shoppingState);
+		else
+			clientSFSM.SetInitialState(waitForReceptionistState);
+
+		return clientSFSM;
 	}
 
-	protected override void OnStart()
-	{
-
-	}
+	protected override void OnStart() { }
 
 	protected override void OnUpdate()
 	{
-		if (stateName != clientSFSM.currentState.stateName)
-			stateName = clientSFSM.currentState.stateName;
-
 		if (serviceText.gameObject.activeSelf != debugMode)
 			serviceText.gameObject.SetActive(debugMode);
 
 		if (!HasReachedMaxScares()) ReactToCat();
-
-		//base.OnUpdate(); // No need: Checks animation
 	}
 
 	#region PUBLIC METHODS
@@ -91,30 +95,6 @@ public class Client : AHumanoid
 	#endregion
 
 	#region PRIVATE	METHODS
-	protected override ADecisionSystem CreateDecisionSystem()
-	{
-		// Stack Finite State Machine
-		clientSFSM = new(this);
-
-		// States initialization
-		stunnedState = new(clientSFSM, this);
-		shoppingState = new(clientSFSM, this);
-		waitForReceptionistState = new(clientSFSM, this);
-		complainingState = new(clientSFSM, this);
-		waitForServiceState = new(clientSFSM, this);
-		atSorcererState = new(clientSFSM, this);
-		pickPotionUpState = new(clientSFSM, this);
-		leavingState = new(clientSFSM, this);
-
-		// Initial state according to client's wanted service
-		if (wantedService == WantedService.OnlyShop)
-			clientSFSM.SetInitialState(shoppingState);
-		else
-			clientSFSM.SetInitialState(waitForReceptionistState);
-
-		return clientSFSM;
-	}
-
 	/// <summary>
 	/// Checks if the cat is close enough to scare the client
 	/// </summary>
@@ -134,10 +114,14 @@ public class Client : AHumanoid
 	/// </summary>
 	void RandomizeProperties()
 	{
-		wantedService = WantedService.OnlyShop;//(WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
+		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
 		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
+
+		if (serviceText == null)
+			serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
+
 		serviceText.text = wantedService.ToString();
 	}
 	#endregion

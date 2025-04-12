@@ -19,10 +19,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     [Header("Staff members")]
     public GameObject cat;
-    [Tooltip("Receptionist position")]
     public GameObject receptionist;
 
-    [Header("Concrete positions")]
+    [Header("Clients positions")]
     [Tooltip("Spot where clients complain")]
     public Transform complainingPosition;
     [Tooltip("Spot where clients enter the apothecary")]
@@ -31,6 +30,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public Transform exitPosition;
     [Tooltip("Spot where clients leave the queue")]
     public Transform queueExitPosition;
+
+    [Header("Receptionist positions")]
+    [Tooltip("Spot where the receptionist attends clients")]
+    public Spot receptionistAttendingPos;
 
     [Header("Positions parents")]
     [Tooltip("Parent of all shop stands gameobjects")]
@@ -60,7 +63,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         _seatsPositions = new(),
         _pickUpPositions = new();
 
-    List<Position> _shopStands = new();
+    List<Spot> _shopStands = new();
     float _nextClientTime = 0f;
     #endregion
 
@@ -128,10 +131,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             childrenList.Add(child);
     }
 
-    void FillChildrenList(Transform parent, List<Position> childrenList)
+    void FillChildrenList(Transform parent, List<Spot> childrenList)
     {
         foreach (Transform child in parent)
-            childrenList.Add(child.GetComponent<Position>());
+            childrenList.Add(child.GetComponent<Spot>());
     }
 
     Vector3 RandomPosition(List<Transform> positions)

@@ -9,7 +9,7 @@ using UnityEngine.AI;
 public abstract class ANPC : AAnimationController
 {
     NavMeshAgent _agent;
-    Position _targetPosition;
+    Spot _targetPosition;
 
     #region VARIABLES
     [Header("Agent Properties")]
@@ -39,7 +39,7 @@ public abstract class ANPC : AAnimationController
     /// Sets the target position for the NavMeshAgent to navigate to.
     /// </summary>
     /// <param name="targetPos">The target position in world coordinates.</param>
-    public void SetTarget(Position targetPos)
+    public void SetTarget(Spot targetPos)
     {
         if (!_agent.isOnNavMesh)
         {
@@ -52,7 +52,7 @@ public abstract class ANPC : AAnimationController
         _agent.SetDestination(targetPos.transform.position);
 
         if (_targetPosition != null)
-            _targetPosition.SetOccupied(false);
+            _targetPosition.SetOccupied(false); // Leave free current target position
         _targetPosition = targetPos; // Update the target position
         _targetPosition.SetOccupied(true);
 
