@@ -14,7 +14,7 @@ public class FiniteStateMachine : ADecisionSystem
 
     protected AState initialState;
 
-    protected void DebugCurrentState()
+    protected override void Debug()
     {
         //if (controller.debugMode)
         //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
@@ -27,7 +27,7 @@ public class FiniteStateMachine : ADecisionSystem
 
         initialState = state;
         currentState = state;
-        DebugCurrentState();
+        Debug();
         currentState.StartState();
     }
 
@@ -40,7 +40,7 @@ public class FiniteStateMachine : ADecisionSystem
 
         currentState.ExitState();
         currentState = state;
-        DebugCurrentState();
+        Debug();
         currentState.StartState();
     }
 
@@ -55,12 +55,12 @@ public class FiniteStateMachine : ADecisionSystem
     #region UNITY EXECUTION EVENTS
     public override void Awake()
     {
-        //currentState?.AwakeState();
+        //currentState?.AwakeState(); NO
     }
 
     public override void Start()
     {
-        //currentState?.StartState();
+        //currentState?.StartState(); NO
     }
 
     public override void Update()
@@ -99,7 +99,5 @@ public class FiniteStateMachine : ADecisionSystem
     {
         currentState?.OnTriggerExit(other);
     }
-
-
     #endregion
 }

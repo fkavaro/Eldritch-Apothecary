@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public abstract class ADecisionSystem
@@ -10,17 +9,21 @@ public abstract class ADecisionSystem
         this.controller = controller;
     }
 
+    protected abstract void Debug();
+
     public abstract void Awake(); // Implemented in subclasses
     public abstract void Start();
     public abstract void Update();
 
-    public abstract void OnCollisionEnter(Collision collision);
-    public abstract void OnCollisionStay(Collision collision);
-    public abstract void OnCollisionExit(Collision collision);
-
-    public abstract void OnTriggerEnter(Collider other);
-    public abstract void OnTriggerStay(Collider other);
-    public abstract void OnTriggerExit(Collider other);
-
     public abstract void Reset();
+
+    public virtual void OnCollisionEnter(Collision collision) { }
+    public virtual void OnCollisionStay(Collision collision) { }
+    public virtual void OnCollisionExit(Collision collision) { }
+
+    public virtual void OnTriggerEnter(Collider other) { }
+    public virtual void OnTriggerStay(Collider other) { }
+    public virtual void OnTriggerExit(Collider other) { }
+
+
 }

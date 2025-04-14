@@ -21,7 +21,7 @@ public class StackFiniteStateMachine : FiniteStateMachine
         previousState = currentState;
         currentState.ExitState();
         currentState = state;
-        DebugCurrentState();
+        Debug();
         currentState.StartState();
     }
 
@@ -32,7 +32,7 @@ public class StackFiniteStateMachine : FiniteStateMachine
     {
         currentState.ExitState();
         currentState = previousState;
-        DebugCurrentState();
+        Debug();
         currentState.StartState();
     }
 

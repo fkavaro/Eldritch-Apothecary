@@ -12,6 +12,9 @@ public class Receptionist : AHumanoid
 
     #region STATES
     public Idle_ReceptionistState idleState;
+    public Serving_ReceptionistState servingState;
+    public Attending_RececptionistState attendingState;
+    public CalmingDown_ReceptionistState calmingDownState;
     #endregion
 
     protected override ADecisionSystem CreateDecisionSystem()
