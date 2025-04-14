@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class UtilitySystem : ADecisionSystem
+public class UtilitySystem<TController> : ADecisionSystem<TController>
+where TController : ABehaviourController<TController>
 {
-    public UtilitySystem(ABehaviourController controller) : base(controller) { }
+    public UtilitySystem(TController controller) : base(controller) { }
 
     protected override void Debug()
     {

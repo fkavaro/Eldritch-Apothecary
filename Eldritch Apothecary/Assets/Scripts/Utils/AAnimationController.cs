@@ -6,7 +6,8 @@ using System.Collections;
 /// Handles animation transitions.
 /// </summary>
 [RequireComponent(typeof(Animator))]
-public abstract class AAnimationController : ABehaviourController
+public abstract class AAnimationController<TController> : ABehaviourController<TController>
+where TController : ABehaviourController<TController>
 {
     protected Animator animator;
     protected int currentAnimation;

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Waiting_AlchemistState : AnAlchemistState
+public class Waiting_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
-    public Waiting_AlchemistState(StackFiniteStateMachine stackFsm, Alchemist alchemistContext) : base(stackFsm, alchemistContext)
+    public Waiting_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm) : base(stackFsm)
     {
         stateName = "Waiting";
     }

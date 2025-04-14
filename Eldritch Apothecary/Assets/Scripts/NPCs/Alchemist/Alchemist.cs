@@ -2,24 +2,20 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class Alchemist : AHumanoid
+public class Alchemist : AHumanoid<Alchemist>
 {
 
     //Properties
     #region PUBLIC PROPERTIES
     [Header("Alchemist Properties")]
-    
-    [Tooltip("Triggering distance to cat"), Range(0f, 4f)]
-    public float minDistanceToCat = 3f;
-
     [Tooltip("Number of available ingredients"), Range(0f, 4f)]
     public int ingredientsAvailable = 10;
 
-    [SerializeField] string stateName; 
+    [SerializeField] string stateName;
     #endregion
 
     #region PRIVATE PROPERTIES
-    StackFiniteStateMachine alchemistSFSM;
+    StackFiniteStateMachine<Alchemist> alchemistSFSM;
     TextMeshProUGUI serviceText;
     #endregion
 
@@ -29,7 +25,7 @@ public class Alchemist : AHumanoid
     public PreparingPotion_AlchemistState preparingPotionState;
     public Waiting_AlchemistState waitingState;
     public WaitingIngredients_AlchemistState waitingIngredientsState;
-       #endregion
+    #endregion
 
     protected override void OnAwake()
     {
@@ -61,7 +57,7 @@ public class Alchemist : AHumanoid
     /// <summary>
     /// Resets the client's properties and behaviour
     /// </summary>
-    
+
     public bool HasIngredients()
     {
         return ingredientsAvailable > 0;
@@ -79,20 +75,20 @@ public class Alchemist : AHumanoid
     #endregion
 
     #region PRIVATE	METHODS
-    protected override ADecisionSystem CreateDecisionSystem()
+    protected override ADecisionSystem<Alchemist> CreateDecisionSystem()
     {
         // Stack Finite State Machine
         alchemistSFSM = new(this);
 
         // States initialization
-        finishingPotionState = new(alchemistSFSM, this);
-        interruptedState = new(alchemistSFSM, this);
-        preparingPotionState = new(alchemistSFSM, this);
-        waitingState = new(alchemistSFSM, this);
-        waitingIngredientsState = new(alchemistSFSM, this);
-        
+        finishingPotionState = new(alchemistSFSM);
+        interruptedState = new(alchemistSFSM);
+        preparingPotionState = new(alchemistSFSM);
+        waitingState = new(alchemistSFSM);
+        waitingIngredientsState = new(alchemistSFSM);
+
         alchemistSFSM.SetInitialState(waitingState);
-       
+
         return alchemistSFSM;
     }
 

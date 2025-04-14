@@ -3,27 +3,26 @@ using UnityEngine;
 /// <summary>
 /// Is startled by the grumpy cat. Can lead to a complain.
 /// </summary>
-public class Stunned_ClientState : AClientState
+public class Stunned_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
 
-    public Stunned_ClientState(StackFiniteStateMachine fsm, Client clientContext) : base(fsm, clientContext)
+    public Stunned_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
     {
         stateName = "Stunned";
     }
 
     public override void StartState()
     {
-        _clientContext.StopAgent();
+        _behaviourController.StopAgent();
 
-        _clientContext.ChangeAnimationTo(_clientContext.stunnedAnim);
+        _behaviourController.ChangeAnimationTo(_behaviourController.stunnedAnim);
 
-        _clientContext.StartCoroutine(WaitAndSwitchState(3f, _clientContext.complainingState, "Stunned")); // TODO: Just wait until animation is executed
+        _behaviourController.StartCoroutine(WaitAndSwitchState(3f, _behaviourController.complainingState, "Stunned")); // TODO: Just wait until animation is executed
 
-        if (_clientContext.HasReachedMaxScares())
-            _stackFsm.SwitchState(_clientContext.complainingState);
+        if (_behaviourController.HasReachedMaxScares())
+            _stateMachine.SwitchState(_behaviourController.complainingState);
         else
-            _stackFsm.ReturnToPreviousState();
-
+            _stateMachine.ReturnToPreviousState();
     }
 
     public override void UpdateState()
@@ -33,6 +32,6 @@ public class Stunned_ClientState : AClientState
 
     public override void ExitState()
     {
-        _clientContext.ReactivateAgent();
+        _behaviourController.ReactivateAgent();
     }
 }

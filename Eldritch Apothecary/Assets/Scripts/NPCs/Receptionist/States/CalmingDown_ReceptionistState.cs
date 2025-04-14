@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class CalmingDown_ReceptionistState : AReceptionistState
+public class CalmingDown_ReceptionistState : AState<Receptionist, StackFiniteStateMachine<Receptionist>>
 {
-    public CalmingDown_ReceptionistState(StackFiniteStateMachine stackFsm, Receptionist receptionistContext) : base(stackFsm, receptionistContext)
+    public CalmingDown_ReceptionistState(StackFiniteStateMachine<Receptionist> stackFsm) : base(stackFsm)
     {
         stateName = "Calming Down";
     }

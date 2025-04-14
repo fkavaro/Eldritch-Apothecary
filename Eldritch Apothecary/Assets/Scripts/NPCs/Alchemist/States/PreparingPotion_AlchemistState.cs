@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class PreparingPotion_AlchemistState : AnAlchemistState
+public class PreparingPotion_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
-    public PreparingPotion_AlchemistState(StackFiniteStateMachine stackFsm, Alchemist alchemistContext) : base(stackFsm, alchemistContext)
+    public PreparingPotion_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm) : base(stackFsm)
     {
         stateName = "Preparing potion";
     }
@@ -12,19 +12,18 @@ public class PreparingPotion_AlchemistState : AnAlchemistState
     {
 
         //Accion hacer pocion (Espera de 7 segundos)
-        _alchemistContext.StartCoroutine(PreparePotionCoroutine());
+        _behaviourController.StartCoroutine(PreparePotionCoroutine());
     }
 
     public override void UpdateState()
     {
         if (_coroutineStarted) return; //Evita que se inicie repetidamente
-         
     }
 
     private IEnumerator PreparePotionCoroutine()
     {
         yield return new WaitForSeconds(7f); // Espera 7 segundos
-        _stackFsm.SwitchState(_alchemistContext.finishingPotionState); // Cambia al siguiente estado
+        _stateMachine.SwitchState(_behaviourController.finishingPotionState); // Cambia al siguiente estado;
     }
 
     public override void ExitState()

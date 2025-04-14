@@ -3,16 +3,16 @@ using UnityEngine;
 /// <summary>
 /// Picks up its potion
 /// </summary>
-public class PickPotionUp_ClientState : AClientState
+public class PickPotionUp_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public PickPotionUp_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
+    public PickPotionUp_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
     {
         stateName = "Picking potion";
     }
 
     public override void StartState()
     {
-        _clientContext.SetTarget(ApothecaryManager.Instance.RandomPickUp());
+        _behaviourController.SetTarget(ApothecaryManager.Instance.RandomPickUp());
     }
 
     public override void UpdateState()
@@ -20,10 +20,10 @@ public class PickPotionUp_ClientState : AClientState
         if (_coroutineStarted) return;
 
         // Has reached pick up position
-        if (_clientContext.HasArrived())
+        if (_behaviourController.HasArrived())
         {
-            _clientContext.ChangeAnimationTo(_clientContext.pickUpAnim);
-            _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.leavingState, "Picking up the potion")); // TODO: Just wait until animation is executed
+            _behaviourController.ChangeAnimationTo(_behaviourController.pickUpAnim);
+            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Picking up the potion")); // TODO: Just wait until animation is executed
         }
     }
 }

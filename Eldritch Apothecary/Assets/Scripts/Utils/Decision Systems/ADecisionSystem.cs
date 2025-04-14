@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public abstract class ADecisionSystem
+public abstract class ADecisionSystem<TController> where TController : ABehaviourController<TController>
 {
-    public ABehaviourController controller;
+    public TController controller;
 
-    public ADecisionSystem(ABehaviourController controller)
+    public ADecisionSystem(TController controller)
     {
         this.controller = controller;
     }

@@ -2,7 +2,10 @@
 using UnityEngine;
 using TMPro;
 
-public class Client : AHumanoid
+/// <summary>
+/// Client class that represents a client in the game.
+/// </summary>
+public class Client : AHumanoid<Client>
 {
 	public enum WantedService
 	{
@@ -26,7 +29,7 @@ public class Client : AHumanoid
 
 	#region PRIVATE PROPERTIES
 	int _scaresCount = 0;
-	StackFiniteStateMachine clientSFSM;
+	StackFiniteStateMachine<Client> clientSFSM;
 	TextMeshProUGUI serviceText;
 	#endregion
 
@@ -41,20 +44,20 @@ public class Client : AHumanoid
 	public Leaving_ClientState leavingState;
 	#endregion
 
-	protected override ADecisionSystem CreateDecisionSystem()
+	protected override ADecisionSystem<Client> CreateDecisionSystem()
 	{
 		// Stack Finite State Machine
 		clientSFSM = new(this);
 
 		// States initialization
-		stunnedState = new(clientSFSM, this);
-		shoppingState = new(clientSFSM, this);
-		waitForReceptionistState = new(clientSFSM, this);
-		complainingState = new(clientSFSM, this);
-		waitForServiceState = new(clientSFSM, this);
-		atSorcererState = new(clientSFSM, this);
-		pickPotionUpState = new(clientSFSM, this);
-		leavingState = new(clientSFSM, this);
+		stunnedState = new(clientSFSM);
+		shoppingState = new(clientSFSM);
+		waitForReceptionistState = new(clientSFSM);
+		complainingState = new(clientSFSM);
+		waitForServiceState = new(clientSFSM);
+		atSorcererState = new(clientSFSM);
+		pickPotionUpState = new(clientSFSM);
+		leavingState = new(clientSFSM);
 
 		// Initial state according to client's wanted service
 		// TODO: can shop although wanted service is sorcerer or alchemist

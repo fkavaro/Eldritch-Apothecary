@@ -1,19 +1,16 @@
-using System;
 using System.Collections;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 /// <summary>
 /// Base class with common functionalities for all states.
 /// </summary>
-public abstract class AState
+public abstract class AState<TController, TStateMachine>
+    where TController : ABehaviourController<TController>
+    where TStateMachine : AStateMachine<TController, TStateMachine>
 {
     public string stateName;
-
-    protected FiniteStateMachine _fsm;
-    protected StackFiniteStateMachine _stackFsm;
-
-    protected ABehaviourController _behaviourController;
+    protected TController _behaviourController;
+    protected TStateMachine _stateMachine;
 
     /// <summary>
     /// Flag to check if the coroutine has started.
@@ -25,22 +22,17 @@ public abstract class AState
     /// </summary>
     protected float _stateTime = 0f;
 
-    // Constructor given a FiniteStateMachine
-    public AState(FiniteStateMachine fsm)
+    // Constructor given AStateMachine
+    public AState(TStateMachine stateMachine)
     {
-        this._fsm = fsm;
-    }
-
-    // Constructor given a StackFiniteStateMachine
-    public AState(StackFiniteStateMachine stackFsm)
-    {
-        this._stackFsm = stackFsm;
+        _stateMachine = stateMachine;
+        _behaviourController = stateMachine.controller;
     }
 
     /// <summary>
     /// Coroutine to wait for a specified amount of time before switching to the next state.
     /// </summary>
-    protected virtual IEnumerator WaitAndSwitchState(float waitTime, AState nextState, string action = "Executing animation")
+    protected virtual IEnumerator WaitAndSwitchState(float waitTime, AState<TController, TStateMachine> nextState, string action = "Executing animation")
     {
         _coroutineStarted = true;
 
@@ -48,17 +40,16 @@ public abstract class AState
 
         yield return new WaitForSeconds(waitTime);
 
-        _fsm?.SwitchState(nextState);
-        _stackFsm?.SwitchState(nextState);
+        _stateMachine?.SwitchState(nextState);
         _behaviourController.actionText.text = "";
         _coroutineStarted = false;
     }
     /// <summary>
     /// Coroutine to wait for a random amount of time before switching to the next state.
     /// </summary>
-    protected IEnumerator WaitAndSwitchState(AState nextState, string action = "Acting")
+    protected IEnumerator WaitAndSwitchState(AState<TController, TStateMachine> nextState, string action = "Acting")
     {
-        int waitTime = UnityEngine.Random.Range(5, 21);
+        int waitTime = Random.Range(5, 21);
         return WaitAndSwitchState(waitTime, nextState, action);
     }
 

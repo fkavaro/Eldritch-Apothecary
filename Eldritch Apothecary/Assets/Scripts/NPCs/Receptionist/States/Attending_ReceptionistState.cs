@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Attending_RececptionistState : AReceptionistState
+public class Attending_ReceptionistState : AState<Receptionist, StackFiniteStateMachine<Receptionist>>
 {
-    public Attending_RececptionistState(StackFiniteStateMachine stackFsm, Receptionist receptionistContext) : base(stackFsm, receptionistContext)
+    public Attending_ReceptionistState(StackFiniteStateMachine<Receptionist> stackFsm) : base(stackFsm)
     {
         stateName = "Attending";
     }

@@ -3,9 +3,9 @@ using UnityEngine;
 /// <summary>
 /// Waits in line to be attended by the receptionist 
 /// </summary>
-public class WaitForReceptionist_ClientState : AClientState
+public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public WaitForReceptionist_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext)
+    public WaitForReceptionist_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
     {
         stateName = "Wait for receptionist";
     }
@@ -13,10 +13,10 @@ public class WaitForReceptionist_ClientState : AClientState
     public override void StartState()
     {
         // Add client to the queue
-        //ApothecaryManager.Instance.EnterQueue(_clientContext);
+        //ApothecaryManager.Instance.EnterQueue(_behaviourController);
 
         // Set target to the last position in line
-        _clientContext.SetTarget(ApothecaryManager.Instance.waitingQueue.LastInLine());
+        _behaviourController.SetTarget(ApothecaryManager.Instance.waitingQueue.LastInLine());
     }
 
     public override void UpdateState()
@@ -27,34 +27,34 @@ public class WaitForReceptionist_ClientState : AClientState
         _stateTime += Time.deltaTime;
 
         // Has been waiting for too long
-        if (_clientContext.maxMinutesWaiting <= _stateTime / 60f)
+        if (_behaviourController.maxMinutesWaiting <= _stateTime / 60f)
         {
-            _stackFsm.SwitchState(_clientContext.complainingState);
+            _stateMachine.SwitchState(_behaviourController.complainingState);
         }
         // Destination is the last position in line and is not in the queue
-        else if (_clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.LastInLine())
-                && !ApothecaryManager.Instance.waitingQueue.Contains(_clientContext))
+        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.LastInLine())
+                && !ApothecaryManager.Instance.waitingQueue.Contains(_behaviourController))
         {
             // Enters queue
-            ApothecaryManager.Instance.waitingQueue.Enter(_clientContext);
+            ApothecaryManager.Instance.waitingQueue.Enter(_behaviourController);
         }
         // Destination is the receptionist counter, first position in line
-        else if (_clientContext.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
+        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
         {
             // Talks before changing state
-            _clientContext.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
-            _clientContext.ChangeAnimationTo(_clientContext.talkAnim);
+            _behaviourController.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
+            _behaviourController.ChangeAnimationTo(_behaviourController.talkAnim);
 
-            if (_clientContext.wantedService == Client.WantedService.OnlyShop)
-                _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.leavingState, "Talking"));
+            if (_behaviourController.wantedService == Client.WantedService.OnlyShop)
+                _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Talking"));
             else
-                _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForServiceState, "Talking"));
+                _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForServiceState, "Talking"));
         }
         // Destination is the next queue position
-        else if (_clientContext.HasArrived())
+        else if (_behaviourController.HasArrived())
         {
-            ApothecaryManager.Instance.waitingQueue.FixRotation(_clientContext);
-            _clientContext.ChangeAnimationTo(_clientContext.waitAnim);
+            ApothecaryManager.Instance.waitingQueue.FixRotation(_behaviourController);
+            _behaviourController.ChangeAnimationTo(_behaviourController.waitAnim);
         }
 
     }

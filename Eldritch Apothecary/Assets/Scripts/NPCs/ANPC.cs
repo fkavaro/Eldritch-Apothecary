@@ -6,7 +6,8 @@ using UnityEngine.AI;
 /// Requires a NavMeshAgent component to be attached to the GameObject.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class ANPC : AAnimationController
+public abstract class ANPC<TController> : AAnimationController<TController>
+where TController : ABehaviourController<TController>
 {
     NavMeshAgent _agent;
     Spot _targetPosition;

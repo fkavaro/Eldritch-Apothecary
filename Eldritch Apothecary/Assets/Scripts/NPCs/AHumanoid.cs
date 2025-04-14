@@ -1,6 +1,11 @@
 using UnityEngine;
 
-public abstract class AHumanoid : ANPC
+/// <summary>
+/// Abstract class that determines the humanoid properties of the NPCs and its animations.
+/// </summary>
+/// <typeparam name="TController"></typeparam>
+public abstract class AHumanoid<TController> : ANPC<TController>
+where TController : ABehaviourController<TController>
 {
     [Header("Humanoid Properties")]
     [Tooltip("Triggering distance to cat"), Range(0f, 4f)]

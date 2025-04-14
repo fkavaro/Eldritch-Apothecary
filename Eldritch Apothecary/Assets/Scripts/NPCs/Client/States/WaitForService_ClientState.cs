@@ -3,16 +3,16 @@ using UnityEngine;
 /// <summary>
 /// Waits for its service turn sat down.
 /// </summary>
-public class WaitForService_ClientState : AClientState
+public class WaitForService_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public WaitForService_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
+    public WaitForService_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
     {
         stateName = "Waiting for service";
     }
 
     public override void StartState()
     {
-        _clientContext.SetTarget(ApothecaryManager.Instance.RandomWaitingSeat());
+        _behaviourController.SetTarget(ApothecaryManager.Instance.RandomWaitingSeat());
     }
 
     public override void UpdateState()
@@ -20,20 +20,20 @@ public class WaitForService_ClientState : AClientState
         if (_coroutineStarted) return;
 
         // Has reached the waiting seat
-        if (_clientContext.HasArrived())
+        if (_behaviourController.HasArrived())
         {
-            _clientContext.ChangeAnimationTo(_clientContext.sitDownAnim); // TODO: stand up animation
+            _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim); // TODO: stand up animation
 
-            switch (_clientContext.wantedService)
+            switch (_behaviourController.wantedService)
             {
                 case Client.WantedService.Sorcerer:
-                    _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.atSorcererState, "Sitting down"));
+                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.atSorcererState, "Sitting down"));
                     break;
                 case Client.WantedService.Alchemist:
-                    _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.pickPotionUpState, "Sitting down"));
+                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.pickPotionUpState, "Sitting down"));
                     break;
                 default:
-                    _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.leavingState, "Sitting down"));
+                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Sitting down"));
                     break;
             }
 

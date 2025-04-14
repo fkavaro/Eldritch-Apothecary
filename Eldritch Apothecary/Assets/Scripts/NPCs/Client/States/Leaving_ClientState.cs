@@ -3,25 +3,25 @@ using UnityEngine;
 /// <summary>
 /// Leaves the apothecary, returning to the pool.
 /// </summary>
-public class Leaving_ClientState : AClientState
+public class Leaving_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public Leaving_ClientState(StackFiniteStateMachine stackFsm, Client client) : base(stackFsm, client)
+    public Leaving_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
     {
         stateName = "Leaving";
     }
 
     public override void StartState()
     {
-        _clientContext.SetTarget(ApothecaryManager.Instance.queueExitPosition.position);
+        _behaviourController.SetTarget(ApothecaryManager.Instance.queueExitPosition.position);
     }
 
     public override void UpdateState()
     {
         // If client has reached the exit
-        if (_clientContext.HasArrived(ApothecaryManager.Instance.exitPosition.position))
-            ApothecaryManager.Instance.clientsPool.Release(_clientContext);
-        else if (_clientContext.HasArrived(ApothecaryManager.Instance.queueExitPosition.position))
-            _clientContext.SetTarget(ApothecaryManager.Instance.exitPosition.position);
+        if (_behaviourController.HasArrived(ApothecaryManager.Instance.exitPosition.position))
+            ApothecaryManager.Instance.clientsPool.Release(_behaviourController);
+        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.queueExitPosition.position))
+            _behaviourController.SetTarget(ApothecaryManager.Instance.exitPosition.position);
 
     }
 }

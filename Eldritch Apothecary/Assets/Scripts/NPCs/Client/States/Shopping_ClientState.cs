@@ -4,9 +4,9 @@ using UnityEngine;
 /// <summary>
 /// Picks up a product or waits in line directly
 /// </summary>
-public class Shopping_ClientState : AClientState
+public class Shopping_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public Shopping_ClientState(StackFiniteStateMachine stackFsm, Client clientContext) : base(stackFsm, clientContext)
+    public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
     {
         stateName = "Shopping";
     }
@@ -14,14 +14,14 @@ public class Shopping_ClientState : AClientState
     public override void StartState()
     {
         // Try to get a random shop stand
-        Spot _stand = ApothecaryManager.Instance.shop.RandomStand(_clientContext);
+        Spot _stand = ApothecaryManager.Instance.shop.RandomStand(_behaviourController);
 
         // Leave if no available stands
         if (_stand == null)
-            _stackFsm.SwitchState(_clientContext.leavingState);
+            _stateMachine.SwitchState(_behaviourController.leavingState);
         // Go to available stand
         else
-            _clientContext.SetTarget(_stand);
+            _behaviourController.SetTarget(_stand);
     }
 
     public override void UpdateState()
@@ -29,10 +29,10 @@ public class Shopping_ClientState : AClientState
         if (_coroutineStarted) return;
 
         // Arrived at shop stand
-        if (_clientContext.HasArrived())
+        if (_behaviourController.HasArrived())
         {
-            _clientContext.ChangeAnimationTo(_clientContext.pickUpAnim);
-            _clientContext.StartCoroutine(WaitAndSwitchState(_clientContext.waitForReceptionistState, "Picking up objects"));
+            _behaviourController.ChangeAnimationTo(_behaviourController.pickUpAnim);
+            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForReceptionistState, "Picking up objects"));
         }
     }
 

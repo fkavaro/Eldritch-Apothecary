@@ -1,20 +1,36 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class StackFiniteStateMachine : FiniteStateMachine
+public class StackFiniteStateMachine<TController> : AStateMachine<TController, StackFiniteStateMachine<TController>> where TController : ABehaviourController<TController>
 {
     /// <summary>
     /// The last active state of the state machine
     /// </summary>
-    AState previousState;
+    AState<TController, StackFiniteStateMachine<TController>> previousState;
 
-    public StackFiniteStateMachine(ABehaviourController controller) : base(controller) { }
+    public StackFiniteStateMachine(TController controller) : base(controller) { }
+
+    /// <summary>
+    /// Sets the initial state of the state machine.
+    /// </summary>
+    public override void SetInitialState(AState<TController, StackFiniteStateMachine<TController>> state)
+    {
+        if (state == currentState) return;
+
+        initialState = state;
+        currentState = initialState;
+        previousState = initialState;
+        Debug();
+        currentState.StartState();
+    }
 
     /// <summary>
     /// Switchs to another state after exiting the current,
     /// storing the previous state.
     /// </summary>
-    public override void SwitchState(AState state)
+    public override void SwitchState(AState<TController, StackFiniteStateMachine<TController>> state)
     {
         if (state == currentState) return;
 
@@ -30,17 +46,6 @@ public class StackFiniteStateMachine : FiniteStateMachine
     /// </summary>
     public void ReturnToPreviousState()
     {
-        currentState.ExitState();
-        currentState = previousState;
-        Debug();
-        currentState.StartState();
-    }
-
-    /// <summary>
-    /// Switchs back to initial state
-    /// </summary>
-    public override void Reset()
-    {
-        SwitchState(initialState);
+        SwitchState(previousState);
     }
 }

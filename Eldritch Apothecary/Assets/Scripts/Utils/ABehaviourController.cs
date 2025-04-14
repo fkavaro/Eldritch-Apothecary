@@ -5,7 +5,8 @@ using TMPro;
 /// <summary>
 /// Defines context methods. Implements MonoBehaviour.
 /// </summary>
-public abstract class ABehaviourController : MonoBehaviour
+public abstract class ABehaviourController<TController> : MonoBehaviour
+where TController : ABehaviourController<TController>
 {
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console")]
@@ -13,12 +14,12 @@ public abstract class ABehaviourController : MonoBehaviour
 
     protected Transform debugCanvas;
     [HideInInspector] public TextMeshProUGUI stateText, actionText;
-    ADecisionSystem _decisionSystem;
+    ADecisionSystem<TController> _decisionSystem;
 
     /// <summary>
     /// Create the main decision system.
     /// </summary>
-    protected abstract ADecisionSystem CreateDecisionSystem(); // Implemented in subclasses
+    protected abstract ADecisionSystem<TController> CreateDecisionSystem();
 
     /// <summary>
     /// Resets the decision system.
