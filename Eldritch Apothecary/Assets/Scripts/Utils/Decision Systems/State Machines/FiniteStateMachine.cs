@@ -16,7 +16,7 @@ public class FiniteStateMachine<TController> : AStateMachine<TController, Finite
 
         initialState = state;
         currentState = initialState;
-        Debug();
+        DebugDecision();
         currentState.StartState();
     }
 
@@ -29,7 +29,7 @@ public class FiniteStateMachine<TController> : AStateMachine<TController, Finite
 
         currentState.ExitState();
         currentState = state;
-        Debug();
+        DebugDecision();
         currentState.StartState();
     }
 }

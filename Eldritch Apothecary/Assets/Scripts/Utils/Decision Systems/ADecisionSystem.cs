@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public abstract class ADecisionSystem<TController> where TController : ABehaviourController<TController>
+public abstract class ADecisionSystem<TController>
+where TController : ABehaviourController<TController>
 {
     public TController controller;
 
@@ -9,9 +10,9 @@ public abstract class ADecisionSystem<TController> where TController : ABehaviou
         this.controller = controller;
     }
 
-    protected abstract void Debug();
+    protected abstract void DebugDecision();
 
-    public abstract void Awake(); // Implemented in subclasses
+    public virtual void Awake() { } // Implemented in subclasses
     public abstract void Start();
     public abstract void Update();
 

@@ -27,7 +27,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     /// <summary>
     /// Debugs the current state of the state machine.
     /// </summary>
-    protected override void Debug()
+    protected override void DebugDecision()
     {
         //if (controller.debugMode)
         //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());

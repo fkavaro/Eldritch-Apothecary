@@ -10,7 +10,8 @@ public class Receptionist : AHumanoid<Receptionist>
     #endregion
 
     #region PRIVATE PROPERTIES
-    StackFiniteStateMachine<Receptionist> receptionistSFSM;
+    StackFiniteStateMachine<Receptionist> _receptionistSFSM;
+    UtilitySystem<Receptionist> _receptionistUS;
     #endregion
 
     #region STATES
@@ -23,15 +24,15 @@ public class Receptionist : AHumanoid<Receptionist>
     protected override ADecisionSystem<Receptionist> CreateDecisionSystem()
     {
         // Stack Finite State Machine
-        receptionistSFSM = new(this);
+        _receptionistSFSM = new(this);
 
         // States initialization
-        idleState = new(receptionistSFSM);
+        idleState = new(_receptionistSFSM);
 
         // Initial state
-        receptionistSFSM.SetInitialState(idleState);
+        _receptionistSFSM.SetInitialState(idleState);
 
-        return receptionistSFSM;
+        return _receptionistSFSM;
     }
 
     protected override void OnStart()

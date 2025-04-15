@@ -22,7 +22,7 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         initialState = state;
         currentState = initialState;
         previousState = initialState;
-        Debug();
+        DebugDecision();
         currentState.StartState();
     }
 
@@ -37,7 +37,7 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         previousState = currentState;
         currentState.ExitState();
         currentState = state;
-        Debug();
+        DebugDecision();
         currentState.StartState();
     }
 

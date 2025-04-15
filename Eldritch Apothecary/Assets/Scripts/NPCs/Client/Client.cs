@@ -29,8 +29,8 @@ public class Client : AHumanoid<Client>
 
 	#region PRIVATE PROPERTIES
 	int _scaresCount = 0;
-	StackFiniteStateMachine<Client> clientSFSM;
-	TextMeshProUGUI serviceText;
+	StackFiniteStateMachine<Client> _clientSFSM;
+	TextMeshProUGUI _serviceText;
 	#endregion
 
 	#region STATES
@@ -47,34 +47,34 @@ public class Client : AHumanoid<Client>
 	protected override ADecisionSystem<Client> CreateDecisionSystem()
 	{
 		// Stack Finite State Machine
-		clientSFSM = new(this);
+		_clientSFSM = new(this);
 
 		// States initialization
-		stunnedState = new(clientSFSM);
-		shoppingState = new(clientSFSM);
-		waitForReceptionistState = new(clientSFSM);
-		complainingState = new(clientSFSM);
-		waitForServiceState = new(clientSFSM);
-		atSorcererState = new(clientSFSM);
-		pickPotionUpState = new(clientSFSM);
-		leavingState = new(clientSFSM);
+		stunnedState = new(_clientSFSM);
+		shoppingState = new(_clientSFSM);
+		waitForReceptionistState = new(_clientSFSM);
+		complainingState = new(_clientSFSM);
+		waitForServiceState = new(_clientSFSM);
+		atSorcererState = new(_clientSFSM);
+		pickPotionUpState = new(_clientSFSM);
+		leavingState = new(_clientSFSM);
 
 		// Initial state according to client's wanted service
 		// TODO: can shop although wanted service is sorcerer or alchemist
 		if (wantedService == WantedService.OnlyShop)
-			clientSFSM.SetInitialState(shoppingState);
+			_clientSFSM.SetInitialState(shoppingState);
 		else
-			clientSFSM.SetInitialState(waitForReceptionistState);
+			_clientSFSM.SetInitialState(waitForReceptionistState);
 
-		return clientSFSM;
+		return _clientSFSM;
 	}
 
 	protected override void OnStart() { }
 
 	protected override void OnUpdate()
 	{
-		if (serviceText.gameObject.activeSelf != debugMode)
-			serviceText.gameObject.SetActive(debugMode);
+		if (_serviceText.gameObject.activeSelf != debugMode)
+			_serviceText.gameObject.SetActive(debugMode);
 
 		if (!HasReachedMaxScares()) ReactToCat();
 	}
@@ -108,7 +108,7 @@ public class Client : AHumanoid<Client>
 			UnityEngine.Random.Range(0, 10) < scareProbability)
 		{
 			_scaresCount++;
-			clientSFSM.SwitchState(stunnedState);
+			_clientSFSM.SwitchState(stunnedState);
 		}
 	}
 
@@ -122,10 +122,10 @@ public class Client : AHumanoid<Client>
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 
-		if (serviceText == null)
-			serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
+		if (_serviceText == null)
+			_serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
 
-		serviceText.text = wantedService.ToString();
+		_serviceText.text = wantedService.ToString();
 	}
 	#endregion
 }
