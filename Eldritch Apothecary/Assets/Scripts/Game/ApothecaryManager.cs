@@ -21,14 +21,18 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public GameObject cat;
     public GameObject receptionist;
 
-    [Header("Clients positions")]
-    [Tooltip("Spot where clients complain")]
+    [Header("Clients properties")]
+    [Tooltip("Parent for all instantiated clients")]
+    public Transform clientsParent;
+    [Tooltip("Spot where clients sit while attended by the sorcerer")]
+    public Spot sorcererSeat;
+    [Tooltip("Position where clients complain")]
     public Transform complainingPosition;
-    [Tooltip("Spot where clients enter the apothecary")]
+    [Tooltip("Position where clients enter the apothecary")]
     public Transform entrancePosition;
-    [Tooltip("Spot where clients leave the apothecary")]
+    [Tooltip("Position where clients leave the apothecary")]
     public Transform exitPosition;
-    [Tooltip("Spot where clients leave the queue")]
+    [Tooltip("Position where clients leave the waiting queue")]
     public Transform queueExitPosition;
 
     [Header("Receptionist positions")]
@@ -44,10 +48,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public Transform seatsPositionsParent;
     [Tooltip("Parent of all potion pick-up positions gameobjects")]
     public Transform pickUpPositionsParent;
-    [Tooltip("Parent of all instantiated clients")]
-    public Transform clientsParent;
-    [Tooltip("Spot where clients sit while attended by the sorcerer")]
-    public Transform sorcererSeat;
 
     [Header("Clients pool")]
     [Tooltip("All clients models to be spawned randomly")]
@@ -60,10 +60,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     #region PRIVATE PROPERTIES
     List<Transform> _queuePositions = new(),
-        _seatsPositions = new(),
         _pickUpPositions = new();
 
-    List<Spot> _shopStands = new();
+    List<Spot> _shopStands = new(),
+        _seatsPositions = new();
     float _nextClientTime = 0f;
     #endregion
 
@@ -113,9 +113,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #endregion
 
     #region PUBLIC METHODS
-    public Vector3 RandomWaitingSeat()
+    public Spot RandomWaitingSeat()
     {
-        return RandomPosition(_seatsPositions);
+        return RandomSpot(_seatsPositions);
     }
 
     public Vector3 RandomPickUp()
@@ -135,6 +135,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         foreach (Transform child in parent)
             childrenList.Add(child.GetComponent<Spot>());
+    }
+
+    Spot RandomSpot(List<Spot> spots)
+    {
+        return spots[UnityEngine.Random.Range(0, spots.Count)];
     }
 
     Vector3 RandomPosition(List<Transform> positions)

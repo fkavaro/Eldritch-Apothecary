@@ -12,7 +12,7 @@ public class Leaving_ClientState : AState<Client, StackFiniteStateMachine<Client
 
     public override void StartState()
     {
-        _behaviourController.SetTarget(ApothecaryManager.Instance.queueExitPosition.position);
+        _behaviourController.SetTargetPos(ApothecaryManager.Instance.queueExitPosition.position);
     }
 
     public override void UpdateState()
@@ -21,7 +21,7 @@ public class Leaving_ClientState : AState<Client, StackFiniteStateMachine<Client
         if (_behaviourController.HasArrived(ApothecaryManager.Instance.exitPosition.position))
             ApothecaryManager.Instance.clientsPool.Release(_behaviourController);
         else if (_behaviourController.HasArrived(ApothecaryManager.Instance.queueExitPosition.position))
-            _behaviourController.SetTarget(ApothecaryManager.Instance.exitPosition.position);
+            _behaviourController.SetTargetPos(ApothecaryManager.Instance.exitPosition.position);
 
     }
 }

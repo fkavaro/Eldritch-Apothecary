@@ -12,7 +12,7 @@ public class PickPotionUp_ClientState : AState<Client, StackFiniteStateMachine<C
 
     public override void StartState()
     {
-        _behaviourController.SetTarget(ApothecaryManager.Instance.RandomPickUp());
+        _behaviourController.SetTargetPos(ApothecaryManager.Instance.RandomPickUp());
     }
 
     public override void UpdateState()

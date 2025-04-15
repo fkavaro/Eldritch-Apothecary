@@ -37,10 +37,9 @@ where TController : ABehaviourController<TController>
     }
 
     /// <summary>
-    /// Sets the target position for the NavMeshAgent to navigate to.
+    /// Sets the target position for the NavMeshAgent to navigate to and fixes rotation.
     /// </summary>
-    /// <param name="targetPos">The target position in world coordinates.</param>
-    public void SetTarget(Spot targetPos)
+    public void SetTargetSpot(Spot targetPos)
     {
         if (!_agent.isOnNavMesh)
         {
@@ -61,7 +60,10 @@ where TController : ABehaviourController<TController>
         else ChangeAnimationTo(walkAnim);
     }
 
-    public void SetTarget(Vector3 targetPos)
+    /// <summary>
+    /// Sets the target position for the NavMeshAgent to navigate to.
+    /// </summary>
+    public void SetTargetPos(Vector3 targetPos)
     {
         if (!_agent.isOnNavMesh)
         {
@@ -79,7 +81,7 @@ where TController : ABehaviourController<TController>
     }
 
     /// <summary>
-    /// Checks if the NavMeshAgent has arrived at its destination.
+    /// Checks if the NavMeshAgent has arrived at its destination, and if the target is a spot, fixes its rotation.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
     public bool HasArrived()

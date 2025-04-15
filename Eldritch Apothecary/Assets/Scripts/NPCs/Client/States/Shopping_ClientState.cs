@@ -21,7 +21,7 @@ public class Shopping_ClientState : AState<Client, StackFiniteStateMachine<Clien
             _stateMachine.SwitchState(_behaviourController.leavingState);
         // Go to available stand
         else
-            _behaviourController.SetTarget(_stand);
+            _behaviourController.SetTargetSpot(_stand);
     }
 
     public override void UpdateState()

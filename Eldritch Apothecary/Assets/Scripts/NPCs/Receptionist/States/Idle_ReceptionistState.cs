@@ -9,7 +9,7 @@ public class Idle_ReceptionistState : AState<Receptionist, StackFiniteStateMachi
 
     public override void StartState()
     {
-        _behaviourController.SetTarget(ApothecaryManager.Instance.receptionistAttendingPos);
+        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.receptionistAttendingPos);
     }
 
     public override void UpdateState()

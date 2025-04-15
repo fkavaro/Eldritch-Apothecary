@@ -9,7 +9,7 @@ public class Complaining_ClientState : AState<Client, StackFiniteStateMachine<Cl
 
     public override void StartState()
     {
-        _behaviourController.SetTarget(ApothecaryManager.Instance.complainingPosition.position);
+        _behaviourController.SetTargetPos(ApothecaryManager.Instance.complainingPosition.position);
     }
 
     public override void UpdateState()

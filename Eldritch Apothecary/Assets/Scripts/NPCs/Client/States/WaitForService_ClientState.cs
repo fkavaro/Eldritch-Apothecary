@@ -12,7 +12,7 @@ public class WaitForService_ClientState : AState<Client, StackFiniteStateMachine
 
     public override void StartState()
     {
-        _behaviourController.SetTarget(ApothecaryManager.Instance.RandomWaitingSeat());
+        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.RandomWaitingSeat());
     }
 
     public override void UpdateState()
@@ -22,7 +22,7 @@ public class WaitForService_ClientState : AState<Client, StackFiniteStateMachine
         // Has reached the waiting seat
         if (_behaviourController.HasArrived())
         {
-            _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim); // TODO: stand up animation
+            _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
 
             switch (_behaviourController.wantedService)
             {

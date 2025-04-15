@@ -13,7 +13,7 @@ public class AtSorcerer_ClientState : AState<Client, StackFiniteStateMachine<Cli
 
     public override void StartState()
     {
-        _behaviourController.SetTarget(ApothecaryManager.Instance.sorcererSeat.position);
+        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.sorcererSeat);
     }
 
     public override void UpdateState()

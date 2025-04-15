@@ -16,7 +16,7 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
         //ApothecaryManager.Instance.EnterQueue(_behaviourController);
 
         // Set target to the last position in line
-        _behaviourController.SetTarget(ApothecaryManager.Instance.waitingQueue.LastInLine());
+        _behaviourController.SetTargetPos(ApothecaryManager.Instance.waitingQueue.LastInLine());
     }
 
     public override void UpdateState()
