@@ -7,6 +7,7 @@ public class FiniteStateMachine<TController> : AStateMachine<TController, Finite
 {
     public FiniteStateMachine(TController controller) : base(controller) { }
 
+    #region INHERITED METHODS
     /// <summary>
     /// Sets the initial state of the state machine.
     /// </summary>
@@ -32,4 +33,5 @@ public class FiniteStateMachine<TController> : AStateMachine<TController, Finite
         DebugDecision();
         currentState.StartState();
     }
+    #endregion
 }

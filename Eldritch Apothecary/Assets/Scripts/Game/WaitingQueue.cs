@@ -64,12 +64,13 @@ public class WaitingQueue
         }
     }
 
+    // TODO: FIX METHOD, bug: looks forward
     public void FixRotation(Client clientContext)
     {
         lock (queueLock)
         {
             int index = clientsQueue.ToArray().ToList().IndexOf(clientContext);
-            if (index == -1 || index == 0) return;
+            if (index <= 0) return;
 
             // Rotate to next position
             Vector3 lookDirection = (queuePositions[index - 1].position - clientContext.transform.position).normalized;

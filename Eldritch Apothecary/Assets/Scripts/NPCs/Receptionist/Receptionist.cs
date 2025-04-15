@@ -27,10 +27,11 @@ public class Receptionist : AHumanoid<Receptionist>
 
         // Actions initialization
         idleAction = new(_receptionistUS, true);// Default action: will try to make decisions
-        //_receptionistUS.SetDefaultAction(idleAction);
-        servingAction = new(_receptionistUS);
-        attendingAction = new(_receptionistUS);
-        calmingDownAction = new(_receptionistUS);
+                                                //_receptionistUS.SetDefaultAction(idleAction);
+
+        //servingAction = new(_receptionistUS);
+        //attendingAction = new(_receptionistUS);
+        //calmingDownAction = new(_receptionistUS);
 
         return _receptionistUS;
     }

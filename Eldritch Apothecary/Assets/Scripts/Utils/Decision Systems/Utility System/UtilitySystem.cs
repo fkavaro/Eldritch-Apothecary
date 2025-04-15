@@ -17,11 +17,13 @@ where TController : ABehaviourController<TController>
     /// </summary>
     Dictionary<AAction<TController>, float> _actionUtilities = new();
 
+
     public UtilitySystem(TController controller) : base(controller) { }
 
+    #region INHERITED METHODS
     protected override void DebugDecision()
     {
-        controller.actionText.text = _currentAction.name;
+        controller.stateText.text = _currentAction.name;
     }
 
 
@@ -29,13 +31,15 @@ where TController : ABehaviourController<TController>
     {
         // Invokes the method in time seconds, then repeatedly every repeatRate seconds
         //controller.InvokeRepeating("MakeDecision", 0f, 0.5f);
+
+        //_currentAction = _defaultAction;
     }
 
     public override void Update()
     {
         // Logic for updating the decision system (if needed)
         // Make a decicision during default action
-        if (_currentAction == _defaultAction)
+        if (_currentAction == null || _currentAction == _defaultAction)
         {
             MakeDecision();
         }
@@ -45,7 +49,9 @@ where TController : ABehaviourController<TController>
     {
         _currentAction = null;
     }
+    #endregion
 
+    #region PUBLIC METHODS
     public void AddAction(AAction<TController> action, bool isDefault = false)
     {
         if (action == null) return; // Ignore null actions
@@ -61,10 +67,12 @@ where TController : ABehaviourController<TController>
     {
         _defaultAction = action; // Set the new action as default
     }
+    #endregion
 
+    #region PRIVATE METHODS
     void MakeDecision()
     {
-        if (_currentAction != null) return; // Don't interrupt current action
+        //if (_currentAction != null) return; // Don't interrupt current action
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
@@ -87,4 +95,5 @@ where TController : ABehaviourController<TController>
         // Clear the action utilities for the next decision cycle
         _actionUtilities.Clear();
     }
+    #endregion
 }

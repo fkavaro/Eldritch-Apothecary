@@ -12,14 +12,14 @@ public class Shopping_ClientState : AState<Client, StackFiniteStateMachine<Clien
     public override void StartState()
     {
         // Try to get a random shop stand
-        Spot _stand = ApothecaryManager.Instance.shop.RandomStand(_behaviourController);
+        Spot stand = ApothecaryManager.Instance.shop.RandomStand(_behaviourController);
 
         // Leave if no available stands
-        if (_stand == null)
+        if (stand == null)
             _stateMachine.SwitchState(_behaviourController.leavingState);
         // Go to available stand
         else
-            _behaviourController.SetTargetSpot(_stand);
+            _behaviourController.SetTargetSpot(stand);
     }
 
     public override void UpdateState()

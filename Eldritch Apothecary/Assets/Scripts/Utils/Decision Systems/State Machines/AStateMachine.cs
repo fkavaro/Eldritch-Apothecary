@@ -8,14 +8,16 @@ public abstract class AStateMachine<TController, TStateMachineType> : ADecisionS
 where TController : ABehaviourController<TController>
 where TStateMachineType : AStateMachine<TController, TStateMachineType>
 {
-    public AState<TController, TStateMachineType> currentState;
-    protected AState<TController, TStateMachineType> initialState;
+    protected AState<TController, TStateMachineType> currentState, initialState;
 
     protected AStateMachine(TController controller) : base(controller) { }
 
+    #region TO BE IMPLEMENTED METHODS
     public abstract void SetInitialState(AState<TController, TStateMachineType> state);
     public abstract void SwitchState(AState<TController, TStateMachineType> state);
+    #endregion
 
+    #region INHERITED METHODS
     /// <summary>
     /// Switchs back to initial state
     /// </summary>
@@ -33,18 +35,9 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
         //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
         controller.stateText.text = currentState.StateName;
     }
+    #endregion
 
     #region UNITY EXECUTION EVENTS
-    public override void Awake()
-    {
-        //currentState?.AwakeState(); NO
-    }
-
-    public override void Start()
-    {
-        //currentState?.StartState(); NO
-    }
-
     public override void Update()
     {
         currentState?.UpdateState();

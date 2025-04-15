@@ -44,6 +44,7 @@ public class Client : AHumanoid<Client>
 	public Leaving_ClientState leavingState;
 	#endregion
 
+	#region INHERITED METHODS
 	protected override ADecisionSystem<Client> CreateDecisionSystem()
 	{
 		// Stack Finite State Machine
@@ -69,8 +70,6 @@ public class Client : AHumanoid<Client>
 		return _clientSFSM;
 	}
 
-	protected override void OnStart() { }
-
 	protected override void OnUpdate()
 	{
 		if (_serviceText.gameObject.activeSelf != debugMode)
@@ -78,6 +77,7 @@ public class Client : AHumanoid<Client>
 
 		if (!HasReachedMaxScares()) ReactToCat();
 	}
+	#endregion
 
 	#region PUBLIC METHODS
 	/// <returns>If client has been scared enough times</returns>

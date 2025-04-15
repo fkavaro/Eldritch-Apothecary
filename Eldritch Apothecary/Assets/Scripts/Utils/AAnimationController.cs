@@ -16,14 +16,16 @@ where TController : ABehaviourController<TController>
     readonly public int idleAnim = Animator.StringToHash("Idle"),
         walkAnim = Animator.StringToHash("Walk");
     #endregion
-
     // Specific animations must be defined in derived classes
 
+    #region INHERITED METHODS
     protected override void OnAwake()
     {
         animator = GetComponent<Animator>();
     }
+    #endregion
 
+    #region PUBLIC METHODS
     /// <summary>
     /// Crossfade to new animation.
     /// </summary>
@@ -38,4 +40,5 @@ where TController : ABehaviourController<TController>
             animator.CrossFade(newAnimation, duration);
         }
     }
+    #endregion
 }

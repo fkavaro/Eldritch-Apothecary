@@ -39,7 +39,7 @@ where TController : ABehaviourController<TController>
         OnAwake();
         //_decisionSystem?.Awake(); NO
     }
-    protected abstract void OnAwake(); // Implemented in subclasses
+    protected virtual void OnAwake() { } // Optionally implemented in subclasses
 
     private void Start()
     {
@@ -48,7 +48,7 @@ where TController : ABehaviourController<TController>
         stateText.gameObject.SetActive(debugMode);
         //_decisionSystem?.Start(); NO
     }
-    protected abstract void OnStart(); // Implemented in subclasses
+    protected virtual void OnStart() { } // Optionally implemented in subclasses
 
     private void Update()
     {
@@ -61,7 +61,7 @@ where TController : ABehaviourController<TController>
         OnUpdate();
         _decisionSystem?.Update();
     }
-    protected abstract void OnUpdate(); // Implemented in subclasses
+    protected virtual void OnUpdate() { } // Optionally implemented in subclasses
     # endregion
 
     # region COLLISION AND TRIGGER EVENTS

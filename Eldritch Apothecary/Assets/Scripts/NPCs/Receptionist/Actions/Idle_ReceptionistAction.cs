@@ -7,11 +7,11 @@ public class Idle_ReceptionistAction : AAction<Receptionist>
 
     public override float CalculateUtility()
     {
-        // Check if the receptionist is not busy
-        if (_behaviourController.IsBusy())
-            return 0f; // No utility if busy
-        else
-            return 1f; // High utility to idle
+        // // Check if the receptionist is not busy
+        // if (_behaviourController.IsBusy())
+        //     return 0f; // No utility if busy
+        // else
+        return 1f; // High utility to idle
 
         // // Check if the receptionist is not busy and can idle
         // if (!controller.attendingState.IsInState() && !controller.attendingState.IsBusy())

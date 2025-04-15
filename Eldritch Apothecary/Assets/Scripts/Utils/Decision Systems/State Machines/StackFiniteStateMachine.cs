@@ -12,6 +12,7 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
 
     public StackFiniteStateMachine(TController controller) : base(controller) { }
 
+    #region INHERITED METHODS
     /// <summary>
     /// Sets the initial state of the state machine.
     /// </summary>
@@ -40,7 +41,9 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         DebugDecision();
         currentState.StartState();
     }
+    #endregion
 
+    #region PUBLIC METHODS
     /// <summary>
     /// Switchs to previous state after exiting the current.
     /// </summary>
@@ -48,4 +51,5 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     {
         SwitchState(previousState);
     }
+    #endregion
 }
