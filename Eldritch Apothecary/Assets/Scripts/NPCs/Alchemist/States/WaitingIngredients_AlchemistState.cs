@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class WaitingIngredients_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
-    public WaitingIngredients_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm) : base(stackFsm)
-    {
-        stateName = "Waiting Ingredients";
-    }
+    public WaitingIngredients_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
+    : base("Waiting Ingredients", stackFsm) { }
+
     public override void StartState()
     {
         //Accion esperar ingredientes (Espera de 7 segundos)

@@ -12,6 +12,11 @@ where TController : ABehaviourController<TController>
     NavMeshAgent _agent;
     Spot _targetPosition;
 
+    /// <summary>
+    /// Animation to play when the agent is walking.
+    /// </summary>
+    int _animationWhenArrived = -1;
+
     #region VARIABLES
     [Header("Agent Properties")]
     [Tooltip("Agent speed"), Range(0f, 5f)]
@@ -34,6 +39,34 @@ where TController : ABehaviourController<TController>
         _agent.angularSpeed = rotationSpeed * 100f;
 
         base.OnAwake(); // Sets the animator component
+    }
+
+    /// <summary>
+    /// Sets the target position for the NavMeshAgent to navigate to, 
+    /// fixes rotation and sets animation to play when arriving.
+    /// </summary>
+    public void SetTargetSpot(Spot targetPos, int animation)
+    {
+        if (!_agent.isOnNavMesh)
+        {
+            Debug.LogError("SetTarget(): NavMeshAgent is not on a NavMesh.");
+            return;
+        }
+
+        _agent.isStopped = false;
+        _agent.updateRotation = true;
+        _agent.SetDestination(targetPos.transform.position);
+
+        if (_targetPosition != null)
+            _targetPosition.SetOccupied(false); // Leave free current target position
+        _targetPosition = targetPos; // Update the target position
+        _targetPosition.SetOccupied(true);
+
+        if (animation != -1)
+            _animationWhenArrived = animation; // Set the animation to play when arriving
+
+        if (HasArrived()) return;
+        else ChangeAnimationTo(walkAnim);
     }
 
     /// <summary>
@@ -93,6 +126,13 @@ where TController : ABehaviourController<TController>
                 _agent.updateRotation = false; // Disable automatic rotation
                 transform.rotation = Quaternion.Euler(_targetPosition.DirectionToVector());
             }
+
+            if (_animationWhenArrived != -1)
+            {
+                ChangeAnimationTo(_animationWhenArrived); // Play the animation when arriving
+                _animationWhenArrived = -1; // Reset the animation to play when arriving
+            }
+
             return true;
         }
         else return false;
@@ -106,7 +146,18 @@ where TController : ABehaviourController<TController>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
     public bool HasArrived(Vector3 destination)
     {
-        return Vector3.Distance(transform.position, destination) < minDistanceToTarget;
+
+        if (Vector3.Distance(transform.position, destination) < minDistanceToTarget)
+        {
+            if (_animationWhenArrived != -1)
+            {
+                ChangeAnimationTo(_animationWhenArrived); // Play the animation when arriving
+                _animationWhenArrived = -1; // Reset the animation to play when arriving
+            }
+
+            return true;
+        }
+        else return false;
 
         //if (destination == _agent.destination)
         //    return HasArrived();

@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class Interrupted_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
-    public Interrupted_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm) : base(stackFsm)
-    {
-        stateName = "Interrupted";
-    }
+    public Interrupted_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
+    : base("Interrupted", stackFsm) { }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void StartState()
     {

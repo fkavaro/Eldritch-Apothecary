@@ -6,10 +6,8 @@ using UnityEngine;
 public class Stunned_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
 
-    public Stunned_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
-    {
-        stateName = "Stunned";
-    }
+    public Stunned_ClientState(StackFiniteStateMachine<Client> sfsm)
+    : base("Stunned", sfsm) { }
 
     public override void StartState()
     {

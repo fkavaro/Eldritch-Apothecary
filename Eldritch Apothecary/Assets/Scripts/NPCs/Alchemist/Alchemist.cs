@@ -43,8 +43,8 @@ public class Alchemist : AHumanoid<Alchemist>
 
     protected override void OnUpdate()
     {
-        if (stateName != alchemistSFSM.currentState.stateName)
-            stateName = alchemistSFSM.currentState.stateName;
+        // if (stateName != alchemistSFSM.currentState.stateName)
+        //     stateName = alchemistSFSM.currentState.stateName;
         CheckCatProximity();
 
         //if (!HasReachedMaxScares()) ReactToCat();

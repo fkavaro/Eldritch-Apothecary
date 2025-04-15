@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class FinishPotion_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
-    public FinishPotion_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm) : base(stackFsm)
-    {
-        stateName = "Finish potion";
-    }
+    public FinishPotion_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
+    : base("Finish potion", stackFsm) { }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void StartState()
     {

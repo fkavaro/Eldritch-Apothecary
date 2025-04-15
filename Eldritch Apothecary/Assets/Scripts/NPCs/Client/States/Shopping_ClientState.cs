@@ -6,10 +6,8 @@ using UnityEngine;
 /// </summary>
 public class Shopping_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
-    {
-        stateName = "Shopping";
-    }
+    public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm)
+    : base("Shopping", sfsm) { }
 
     public override void StartState()
     {

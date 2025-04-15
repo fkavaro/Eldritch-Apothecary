@@ -1,3 +1,4 @@
+using System;
 using BehaviourAPI.UtilitySystems;
 using UnityEngine;
 
@@ -7,13 +8,13 @@ public abstract class AAction<TController> where TController : ABehaviourControl
 
     protected TController _behaviourController;
 
-    public AAction(string name, UtilitySystem<TController> utilitySystem)
+    public AAction(string name, UtilitySystem<TController> utilitySystem, bool isDefault = false)
     {
         this.name = name;
         _behaviourController = utilitySystem.controller;
-        utilitySystem.AddAction(this);
+        utilitySystem.AddAction(this, isDefault);
     }
 
-    public abstract float CalculateUtility(TController controller);
-    public abstract void Execute(TController controller);
+    public abstract float CalculateUtility();
+    public abstract void Execute();
 }

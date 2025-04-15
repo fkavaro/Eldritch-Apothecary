@@ -5,10 +5,8 @@ using UnityEngine;
 /// </summary>
 public class WaitForService_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public WaitForService_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
-    {
-        stateName = "Waiting for service";
-    }
+    public WaitForService_ClientState(StackFiniteStateMachine<Client> sfsm)
+    : base("Waiting for service", sfsm) { }
 
     public override void StartState()
     {

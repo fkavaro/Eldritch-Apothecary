@@ -10,29 +10,29 @@ public class Receptionist : AHumanoid<Receptionist>
     #endregion
 
     #region PRIVATE PROPERTIES
-    StackFiniteStateMachine<Receptionist> _receptionistSFSM;
     UtilitySystem<Receptionist> _receptionistUS;
     #endregion
 
-    #region STATES
-    public Idle_ReceptionistState idleState;
-    public Serving_ReceptionistState servingState;
-    public Attending_ReceptionistState attendingState;
-    public CalmingDown_ReceptionistState calmingDownState;
+    #region ACTIONS
+    public Idle_ReceptionistAction idleAction;
+    public Serving_ReceptionistAction servingAction;
+    public Attending_ReceptionistAction attendingAction;
+    public CalmingDown_ReceptionistAction calmingDownAction;
     #endregion
 
     protected override ADecisionSystem<Receptionist> CreateDecisionSystem()
     {
-        // Stack Finite State Machine
-        _receptionistSFSM = new(this);
+        // Utility System
+        _receptionistUS = new(this);
 
-        // States initialization
-        idleState = new(_receptionistSFSM);
+        // Actions initialization
+        idleAction = new(_receptionistUS, true);// Default action: will try to make decisions
+        //_receptionistUS.SetDefaultAction(idleAction);
+        servingAction = new(_receptionistUS);
+        attendingAction = new(_receptionistUS);
+        calmingDownAction = new(_receptionistUS);
 
-        // Initial state
-        _receptionistSFSM.SetInitialState(idleState);
-
-        return _receptionistSFSM;
+        return _receptionistUS;
     }
 
     protected override void OnStart()
@@ -43,6 +43,11 @@ public class Receptionist : AHumanoid<Receptionist>
     protected override void OnUpdate()
     {
 
+    }
+
+    internal bool IsBusy()
+    {
+        throw new NotImplementedException();
     }
 
     #region PUBLIC METHODS

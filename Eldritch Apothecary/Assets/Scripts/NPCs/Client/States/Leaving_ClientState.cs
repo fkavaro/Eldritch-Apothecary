@@ -5,10 +5,8 @@ using UnityEngine;
 /// </summary>
 public class Leaving_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public Leaving_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
-    {
-        stateName = "Leaving";
-    }
+    public Leaving_ClientState(StackFiniteStateMachine<Client> sfsm)
+    : base("Leaving", sfsm) { }
 
     public override void StartState()
     {

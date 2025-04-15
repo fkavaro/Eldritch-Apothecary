@@ -5,10 +5,8 @@ using UnityEngine;
 /// </summary>
 public class PickPotionUp_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public PickPotionUp_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
-    {
-        stateName = "Picking potion";
-    }
+    public PickPotionUp_ClientState(StackFiniteStateMachine<Client> sfsm)
+    : base("Picking potion", sfsm) { }
 
     public override void StartState()
     {

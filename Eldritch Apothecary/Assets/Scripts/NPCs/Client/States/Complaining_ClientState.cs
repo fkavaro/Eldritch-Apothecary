@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class Complaining_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public Complaining_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
-    {
-        stateName = "Complaining";
-    }
+    public Complaining_ClientState(StackFiniteStateMachine<Client> sfsm)
+    : base("Complaining", sfsm) { }
 
     public override void StartState()
     {

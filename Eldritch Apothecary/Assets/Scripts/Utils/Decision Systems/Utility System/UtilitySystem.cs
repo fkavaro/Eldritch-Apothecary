@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class UtilitySystem<TController> : ADecisionSystem<TController>
 where TController : ABehaviourController<TController>
@@ -20,7 +21,7 @@ where TController : ABehaviourController<TController>
 
     protected override void DebugDecision()
     {
-        controller.stateText.text = _currentAction.name;
+        controller.actionText.text = _currentAction.name;
     }
 
 
@@ -33,7 +34,8 @@ where TController : ABehaviourController<TController>
     public override void Update()
     {
         // Logic for updating the decision system (if needed)
-        if (_currentAction == null)
+        // Make a decicision during default action
+        if (_currentAction == _defaultAction)
         {
             MakeDecision();
         }
@@ -55,13 +57,18 @@ where TController : ABehaviourController<TController>
             _defaultAction = action; // Set the new action as default
     }
 
+    public void SetDefaultAction(AAction<TController> action)
+    {
+        _defaultAction = action; // Set the new action as default
+    }
+
     void MakeDecision()
     {
         if (_currentAction != null) return; // Don't interrupt current action
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
-            _actionUtilities.Add(action, action.CalculateUtility(controller));
+            _actionUtilities.Add(action, action.CalculateUtility());
 
         // Find the action with the highest utility
         AAction<TController> bestAction = _actionUtilities.OrderByDescending(pair => pair.Value).FirstOrDefault().Key;
@@ -73,7 +80,7 @@ where TController : ABehaviourController<TController>
         else // If no action has positive utility, use the default action
             _currentAction = _defaultAction;
 
-        _currentAction.Execute(controller);
+        _currentAction.Execute();
 
         DebugDecision();
 

@@ -5,10 +5,8 @@ using UnityEngine;
 /// </summary>
 public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
-    public WaitForReceptionist_ClientState(StackFiniteStateMachine<Client> sfsm) : base(sfsm)
-    {
-        stateName = "Wait for receptionist";
-    }
+    public WaitForReceptionist_ClientState(StackFiniteStateMachine<Client> sfsm)
+    : base("Waiting in line", sfsm) { }
 
     public override void StartState()
     {

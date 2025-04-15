@@ -31,7 +31,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     {
         //if (controller.debugMode)
         //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
-        controller.stateText.text = currentState.stateName;
+        controller.stateText.text = currentState.StateName;
     }
 
     #region UNITY EXECUTION EVENTS

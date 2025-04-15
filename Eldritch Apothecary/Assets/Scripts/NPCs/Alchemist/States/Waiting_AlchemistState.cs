@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class Waiting_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
-    public Waiting_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm) : base(stackFsm)
-    {
-        stateName = "Waiting";
-    }
+    public Waiting_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
+    : base("Waiting", stackFsm) { }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void StartState()
     {

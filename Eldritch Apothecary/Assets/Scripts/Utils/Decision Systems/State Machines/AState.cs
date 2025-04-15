@@ -8,9 +8,11 @@ public abstract class AState<TController, TStateMachine>
     where TController : ABehaviourController<TController>
     where TStateMachine : AStateMachine<TController, TStateMachine>
 {
-    public string stateName;
+    protected string _stateName;
     protected TController _behaviourController;
     protected TStateMachine _stateMachine;
+
+    public string StateName => _stateName;
 
     /// <summary>
     /// Flag to check if the coroutine has started.
@@ -23,8 +25,9 @@ public abstract class AState<TController, TStateMachine>
     protected float _stateTime = 0f;
 
     // Constructor given AStateMachine
-    public AState(TStateMachine stateMachine)
+    public AState(string name, TStateMachine stateMachine)
     {
+        _stateName = name;
         _stateMachine = stateMachine;
         _behaviourController = stateMachine.controller;
     }
