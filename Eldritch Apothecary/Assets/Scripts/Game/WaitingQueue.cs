@@ -5,6 +5,11 @@ using System.Linq;
 
 public class WaitingQueue
 {
+    /// <summary>
+    /// A client has left the queue
+    /// </summary>
+    public event Action<Client> NextTurnEvent;
+
     readonly List<Transform> queuePositions;
     readonly Queue<Client> clientsQueue = new();
     readonly object queueLock = new();
@@ -36,6 +41,7 @@ public class WaitingQueue
             {
                 clientsQueue.Dequeue();
                 UpdateQueuePositions();
+                NextTurnEvent?.Invoke(clientsQueue.Peek());
             }
         }
     }
@@ -75,6 +81,19 @@ public class WaitingQueue
             // Rotate to next position
             Vector3 lookDirection = (queuePositions[index - 1].position - clientContext.transform.position).normalized;
             clientContext.transform.rotation = Quaternion.Euler(lookDirection);
+        }
+    }
+
+    public float GetNextClientWaitingTime()
+    {
+        return clientsQueue.Count > 0 ? clientsQueue.Peek().timeWaiting : 0f;
+    }
+
+    public bool HasAnyClient()
+    {
+        lock (queueLock)
+        {
+            return clientsQueue.Count > 0;
         }
     }
     #endregion

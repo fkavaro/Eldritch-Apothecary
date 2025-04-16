@@ -45,10 +45,17 @@ where TController : ABehaviourController<TController>
 
     #region PUBLIC METHODS
     /// <summary>
-    /// Sets the target position for the NavMeshAgent to navigate to and fixes rotation.
+    /// Sets the target position for the NavMeshAgent to navigate to
+    /// and optionally the animation to play when arriving.
     /// </summary>
     public void SetTargetSpot(Spot targetPos, int animationWhenArrived = -1)
     {
+        if (!_agent.isOnNavMesh)
+        {
+            Debug.LogError("SetTarget(): NavMeshAgent is not on a NavMesh.");
+            return;
+        }
+
         if (_targetPosition != null)
             _targetPosition.SetOccupied(false); // Leave free current target position
         _targetPosition = targetPos; // Update the target position
@@ -58,18 +65,19 @@ where TController : ABehaviourController<TController>
     }
 
     /// <summary>
-    /// Sets the target position for the NavMeshAgent to navigate to.
+    /// Sets the target position for the NavMeshAgent to navigate to
+    /// and optionally the animation to play when arriving.
     /// </summary>
     public void SetTargetPos(Vector3 targetPos, int animationWhenArrived = -1)
     {
-        if (animationWhenArrived != -1)
-            _animationWhenArrived = animationWhenArrived; // Set the animation to play when arriving
-
         if (!_agent.isOnNavMesh)
         {
             Debug.LogError("SetTarget(): NavMeshAgent is not on a NavMesh.");
             return;
         }
+
+        if (animationWhenArrived != -1)
+            _animationWhenArrived = animationWhenArrived; // Set the animation to play when arriving
 
         _agent.isStopped = false;
         _agent.updateRotation = true;
@@ -80,7 +88,8 @@ where TController : ABehaviourController<TController>
     }
 
     /// <summary>
-    /// Checks if the NavMeshAgent has arrived at its destination, and if the target is a spot, fixes its rotation.
+    /// Checks if the NavMeshAgent has arrived at its destination, 
+    /// and if the target is a spot, fixes its rotation.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
     public bool HasArrived()
@@ -97,6 +106,8 @@ where TController : ABehaviourController<TController>
     {
         if (Vector3.Distance(transform.position, destination) < minDistanceToTarget)
         {
+            Debug.Log($"{gameObject.name} has arrived at {destination}.");
+
             if (_targetPosition != null)
             {
                 _agent.updateRotation = false; // Disable automatic rotation

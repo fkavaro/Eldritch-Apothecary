@@ -53,7 +53,16 @@ public class Receptionist : AHumanoid<Receptionist>
     /// </summary>
     public bool IsBusy()
     {
-        throw new NotImplementedException();
+        return ApothecaryManager.Instance.waitingQueue.HasAnyClient();// || ApothecaryManager.Instance.potionManager.HasPotionToServe();
+    }
+
+    /// <summary>
+    /// Returns true if the receptionist is ready to attend clients at the counter.
+    /// </summary>
+    /// <returns></returns>
+    public bool Interact()
+    {
+        return _receptionistUS.IsCurrentAction(attendingAction);
     }
     #endregion
 

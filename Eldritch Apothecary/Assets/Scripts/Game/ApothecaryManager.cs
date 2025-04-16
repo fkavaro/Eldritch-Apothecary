@@ -19,7 +19,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     [Header("Staff members")]
     public GameObject cat;
-    public GameObject receptionist;
+    public Receptionist receptionist;
 
     [Header("Clients properties")]
     [Tooltip("Parent for all instantiated clients")]
@@ -64,7 +64,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     List<Spot> _shopStands = new(),
         _seatsPositions = new();
-    float _nextClientTime = 0f;
+    float _spawnNextClientTime = 0f;
     #endregion
 
     #region EXECUTION METHODS
@@ -104,9 +104,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             Time.timeScale = simSpeed;
 
         // Clients keep coming if there's room for them
-        if (Time.time >= _nextClientTime && clientsPool.CountActive < maxClients)
+        if (Time.time >= _spawnNextClientTime && clientsPool.CountActive < maxClients)
         {
-            _nextClientTime = Time.time + spawnTimer; // Reset timer
+            _spawnNextClientTime = Time.time + spawnTimer; // Reset timer
             clientsPool.Get();
         }
     }

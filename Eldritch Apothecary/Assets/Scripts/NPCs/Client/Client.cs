@@ -21,6 +21,8 @@ public class Client : AHumanoid<Client>
 
 	[Tooltip("Maximum waiting minutes"), Range(2, 10)]
 	public int maxMinutesWaiting = 2;
+	[Tooltip("Seconds waiting first in line")]
+	public float timeWaiting = 0f;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
 	public int scareProbability = 3;
 	[Tooltip("Maximum number of scares supported"), Range(1, 5)]
@@ -42,6 +44,7 @@ public class Client : AHumanoid<Client>
 	public AtSorcerer_ClientState atSorcererState;
 	public PickPotionUp_ClientState pickPotionUpState;
 	public Leaving_ClientState leavingState;
+
 	#endregion
 
 	#region INHERITED METHODS
@@ -94,6 +97,11 @@ public class Client : AHumanoid<Client>
 		RandomizeProperties();
 		ReactivateAgent(); // ANPC
 		ResetBehaviour(); // ABehaviourController
+	}
+
+	public bool FirstInLineTooLong()
+	{
+		return timeWaiting >= maxMinutesWaiting * 60f;
 	}
 	#endregion
 

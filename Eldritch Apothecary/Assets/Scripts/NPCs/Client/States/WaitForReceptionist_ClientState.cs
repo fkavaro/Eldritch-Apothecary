@@ -10,22 +10,19 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
 
     public override void StartState()
     {
-        // Add client to the queue
-        //ApothecaryManager.Instance.EnterQueue(_behaviourController);
-
         // Set target to the last position in line
         _behaviourController.SetTargetPos(ApothecaryManager.Instance.waitingQueue.LastInLine());
     }
 
     public override void UpdateState()
     {
-        if (_coroutineStarted) return;
-
         // Update state time
         _stateTime += Time.deltaTime;
 
-        // Has been waiting for too long
-        if (_behaviourController.maxMinutesWaiting <= _stateTime / 60f)
+        if (_coroutineStarted) return;
+
+        // Has been waiting first in line for too long
+        if (_behaviourController.FirstInLineTooLong())
         {
             _stateMachine.SwitchState(_behaviourController.complainingState);
         }
@@ -39,14 +36,24 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
         // Has arrived the receptionist counter, first position in line
         else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
         {
-            // Talks before changing state
-            _behaviourController.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
-            _behaviourController.ChangeAnimationTo(_behaviourController.talkAnim);
+            // Can interact with receptionist: is ready to attend clients at the counter
+            if (ApothecaryManager.Instance.receptionist.Interact())
+            {
+                // Talks before changing state
+                _behaviourController.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
+                _behaviourController.ChangeAnimationTo(_behaviourController.talkAnim);
 
-            if (_behaviourController.wantedService == Client.WantedService.OnlyShop)
-                _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Talking"));
+                if (_behaviourController.wantedService == Client.WantedService.OnlyShop)
+                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Talking"));
+                else
+                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForServiceState, "Talking"));
+            }
+            // Receptionist is not at the counter
             else
-                _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForServiceState, "Talking"));
+            {
+                // Increase time waiting
+                _behaviourController.timeWaiting += 1f;
+            }
         }
         // Has arrived the next queue position
         else if (_behaviourController.HasArrived())
@@ -63,5 +70,6 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
         ApothecaryManager.Instance.waitingQueue.NextTurn();
 
         _stateTime = 0f;
+        _behaviourController.timeWaiting = 0f;
     }
 }

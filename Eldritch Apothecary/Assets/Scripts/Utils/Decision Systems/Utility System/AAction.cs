@@ -16,5 +16,7 @@ public abstract class AAction<TController> where TController : ABehaviourControl
     }
 
     public abstract float CalculateUtility();
-    public abstract void Execute();
+    public abstract void StartAction();
+    public abstract void UpdateAction();
+    public abstract bool IsFinished();
 }

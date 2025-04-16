@@ -23,10 +23,20 @@ public class Serving_ReceptionistAction : AAction<Receptionist>
         return 0f;
     }
 
-    public override void Execute()
+    public override void StartAction()
     {
         // Start serving the patient
         // controller.StartServing();
         //_behaviourController.SetTargetSpot(ApothecaryManager.Instance.GetPreparedPotionPos, _behaviourController.pickUpAnim);
+    }
+
+    public override void UpdateAction()
+    {
+
+    }
+
+    public override bool IsFinished()
+    {
+        throw new System.NotImplementedException();
     }
 }

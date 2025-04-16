@@ -17,7 +17,6 @@ where TController : ABehaviourController<TController>
     /// </summary>
     Dictionary<AAction<TController>, float> _actionUtilities = new();
 
-
     public UtilitySystem(TController controller) : base(controller) { }
 
     #region INHERITED METHODS
@@ -32,22 +31,29 @@ where TController : ABehaviourController<TController>
         // Invokes the method in time seconds, then repeatedly every repeatRate seconds
         //controller.InvokeRepeating("MakeDecision", 0f, 0.5f);
 
-        //_currentAction = _defaultAction;
+        //Reset();
     }
 
     public override void Update()
     {
-        // Logic for updating the decision system (if needed)
         // Make a decicision during default action
         if (_currentAction == null || _currentAction == _defaultAction)
         {
             MakeDecision();
         }
+        else // Current action is not the default
+        {
+            _currentAction.UpdateAction(); // Update the current action
+
+            // Check if it has finished
+            if (_currentAction.IsFinished())
+                Reset();
+        }
     }
 
     public override void Reset()
     {
-        _currentAction = null;
+        _currentAction = null; // ? = defaultAction
     }
     #endregion
 
@@ -60,12 +66,18 @@ where TController : ABehaviourController<TController>
         _actions.Add(action);
 
         if (isDefault)
-            _defaultAction = action; // Set the new action as default
+            SetDefaultAction(action); // Set the default action if specified
     }
 
     public void SetDefaultAction(AAction<TController> action)
     {
         _defaultAction = action; // Set the new action as default
+    }
+
+    public bool IsCurrentAction(AAction<TController> action)
+    {
+        if (_currentAction == null) return false; // No current action
+        return _currentAction == action; // Check if the current action is the same as the given one
     }
     #endregion
 
@@ -88,7 +100,7 @@ where TController : ABehaviourController<TController>
         else // If no action has positive utility, use the default action
             _currentAction = _defaultAction;
 
-        _currentAction.Execute();
+        _currentAction.StartAction();
 
         DebugDecision();
 
