@@ -1,21 +1,18 @@
 using System;
 using UnityEngine;
 
-public class Attending_ReceptionistAction : AAction<Receptionist>
+public class Attending_ReceptionistAction : ALinearAction<Receptionist>
 {
     bool _clientHasChanged = false; // Flag to check if the next client is ready to be served
 
-    public Attending_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem, bool isDefault = false)
-    : base("Attending clients", utilitySystem, isDefault) { }
+    public Attending_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem)
+    : base("Attending clients", utilitySystem) { }
 
-    public override float CalculateUtility()
+    protected override float SetDecisionFactor()
     {
         // Return the time that the next client has been waiting
         // Normalized between 0 and the maximun waiting time of the client
-        float utility = ApothecaryManager.Instance.waitingQueue.GetNextClientNormalizedWaitingTime();
-
-        //Debug.Log(name + " utility: " + utility);
-        return utility;
+        return ApothecaryManager.Instance.waitingQueue.GetNextClientNormalizedWaitingTime();
     }
 
     public override void StartAction()

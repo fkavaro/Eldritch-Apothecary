@@ -70,7 +70,7 @@ public class WaitingQueue
         }
     }
 
-    // TODO: FIX METHOD, bug: looks forward
+    // TODO: FIX METHOD, bug: looks always forward
     public void FixRotation(Client clientContext)
     {
         lock (_queueLock)

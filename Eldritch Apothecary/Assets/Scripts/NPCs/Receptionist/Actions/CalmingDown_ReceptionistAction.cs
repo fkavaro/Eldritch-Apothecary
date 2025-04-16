@@ -1,25 +1,17 @@
 using UnityEngine;
 
-public class CalmingDown_ReceptionistAction : AAction<Receptionist>
+public class CalmingDown_ReceptionistAction : ABinaryAction<Receptionist>
 {
-    public CalmingDown_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem, bool isDefault = false)
-    : base("Calming down a client", utilitySystem, isDefault) { }
+    public CalmingDown_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem)
+    : base("Calming down a client", utilitySystem) { }
 
-    public override float CalculateUtility()
+    protected override bool SetDecisionFactor()
     {
-        float utility;
-
-        // Return 1f if there is a client to calm down, otherwise return 0f
-        utility = 0f;
-
-        //Debug.Log(name + " utility: " + utility);
-        return utility;
+        return ApothecaryManager.Instance.SomeoneComplaining();
     }
 
     public override void StartAction()
     {
-        Debug.Log("Receptionist is calming down a client");
-
         // Approaches the client and calms them down
         _behaviourController.SetTargetPos(ApothecaryManager.Instance.complainingPosition.position);
     }

@@ -8,6 +8,8 @@ public class Receptionist : AHumanoid<Receptionist>
 {
     #region PUBLIC PROPERTIES
     [Header("Receptionist Properties")]
+    [Tooltip("Whether the receptionist is busy attending clients")]
+    public bool isBusy => ApothecaryManager.Instance.waitingQueue.HasAnyClient();
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -28,11 +30,12 @@ public class Receptionist : AHumanoid<Receptionist>
         _receptionistUS = new(this);
 
         // Actions initialization
-        _idleAction = new(_receptionistUS, true);// Default action: will try to make decisions
-                                                 //_receptionistUS.SetDefaultAction(idleAction);
+        _idleAction = new(_receptionistUS);
         _servingAction = new(_receptionistUS);
         _attendingAction = new(_receptionistUS);
         _calmingDownAction = new(_receptionistUS);
+
+        _receptionistUS.SetDefaultAction(_idleAction);
 
         return _receptionistUS;
     }
@@ -64,6 +67,11 @@ public class Receptionist : AHumanoid<Receptionist>
     public bool Interact()
     {
         return _receptionistUS.IsCurrentAction(_attendingAction);
+    }
+
+    internal void SetTargetPos(Vector3 position, float v)
+    {
+        throw new NotImplementedException();
     }
     #endregion
 

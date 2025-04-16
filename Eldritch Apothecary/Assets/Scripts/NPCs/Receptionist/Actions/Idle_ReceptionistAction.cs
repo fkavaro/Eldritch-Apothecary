@@ -1,22 +1,13 @@
 using UnityEngine;
 
-public class Idle_ReceptionistAction : AAction<Receptionist>
+public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
 {
-    public Idle_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem, bool isDefault = false)
-    : base("Idle", utilitySystem, isDefault) { }
+    public Idle_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem)
+    : base("Idle", utilitySystem, true) { }
 
-    public override float CalculateUtility()
+    protected override bool SetDecisionFactor()
     {
-        float utility;
-
-        // Check if the receptionist is busy
-        if (_behaviourController.IsBusy())
-            utility = 0f; // No utility if busy
-        else
-            utility = 1f; // Full utility for idle
-
-        //Debug.Log(name + " utility: " + utility);
-        return utility;
+        return _behaviourController.IsBusy();
     }
 
     public override void StartAction()

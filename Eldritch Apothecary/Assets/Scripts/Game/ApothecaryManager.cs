@@ -122,6 +122,16 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         return RandomPosition(_pickUpPositions);
     }
+
+    public bool SomeoneComplaining()
+    {
+        return false; // TODO
+    }
+
+    public float GetNormalizedPreparedPotionsNumber()
+    {
+        return 0f; // TODO
+    }
     #endregion
 
     #region PRIVATE METHODS

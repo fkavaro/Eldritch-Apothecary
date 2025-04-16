@@ -1,32 +1,19 @@
 using UnityEngine;
 
-public class Serving_ReceptionistAction : AAction<Receptionist>
+public class Serving_ReceptionistAction : ALinearAction<Receptionist>
 {
-    public Serving_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem, bool isDefault = false)
-    : base("Serving potions", utilitySystem, isDefault) { }
+    public Serving_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem)
+    : base("Serving potions", utilitySystem) { }
 
-    public override float CalculateUtility()
+    protected override float SetDecisionFactor()
     {
-        // // Check if the receptionist is already serving someone
-        // if (controller.IsServing())
-        //     return 0f; // No utility if already serving
-
-        // // Check if the receptionist is available to serve
-        // if (!controller.IsAvailable())
-        //     return 0f; // No utility if not available
-
-        // // Calculate utility based on the number of patients waiting
-        // int waitingPatients = controller.GetWaitingPatientsCount();
-        // return Mathf.Clamp01(1f - (waitingPatients / 10f)); // Example utility calculation
-
-        // Return number of potions already prepared, ready to be served
-        return 0f;
+        // Return the number of potions already prepared, ready to be served
+        // Normalized between 0 and the maximum number of potions that can wait to be served
+        return ApothecaryManager.Instance.GetNormalizedPreparedPotionsNumber();
     }
 
     public override void StartAction()
     {
-        Debug.Log("Receptionist is serving a client");
-
         // Start serving the patient
         // controller.StartServing();
         //_behaviourController.SetTargetSpot(ApothecaryManager.Instance.GetPreparedPotionPos, _behaviourController.pickUpAnim);
@@ -39,6 +26,7 @@ public class Serving_ReceptionistAction : AAction<Receptionist>
 
     public override bool IsFinished()
     {
+        // True if the taken potion has been served
         throw new System.NotImplementedException();
     }
 }
