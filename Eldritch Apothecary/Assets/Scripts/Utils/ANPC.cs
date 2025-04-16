@@ -45,35 +45,26 @@ where TController : ABehaviourController<TController>
 
     #region PUBLIC METHODS
     /// <summary>
-    /// Sets the target position for the NavMeshAgent to navigate to, 
-    /// fixes rotation and sets animation to play when arriving.
-    /// </summary>
-    public void SetTargetSpot(Spot targetPos, int animationWhenArrived)
-    {
-        if (animationWhenArrived != -1)
-            _animationWhenArrived = animationWhenArrived; // Set the animation to play when arriving
-
-        SetTargetSpot(targetPos); // Set the target position
-    }
-
-    /// <summary>
     /// Sets the target position for the NavMeshAgent to navigate to and fixes rotation.
     /// </summary>
-    public void SetTargetSpot(Spot targetPos)
+    public void SetTargetSpot(Spot targetPos, int animationWhenArrived = -1)
     {
         if (_targetPosition != null)
             _targetPosition.SetOccupied(false); // Leave free current target position
         _targetPosition = targetPos; // Update the target position
         _targetPosition.SetOccupied(true);
 
-        SetTargetPos(targetPos.transform.position); // Set the target position for the NavMeshAgent
+        SetTargetPos(targetPos.transform.position, animationWhenArrived); // Set the target position for the NavMeshAgent
     }
 
     /// <summary>
     /// Sets the target position for the NavMeshAgent to navigate to.
     /// </summary>
-    public void SetTargetPos(Vector3 targetPos)
+    public void SetTargetPos(Vector3 targetPos, int animationWhenArrived = -1)
     {
+        if (animationWhenArrived != -1)
+            _animationWhenArrived = animationWhenArrived; // Set the animation to play when arriving
+
         if (!_agent.isOnNavMesh)
         {
             Debug.LogError("SetTarget(): NavMeshAgent is not on a NavMesh.");
@@ -110,7 +101,7 @@ where TController : ABehaviourController<TController>
             {
                 _agent.updateRotation = false; // Disable automatic rotation
                 transform.rotation = Quaternion.Euler(_targetPosition.DirectionToVector());
-                _targetPosition = null; // Reset the target position
+                //!NO _targetPosition = null; // Reset the target position
             }
 
             if (_animationWhenArrived != -1)

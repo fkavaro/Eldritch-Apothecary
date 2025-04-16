@@ -18,12 +18,15 @@ public class Serving_ReceptionistAction : AAction<Receptionist>
         // // Calculate utility based on the number of patients waiting
         // int waitingPatients = controller.GetWaitingPatientsCount();
         // return Mathf.Clamp01(1f - (waitingPatients / 10f)); // Example utility calculation
-        throw new System.NotImplementedException();
+
+        // Return number of potions already prepared, ready to be served
+        return 0f;
     }
 
     public override void Execute()
     {
         // Start serving the patient
         // controller.StartServing();
+        //_behaviourController.SetTargetSpot(ApothecaryManager.Instance.GetPreparedPotionPos, _behaviourController.pickUpAnim);
     }
 }

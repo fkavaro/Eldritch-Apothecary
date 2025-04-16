@@ -20,6 +20,7 @@ public class Receptionist : AHumanoid<Receptionist>
     public CalmingDown_ReceptionistAction calmingDownAction;
     #endregion
 
+    #region INHERITED METHODS
     protected override ADecisionSystem<Receptionist> CreateDecisionSystem()
     {
         // Utility System
@@ -28,10 +29,9 @@ public class Receptionist : AHumanoid<Receptionist>
         // Actions initialization
         idleAction = new(_receptionistUS, true);// Default action: will try to make decisions
                                                 //_receptionistUS.SetDefaultAction(idleAction);
-
-        //servingAction = new(_receptionistUS);
-        //attendingAction = new(_receptionistUS);
-        //calmingDownAction = new(_receptionistUS);
+        servingAction = new(_receptionistUS);
+        attendingAction = new(_receptionistUS);
+        calmingDownAction = new(_receptionistUS);
 
         return _receptionistUS;
     }
@@ -45,13 +45,16 @@ public class Receptionist : AHumanoid<Receptionist>
     {
 
     }
+    #endregion
 
-    internal bool IsBusy()
+    #region PUBLIC METHODS
+    /// <summary>
+    /// Returns true if there is a client to attend or potion to serve.
+    /// </summary>
+    public bool IsBusy()
     {
         throw new NotImplementedException();
     }
-
-    #region PUBLIC METHODS
     #endregion
 
     #region PRIVATE METHODS
