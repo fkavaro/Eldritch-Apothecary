@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using Unity.VisualScripting;
 
 public class UtilitySystem<TController> : ADecisionSystem<TController>
 where TController : ABehaviourController<TController>
@@ -28,32 +29,27 @@ where TController : ABehaviourController<TController>
 
     public override void Start()
     {
-        // Invokes the method in time seconds, then repeatedly every repeatRate seconds
-        //controller.InvokeRepeating("MakeDecision", 0f, 0.5f);
-
-        //Reset();
+        Reset();
     }
 
     public override void Update()
     {
-        // Make a decicision during default action
-        if (_currentAction == null || _currentAction == _defaultAction)
-        {
+        // Check actions utilities while in default action 
+        if (_currentAction == _defaultAction)
             MakeDecision();
-        }
-        else // Current action is not the default
-        {
-            _currentAction.UpdateAction(); // Update the current action
 
-            // Check if it has finished
-            if (_currentAction.IsFinished())
-                Reset();
-        }
+        // Update the current action
+        _currentAction.UpdateAction();
+
+        // Check if it has finished
+        if (_currentAction.IsFinished())
+            Reset();
     }
 
     public override void Reset()
     {
-        _currentAction = null; // ? = defaultAction
+        _currentAction = _defaultAction;
+        _currentAction?.StartAction(); // Start the default action
     }
     #endregion
 
@@ -84,7 +80,7 @@ where TController : ABehaviourController<TController>
     #region PRIVATE METHODS
     void MakeDecision()
     {
-        //if (_currentAction != null) return; // Don't interrupt current action
+        //        Debug.Log(controller.name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
@@ -93,14 +89,23 @@ where TController : ABehaviourController<TController>
         // Find the action with the highest utility
         AAction<TController> bestAction = _actionUtilities.OrderByDescending(pair => pair.Value).FirstOrDefault().Key;
 
-        // Execute the best action (if any with positive utility)
-        // Assuming the action will handle cleaning 'currentAction' when it finishes (Reset())
-        if (bestAction != null && _actionUtilities[bestAction] > 0f)
-            _currentAction = bestAction;
-        else // If no action has positive utility, use the default action
-            _currentAction = _defaultAction;
+        // If the best action has negative utility, use the default action
+        if (_actionUtilities[bestAction] < 0f || bestAction == null)
+        {
+            Debug.LogError($"Best action is null or has negative utility, using default action: {_defaultAction.name}");
+            bestAction = _defaultAction;
+        }
 
-        _currentAction.StartAction();
+
+        // Start the best action if it's different from the current one
+        if (bestAction != _currentAction)
+        {
+            _currentAction = bestAction;
+            _currentAction.StartAction();
+        }
+
+        // Debug the decision made
+        Debug.Log($"Decision made: {_currentAction.name} with utility {_actionUtilities[_currentAction]}");
 
         DebugDecision();
 

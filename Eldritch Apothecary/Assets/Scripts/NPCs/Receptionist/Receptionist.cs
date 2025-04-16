@@ -7,6 +7,7 @@ using UnityEngine;
 public class Receptionist : AHumanoid<Receptionist>
 {
     #region PUBLIC PROPERTIES
+    [Header("Receptionist Properties")]
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -14,10 +15,10 @@ public class Receptionist : AHumanoid<Receptionist>
     #endregion
 
     #region ACTIONS
-    public Idle_ReceptionistAction idleAction;
-    public Serving_ReceptionistAction servingAction;
-    public Attending_ReceptionistAction attendingAction;
-    public CalmingDown_ReceptionistAction calmingDownAction;
+    Idle_ReceptionistAction _idleAction;
+    Serving_ReceptionistAction _servingAction;
+    Attending_ReceptionistAction _attendingAction;
+    CalmingDown_ReceptionistAction _calmingDownAction;
     #endregion
 
     #region INHERITED METHODS
@@ -27,11 +28,11 @@ public class Receptionist : AHumanoid<Receptionist>
         _receptionistUS = new(this);
 
         // Actions initialization
-        idleAction = new(_receptionistUS, true);// Default action: will try to make decisions
-                                                //_receptionistUS.SetDefaultAction(idleAction);
-        servingAction = new(_receptionistUS);
-        attendingAction = new(_receptionistUS);
-        calmingDownAction = new(_receptionistUS);
+        _idleAction = new(_receptionistUS, true);// Default action: will try to make decisions
+                                                 //_receptionistUS.SetDefaultAction(idleAction);
+        _servingAction = new(_receptionistUS);
+        _attendingAction = new(_receptionistUS);
+        _calmingDownAction = new(_receptionistUS);
 
         return _receptionistUS;
     }
@@ -62,7 +63,7 @@ public class Receptionist : AHumanoid<Receptionist>
     /// <returns></returns>
     public bool Interact()
     {
-        return _receptionistUS.IsCurrentAction(attendingAction);
+        return _receptionistUS.IsCurrentAction(_attendingAction);
     }
     #endregion
 

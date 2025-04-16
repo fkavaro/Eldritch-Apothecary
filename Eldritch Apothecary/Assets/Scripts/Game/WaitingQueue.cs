@@ -10,13 +10,13 @@ public class WaitingQueue
     /// </summary>
     public event Action<Client> NextTurnEvent;
 
-    readonly List<Transform> queuePositions;
-    readonly Queue<Client> clientsQueue = new();
-    readonly object queueLock = new();
+    readonly List<Transform> _queuePositions;
+    readonly Queue<Client> _clientsQueue = new();
+    readonly object _queueLock = new();
 
     public WaitingQueue(List<Transform> queuePositions)
     {
-        this.queuePositions = queuePositions;
+        this._queuePositions = queuePositions;
     }
 
     #region PUBLIC METHODS
@@ -24,76 +24,85 @@ public class WaitingQueue
     {
         //Debug.Log($"Client {client.name} entered the queue.");
 
-        lock (queueLock)
+        lock (_queueLock)
         {
-            if (clientsQueue.Contains(client)) return;
+            if (_clientsQueue.Contains(client)) return;
 
-            clientsQueue.Enqueue(client);
+            _clientsQueue.Enqueue(client);
             UpdateQueuePositions();
         }
     }
 
     public void NextTurn()
     {
-        lock (queueLock)
+        lock (_queueLock)
         {
-            if (clientsQueue.Count > 0)
+            if (_clientsQueue.Count > 0)
             {
-                clientsQueue.Dequeue();
+                _clientsQueue.Dequeue();
                 UpdateQueuePositions();
-                NextTurnEvent?.Invoke(clientsQueue.Peek());
+                NextTurnEvent?.Invoke(_clientsQueue.Peek());
             }
         }
     }
 
-    public Vector3 FirstInLine()
+    public Vector3 FirstInLinePos()
     {
-        lock (queueLock)
+        lock (_queueLock)
         {
-            return queuePositions[0].position;
+            return _queuePositions[0].position;
         }
     }
 
-    public Vector3 LastInLine()
+    public Vector3 LastInLinePos()
     {
-        lock (queueLock)
+        lock (_queueLock)
         {
-            return queuePositions[^1].position;
+            return _queuePositions[^1].position;
         }
     }
 
     public bool Contains(Client clientContext)
     {
-        lock (queueLock)
+        lock (_queueLock)
         {
-            return clientsQueue.Contains(clientContext);
+            return _clientsQueue.Contains(clientContext);
         }
     }
 
     // TODO: FIX METHOD, bug: looks forward
     public void FixRotation(Client clientContext)
     {
-        lock (queueLock)
+        lock (_queueLock)
         {
-            int index = clientsQueue.ToArray().ToList().IndexOf(clientContext);
+            int index = _clientsQueue.ToArray().ToList().IndexOf(clientContext);
             if (index <= 0) return;
 
             // Rotate to next position
-            Vector3 lookDirection = (queuePositions[index - 1].position - clientContext.transform.position).normalized;
+            Vector3 lookDirection = (_queuePositions[index - 1].position - clientContext.transform.position).normalized;
             clientContext.transform.rotation = Quaternion.Euler(lookDirection);
         }
     }
 
-    public float GetNextClientWaitingTime()
+    /// <summary>
+    /// Returns the normalized time that the next client has been waiting in the queue.
+    /// Normalized between 0 and the maximum waiting time of the client.
+    /// </summary>
+    public float GetNextClientNormalizedWaitingTime()
     {
-        return clientsQueue.Count > 0 ? clientsQueue.Peek().timeWaiting : 0f;
+        if (!HasAnyClient()) return 0f;
+
+        lock (_queueLock)
+        {
+            return _clientsQueue.Peek().normalizedWaitingTime;
+        }
     }
 
     public bool HasAnyClient()
     {
-        lock (queueLock)
+        lock (_queueLock)
         {
-            return clientsQueue.Count > 0;
+            return _clientsQueue.Count > 0;
         }
     }
     #endregion
@@ -101,14 +110,14 @@ public class WaitingQueue
     #region PRIVATE METHODS
     void UpdateQueuePositions()
     {
-        lock (queueLock)
+        lock (_queueLock)
         {
-            if (clientsQueue.Count == 0) return;
+            if (_clientsQueue.Count == 0) return;
 
             int index = 0;
-            foreach (Client client in clientsQueue)
+            foreach (Client client in _clientsQueue)
             {
-                client.SetTargetPos(queuePositions[index].position);
+                client.SetTargetPos(_queuePositions[index].position);
                 index++;
             }
         }

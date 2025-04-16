@@ -37,7 +37,7 @@ where TController : ABehaviourController<TController>
         actionText = debugCanvas?.Find("ActionText").GetComponent<TextMeshProUGUI>();
 
         OnAwake();
-        //_decisionSystem?.Awake(); NO
+        _decisionSystem?.Awake();
     }
     protected virtual void OnAwake() { } // Optionally implemented in subclasses
 
@@ -46,7 +46,7 @@ where TController : ABehaviourController<TController>
         OnStart();
         _decisionSystem = CreateDecisionSystem();
         stateText.gameObject.SetActive(debugMode);
-        //_decisionSystem?.Start(); NO
+        _decisionSystem?.Start();
     }
     protected virtual void OnStart() { } // Optionally implemented in subclasses
 

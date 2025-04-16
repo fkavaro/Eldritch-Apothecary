@@ -104,9 +104,11 @@ where TController : ABehaviourController<TController>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
     public bool HasArrived(Vector3 destination)
     {
+        //Debug.Log($"{gameObject.name} is checking if it has arrived at {destination}.");
+
         if (Vector3.Distance(transform.position, destination) < minDistanceToTarget)
         {
-            Debug.Log($"{gameObject.name} has arrived at {destination}.");
+            //Debug.Log($"{gameObject.name} has arrived at {destination}.");
 
             if (_targetPosition != null)
             {

@@ -19,10 +19,12 @@ public class Client : AHumanoid<Client>
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
 
-	[Tooltip("Maximum waiting minutes"), Range(2, 10)]
+	[Tooltip("Maximum waiting minutes"), Range(1, 4)]
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Seconds waiting first in line")]
 	public float timeWaiting = 0f;
+	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0, 1)]
+	public float normalizedWaitingTime;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
 	public int scareProbability = 3;
 	[Tooltip("Maximum number of scares supported"), Range(1, 5)]
@@ -44,7 +46,6 @@ public class Client : AHumanoid<Client>
 	public AtSorcerer_ClientState atSorcererState;
 	public PickPotionUp_ClientState pickPotionUpState;
 	public Leaving_ClientState leavingState;
-
 	#endregion
 
 	#region INHERITED METHODS
@@ -126,7 +127,7 @@ public class Client : AHumanoid<Client>
 	void RandomizeProperties()
 	{
 		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
-		maxMinutesWaiting = UnityEngine.Random.Range(2, 11); // Chooses a random number of minutes to wait
+		maxMinutesWaiting = UnityEngine.Random.Range(2, 5); // Chooses a random number of minutes to wait
 		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 

@@ -7,22 +7,28 @@ public class Idle_ReceptionistAction : AAction<Receptionist>
 
     public override float CalculateUtility()
     {
+        float utility;
+
         // Check if the receptionist is busy
         if (_behaviourController.IsBusy())
-            return 0f; // No utility if busy
+            utility = 0f; // No utility if busy
         else
-            return 1f; // High utility to idle
+            utility = 1f; // Full utility for idle
+
+        //Debug.Log(name + " utility: " + utility);
+        return utility;
     }
 
     public override void StartAction()
     {
         // Move to counter and wait doing nothing
-        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.receptionistAttendingPos, _behaviourController.idleAnim);
+        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.receptionistAttendingPos);
     }
 
     public override void UpdateAction()
     {
-
+        if (_behaviourController.HasArrived())
+            _behaviourController.ChangeAnimationTo(_behaviourController.idleAnim);
     }
 
     public override bool IsFinished()

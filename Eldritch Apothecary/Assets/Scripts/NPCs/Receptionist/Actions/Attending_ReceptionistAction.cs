@@ -11,7 +11,11 @@ public class Attending_ReceptionistAction : AAction<Receptionist>
     public override float CalculateUtility()
     {
         // Return the time that the next client has been waiting
-        return ApothecaryManager.Instance.waitingQueue.GetNextClientWaitingTime() / 10f;
+        // Normalized between 0 and the maximun waiting time of the client
+        float utility = ApothecaryManager.Instance.waitingQueue.GetNextClientNormalizedWaitingTime();
+
+        //Debug.Log(name + " utility: " + utility);
+        return utility;
     }
 
     public override void StartAction()
@@ -22,17 +26,18 @@ public class Attending_ReceptionistAction : AAction<Receptionist>
         _clientHasChanged = false; // Reset the flag when starting the action
 
         // Move to counter and attend the client
-        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.receptionistAttendingPos, _behaviourController.talkAnim);
+        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.receptionistAttendingPos);
     }
 
     public override void UpdateAction()
     {
-
+        if (_behaviourController.HasArrived())
+            _behaviourController.ChangeAnimationTo(_behaviourController.talkAnim);
     }
 
     public override bool IsFinished()
     {
-        return _clientHasChanged;
+        return _clientHasChanged; // True if client has changed
     }
 
     private void NextClient(Client client)

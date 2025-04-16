@@ -1245,11 +1245,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 2
   occupied: 0
---- !u!1 &125054269 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2319246586507088084, guid: 5d819315111dc474f9d90945e99826ca, type: 3}
+--- !u!114 &125054270 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8171815740549969153, guid: 5d819315111dc474f9d90945e99826ca, type: 3}
   m_PrefabInstance: {fileID: 8551400546701809594}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bbd19a6ed8603409988a030a256c9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &137550345
 GameObject:
   m_ObjectHideFlags: 0
@@ -7022,7 +7028,7 @@ MonoBehaviour:
   dontDestroyOnLoad: 1
   simSpeed: 1
   cat: {fileID: 966011607}
-  receptionist: {fileID: 125054269}
+  receptionist: {fileID: 125054270}
   clientsParent: {fileID: 463564834}
   sorcererSeat: {fileID: 526172423}
   complainingPosition: {fileID: 1332325583}
@@ -7046,7 +7052,7 @@ MonoBehaviour:
   - {fileID: 2024366006334272345, guid: 11172f71038ffd8479dd06cdb8f13cb7, type: 3}
   - {fileID: 2024366006334272345, guid: 2248078768a35cd44aae43f1aeff026a, type: 3}
   - {fileID: 2024366006334272345, guid: a9fcc64e2bc92b04ca4b1e8ead587fa1, type: 3}
-  maxClients: 20
+  maxClients: 10
   spawnTimer: 10
 --- !u!1 &379722256
 GameObject:

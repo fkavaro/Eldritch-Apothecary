@@ -11,7 +11,7 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
     public override void StartState()
     {
         // Set target to the last position in line
-        _behaviourController.SetTargetPos(ApothecaryManager.Instance.waitingQueue.LastInLine());
+        _behaviourController.SetTargetPos(ApothecaryManager.Instance.waitingQueue.LastInLinePos());
     }
 
     public override void UpdateState()
@@ -27,14 +27,14 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
             _stateMachine.SwitchState(_behaviourController.complainingState);
         }
         // Has arrived the last position in line and is not in the queue
-        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.LastInLine())
+        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.LastInLinePos())
                 && !ApothecaryManager.Instance.waitingQueue.Contains(_behaviourController))
         {
             // Enters queue
             ApothecaryManager.Instance.waitingQueue.Enter(_behaviourController);
         }
         // Has arrived the receptionist counter, first position in line
-        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLine()))
+        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLinePos()))
         {
             // Can interact with receptionist: is ready to attend clients at the counter
             if (ApothecaryManager.Instance.receptionist.Interact())
@@ -52,7 +52,9 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
             else
             {
                 // Increase time waiting
-                _behaviourController.timeWaiting += 1f;
+                _behaviourController.timeWaiting += Time.deltaTime;
+                // Normalize time between 0 and the 1 as the maximum waiting time of the client
+                _behaviourController.normalizedWaitingTime = Mathf.Clamp01(_behaviourController.timeWaiting / _behaviourController.maxMinutesWaiting * 60f);
             }
         }
         // Has arrived the next queue position
@@ -61,7 +63,6 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
             // !ApothecaryManager.Instance.waitingQueue.FixRotation(_behaviourController);
             _behaviourController.ChangeAnimationTo(_behaviourController.waitAnim);
         }
-
     }
 
     public override void ExitState()
@@ -71,5 +72,6 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
 
         _stateTime = 0f;
         _behaviourController.timeWaiting = 0f;
+        _behaviourController.normalizedWaitingTime = 0f;
     }
 }

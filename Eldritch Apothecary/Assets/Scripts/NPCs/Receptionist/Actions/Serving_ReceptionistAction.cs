@@ -25,6 +25,8 @@ public class Serving_ReceptionistAction : AAction<Receptionist>
 
     public override void StartAction()
     {
+        Debug.Log("Receptionist is serving a client");
+
         // Start serving the patient
         // controller.StartServing();
         //_behaviourController.SetTargetSpot(ApothecaryManager.Instance.GetPreparedPotionPos, _behaviourController.pickUpAnim);
