@@ -40,7 +40,7 @@ public class Shop
                 //client.SetTarget(randomStand.position);
                 // Set shop stand as ocupied
                 //shopStands[randomStand] = client;
-                randomStand.SetOccupied(true);
+                //randomStand.SetOccupied(true);
                 return randomStand;
             }
             else

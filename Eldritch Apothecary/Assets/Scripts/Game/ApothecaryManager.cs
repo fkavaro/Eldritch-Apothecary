@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -131,6 +132,20 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public float GetNormalizedPreparedPotionsNumber()
     {
         return 0f; // TODO
+    }
+
+    internal bool IsTurn(Client client)
+    {
+        // Switch wanted service
+        switch (client.wantedService)
+        {
+            case Client.WantedService.Sorcerer:
+                return !sorcererSeat.IsOccupied(); // TODO: when its turn indeed
+            case Client.WantedService.Alchemist:
+                return true;
+            default:
+                return false;
+        }
     }
     #endregion
 

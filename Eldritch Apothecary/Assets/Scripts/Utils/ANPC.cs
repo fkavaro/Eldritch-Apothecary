@@ -10,7 +10,7 @@ public abstract class ANPC<TController> : AAnimationController<TController>
 where TController : ABehaviourController<TController>
 {
     NavMeshAgent _agent;
-    Spot _targetPosition = null;
+    Spot _targetSpot = null;
 
     /// <summary>
     /// Animation to play when the agent arrives at target
@@ -23,8 +23,8 @@ where TController : ABehaviourController<TController>
     public float speed = 3f;
     [Tooltip("Agent rotation speed"), Range(0f, 5f)]
     public float rotationSpeed = 3f;
-    [Tooltip("Threshold for target position sampling"), Range(0f, 1f)]
-    public float targetThreshold = 1f;
+    //[Tooltip("Threshold for target position sampling"), Range(0f, 1f)]
+    //public float targetThreshold = 1f;
     [Tooltip("Distance to which it's considered as arrived"), Range(0.3f, 1f)]
     public float minDistanceToTarget = 0.3f;
     #endregion
@@ -48,7 +48,7 @@ where TController : ABehaviourController<TController>
     /// Sets the target position for the NavMeshAgent to navigate to
     /// and optionally the animation to play when arriving.
     /// </summary>
-    public void SetTargetSpot(Spot targetPos, int animationWhenArrived = -1)
+    public void SetTargetSpot(Spot targetSpot, int animationWhenArrived = -1)
     {
         if (!_agent.isOnNavMesh)
         {
@@ -56,10 +56,10 @@ where TController : ABehaviourController<TController>
             return;
         }
 
-        SetTargetPos(targetPos.transform.position, animationWhenArrived); // Set the target position for the NavMeshAgent
+        SetTargetPos(targetSpot.transform.position, animationWhenArrived); // Set the target position for the NavMeshAgent
 
-        _targetPosition = targetPos; // Update the target position
-        _targetPosition.SetOccupied(true);
+        _targetSpot = targetSpot;
+        _targetSpot.SetOccupied(true);
     }
 
     /// <summary>
@@ -74,10 +74,10 @@ where TController : ABehaviourController<TController>
             return;
         }
 
-        if (_targetPosition != null)
-            _targetPosition.SetOccupied(false); // Leave free current target position
+        if (_targetSpot != null)
+            _targetSpot.SetOccupied(false); // Leave free current target spot
 
-        _targetPosition = null; // Reset the target position
+        _targetSpot = null; // Reset the target spot
 
         if (animationWhenArrived != -1)
             _animationWhenArrived = animationWhenArrived; // Set the animation to play when arriving
@@ -120,12 +120,12 @@ where TController : ABehaviourController<TController>
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
 
-            if (_targetPosition != null)
+            if (_targetSpot != null)
             {
                 //_agent.updateRotation = false; // Disable automatic rotation
                 //transform.rotation = Quaternion.Euler(_targetPosition.DirectionToVector());
                 //!NO _targetPosition = null; // Reset the target position
-                ForceRotation(_targetPosition.DirectionToVector()); // Fix rotation to the target position
+                ForceRotation(_targetSpot.DirectionToVector()); // Fix rotation to the target position
             }
 
             if (_animationWhenArrived != -1)
@@ -159,10 +159,10 @@ where TController : ABehaviourController<TController>
     /// </summary>
     /// <param name="targetPos">The target position in world coordinates.</param>
     /// <returns>True if the agent can move to the target position, otherwise false.</returns>
-    public bool CanReachTarget(Vector3 targetPos)
-    {
-        return NavMesh.SamplePosition(targetPos, out var _, targetThreshold, NavMesh.AllAreas);
-    }
+    // public bool CanReachTarget(Vector3 targetPos)
+    // {
+    //     return NavMesh.SamplePosition(targetPos, out var _, targetThreshold, NavMesh.AllAreas);
+    // }
 
     /// <summary>
     /// Gets the current target position of the NavMeshAgent.

@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!43 &85607471
 Mesh:
   m_ObjectHideFlags: 0
@@ -1244,7 +1244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1001 &120834332
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2765,7 +2765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &176438706
 GameObject:
   m_ObjectHideFlags: 0
@@ -3368,7 +3368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!43 &272386539
 Mesh:
   m_ObjectHideFlags: 0
@@ -5837,7 +5837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!43 &364210799
 Mesh:
   m_ObjectHideFlags: 0
@@ -6048,7 +6048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
-  simSpeed: 1
+  simSpeed: 2
   cat: {fileID: 966011607}
   receptionist: {fileID: 125054270}
   clientsParent: {fileID: 463564834}
@@ -6473,7 +6473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &382578883
 GameObject:
   m_ObjectHideFlags: 0
@@ -6880,7 +6880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 1
-  occupied: 0
+  _occupied: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -8174,7 +8174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &499557989
 GameObject:
   m_ObjectHideFlags: 0
@@ -8251,7 +8251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 1
-  occupied: 0
+  _occupied: 0
 --- !u!43 &521090825
 Mesh:
   m_ObjectHideFlags: 0
@@ -8493,7 +8493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &564661978
 GameObject:
   m_ObjectHideFlags: 0
@@ -9066,7 +9066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 1
-  occupied: 0
+  _occupied: 0
 --- !u!4 &631480858
 Transform:
   m_ObjectHideFlags: 0
@@ -10723,7 +10723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!43 &712109411
 Mesh:
   m_ObjectHideFlags: 0
@@ -12754,7 +12754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &821924529
 GameObject:
   m_ObjectHideFlags: 0
@@ -12800,7 +12800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &826351223
 GameObject:
   m_ObjectHideFlags: 0
@@ -13831,7 +13831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &908846138
 GameObject:
   m_ObjectHideFlags: 0
@@ -13877,7 +13877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &919945492
 GameObject:
   m_ObjectHideFlags: 0
@@ -16183,7 +16183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!43 &1058010864
 Mesh:
   m_ObjectHideFlags: 0
@@ -20837,7 +20837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1353550699
 GameObject:
   m_ObjectHideFlags: 0
@@ -20883,7 +20883,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1354139759
 GameObject:
   m_ObjectHideFlags: 0
@@ -21482,7 +21482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!43 &1376369032
 Mesh:
   m_ObjectHideFlags: 0
@@ -21693,7 +21693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1414814866
 GameObject:
   m_ObjectHideFlags: 0
@@ -21739,7 +21739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1421520632
 GameObject:
   m_ObjectHideFlags: 0
@@ -22667,7 +22667,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1480170981
 GameObject:
   m_ObjectHideFlags: 0
@@ -24595,7 +24595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1646374265
 GameObject:
   m_ObjectHideFlags: 0
@@ -24641,7 +24641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 1
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1671213724
 GameObject:
   m_ObjectHideFlags: 0
@@ -26290,7 +26290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1836415732
 GameObject:
   m_ObjectHideFlags: 0
@@ -26532,7 +26532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 1
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1859481376
 GameObject:
   m_ObjectHideFlags: 0
@@ -27989,7 +27989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1927156145
 GameObject:
   m_ObjectHideFlags: 0
@@ -29300,7 +29300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &1996327146
 GameObject:
   m_ObjectHideFlags: 0
@@ -29930,7 +29930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!1 &2047209737
 GameObject:
   m_ObjectHideFlags: 0
@@ -29976,7 +29976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 3
-  occupied: 0
+  _occupied: 0
 --- !u!43 &2048896493
 Mesh:
   m_ObjectHideFlags: 0
@@ -32127,7 +32127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: 2
-  occupied: 0
+  _occupied: 0
 --- !u!43 &2127921400
 Mesh:
   m_ObjectHideFlags: 0

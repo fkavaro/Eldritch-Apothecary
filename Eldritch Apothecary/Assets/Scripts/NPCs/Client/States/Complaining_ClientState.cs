@@ -15,7 +15,7 @@ public class Complaining_ClientState : AState<Client, StackFiniteStateMachine<Cl
         if (_coroutineStarted) return;
 
         // Has reached the complaining position
-        if (_behaviourController.HasArrived())
+        if (_behaviourController.HasArrived(2f))
         {
             _behaviourController.ChangeAnimationTo(_behaviourController.complainAnim);
             _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Complaining"));

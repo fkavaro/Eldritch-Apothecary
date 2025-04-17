@@ -11,14 +11,14 @@ public class Spot : MonoBehaviour
         Right
     }
     public Direction direction;
-    public bool occupied = false;
+    [SerializeField] bool _occupied = false;
     readonly object posLock = new();
 
     public void SetOccupied(bool occupied)
     {
         lock (posLock)
         {
-            this.occupied = occupied;
+            _occupied = occupied;
         }
     }
 
@@ -26,7 +26,7 @@ public class Spot : MonoBehaviour
     {
         lock (posLock)
         {
-            return occupied;
+            return _occupied;
         }
     }
 

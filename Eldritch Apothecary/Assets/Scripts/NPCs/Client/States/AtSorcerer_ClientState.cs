@@ -20,7 +20,7 @@ public class AtSorcerer_ClientState : AState<Client, StackFiniteStateMachine<Cli
         // Has reached the sorcerer seat
         if (_behaviourController.HasArrived())
         {
-            _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim); // TODO: stand up animation
+            _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
             _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Sitting down"));
         }
     }

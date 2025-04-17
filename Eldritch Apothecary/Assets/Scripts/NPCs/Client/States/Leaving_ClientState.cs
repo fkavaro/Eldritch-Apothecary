@@ -15,9 +15,10 @@ public class Leaving_ClientState : AState<Client, StackFiniteStateMachine<Client
 
     public override void UpdateState()
     {
-        // If client has reached the exit
+        // If client has reached the apothecary exit
         if (_behaviourController.HasArrived(ApothecaryManager.Instance.exitPosition.position))
             ApothecaryManager.Instance.clientsPool.Release(_behaviourController);
+        // Has reached the queue exit
         else if (_behaviourController.HasArrived(ApothecaryManager.Instance.queueExitPosition.position))
             _behaviourController.SetTargetPos(ApothecaryManager.Instance.exitPosition.position);
 

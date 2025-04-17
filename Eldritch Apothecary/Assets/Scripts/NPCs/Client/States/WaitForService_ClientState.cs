@@ -20,24 +20,29 @@ public class WaitForService_ClientState : AState<Client, StackFiniteStateMachine
         // Has reached the waiting seat
         if (_behaviourController.HasArrived())
         {
-            _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
-
             switch (_behaviourController.wantedService)
             {
                 case Client.WantedService.Sorcerer:
-                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.atSorcererState, "Sitting down"));
+                    if (ApothecaryManager.Instance.IsTurn(_behaviourController))
+                        _stateMachine.SwitchState(_behaviourController.atSorcererState);
+                    else
+                        _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
                     break;
                 case Client.WantedService.Alchemist:
+                    _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
                     _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.pickPotionUpState, "Sitting down"));
+
+                    // if (ApothecaryManager.Instance.IsTurn(_behaviourController))
+                    //     _stateMachine.SwitchState(_behaviourController.pickPotionUpState);
+                    // else
+                    //     _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
                     break;
                 default:
+                    _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
                     _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Sitting down"));
                     break;
             }
 
         }
-        // If service is ready
-        // Stand up animation
-        // Switch state according to service
     }
 }
