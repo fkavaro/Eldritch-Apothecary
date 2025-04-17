@@ -22,12 +22,10 @@ public class WaitingQueue
     #region PUBLIC METHODS
     public void Enter(Client client)
     {
-        //Debug.Log($"Client {client.name} entered the queue.");
+        if (Contains(client)) return;
 
         lock (_queueLock)
         {
-            if (_clientsQueue.Contains(client)) return;
-
             _clientsQueue.Enqueue(client);
             UpdateQueuePositions();
         }
@@ -35,14 +33,17 @@ public class WaitingQueue
 
     public void NextTurn()
     {
+        if (!HasAnyClient()) return;
+
         lock (_queueLock)
         {
-            if (_clientsQueue.Count > 0)
-            {
-                _clientsQueue.Dequeue();
-                UpdateQueuePositions();
+            _clientsQueue.Dequeue();
+            UpdateQueuePositions();
+
+            if (HasAnyClient())
                 NextTurnEvent?.Invoke(_clientsQueue.Peek());
-            }
+            else
+                NextTurnEvent?.Invoke(null);
         }
     }
 
@@ -70,7 +71,6 @@ public class WaitingQueue
         }
     }
 
-    // TODO: FIX METHOD, bug: looks always forward
     public void FixRotation(Client clientContext)
     {
         lock (_queueLock)
@@ -78,9 +78,11 @@ public class WaitingQueue
             int index = _clientsQueue.ToArray().ToList().IndexOf(clientContext);
             if (index <= 0) return;
 
-            // Rotate to next position
-            Vector3 lookDirection = (_queuePositions[index - 1].position - clientContext.transform.position).normalized;
-            clientContext.transform.rotation = Quaternion.Euler(lookDirection);
+            Debug.Log($"Fixing rotation for {clientContext.name} to look to {_queuePositions[index - 1].name}.");
+
+            // Look direction towards next position in queue
+            Vector3 lookDirection = _queuePositions[index - 1].position - clientContext.transform.position;
+            clientContext.ForceRotation(lookDirection);
         }
     }
 

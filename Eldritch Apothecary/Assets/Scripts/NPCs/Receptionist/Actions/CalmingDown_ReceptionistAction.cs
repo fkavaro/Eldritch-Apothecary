@@ -18,7 +18,7 @@ public class CalmingDown_ReceptionistAction : ABinaryAction<Receptionist>
 
     public override void UpdateAction()
     {
-        if (_behaviourController.HasArrived())
+        if (_behaviourController.HasArrived(2f))
             _behaviourController.ChangeAnimationTo(_behaviourController.argueAnim);
     }
 

@@ -106,7 +106,7 @@ where TController : ABehaviourController<TController>
             _currentAction.StartAction();
 
             // Debug the decision made
-            Debug.Log($"Decision made: {_currentAction.Name} with utility {_actionUtilities[_currentAction]}");
+            //Debug.Log($"Decision made: {_currentAction.Name} with utility {_actionUtilities[_currentAction]}");
         }
 
         DebugDecision();

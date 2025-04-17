@@ -27,7 +27,7 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
             _stateMachine.SwitchState(_behaviourController.complainingState);
         }
         // Has arrived the last position in line and is not in the queue
-        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.LastInLinePos())
+        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.LastInLinePos(), 2f)
                 && !ApothecaryManager.Instance.waitingQueue.Contains(_behaviourController))
         {
             // Enters queue
@@ -60,7 +60,7 @@ public class WaitForReceptionist_ClientState : AState<Client, StackFiniteStateMa
         // Has arrived the next queue position
         else if (_behaviourController.HasArrived())
         {
-            // !ApothecaryManager.Instance.waitingQueue.FixRotation(_behaviourController);
+            ApothecaryManager.Instance.waitingQueue.FixRotation(_behaviourController);
             _behaviourController.ChangeAnimationTo(_behaviourController.waitAnim);
         }
     }

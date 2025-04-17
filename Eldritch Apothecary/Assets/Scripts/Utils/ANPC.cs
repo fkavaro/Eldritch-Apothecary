@@ -25,7 +25,7 @@ where TController : ABehaviourController<TController>
     public float rotationSpeed = 3f;
     [Tooltip("Threshold for target position sampling"), Range(0f, 1f)]
     public float targetThreshold = 1f;
-    [Tooltip("Distance to which it's considered as arrived"), Range(0f, 1f)]
+    [Tooltip("Distance to which it's considered as arrived"), Range(0.3f, 1f)]
     public float minDistanceToTarget = 0.3f;
     #endregion
 
@@ -56,12 +56,10 @@ where TController : ABehaviourController<TController>
             return;
         }
 
-        if (_targetPosition != null)
-            _targetPosition.SetOccupied(false); // Leave free current target position
+        SetTargetPos(targetPos.transform.position, animationWhenArrived); // Set the target position for the NavMeshAgent
+
         _targetPosition = targetPos; // Update the target position
         _targetPosition.SetOccupied(true);
-
-        SetTargetPos(targetPos.transform.position, animationWhenArrived); // Set the target position for the NavMeshAgent
     }
 
     /// <summary>
@@ -75,6 +73,11 @@ where TController : ABehaviourController<TController>
             Debug.LogError("SetTarget(): NavMeshAgent is not on a NavMesh.");
             return;
         }
+
+        if (_targetPosition != null)
+            _targetPosition.SetOccupied(false); // Leave free current target position
+
+        _targetPosition = null; // Reset the target position
 
         if (animationWhenArrived != -1)
             _animationWhenArrived = animationWhenArrived; // Set the animation to play when arriving
@@ -92,29 +95,37 @@ where TController : ABehaviourController<TController>
     /// and if the target is a spot, fixes its rotation.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived()
+    public bool HasArrived(float distanceToTarget = 0f)
     {
-        // Check if the agent has arrived at its destination
-        return HasArrived(_agent.destination);
+        // Default distance to target overrides the parameter
+        if (distanceToTarget <= minDistanceToTarget)
+            distanceToTarget = minDistanceToTarget;
+
+        return HasArrived(_agent.destination, distanceToTarget);
     }
 
     /// <summary>
     /// Checks if the NavMeshAgent has arrived at certain destination.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived(Vector3 destination)
+    public bool HasArrived(Vector3 destination, float distanceToTarget = 0f)
     {
         //Debug.Log($"{gameObject.name} is checking if it has arrived at {destination}.");
 
-        if (Vector3.Distance(transform.position, destination) < minDistanceToTarget)
+        // Default distance to target overrides the parameter
+        if (distanceToTarget <= minDistanceToTarget)
+            distanceToTarget = minDistanceToTarget;
+
+        if (Vector3.Distance(transform.position, destination) < distanceToTarget)
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
 
             if (_targetPosition != null)
             {
-                _agent.updateRotation = false; // Disable automatic rotation
-                transform.rotation = Quaternion.Euler(_targetPosition.DirectionToVector());
+                //_agent.updateRotation = false; // Disable automatic rotation
+                //transform.rotation = Quaternion.Euler(_targetPosition.DirectionToVector());
                 //!NO _targetPosition = null; // Reset the target position
+                ForceRotation(_targetPosition.DirectionToVector()); // Fix rotation to the target position
             }
 
             if (_animationWhenArrived != -1)
@@ -126,6 +137,14 @@ where TController : ABehaviourController<TController>
             return true;
         }
         else return false;
+    }
+
+    public void ForceRotation(Vector3 lookDirection)
+    {
+        if (_agent.isOnNavMesh)
+            _agent.updateRotation = false; // Disable automatic rotation
+
+        transform.rotation = Quaternion.Euler(lookDirection);
     }
 
     /// <summary>

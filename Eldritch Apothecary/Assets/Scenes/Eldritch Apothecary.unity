@@ -7025,7 +7025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 671802ec17969604787ed3826b4e17c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 1
+  dontDestroyOnLoad: 0
   simSpeed: 1
   cat: {fileID: 966011607}
   receptionist: {fileID: 125054270}
