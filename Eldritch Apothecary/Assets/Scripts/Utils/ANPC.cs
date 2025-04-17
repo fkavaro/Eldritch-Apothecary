@@ -13,7 +13,7 @@ where TController : ABehaviourController<TController>
     Spot _targetPosition = null;
 
     /// <summary>
-    /// Animation to play when the agent is walking.
+    /// Animation to play when the agent arrives at target
     /// </summary>
     int _animationWhenArrived = -1;
 
@@ -146,6 +146,13 @@ where TController : ABehaviourController<TController>
 
         transform.rotation = Quaternion.Euler(lookDirection);
     }
+    public void ForceRotation(Quaternion rotation)
+    {
+        if (_agent.isOnNavMesh)
+            _agent.updateRotation = false; // Disable automatic rotation
+
+        transform.rotation = rotation;
+    }
 
     /// <summary>
     /// Checks if the NavMeshAgent can move to the specified target position.
@@ -161,7 +168,7 @@ where TController : ABehaviourController<TController>
     /// Gets the current target position of the NavMeshAgent.
     /// </summary>
     /// <returns>The target position in world coordinates.</returns>
-    public Vector3 GetTarget()
+    public Vector3 GetTargetPos()
     {
         return _agent.destination;
     }

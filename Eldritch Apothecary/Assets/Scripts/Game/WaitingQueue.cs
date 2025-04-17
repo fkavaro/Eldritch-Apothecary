@@ -73,16 +73,18 @@ public class WaitingQueue
 
     public void FixRotation(Client clientContext)
     {
+        if (clientContext == null) return;
+
         lock (_queueLock)
         {
             int index = _clientsQueue.ToArray().ToList().IndexOf(clientContext);
             if (index <= 0) return;
 
-            Debug.Log($"Fixing rotation for {clientContext.name} to look to {_queuePositions[index - 1].name}.");
-
             // Look direction towards next position in queue
             Vector3 lookDirection = _queuePositions[index - 1].position - clientContext.transform.position;
-            clientContext.ForceRotation(lookDirection);
+            Quaternion rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+
+            clientContext.ForceRotation(rotation);
         }
     }
 
