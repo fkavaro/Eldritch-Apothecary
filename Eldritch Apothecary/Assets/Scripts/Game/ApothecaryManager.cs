@@ -180,6 +180,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         client.transform.position = entrancePosition.position;
         client.gameObject.SetActive(true);
         client.Reset();
+        client.ChangeAnimationTo(client.walkAnim);
     }
 
     /// <summary>
