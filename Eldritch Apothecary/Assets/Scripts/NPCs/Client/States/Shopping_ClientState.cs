@@ -6,36 +6,40 @@ using UnityEngine;
 /// </summary>
 public class Shopping_ClientState : AState<Client, StackFiniteStateMachine<Client>>
 {
+    Spot shelves;
+
     public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm)
     : base("Shopping", sfsm) { }
 
     public override void StartState()
     {
-        // Try to get a random shop stand
-        Spot stand = ApothecaryManager.Instance.shop.RandomStand(_behaviourController);
+        shelves = ApothecaryManager.Instance.RandomShopShelves();
+        _behaviourController.SetTargetSpot(shelves);
 
-        // Leave if no available stands
-        if (stand == null)
-            _stateMachine.SwitchState(_behaviourController.leavingState);
-        // Go to available stand
-        else
-            _behaviourController.SetTargetSpot(stand);
     }
 
     public override void UpdateState()
     {
         if (_coroutineStarted) return;
 
-        // Arrived at shop stand
+        // // Got close to the shelves
+        // if (_behaviourController.HasArrived(2f, false))
+        // {
+        //     // Shelves spot is occupied
+        //     if (shelves.IsOccupied())
+        //     {
+        //         // Wait
+        //         _behaviourController.ChangeAnimationTo(_behaviourController.waitAnim);
+        //     }
+        //     else // Spot is free
+        //     {
+        // Has reached exact position
         if (_behaviourController.HasArrived())
         {
             _behaviourController.ChangeAnimationTo(_behaviourController.pickUpAnim);
             _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForReceptionistState, "Picking up objects"));
         }
-    }
-
-    public override void ExitState()
-    {
-
+        //}
+        //}
     }
 }

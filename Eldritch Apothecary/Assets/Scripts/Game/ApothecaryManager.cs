@@ -12,7 +12,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #region PUBLIC PROPERTIES
     public ObjectPool<Client> clientsPool;
     public WaitingQueue waitingQueue;
-    public Shop shop;
 
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 5)]
@@ -78,7 +77,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillChildrenList(seatsPositionsParent, _seatsPositions);
         FillChildrenList(pickUpPositionsParent, _pickUpPositions);
 
-        shop = new Shop(_shopStands);
         waitingQueue = new WaitingQueue(_queuePositions);
 
         clientsPool = new ObjectPool<Client>(
@@ -122,6 +120,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public Vector3 RandomPickUp()
     {
         return RandomPosition(_pickUpPositions);
+    }
+
+    public Spot RandomShopShelves()
+    {
+        return RandomSpot(_shopStands);
     }
 
     public bool SomeoneComplaining()

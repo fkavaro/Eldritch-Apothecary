@@ -92,23 +92,24 @@ where TController : ABehaviourController<TController>
 
     /// <summary>
     /// Checks if the NavMeshAgent has arrived at its destination, 
-    /// and if the target is a spot, fixes its rotation.
+    /// and if the target is a spot, fixes its rotation if wanted.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived(float distanceToTarget = 0f)
+    public bool HasArrived(float distanceToTarget = 0f, bool fixRotation = true)
     {
         // Default distance to target overrides the parameter
         if (distanceToTarget <= minDistanceToTarget)
             distanceToTarget = minDistanceToTarget;
 
-        return HasArrived(_agent.destination, distanceToTarget);
+        return HasArrived(_agent.destination, distanceToTarget, fixRotation);
     }
 
     /// <summary>
-    /// Checks if the NavMeshAgent has arrived at certain destination.
+    /// Checks if the NavMeshAgent has arrived at certain destination
+    /// and if the target is a spot, fixes its rotation if wanted.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived(Vector3 destination, float distanceToTarget = 0f)
+    public bool HasArrived(Vector3 destination, float distanceToTarget = 0f, bool fixRotation = true)
     {
         //Debug.Log($"{gameObject.name} is checking if it has arrived at {destination}.");
 
@@ -120,11 +121,8 @@ where TController : ABehaviourController<TController>
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
 
-            if (_targetSpot != null)
+            if (_targetSpot != null && fixRotation)
             {
-                //_agent.updateRotation = false; // Disable automatic rotation
-                //transform.rotation = Quaternion.Euler(_targetPosition.DirectionToVector());
-                //!NO _targetPosition = null; // Reset the target position
                 ForceRotation(_targetSpot.DirectionToVector()); // Fix rotation to the target position
             }
 
@@ -139,6 +137,9 @@ where TController : ABehaviourController<TController>
         else return false;
     }
 
+    /// <summary>
+    /// Forcefully rotates the agent to look in the specified direction.
+    /// </summary>
     public void ForceRotation(Vector3 lookDirection)
     {
         if (_agent.isOnNavMesh)
