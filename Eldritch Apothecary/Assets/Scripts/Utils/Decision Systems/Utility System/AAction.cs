@@ -1,7 +1,7 @@
-using System;
-using BehaviourAPI.UtilitySystems;
-using UnityEngine;
 
+/// <summary>
+/// Base class for actions in the Utility System.
+/// </summary>
 public abstract class AAction<TController, TFactor> : IAction where TController : ABehaviourController<TController>
 {
     public string Name => name;

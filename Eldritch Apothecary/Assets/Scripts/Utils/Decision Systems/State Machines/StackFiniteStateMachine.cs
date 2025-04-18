@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-using Unity.VisualScripting;
-using UnityEngine;
 
+/// <summary>
+/// Stack-based Finite State Machine implementation for controlling a behaviour.
+/// </summary>
 public class StackFiniteStateMachine<TController> : AStateMachine<TController, StackFiniteStateMachine<TController>> where TController : ABehaviourController<TController>
 {
     /// <summary>

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System;
-using Unity.VisualScripting;
 
+/// <summary>
+/// Utility System for decision making in agents.
+/// </summary>
+/// <typeparam name="TController"></typeparam>
 public class UtilitySystem<TController> : ADecisionSystem<TController>
 where TController : ABehaviourController<TController>
 {
@@ -11,7 +13,7 @@ where TController : ABehaviourController<TController>
     /// List of actions available for the agent.
     /// </summary>
     List<IAction> _actions = new();
-    IAction _currentAction, _defaultAction;
+    IAction _currentAction, _defaultAction; // Only during default action, other actions are checked
 
     /// <summary>
     /// Dictionary to store the utility of each action.

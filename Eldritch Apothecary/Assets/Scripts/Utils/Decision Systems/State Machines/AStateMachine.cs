@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Abstract class for a state machine that handles the states of a controller.
+/// </summary>
 public abstract class AStateMachine<TController, TStateMachineType> : ADecisionSystem<TController>
 where TController : ABehaviourController<TController>
 where TStateMachineType : AStateMachine<TController, TStateMachineType>

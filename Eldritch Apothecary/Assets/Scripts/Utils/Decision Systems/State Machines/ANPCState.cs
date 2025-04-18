@@ -4,8 +4,6 @@ using System.Collections;
 /// <summary>
 /// Base class for NPC states, allowing to handle animations.
 /// </summary>
-/// <typeparam name="TController"></typeparam>
-/// <typeparam name="TStateMachine"></typeparam>
 public abstract class ANPCState<TController, TStateMachine> : AState<TController, TStateMachine>
     where TController : ANPC<TController>
     where TStateMachine : AStateMachine<TController, TStateMachine>

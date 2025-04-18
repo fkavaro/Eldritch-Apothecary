@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
 
+/// <summary>
+/// Finite State Machine implementation for controlling a behaviour.
 public class FiniteStateMachine<TController> : AStateMachine<TController, FiniteStateMachine<TController>> where TController : ABehaviourController<TController>
 {
     public FiniteStateMachine(TController controller) : base(controller) { }

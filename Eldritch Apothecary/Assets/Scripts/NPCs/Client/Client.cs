@@ -34,6 +34,7 @@ public class Client : AHumanoid<Client>
 	#region PRIVATE PROPERTIES
 	int _scaresCount = 0;
 	StackFiniteStateMachine<Client> _clientSFSM;
+	UtilitySystem<Client> _clientUS;
 	TextMeshProUGUI _serviceText;
 	#endregion
 
@@ -46,6 +47,10 @@ public class Client : AHumanoid<Client>
 	public AtSorcerer_ClientState atSorcererState;
 	public PickPotionUp_ClientState pickPotionUpState;
 	public Leaving_ClientState leavingState;
+	#endregion
+
+	#region ACTIONS
+	EstateMachineAction<Client, StackFiniteStateMachine<Client>> fsmAction;
 	#endregion
 
 	#region INHERITED METHODS
@@ -65,13 +70,18 @@ public class Client : AHumanoid<Client>
 		leavingState = new(_clientSFSM);
 
 		// Initial state according to client's wanted service
-		// TODO: can shop although wanted service is sorcerer or alchemist
 		if (wantedService == WantedService.OnlyShop)
 			_clientSFSM.SetInitialState(shoppingState);
 		else
 			_clientSFSM.SetInitialState(waitForReceptionistState);
 
-		return _clientSFSM;
+		// Utility System
+		_clientUS = new(this);
+
+		fsmAction = new(_clientUS, _clientSFSM);
+		_clientUS.SetDefaultAction(fsmAction);
+
+		return _clientUS;
 	}
 
 	protected override void OnUpdate()

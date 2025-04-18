@@ -1,14 +1,13 @@
 using System;
-using UnityEngine;
 
 /// <summary>
 /// Base class for actions that have a logarithmic decision factor (float).
 /// </summary>
-public abstract class ALogarithmicAction<TController> : AAction<Receptionist, float> where TController : ABehaviourController<TController>
+public abstract class ALogarithmicAction<TController> : AAction<TController, float> where TController : ABehaviourController<TController>
 {
     bool _inverted;
 
-    protected ALogarithmicAction(string name, UtilitySystem<Receptionist> utilitySystem, bool inverted = false)
+    protected ALogarithmicAction(string name, UtilitySystem<TController> utilitySystem, bool inverted = false)
     : base(name, utilitySystem)
     {
         _inverted = inverted;
