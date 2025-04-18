@@ -36,7 +36,7 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         if (state == currentState) return;
 
         previousState = currentState;
-        currentState.ExitState();
+        currentState.OnExitState();
         currentState = state;
         DebugDecision();
         currentState.StartState();

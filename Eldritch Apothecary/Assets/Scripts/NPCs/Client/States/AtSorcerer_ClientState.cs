@@ -10,15 +10,33 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
 
     public override void StartState()
     {
-        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
     }
 
     public override void UpdateState()
     {
-        if (_coroutineStarted) return;
+        // // Has reached the sorcerer seat
+        // if (_behaviourController.HasArrivedAtDestination())
+        //     _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, _behaviourController.sitDownAnim, "Sitting down"));
 
-        // Has reached the sorcerer seat
-        if (_behaviourController.HasArrivedAtDestination())
-            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, _behaviourController.sitDownAnim, "Sitting down"));
+        // Is close to the sorcerer seat
+        if (_controller.IsCloseToDestination())
+        {
+            // Sorcerer seat is occupied
+            if (_controller.DestinationSpotIsOccupied())
+            {
+                // Stop and wait
+                _controller.IsStopped(true);
+                _controller.ChangeAnimationTo(_controller.waitAnim);
+            }
+            else // sorcerer seat is free
+            {
+                _controller.IsStopped(false);
+
+                // Has reached exact position
+                if (_controller.HasArrivedAtDestination())
+                    _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.leavingState, _controller.sitDownAnim, "Sitting down"));
+            }
+        }
     }
 }

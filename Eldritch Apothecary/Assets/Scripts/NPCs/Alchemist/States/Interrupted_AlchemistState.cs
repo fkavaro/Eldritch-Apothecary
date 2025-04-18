@@ -10,7 +10,7 @@ public class Interrupted_AlchemistState : AState<Alchemist, StackFiniteStateMach
     public override void StartState()
     {
         //Accion no hacer nada hasta que se vaya el gato 
-        _behaviourController.StartCoroutine(WaitForCatToLeave());
+        _controller.StartCoroutine(WaitForCatToLeave());
     }
 
     public override void UpdateState()
@@ -24,7 +24,7 @@ public class Interrupted_AlchemistState : AState<Alchemist, StackFiniteStateMach
 
     private IEnumerator WaitForCatToLeave()
     {
-        while (Vector3.Distance(_behaviourController.transform.position, ApothecaryManager.Instance.cat.transform.position) < _behaviourController.minDistanceToCat)
+        while (Vector3.Distance(_controller.transform.position, ApothecaryManager.Instance.cat.transform.position) < _controller.minDistanceToCat)
         {
             yield return null; // Espera un frame antes de volver a comprobar
         }

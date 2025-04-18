@@ -29,6 +29,8 @@ where TController : ABehaviourController<TController>
     public float arrivedDistance = 0.3f;
     [Tooltip("Distance to which it's close to the destination"), Range(2f, 5f)]
     public float closeDistance = 2f;
+    [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
+    public float _avoidanceRadius = 0.7f;
     #endregion
 
     #region INHERITED METHODS
@@ -40,6 +42,7 @@ where TController : ABehaviourController<TController>
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = speed;
         _agent.angularSpeed = rotationSpeed * 100f;
+        _agent.radius = _avoidanceRadius;
 
         base.OnAwake(); // Sets the animator component
     }
@@ -184,42 +187,42 @@ where TController : ABehaviourController<TController>
     // }
 
     /// <summary>
+    /// Sets the NavMeshAgent to be stopped or not.
+    /// </summary>
+    public void IsStopped(bool isStopped)
+    {
+        if (!_agent.isOnNavMesh)
+        {
+            Debug.LogError("IsStopped(): NavMeshAgent is not on a NavMesh.");
+            return;
+        }
+
+        _agent.isStopped = isStopped;
+    }
+
+    /// <summary>
+    /// Sets the NavMeshAgent's speed.
+    /// </summary>
+    public void SetAvoidanceRadius(float radius)
+    {
+        _agent.radius = radius;
+    }
+
+    /// <summary>
+    /// Resets the NavMeshAgent's avoidance radius to its default value.
+    /// </summary>
+    public void ResetAvoidanceRadius()
+    {
+        _agent.radius = _avoidanceRadius;
+    }
+
+    /// <summary>
     /// Gets the current target position of the NavMeshAgent.
     /// </summary>
     /// <returns>The target position in world coordinates.</returns>
     public Vector3 GetDestinationPos()
     {
         return _agent.destination;
-    }
-
-    /// <summary>
-    /// Stops the agent from moving.
-    /// </summary>
-    public void StopAgent()
-    {
-        if (!_agent.isOnNavMesh)
-        {
-            Debug.LogError("StopAgent(): NavMeshAgent is not on a NavMesh.");
-            return;
-        }
-
-        _agent.isStopped = true;
-        //_agent.ResetPath();
-        //ChangeAnimationTo(Idle);
-    }
-
-    /// <summary>
-    /// Reactivates the agent movement.
-    /// </summary>
-    public void ReactivateAgent()
-    {
-        if (!_agent.isOnNavMesh)
-        {
-            Debug.LogError("ReactivateAgent(): NavMeshAgent is not on a NavMesh.");
-            return;
-        }
-
-        _agent.isStopped = false;
     }
     #endregion
 }

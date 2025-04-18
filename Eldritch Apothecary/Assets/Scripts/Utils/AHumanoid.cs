@@ -3,7 +3,6 @@ using UnityEngine;
 /// <summary>
 /// Abstract class that determines the humanoid properties of the NPCs and its animations.
 /// </summary>
-/// <typeparam name="TController"></typeparam>
 public abstract class AHumanoid<TController> : ANPC<TController>
 where TController : ABehaviourController<TController>
 {

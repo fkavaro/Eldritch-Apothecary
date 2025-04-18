@@ -17,22 +17,16 @@ public abstract class ANPCState<TController, TStateMachine> : AState<TController
     /// </summary>
     protected IEnumerator WaitAndSwitchState(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
-        _coroutineStarted = true;
+        _controller.actionText.text = animationName + " for " + waitTime + " seconds...";
 
-        _behaviourController.actionText.text = animationName + " for " + waitTime + " seconds...";
+        _controller.ChangeAnimationTo(animation);
 
-        _behaviourController.ChangeAnimationTo(animation);
-
-        yield return new WaitForSeconds(waitTime);
-
-        _stateMachine?.SwitchState(nextState);
-        _behaviourController.actionText.text = "";
-        _coroutineStarted = false;
+        return WaitAndSwitchState(waitTime, nextState);
     }
     /// <summary>
     /// Coroutine to wait for a random amount of time playing an animation before switching to the next state.
     /// </summary>
-    protected IEnumerator WaitAndSwitchState(AState<TController, TStateMachine> nextState, int animation, string animationName)
+    protected IEnumerator RandomWaitAndSwitchState(AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
         int waitTime = Random.Range(5, 21);
         return WaitAndSwitchState(waitTime, nextState, animation, animationName);

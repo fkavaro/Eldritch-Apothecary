@@ -36,7 +36,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     #region UNITY EXECUTION EVENTS
     public override void Update()
     {
-        currentState?.UpdateState();
+        currentState?.OnUpdateState();
     }
     #endregion
 

@@ -97,13 +97,16 @@ MonoBehaviour:
   actionText: {fileID: 0}
   speed: 2
   rotationSpeed: 3
-  targetThreshold: 1
-  minDistanceToTarget: 0.3
+  arrivedDistance: 0.3
+  closeDistance: 2
+  _avoidanceRadius: 0.7
+  minDistanceToCat: 3
   wantedService: 0
   maxMinutesWaiting: 2
+  timeWaiting: 0
+  normalizedWaitingTime: 0
   scareProbability: 3
   maxScares: 3
-  minDistanceToCat: 3
 --- !u!1001 &2645568600590056529
 PrefabInstance:
   m_ObjectHideFlags: 0

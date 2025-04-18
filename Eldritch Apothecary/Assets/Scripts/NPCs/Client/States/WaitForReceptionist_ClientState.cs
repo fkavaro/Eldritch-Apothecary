@@ -11,56 +11,53 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
     public override void StartState()
     {
         // Set target to the last position in line
-        _behaviourController.SetDestination(ApothecaryManager.Instance.waitingQueue.LastInLinePos());
+        _controller.SetDestination(ApothecaryManager.Instance.waitingQueue.LastInLinePos());
     }
 
     public override void UpdateState()
     {
-        // Update state time
-        _stateTime += Time.deltaTime;
-
-        if (_coroutineStarted) return;
-
         // Has been waiting first in line for too long
-        if (_behaviourController.FirstInLineTooLong())
+        if (_controller.FirstInLineTooLong())
         {
-            SwitchState(_behaviourController.complainingState);
+            SwitchState(_controller.complainingState);
         }
         // Is close to the last position in line and is not in the queue
-        else if (_behaviourController.IsCloseTo(ApothecaryManager.Instance.waitingQueue.LastInLinePos())
-                && !_behaviourController.InWaitingQueue())
+        else if (_controller.IsCloseTo(ApothecaryManager.Instance.waitingQueue.LastInLinePos())
+                && !_controller.InWaitingQueue())
         {
+            // Reduce avoidance radius to avoid being blocked by other clients
+            _controller.SetAvoidanceRadius(0.5f);
             // Enters queue
-            _behaviourController.EnterWaitingQueue();
+            _controller.EnterWaitingQueue();
         }
         // Has arrived the receptionist counter, first position in line
-        else if (_behaviourController.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLinePos()))
+        else if (_controller.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLinePos()))
         {
             // Can interact with receptionist: is ready to attend clients at the counter
             if (ApothecaryManager.Instance.receptionist.CanAttend())
             {
                 // Talks before changing state
-                _behaviourController.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
+                _controller.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
 
-                if (_behaviourController.wantedService == Client.WantedService.OnlyShop)
-                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, _behaviourController.talkAnim, "Talking"));
+                if (_controller.wantedService == Client.WantedService.OnlyShop)
+                    _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.leavingState, _controller.talkAnim, "Talking"));
                 else
-                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForServiceState, _behaviourController.talkAnim, "Talking"));
+                    _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.waitForServiceState, _controller.talkAnim, "Talking"));
             }
             // Receptionist is not at the counter
             else
             {
                 // Increase time waiting
-                _behaviourController.timeWaiting += Time.deltaTime;
+                _controller.timeWaiting += Time.deltaTime;
                 // Normalize time between 0 and the 1 as the maximum waiting time of the client
-                _behaviourController.normalizedWaitingTime = Mathf.Clamp01(_behaviourController.timeWaiting / _behaviourController.maxMinutesWaiting * 60f);
+                _controller.normalizedWaitingTime = Mathf.Clamp01(_controller.timeWaiting / _controller.maxMinutesWaiting * 60f);
             }
         }
         // Has arrived the next queue position
-        else if (_behaviourController.HasArrivedAtDestination())
+        else if (_controller.HasArrivedAtDestination())
         {
-            ApothecaryManager.Instance.waitingQueue.FixRotation(_behaviourController);
-            _behaviourController.ChangeAnimationTo(_behaviourController.waitAnim);
+            ApothecaryManager.Instance.waitingQueue.FixRotation(_controller);
+            _controller.ChangeAnimationTo(_controller.waitAnim);
         }
     }
 
@@ -69,8 +66,9 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
         // Leave the queue for next turn
         ApothecaryManager.Instance.waitingQueue.NextTurn();
 
-        _stateTime = 0f;
-        _behaviourController.timeWaiting = 0f;
-        _behaviourController.normalizedWaitingTime = 0f;
+        _controller.ResetAvoidanceRadius(); // Reset avoidance radius
+
+        _controller.timeWaiting = 0f;
+        _controller.normalizedWaitingTime = 0f;
     }
 }

@@ -11,18 +11,17 @@ public class PreparingPotion_AlchemistState : AState<Alchemist, StackFiniteState
     {
 
         //Accion hacer pocion (Espera de 7 segundos)
-        _behaviourController.StartCoroutine(PreparePotionCoroutine());
+        _controller.StartCoroutine(PreparePotionCoroutine());
     }
 
     public override void UpdateState()
     {
-        if (_coroutineStarted) return; //Evita que se inicie repetidamente
     }
 
     private IEnumerator PreparePotionCoroutine()
     {
         yield return new WaitForSeconds(7f); // Espera 7 segundos
-        _stateMachine.SwitchState(_behaviourController.finishingPotionState); // Cambia al siguiente estado;
+        _stateMachine.SwitchState(_controller.finishingPotionState); // Cambia al siguiente estado;
     }
 
     public override void ExitState()

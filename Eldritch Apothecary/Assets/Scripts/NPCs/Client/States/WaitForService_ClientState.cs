@@ -10,38 +10,35 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
 
     public override void StartState()
     {
-        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.RandomWaitingSeat());
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.RandomWaitingSeat());
     }
 
     public override void UpdateState()
     {
-        if (_coroutineStarted) return;
-
         // Has reached the waiting seat
-        if (_behaviourController.HasArrivedAtDestination())
+        if (_controller.HasArrivedAtDestination())
         {
             // It's its turn
-            if (ApothecaryManager.Instance.IsTurn(_behaviourController))
+            if (_controller.IsTurn())
             {
-                switch (_behaviourController.wantedService)
+                switch (_controller.wantedService)
                 {
                     case Client.WantedService.Sorcerer:
-                        SwitchState(_behaviourController.atSorcererState);
+                        SwitchState(_controller.atSorcererState);
                         break;
 
                     case Client.WantedService.Alchemist:
-                        _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.pickPotionUpState, _behaviourController.sitDownAnim, "Sitting down"));
-
-                        SwitchState(_behaviourController.pickPotionUpState);
+                        SwitchState(_controller.pickPotionUpState);
                         break;
+
                     default:
-                        SwitchState(_behaviourController.leavingState);
+                        SwitchState(_controller.leavingState);
                         break;
                 }
             }
             else // It's not
                 // Wait
-                _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
+                _controller.ChangeAnimationTo(_controller.sitDownAnim);
         }
     }
 }

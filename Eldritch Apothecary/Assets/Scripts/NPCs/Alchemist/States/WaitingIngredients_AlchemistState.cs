@@ -10,13 +10,13 @@ public class WaitingIngredients_AlchemistState : ANPCState<Alchemist, StackFinit
     public override void StartState()
     {
         //Accion esperar ingredientes (Espera de 7 segundos)
-        if (_behaviourController.HasIngredients())
+        if (_controller.HasIngredients())
         {
-            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.preparingPotionState));
+            _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.preparingPotionState));
         }
         else
         {
-            _behaviourController.StartCoroutine(WaitingIngredients());
+            _controller.StartCoroutine(WaitingIngredients());
         }
     }
 
@@ -32,7 +32,7 @@ public class WaitingIngredients_AlchemistState : ANPCState<Alchemist, StackFinit
         yield return new WaitForSeconds(3f); // Espera 3 segundos
 
         // Cambiar al siguiente estado (ejemplo: dejar la poci�n en la mesa)
-        _stateMachine.SwitchState(_behaviourController.preparingPotionState);
+        _stateMachine.SwitchState(_controller.preparingPotionState);
     }
 
 }

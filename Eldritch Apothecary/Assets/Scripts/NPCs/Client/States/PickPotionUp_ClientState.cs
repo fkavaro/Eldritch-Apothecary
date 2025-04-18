@@ -10,15 +10,29 @@ public class PickPotionUp_ClientState : ANPCState<Client, StackFiniteStateMachin
 
     public override void StartState()
     {
-        _behaviourController.SetDestination(ApothecaryManager.Instance.RandomPickUp());
+        _controller.SetDestination(ApothecaryManager.Instance.RandomPickUp());
     }
 
     public override void UpdateState()
     {
-        if (_coroutineStarted) return;
+        // Is close to the pick up position
+        if (_controller.IsCloseToDestination())
+        {
+            // Pick up position is occupied
+            if (_controller.DestinationSpotIsOccupied())
+            {
+                // Stop and wait
+                _controller.IsStopped(true);
+                _controller.ChangeAnimationTo(_controller.waitAnim);
+            }
+            else // Pick up position is free
+            {
+                _controller.IsStopped(false);
 
-        // Has reached pick up position
-        if (_behaviourController.HasArrivedAtDestination())
-            _behaviourController.StartCoroutine(WaitAndSwitchState(3f, _behaviourController.leavingState, _behaviourController.pickUpAnim, "Picking up the potion"));
+                // Has reached exact position
+                if (_controller.HasArrivedAtDestination())
+                    _controller.StartCoroutine(WaitAndSwitchState(3f, _controller.leavingState, _controller.pickUpAnim, "Picking up the potion"));
+            }
+        }
     }
 }

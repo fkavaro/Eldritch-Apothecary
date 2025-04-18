@@ -11,12 +11,12 @@ public class Stunned_ClientState : ANPCState<Client, StackFiniteStateMachine<Cli
 
     public override void StartState()
     {
-        _behaviourController.StopAgent();
+        _controller.IsStopped(true);
 
-        _behaviourController.StartCoroutine(WaitAndSwitchState(3f, _behaviourController.complainingState, _behaviourController.stunnedAnim, "Stunned")); // TODO: Just wait until animation is executed
+        _controller.StartCoroutine(WaitAndSwitchState(3f, _controller.complainingState, _controller.stunnedAnim, "Stunned")); // TODO: Just wait until animation is executed
 
-        if (_behaviourController.HasReachedMaxScares())
-            SwitchState(_behaviourController.complainingState);
+        if (_controller.HasReachedMaxScares())
+            SwitchState(_controller.complainingState);
         else
             ReturnToPreviousState();
     }
@@ -28,6 +28,6 @@ public class Stunned_ClientState : ANPCState<Client, StackFiniteStateMachine<Cli
 
     public override void ExitState()
     {
-        _behaviourController.ReactivateAgent();
+        _controller.IsStopped(false);
     }
 }

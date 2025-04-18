@@ -11,30 +11,29 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
     public override void StartState()
     {
-        // Shelves spot is the target spot
-        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.RandomShopShelves());
-
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.RandomShopShelves());
     }
 
     public override void UpdateState()
     {
-        if (_coroutineStarted) return;
-
         // Is close to the shelves spot
-        if (_behaviourController.IsCloseToDestination())
+        if (_controller.IsCloseToDestination())
         {
             // Shelves spot is occupied
-            if (_behaviourController.DestinationSpotIsOccupied())
+            if (_controller.DestinationSpotIsOccupied())
             {
-                // Wait
-                _behaviourController.ChangeAnimationTo(_behaviourController.waitAnim);
+                // Stop and wait
+                _controller.IsStopped(true);
+                _controller.ChangeAnimationTo(_controller.waitAnim);
             }
             else // Spot is free
             {
+                _controller.IsStopped(false);
+
                 // Has reached exact position
-                if (_behaviourController.HasArrivedAtDestination())
+                if (_controller.HasArrivedAtDestination())
                     // Pick up a product and change to the next state
-                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForReceptionistState, _behaviourController.pickUpAnim, "Picking up objects"));
+                    _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects"));
             }
         }
     }

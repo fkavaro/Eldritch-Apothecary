@@ -7,16 +7,14 @@ public class Complaining_ClientState : ANPCState<Client, StackFiniteStateMachine
 
     public override void StartState()
     {
-        _behaviourController.SetDestination(ApothecaryManager.Instance.complainingPosition.position);
+        _controller.SetDestination(ApothecaryManager.Instance.complainingPosition.position);
     }
 
     public override void UpdateState()
     {
-        if (_coroutineStarted) return;
-
         // Is close to the complaining position
-        if (_behaviourController.IsCloseToDestination())
-            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, _behaviourController.complainAnim, "Complaining"));
+        if (_controller.IsCloseToDestination())
+            _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.leavingState, _controller.complainAnim, "Complaining"));
     }
 
     public override void ExitState()

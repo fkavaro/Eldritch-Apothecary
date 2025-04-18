@@ -96,7 +96,7 @@ public class Client : AHumanoid<Client>
 	public void Reset()
 	{
 		RandomizeProperties();
-		ReactivateAgent(); // ANPC
+		IsStopped(false); // ANPC
 		ResetBehaviour(); // ABehaviourController
 	}
 
@@ -113,6 +113,11 @@ public class Client : AHumanoid<Client>
 	public void EnterWaitingQueue()
 	{
 		ApothecaryManager.Instance.waitingQueue.Enter(this);
+	}
+
+	public bool IsTurn()
+	{
+		return ApothecaryManager.Instance.IsTurn(this);
 	}
 	#endregion
 

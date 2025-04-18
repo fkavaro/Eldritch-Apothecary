@@ -28,7 +28,7 @@ public class FiniteStateMachine<TController> : AStateMachine<TController, Finite
     {
         if (state == currentState) return;
 
-        currentState.ExitState();
+        currentState.OnExitState();
         currentState = state;
         DebugDecision();
         currentState.StartState();
