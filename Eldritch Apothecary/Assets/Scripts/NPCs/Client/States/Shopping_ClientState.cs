@@ -4,17 +4,15 @@ using UnityEngine;
 /// <summary>
 /// Picks up a product or waits in line directly
 /// </summary>
-public class Shopping_ClientState : AState<Client, StackFiniteStateMachine<Client>>
+public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
 {
-    Spot shelves;
-
     public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm)
     : base("Shopping", sfsm) { }
 
     public override void StartState()
     {
-        shelves = ApothecaryManager.Instance.RandomShopShelves();
-        _behaviourController.SetTargetSpot(shelves);
+        // Shelves spot is the target spot
+        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.RandomShopShelves());
 
     }
 
@@ -22,24 +20,22 @@ public class Shopping_ClientState : AState<Client, StackFiniteStateMachine<Clien
     {
         if (_coroutineStarted) return;
 
-        // // Got close to the shelves
-        // if (_behaviourController.HasArrived(2f, false))
-        // {
-        //     // Shelves spot is occupied
-        //     if (shelves.IsOccupied())
-        //     {
-        //         // Wait
-        //         _behaviourController.ChangeAnimationTo(_behaviourController.waitAnim);
-        //     }
-        //     else // Spot is free
-        //     {
-        // Has reached exact position
-        if (_behaviourController.HasArrived())
+        // Is close to the shelves spot
+        if (_behaviourController.IsCloseToDestination())
         {
-            _behaviourController.ChangeAnimationTo(_behaviourController.pickUpAnim);
-            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForReceptionistState, "Picking up objects"));
+            // Shelves spot is occupied
+            if (_behaviourController.DestinationSpotIsOccupied())
+            {
+                // Wait
+                _behaviourController.ChangeAnimationTo(_behaviourController.waitAnim);
+            }
+            else // Spot is free
+            {
+                // Has reached exact position
+                if (_behaviourController.HasArrivedAtDestination())
+                    // Pick up a product and change to the next state
+                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.waitForReceptionistState, _behaviourController.pickUpAnim, "Picking up objects"));
+            }
         }
-        //}
-        //}
     }
 }

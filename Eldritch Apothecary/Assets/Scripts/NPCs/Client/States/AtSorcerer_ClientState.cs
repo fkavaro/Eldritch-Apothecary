@@ -3,14 +3,14 @@ using UnityEngine;
 /// <summary>
 /// Attends the sorcerer until its service is finished
 /// </summary>
-public class AtSorcerer_ClientState : AState<Client, StackFiniteStateMachine<Client>>
+public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
 {
     public AtSorcerer_ClientState(StackFiniteStateMachine<Client> sfsm)
     : base("At sorcerer", sfsm) { }
 
     public override void StartState()
     {
-        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.sorcererSeat);
+        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
     }
 
     public override void UpdateState()
@@ -18,10 +18,7 @@ public class AtSorcerer_ClientState : AState<Client, StackFiniteStateMachine<Cli
         if (_coroutineStarted) return;
 
         // Has reached the sorcerer seat
-        if (_behaviourController.HasArrived())
-        {
-            _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
-            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Sitting down"));
-        }
+        if (_behaviourController.HasArrivedAtDestination())
+            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, _behaviourController.sitDownAnim, "Sitting down"));
     }
 }

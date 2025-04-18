@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Is startled by the grumpy cat. Can lead to a complain.
 /// </summary>
-public class Stunned_ClientState : AState<Client, StackFiniteStateMachine<Client>>
+public class Stunned_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
 {
 
     public Stunned_ClientState(StackFiniteStateMachine<Client> sfsm)
@@ -13,14 +13,12 @@ public class Stunned_ClientState : AState<Client, StackFiniteStateMachine<Client
     {
         _behaviourController.StopAgent();
 
-        _behaviourController.ChangeAnimationTo(_behaviourController.stunnedAnim);
-
-        _behaviourController.StartCoroutine(WaitAndSwitchState(3f, _behaviourController.complainingState, "Stunned")); // TODO: Just wait until animation is executed
+        _behaviourController.StartCoroutine(WaitAndSwitchState(3f, _behaviourController.complainingState, _behaviourController.stunnedAnim, "Stunned")); // TODO: Just wait until animation is executed
 
         if (_behaviourController.HasReachedMaxScares())
-            _stateMachine.SwitchState(_behaviourController.complainingState);
+            SwitchState(_behaviourController.complainingState);
         else
-            _stateMachine.ReturnToPreviousState();
+            ReturnToPreviousState();
     }
 
     public override void UpdateState()

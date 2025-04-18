@@ -13,12 +13,12 @@ public class CalmingDown_ReceptionistAction : ABinaryAction<Receptionist>
     public override void StartAction()
     {
         // Approaches the client and calms them down
-        _behaviourController.SetTargetPos(ApothecaryManager.Instance.complainingPosition.position);
+        _behaviourController.SetDestination(ApothecaryManager.Instance.complainingPosition.position);
     }
 
     public override void UpdateAction()
     {
-        if (_behaviourController.HasArrived(2f))
+        if (_behaviourController.HasArrivedAtDestination())
             _behaviourController.ChangeAnimationTo(_behaviourController.argueAnim);
     }
 

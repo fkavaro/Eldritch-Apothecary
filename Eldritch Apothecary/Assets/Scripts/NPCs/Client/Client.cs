@@ -104,6 +104,16 @@ public class Client : AHumanoid<Client>
 	{
 		return timeWaiting >= maxMinutesWaiting * 60f;
 	}
+
+	public bool InWaitingQueue()
+	{
+		return ApothecaryManager.Instance.waitingQueue.Contains(this);
+	}
+
+	public void EnterWaitingQueue()
+	{
+		ApothecaryManager.Instance.waitingQueue.Enter(this);
+	}
 	#endregion
 
 	#region PRIVATE	METHODS

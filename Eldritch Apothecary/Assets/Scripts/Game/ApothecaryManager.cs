@@ -137,17 +137,18 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         return 0f; // TODO
     }
 
+    // TODO: IMPLEMENT TURNS SYSTEM
     internal bool IsTurn(Client client)
     {
         // Switch wanted service
         switch (client.wantedService)
         {
             case Client.WantedService.Sorcerer:
-                return !sorcererSeat.IsOccupied(); // TODO: when its turn indeed
+                return !sorcererSeat.IsOccupied();
             case Client.WantedService.Alchemist:
                 return true;
             default:
-                return false;
+                return true;
         }
     }
     #endregion

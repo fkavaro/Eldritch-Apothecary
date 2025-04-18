@@ -32,14 +32,32 @@ public abstract class AState<TController, TStateMachine>
         _behaviourController = stateMachine.controller;
     }
 
+    public void SwitchState(AState<TController, TStateMachine> nextState)
+    {
+        _stateMachine?.SwitchState(nextState);
+    }
+
+    public void ReturnToPreviousState()
+    {
+        // StateMachine is an stack state machine
+        if (_stateMachine is StackFiniteStateMachine<TController> stateFSM)
+        {
+            stateFSM.ReturnToPreviousState();
+        }
+        else
+        {
+            Debug.LogError("State machine is not a stack state machine. Cannot return to previous state.");
+            return;
+        }
+
+    }
+
     /// <summary>
     /// Coroutine to wait for a specified amount of time before switching to the next state.
     /// </summary>
-    protected virtual IEnumerator WaitAndSwitchState(float waitTime, AState<TController, TStateMachine> nextState, string action = "Executing animation")
+    protected virtual IEnumerator WaitAndSwitchState(float waitTime, AState<TController, TStateMachine> nextState)
     {
         _coroutineStarted = true;
-
-        _behaviourController.actionText.text = action + " for " + waitTime + " seconds...";
 
         yield return new WaitForSeconds(waitTime);
 
@@ -50,10 +68,10 @@ public abstract class AState<TController, TStateMachine>
     /// <summary>
     /// Coroutine to wait for a random amount of time before switching to the next state.
     /// </summary>
-    protected IEnumerator WaitAndSwitchState(AState<TController, TStateMachine> nextState, string action = "Acting")
+    protected IEnumerator WaitAndSwitchState(AState<TController, TStateMachine> nextState)
     {
         int waitTime = Random.Range(5, 21);
-        return WaitAndSwitchState(waitTime, nextState, action);
+        return WaitAndSwitchState(waitTime, nextState);
     }
 
     public virtual void AwakeState() { } // Optionally implemented in subclasses

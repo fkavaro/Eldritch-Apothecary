@@ -64,7 +64,7 @@ public class Receptionist : AHumanoid<Receptionist>
     /// Returns true if the receptionist is ready to attend clients at the counter.
     /// </summary>
     /// <returns></returns>
-    public bool Interact()
+    public bool CanAttend()
     {
         return _receptionistUS.IsCurrentAction(_attendingAction);
     }

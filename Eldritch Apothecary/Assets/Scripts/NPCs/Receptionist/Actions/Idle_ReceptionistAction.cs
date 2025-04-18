@@ -13,12 +13,12 @@ public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
     public override void StartAction()
     {
         // Move to counter and wait doing nothing
-        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.receptionistAttendingPos);
+        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.receptionistAttendingPos);
     }
 
     public override void UpdateAction()
     {
-        if (_behaviourController.HasArrived())
+        if (_behaviourController.HasArrivedAtDestination())
             _behaviourController.ChangeAnimationTo(_behaviourController.idleAnim);
     }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
-public class WaitingIngredients_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
+public class WaitingIngredients_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
     public WaitingIngredients_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
     : base("Waiting Ingredients", stackFsm) { }
@@ -12,7 +12,7 @@ public class WaitingIngredients_AlchemistState : AState<Alchemist, StackFiniteSt
         //Accion esperar ingredientes (Espera de 7 segundos)
         if (_behaviourController.HasIngredients())
         {
-            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.preparingPotionState, "Preparing potion"));
+            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.preparingPotionState));
         }
         else
         {

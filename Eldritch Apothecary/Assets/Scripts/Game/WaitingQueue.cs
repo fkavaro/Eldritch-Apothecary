@@ -121,7 +121,7 @@ public class WaitingQueue
             int index = 0;
             foreach (Client client in _clientsQueue)
             {
-                client.SetTargetPos(_queuePositions[index].position);
+                client.SetDestination(_queuePositions[index].position);
                 index++;
             }
         }

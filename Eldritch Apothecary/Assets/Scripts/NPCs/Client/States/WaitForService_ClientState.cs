@@ -3,14 +3,14 @@ using UnityEngine;
 /// <summary>
 /// Waits for its service turn sat down.
 /// </summary>
-public class WaitForService_ClientState : AState<Client, StackFiniteStateMachine<Client>>
+public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
 {
     public WaitForService_ClientState(StackFiniteStateMachine<Client> sfsm)
     : base("Waiting for service", sfsm) { }
 
     public override void StartState()
     {
-        _behaviourController.SetTargetSpot(ApothecaryManager.Instance.RandomWaitingSeat());
+        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.RandomWaitingSeat());
     }
 
     public override void UpdateState()
@@ -18,31 +18,30 @@ public class WaitForService_ClientState : AState<Client, StackFiniteStateMachine
         if (_coroutineStarted) return;
 
         // Has reached the waiting seat
-        if (_behaviourController.HasArrived())
+        if (_behaviourController.HasArrivedAtDestination())
         {
-            switch (_behaviourController.wantedService)
+            // It's its turn
+            if (ApothecaryManager.Instance.IsTurn(_behaviourController))
             {
-                case Client.WantedService.Sorcerer:
-                    if (ApothecaryManager.Instance.IsTurn(_behaviourController))
-                        _stateMachine.SwitchState(_behaviourController.atSorcererState);
-                    else
-                        _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
-                    break;
-                case Client.WantedService.Alchemist:
-                    _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
-                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.pickPotionUpState, "Sitting down"));
+                switch (_behaviourController.wantedService)
+                {
+                    case Client.WantedService.Sorcerer:
+                        SwitchState(_behaviourController.atSorcererState);
+                        break;
 
-                    // if (ApothecaryManager.Instance.IsTurn(_behaviourController))
-                    //     _stateMachine.SwitchState(_behaviourController.pickPotionUpState);
-                    // else
-                    //     _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
-                    break;
-                default:
-                    _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
-                    _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Sitting down"));
-                    break;
+                    case Client.WantedService.Alchemist:
+                        _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.pickPotionUpState, _behaviourController.sitDownAnim, "Sitting down"));
+
+                        SwitchState(_behaviourController.pickPotionUpState);
+                        break;
+                    default:
+                        SwitchState(_behaviourController.leavingState);
+                        break;
+                }
             }
-
+            else // It's not
+                // Wait
+                _behaviourController.ChangeAnimationTo(_behaviourController.sitDownAnim);
         }
     }
 }

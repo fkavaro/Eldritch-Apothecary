@@ -1,25 +1,22 @@
 using UnityEngine;
 
-public class Complaining_ClientState : AState<Client, StackFiniteStateMachine<Client>>
+public class Complaining_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
 {
     public Complaining_ClientState(StackFiniteStateMachine<Client> sfsm)
     : base("Complaining", sfsm) { }
 
     public override void StartState()
     {
-        _behaviourController.SetTargetPos(ApothecaryManager.Instance.complainingPosition.position);
+        _behaviourController.SetDestination(ApothecaryManager.Instance.complainingPosition.position);
     }
 
     public override void UpdateState()
     {
         if (_coroutineStarted) return;
 
-        // Has reached the complaining position
-        if (_behaviourController.HasArrived(2f))
-        {
-            _behaviourController.ChangeAnimationTo(_behaviourController.complainAnim);
-            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, "Complaining"));
-        }
+        // Is close to the complaining position
+        if (_behaviourController.IsCloseToDestination())
+            _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, _behaviourController.complainAnim, "Complaining"));
     }
 
     public override void ExitState()
