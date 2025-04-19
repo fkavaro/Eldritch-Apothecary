@@ -1,4 +1,3 @@
-using UnityEngine;
 
 public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
 {
@@ -7,19 +6,19 @@ public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
 
     protected override bool SetDecisionFactor()
     {
-        return _behaviourController.IsBusy();
+        return _controller.IsBusy();
     }
 
     public override void StartAction()
     {
         // Move to counter and wait doing nothing
-        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.receptionistAttendingPos);
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.receptionistAttendingPos);
     }
 
     public override void UpdateAction()
     {
-        if (_behaviourController.HasArrivedAtDestination())
-            _behaviourController.ChangeAnimationTo(_behaviourController.idleAnim);
+        if (_controller.HasArrivedAtDestination())
+            _controller.ChangeAnimationTo(_controller.idleAnim);
     }
 
     public override bool IsFinished()

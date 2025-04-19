@@ -10,6 +10,7 @@ public class Leaving_ClientState : ANPCState<Client, StackFiniteStateMachine<Cli
 
     public override void StartState()
     {
+        _controller.DontMindAnything();
         _controller.SetDestination(ApothecaryManager.Instance.queueExitPosition.position);
     }
 

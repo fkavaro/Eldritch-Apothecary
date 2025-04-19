@@ -32,11 +32,17 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     {
         //if (controller.debugMode)
         //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
-        controller.stateText.text = currentState.StateName;
+        controller.stateText.text = currentState?.StateName;
     }
     #endregion
 
     #region UNITY EXECUTION EVENTS
+    public override void Start()
+    {
+        currentState = initialState;
+        DebugDecision();
+        currentState?.StartState();
+    }
     public override void Update()
     {
         currentState?.OnUpdateState();

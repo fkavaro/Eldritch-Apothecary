@@ -189,7 +189,7 @@ where TController : ABehaviourController<TController>
     /// <summary>
     /// Sets the NavMeshAgent to be stopped or not.
     /// </summary>
-    public void IsStopped(bool isStopped)
+    public void SetIfStopped(bool isStopped)
     {
         if (!_agent.isOnNavMesh)
         {

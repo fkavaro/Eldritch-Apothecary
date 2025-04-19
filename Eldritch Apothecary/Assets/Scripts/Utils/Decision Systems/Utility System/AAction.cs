@@ -9,13 +9,13 @@ public abstract class AAction<TController, TFactor> : IAction where TController 
 
     protected string name;
     protected float utility;
-    protected TController _behaviourController;
+    protected TController _controller;
     protected TFactor _decisionFactor => SetDecisionFactor();
 
     public AAction(string name, UtilitySystem<TController> utilitySystem)
     {
         this.name = name;
-        _behaviourController = utilitySystem.controller;
+        _controller = utilitySystem.controller;
         utilitySystem.AddAction(this);
     }
 

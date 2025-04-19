@@ -40,5 +40,34 @@ where TController : ABehaviourController<TController>
             animator.CrossFade(newAnimation, duration);
         }
     }
+
+    /// <returns> True if the current animation is finished, false otherwise.</returns>
+    public virtual bool IsAnimationFinished()
+    {
+        // Check if the current animation is finished
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.normalizedTime >= 1f;
+    }
+
+    public IEnumerator PlayAnimationRandomTime(int animation, string animationName)
+    {
+        int waitTime = Random.Range(5, 21);
+        return PlayAnimationCertainTime(waitTime, animation, animationName);
+    }
+
+    public IEnumerator PlayAnimationCertainTime(float waitTime, int animation, string animationName)
+    {
+        actionText.text = animationName + " for " + waitTime + " seconds...";
+
+        ChangeAnimationTo(animation);
+
+        coroutineStarted = true;
+
+        yield return new WaitForSeconds(waitTime);
+
+        actionText.text = "";
+        coroutineStarted = false;
+        InvokeCoroutineFinishedEvent();
+    }
     #endregion
 }

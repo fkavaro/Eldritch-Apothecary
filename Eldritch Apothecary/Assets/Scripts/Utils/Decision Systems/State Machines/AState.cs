@@ -8,21 +8,12 @@ public abstract class AState<TController, TStateMachine>
     where TController : ABehaviourController<TController>
     where TStateMachine : AStateMachine<TController, TStateMachine>
 {
+    public string StateName => _stateName;
+
     protected string _stateName;
     protected TController _controller;
     protected TStateMachine _stateMachine;
-
-    public string StateName => _stateName;
-
-    /// <summary>
-    /// Flag to check if the coroutine has started.
-    /// </summary>
-    bool _coroutineStarted = false;
-
-    /// <summary>
-    /// The time the state has been active.
-    /// </summary>
-    float _stateTime = 0f;
+    protected float _stateTime = 0f;
 
     // Constructor given AStateMachine
     public AState(string name, TStateMachine stateMachine)
@@ -55,23 +46,23 @@ public abstract class AState<TController, TStateMachine>
     /// <summary>
     /// Coroutine to wait for a specified amount of time before switching to the next state.
     /// </summary>
-    protected virtual IEnumerator WaitAndSwitchState(float waitTime, AState<TController, TStateMachine> nextState)
+    protected virtual IEnumerator SwitchStateAfterCertainTime(float waitTime, AState<TController, TStateMachine> nextState)
     {
-        _coroutineStarted = true;
+        _controller.coroutineStarted = true;
 
         yield return new WaitForSeconds(waitTime);
 
         _stateMachine?.SwitchState(nextState);
-        _controller.actionText.text = "";
-        _coroutineStarted = false;
+        _controller.coroutineStarted = false;
     }
+
     /// <summary>
     /// Coroutine to wait for a random amount of time before switching to the next state.
     /// </summary>
-    protected IEnumerator RandomWaitAndSwitchState(AState<TController, TStateMachine> nextState)
+    protected IEnumerator SwitchStateAfterRandomTime(AState<TController, TStateMachine> nextState)
     {
         int waitTime = Random.Range(5, 21);
-        return WaitAndSwitchState(waitTime, nextState);
+        return SwitchStateAfterCertainTime(waitTime, nextState);
     }
 
     public virtual void AwakeState() { } // Optionally implemented in subclasses
@@ -79,7 +70,7 @@ public abstract class AState<TController, TStateMachine>
 
     public void OnUpdateState()
     {
-        if (_coroutineStarted) return; // Avoids starting the coroutine repeatedly
+        if (_controller.coroutineStarted) return; // Avoids starting the coroutine repeatedly
         _stateTime += Time.deltaTime; // Update the state time
         UpdateState(); // Call the UpdateState method implemented in subclasses
     }

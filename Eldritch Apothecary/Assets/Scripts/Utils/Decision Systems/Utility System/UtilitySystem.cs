@@ -48,6 +48,9 @@ where TController : ABehaviourController<TController>
             Reset();
     }
 
+    /// <summary>
+    /// Resets the utility system to its default action.
+    /// </summary>
     public override void Reset()
     {
         if (_defaultAction == null)

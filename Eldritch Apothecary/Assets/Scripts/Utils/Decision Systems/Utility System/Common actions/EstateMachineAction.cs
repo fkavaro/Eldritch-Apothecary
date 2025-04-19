@@ -9,7 +9,7 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
     TStateMachine _stateMachine;
 
     public EstateMachineAction(UtilitySystem<TController> utilitySystem, TStateMachine stateMachine)
-        : base("FSM", utilitySystem, true)
+        : base("FSM", utilitySystem)
     {
         _stateMachine = stateMachine;
     }
@@ -21,7 +21,7 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
 
     public override void StartAction()
     {
-
+        _stateMachine.Start();
     }
 
     public override void UpdateAction()

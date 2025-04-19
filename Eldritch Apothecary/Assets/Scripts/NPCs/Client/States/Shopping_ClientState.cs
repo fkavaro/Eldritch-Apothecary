@@ -23,17 +23,17 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             if (_controller.DestinationSpotIsOccupied())
             {
                 // Stop and wait
-                _controller.IsStopped(true);
+                _controller.SetIfStopped(true);
                 _controller.ChangeAnimationTo(_controller.waitAnim);
             }
             else // Spot is free
             {
-                _controller.IsStopped(false);
+                _controller.SetIfStopped(false);
 
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
                     // Pick up a product and change to the next state
-                    _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects"));
+                    _controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects"));
             }
         }
     }

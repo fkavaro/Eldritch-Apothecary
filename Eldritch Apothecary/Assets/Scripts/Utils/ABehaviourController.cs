@@ -8,11 +8,20 @@ using TMPro;
 public abstract class ABehaviourController<TController> : MonoBehaviour
 where TController : ABehaviourController<TController>
 {
+    // Event for whe coroutine is finished
+    public event Action CoroutineFinishedEvent;
+
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console")]
     public bool debugMode = false;
 
     protected Transform debugCanvas;
+
+    /// <summary>
+    /// Flag to check if the coroutine has started.
+    /// </summary>
+    public bool coroutineStarted = false;
+
     [HideInInspector] public TextMeshProUGUI stateText, actionText;
     ADecisionSystem<TController> _decisionSystem;
 
@@ -27,6 +36,11 @@ where TController : ABehaviourController<TController>
     public void ResetBehaviour()
     {
         _decisionSystem?.Reset();
+    }
+
+    protected void InvokeCoroutineFinishedEvent()
+    {
+        CoroutineFinishedEvent?.Invoke();
     }
 
     #region UNITY EXECUTION EVENTS

@@ -23,13 +23,13 @@ public class Attending_ReceptionistAction : ALinearAction<Receptionist>
         _clientHasChanged = false; // Reset the flag when starting the action
 
         // Move to counter and attend the client
-        _behaviourController.SetDestinationSpot(ApothecaryManager.Instance.receptionistAttendingPos);
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.receptionistAttendingPos);
     }
 
     public override void UpdateAction()
     {
-        if (_behaviourController.HasArrivedAtDestination())
-            _behaviourController.ChangeAnimationTo(_behaviourController.talkAnim);
+        if (_controller.HasArrivedAtDestination())
+            _controller.ChangeAnimationTo(_controller.talkAnim);
     }
 
     public override bool IsFinished()

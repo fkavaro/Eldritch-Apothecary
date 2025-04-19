@@ -1,6 +1,7 @@
 
 /// <summary>
 /// Finite State Machine implementation for controlling a behaviour.
+/// </summary>
 public class FiniteStateMachine<TController> : AStateMachine<TController, FiniteStateMachine<TController>> where TController : ABehaviourController<TController>
 {
     public FiniteStateMachine(TController controller) : base(controller) { }
@@ -14,9 +15,6 @@ public class FiniteStateMachine<TController> : AStateMachine<TController, Finite
         if (state == currentState) return;
 
         initialState = state;
-        currentState = initialState;
-        DebugDecision();
-        currentState.StartState();
     }
 
     /// <summary>

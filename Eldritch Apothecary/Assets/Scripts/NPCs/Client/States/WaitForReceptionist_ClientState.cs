@@ -17,7 +17,7 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
     public override void UpdateState()
     {
         // Has been waiting first in line for too long
-        if (_controller.FirstInLineTooLong())
+        if (_controller.WaitedTooLong())
         {
             SwitchState(_controller.complainingState);
         }
@@ -40,9 +40,9 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
                 _controller.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
 
                 if (_controller.wantedService == Client.WantedService.OnlyShop)
-                    _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.leavingState, _controller.talkAnim, "Talking"));
+                    _controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.leavingState, _controller.talkAnim, "Talking"));
                 else
-                    _controller.StartCoroutine(RandomWaitAndSwitchState(_controller.waitForServiceState, _controller.talkAnim, "Talking"));
+                    _controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.waitForServiceState, _controller.talkAnim, "Talking"));
             }
             // Receptionist is not at the counter
             else

@@ -18,21 +18,15 @@ public class Client : AHumanoid<Client>
 	[Header("Client Properties")]
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
-
 	[Tooltip("Maximum waiting minutes"), Range(1, 4)]
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Seconds waiting first in line")]
 	public float timeWaiting = 0f;
 	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0, 1)]
 	public float normalizedWaitingTime;
-	[Tooltip("Probability of being scared"), Range(0, 10)]
-	public int scareProbability = 3;
-	[Tooltip("Maximum number of scares supported"), Range(1, 5)]
-	public int maxScares = 3;
 	#endregion
 
 	#region PRIVATE PROPERTIES
-	int _scaresCount = 0;
 	StackFiniteStateMachine<Client> _clientSFSM;
 	UtilitySystem<Client> _clientUS;
 	TextMeshProUGUI _serviceText;
@@ -79,6 +73,7 @@ public class Client : AHumanoid<Client>
 		_clientUS = new(this);
 
 		fsmAction = new(_clientUS, _clientSFSM);
+
 		_clientUS.SetDefaultAction(fsmAction);
 
 		return _clientUS;
@@ -89,28 +84,23 @@ public class Client : AHumanoid<Client>
 		if (_serviceText.gameObject.activeSelf != debugMode)
 			_serviceText.gameObject.SetActive(debugMode);
 
-		if (!HasReachedMaxScares()) ReactToCat();
+		//if (!HasReachedMaxScares()) CatIsTooClose();
 	}
 	#endregion
 
 	#region PUBLIC METHODS
-	/// <returns>If client has been scared enough times</returns>
-	public bool HasReachedMaxScares()
-	{
-		return _scaresCount >= maxScares;
-	}
-
 	/// <summary>
 	/// Resets the client's properties and behaviour
 	/// </summary>
 	public void Reset()
 	{
 		RandomizeProperties();
-		IsStopped(false); // ANPC
+		SetIfStopped(false); // ANPC
 		ResetBehaviour(); // ABehaviourController
 	}
 
-	public bool FirstInLineTooLong()
+	/// <returns> True if the client has waited too long, false otherwise.</returns>
+	public bool WaitedTooLong()
 	{
 		return timeWaiting >= maxMinutesWaiting * 60f;
 	}
@@ -129,23 +119,17 @@ public class Client : AHumanoid<Client>
 	{
 		return ApothecaryManager.Instance.IsTurn(this);
 	}
+
+	public void DontMindAnything()
+	{
+		_scaresCount = 0;
+		timeWaiting = 0f;
+		normalizedWaitingTime = 0f;
+		fear = 0;
+	}
 	#endregion
 
 	#region PRIVATE	METHODS
-	/// <summary>
-	/// Checks if the cat is close enough to scare the client
-	/// </summary>
-	void ReactToCat()
-	{
-		// Cat is close and client is scared
-		if (Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position) < minDistanceToCat &&
-			UnityEngine.Random.Range(0, 10) < scareProbability)
-		{
-			_scaresCount++;
-			_clientSFSM.SwitchState(stunnedState);
-		}
-	}
-
 	/// <summary>
 	/// Randomizes client properties: wanted service, max minutes waiting, scare probability and max scares
 	/// </summary>
@@ -153,7 +137,7 @@ public class Client : AHumanoid<Client>
 	{
 		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
 		maxMinutesWaiting = UnityEngine.Random.Range(2, 5); // Chooses a random number of minutes to wait
-		scareProbability = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
+		fear = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 
 		if (_serviceText == null)
