@@ -40,7 +40,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
         controller.stateText.text = GetCurrentStateName();
     }
 
-    public void ForceState(AState<TController, TStateMachineType> newState)
+    public virtual void ForceState(AState<TController, TStateMachineType> newState)
     {
         if (newState == currentState) return;
 

@@ -46,6 +46,17 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         DebugDecision();
         currentState?.StartState();
     }
+
+    public override void ForceState(AState<TController, StackFiniteStateMachine<TController>> newState)
+    {
+        if (newState == currentState) return;
+
+        // Don't exit the current state, just set and start the new one
+        previousState = newState;
+        currentState = newState;
+        DebugDecision();
+        currentState.StartState();
+    }
     #endregion
 
     #region PUBLIC METHODS

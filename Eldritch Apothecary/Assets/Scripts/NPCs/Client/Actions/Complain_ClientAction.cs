@@ -5,7 +5,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
     bool finishedComplaining = false;
 
     public Complain_ClientAction(UtilitySystem<Client> utilitySystem)
-        : base("Complain", utilitySystem) { }
+        : base("Complaining", utilitySystem) { }
 
     protected override bool SetDecisionFactor()
     {
@@ -23,6 +23,8 @@ public class Complain_ClientAction : ABinaryAction<Client>
 
     public override void UpdateAction()
     {
+        if (finishedComplaining) return;
+
         // Is close to the complaining position
         if (_controller.HasArrivedAtDestination())
             _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining"));
