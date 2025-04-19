@@ -25,9 +25,8 @@ where TController : ABehaviourController<TController>
     #region INHERITED METHODS
     protected override void DebugDecision()
     {
-        controller.stateText.text = _currentAction.Name;
+        controller.stateText.text = _currentAction.DebugDecision();
     }
-
 
     public override void Start()
     {

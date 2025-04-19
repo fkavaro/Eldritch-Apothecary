@@ -7,7 +7,7 @@ public class StunnedByCatAction<TController> : ABinaryAction<TController>
 where TController : AHumanoid<TController>
 {
     public StunnedByCatAction(UtilitySystem<TController> utilitySystem)
-    : base("Stunned by cat", utilitySystem) { }
+    : base("Stunned by cat", utilitySystem, 0.7f) { }
 
     protected override bool SetDecisionFactor()
     {

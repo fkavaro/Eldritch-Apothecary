@@ -33,10 +33,8 @@ public class Client : AHumanoid<Client>
 	#endregion
 
 	#region STATES
-	public Stunned_ClientState stunnedState;
 	public Shopping_ClientState shoppingState;
 	public WaitForReceptionist_ClientState waitForReceptionistState;
-	public Complaining_ClientState complainingState;
 	public WaitForService_ClientState waitForServiceState;
 	public AtSorcerer_ClientState atSorcererState;
 	public PickPotionUp_ClientState pickPotionUpState;
@@ -44,7 +42,9 @@ public class Client : AHumanoid<Client>
 	#endregion
 
 	#region ACTIONS
-	EstateMachineAction<Client, StackFiniteStateMachine<Client>> fsmAction;
+	public StateMachineAction<Client, StackFiniteStateMachine<Client>> fsmAction;
+	public StunnedByCatAction<Client> stunnedByCatAction;
+	public Complain_ClientAction complainAction;
 	#endregion
 
 	#region INHERITED METHODS
@@ -54,10 +54,8 @@ public class Client : AHumanoid<Client>
 		_clientSFSM = new(this);
 
 		// States initialization
-		stunnedState = new(_clientSFSM);
 		shoppingState = new(_clientSFSM);
 		waitForReceptionistState = new(_clientSFSM);
-		complainingState = new(_clientSFSM);
 		waitForServiceState = new(_clientSFSM);
 		atSorcererState = new(_clientSFSM);
 		pickPotionUpState = new(_clientSFSM);
@@ -73,6 +71,8 @@ public class Client : AHumanoid<Client>
 		_clientUS = new(this);
 
 		fsmAction = new(_clientUS, _clientSFSM);
+		stunnedByCatAction = new(_clientUS);
+		complainAction = new(_clientUS);
 
 		_clientUS.SetDefaultAction(fsmAction);
 
@@ -126,6 +126,11 @@ public class Client : AHumanoid<Client>
 		timeWaiting = 0f;
 		normalizedWaitingTime = 0f;
 		fear = 0;
+	}
+
+	public void SwitchLeavingState()
+	{
+		_clientSFSM.SwitchState(leavingState);
 	}
 	#endregion
 

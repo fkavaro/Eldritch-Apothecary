@@ -16,6 +16,11 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     public abstract void SwitchState(AState<TController, TStateMachineType> state);
     #endregion
 
+    public string GetCurrentStateName()
+    {
+        return currentState?.StateName;
+    }
+
     #region INHERITED METHODS
     /// <summary>
     /// Switchs back to initial state
@@ -32,7 +37,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     {
         //if (controller.debugMode)
         //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
-        controller.stateText.text = currentState?.StateName;
+        controller.stateText.text = GetCurrentStateName();
     }
     #endregion
 
@@ -43,6 +48,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
         DebugDecision();
         currentState?.StartState();
     }
+
     public override void Update()
     {
         currentState?.OnUpdateState();

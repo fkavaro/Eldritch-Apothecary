@@ -17,12 +17,13 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
     public override void UpdateState()
     {
         // Has been waiting first in line for too long
-        if (_controller.WaitedTooLong())
-        {
-            SwitchState(_controller.complainingState);
-        }
+        // if (_controller.WaitedTooLong())
+        // {
+        //     SwitchState(_controller.complainingState);
+        // }
+
         // Is close to the last position in line and is not in the queue
-        else if (_controller.IsCloseTo(ApothecaryManager.Instance.waitingQueue.LastInLinePos())
+        if (_controller.IsCloseTo(ApothecaryManager.Instance.waitingQueue.LastInLinePos())
                 && !_controller.InWaitingQueue())
         {
             // Reduce avoidance radius to avoid being blocked by other clients
@@ -33,12 +34,11 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
         // Has arrived the receptionist counter, first position in line
         else if (_controller.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLinePos()))
         {
+            _controller.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
+
             // Can interact with receptionist: is ready to attend clients at the counter
             if (ApothecaryManager.Instance.receptionist.CanAttend())
             {
-                // Talks before changing state
-                _controller.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
-
                 if (_controller.wantedService == Client.WantedService.OnlyShop)
                     _controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.leavingState, _controller.talkAnim, "Talking"));
                 else

@@ -66,6 +66,8 @@ where TController : ABehaviourController<TController>
 
     private void Update()
     {
+        //if (coroutineStarted) return; // Avoids starting the coroutine repeatedly
+
         if (stateText.gameObject.activeSelf != debugMode)
         {
             stateText.gameObject.SetActive(debugMode);

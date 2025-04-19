@@ -2,21 +2,21 @@
 /// <summary>
 /// Action that runs a finite state machine (FSM) by an Utility System.
 /// </summary>
-public class EstateMachineAction<TController, TStateMachine> : ABinaryAction<TController>
+public class StateMachineAction<TController, TStateMachine> : ABinaryAction<TController>
 where TController : ABehaviourController<TController>
 where TStateMachine : AStateMachine<TController, TStateMachine>
 {
     TStateMachine _stateMachine;
 
-    public EstateMachineAction(UtilitySystem<TController> utilitySystem, TStateMachine stateMachine)
-        : base("FSM", utilitySystem)
+    public StateMachineAction(UtilitySystem<TController> utilitySystem, TStateMachine stateMachine)
+        : base("FSM", utilitySystem, 0.5f)
     {
         _stateMachine = stateMachine;
     }
 
     protected override bool SetDecisionFactor()
     {
-        return true;
+        return true; // Will remain valid action
     }
 
     public override void StartAction()
@@ -32,6 +32,11 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
     public override bool IsFinished()
     {
         return false; // FSM action never finishes unless interrupted by another action
+    }
+
+    public override string DebugDecision()
+    {
+        return _stateMachine.GetCurrentStateName();
     }
 
 }

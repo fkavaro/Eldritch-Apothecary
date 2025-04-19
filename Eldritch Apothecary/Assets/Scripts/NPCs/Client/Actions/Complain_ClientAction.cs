@@ -1,3 +1,4 @@
+using UnityEngine;
 
 public class Complain_ClientAction : ABinaryAction<Client>
 {
@@ -20,13 +21,19 @@ public class Complain_ClientAction : ABinaryAction<Client>
     public override void UpdateAction()
     {
         // Is close to the complaining position
-        if (_controller.IsCloseToDestination())
+        if (_controller.HasArrivedAtDestination())
             _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining"));
     }
 
     public override bool IsFinished()
     {
-        return finishedComplaining; // Action never finishes unless interrupted by another action
+        if (finishedComplaining)
+        {
+            Debug.Log("Finished complaining");
+            _controller.SwitchLeavingState();
+            return true; // Action finished
+        }
+        else return false; // Action not finished
     }
 
     void FinishedComplaining()

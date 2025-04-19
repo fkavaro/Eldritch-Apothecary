@@ -66,6 +66,7 @@ public class Receptionist : AHumanoid<Receptionist>
     /// <returns></returns>
     public bool CanAttend()
     {
+        return false;
         return _receptionistUS.IsCurrentAction(_attendingAction);
     }
 

@@ -12,6 +12,13 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     public StackFiniteStateMachine(TController controller) : base(controller) { }
 
     #region INHERITED METHODS
+    public override void Start()
+    {
+        // Previous state will be initial state at start and after changing
+        // will be able to return the previous state from Utility System.Reset()
+        ReturnToPreviousState();
+    }
+
     /// <summary>
     /// Sets the initial state of the state machine.
     /// </summary>
