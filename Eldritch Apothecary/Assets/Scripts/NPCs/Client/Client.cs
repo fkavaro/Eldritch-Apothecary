@@ -84,6 +84,9 @@ public class Client : AHumanoid<Client>
 		if (_serviceText.gameObject.activeSelf != debugMode)
 			_serviceText.gameObject.SetActive(debugMode);
 
+		// Normalize time between 0 and the 1 as the maximum waiting time of the client
+		normalizedWaitingTime = Mathf.Clamp01(timeWaiting / (maxMinutesWaiting * 60f));
+
 		//if (!HasReachedMaxScares()) CatIsTooClose();
 	}
 	#endregion

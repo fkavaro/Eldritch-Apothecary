@@ -49,8 +49,6 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
             {
                 // Increase time waiting
                 _controller.timeWaiting += Time.deltaTime;
-                // Normalize time between 0 and the 1 as the maximum waiting time of the client
-                _controller.normalizedWaitingTime = Mathf.Clamp01(_controller.timeWaiting / _controller.maxMinutesWaiting * 60f);
             }
         }
 
