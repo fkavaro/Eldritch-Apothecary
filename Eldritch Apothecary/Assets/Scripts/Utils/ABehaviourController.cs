@@ -46,7 +46,7 @@ where TController : ABehaviourController<TController>
     #region UNITY EXECUTION EVENTS
     private void Awake()
     {
-        debugCanvas = transform.Find("DebugCanvas").transform;
+        debugCanvas = transform.Find("DebugCanvas")?.transform;
         stateText = debugCanvas?.Find("StateText").GetComponent<TextMeshProUGUI>();
         actionText = debugCanvas?.Find("ActionText").GetComponent<TextMeshProUGUI>();
 

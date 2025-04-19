@@ -9,7 +9,7 @@ using UnityEngine.AI;
 public abstract class ANPC<TController> : AAnimationController<TController>
 where TController : ABehaviourController<TController>
 {
-    NavMeshAgent _agent;
+    protected NavMeshAgent _agent;
     Spot _destinationSpot = null;
 
     /// <summary>
