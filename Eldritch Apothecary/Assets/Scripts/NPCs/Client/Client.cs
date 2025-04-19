@@ -130,10 +130,6 @@ public class Client : AHumanoid<Client>
 
 	public void ForceState(AState<Client, StackFiniteStateMachine<Client>> newState)
 	{
-		Debug.Log($"Forcing state: {newState.StateName}");
-		//_clientSFSM.SetInitialState(leavingState);
-		//_clientSFSM.SwitchState(leavingState);
-
 		_clientSFSM.ForceState(newState);
 	}
 	#endregion

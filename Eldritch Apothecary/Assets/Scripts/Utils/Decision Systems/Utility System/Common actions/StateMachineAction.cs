@@ -39,4 +39,9 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
         return _stateMachine.GetCurrentStateName();
     }
 
+    public override void Reset()
+    {
+        _utilitySystem.CurrentAsDefaultAction();
+        _stateMachine.Reset();
+    }
 }

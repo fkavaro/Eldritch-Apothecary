@@ -7,4 +7,5 @@ public interface IAction
     public abstract void UpdateAction();
     public abstract bool IsFinished();
     public abstract string DebugDecision();
+    public virtual void Reset() { }
 }

@@ -30,7 +30,7 @@ where TController : ABehaviourController<TController>
 
     public override void Start()
     {
-        Reset();
+        Restart();
     }
 
     public override void Update()
@@ -48,19 +48,13 @@ where TController : ABehaviourController<TController>
     }
 
     /// <summary>
-    /// Resets the utility system to its default action.
+    /// Resets the utility system according to the current state.
     /// </summary>
     public override void Reset()
     {
-        if (_defaultAction == null)
-        {
-            Debug.LogError("Default action is not set. Cannot reset the utility system.");
-            return;
-        }
-
-        _currentAction = _defaultAction;
-        _currentAction?.StartAction(); // Start the default action
+        _currentAction.Reset();
     }
+
     #endregion
 
     #region PUBLIC METHODS
@@ -81,6 +75,30 @@ where TController : ABehaviourController<TController>
     {
         if (_currentAction == null) return false; // No current action
         return _currentAction == action; // Check if the current action is the same as the given one
+    }
+
+    /// <summary>
+    /// Resets the current action to the default action.
+    /// </summary>
+    public void CurrentAsDefaultAction()
+    {
+        if (_defaultAction == null)
+        {
+            Debug.LogError("Default action is not set. Cannot reset the utility system.");
+            return;
+        }
+
+        _currentAction = _defaultAction;
+    }
+
+
+    /// <summary>
+    /// Restarts the utility system by resetting the current action to the default action and starting it
+    /// </summary>
+    public void Restart()
+    {
+        CurrentAsDefaultAction(); // Reset to default action
+        _currentAction?.StartAction(); // Start the default action
     }
     #endregion
 
@@ -118,5 +136,7 @@ where TController : ABehaviourController<TController>
         // Clear the action utilities for the next decision cycle
         _actionUtilities.Clear();
     }
+
+
     #endregion
 }

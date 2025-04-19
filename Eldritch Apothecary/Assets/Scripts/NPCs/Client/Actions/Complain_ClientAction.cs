@@ -34,7 +34,6 @@ public class Complain_ClientAction : ABinaryAction<Client>
     {
         if (finishedComplaining)
         {
-            Debug.Log("Finished complaining");
             _controller.ForceState(_controller.leavingState);
             return true; // Action finished
         }
