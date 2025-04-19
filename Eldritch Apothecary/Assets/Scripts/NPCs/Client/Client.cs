@@ -128,9 +128,13 @@ public class Client : AHumanoid<Client>
 		fear = 0;
 	}
 
-	public void SwitchLeavingState()
+	public void ForceState(AState<Client, StackFiniteStateMachine<Client>> newState)
 	{
-		_clientSFSM.SwitchState(leavingState);
+		Debug.Log($"Forcing state: {newState.StateName}");
+		//_clientSFSM.SetInitialState(leavingState);
+		//_clientSFSM.SwitchState(leavingState);
+
+		_clientSFSM.ForceState(newState);
 	}
 	#endregion
 
@@ -141,7 +145,7 @@ public class Client : AHumanoid<Client>
 	void RandomizeProperties()
 	{
 		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
-		maxMinutesWaiting = UnityEngine.Random.Range(2, 5); // Chooses a random number of minutes to wait
+		maxMinutesWaiting = UnityEngine.Random.Range(1, 5); // Chooses a random number of minutes to wait
 		fear = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
 		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
 

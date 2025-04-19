@@ -15,6 +15,9 @@ public class Complain_ClientAction : ABinaryAction<Client>
     public override void StartAction()
     {
         _controller.CoroutineFinishedEvent += FinishedComplaining;
+
+        // Leave the queue for next turn and go to the complaining position
+        ApothecaryManager.Instance.waitingQueue.NextTurn();
         _controller.SetDestination(ApothecaryManager.Instance.complainingPosition.position);
     }
 
@@ -30,7 +33,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
         if (finishedComplaining)
         {
             Debug.Log("Finished complaining");
-            _controller.SwitchLeavingState();
+            _controller.ForceState(_controller.leavingState);
             return true; // Action finished
         }
         else return false; // Action not finished

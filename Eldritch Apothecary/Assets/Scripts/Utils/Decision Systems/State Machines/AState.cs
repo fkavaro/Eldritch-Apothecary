@@ -70,7 +70,6 @@ public abstract class AState<TController, TStateMachine>
 
     public void OnUpdateState()
     {
-        if (_controller.coroutineStarted) return; // Avoids starting the coroutine repeatedly
         _stateTime += Time.deltaTime; // Update the state time
         UpdateState(); // Call the UpdateState method implemented in subclasses
     }

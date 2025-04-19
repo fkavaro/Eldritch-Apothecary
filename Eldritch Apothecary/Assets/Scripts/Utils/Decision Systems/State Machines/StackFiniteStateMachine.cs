@@ -1,4 +1,6 @@
 
+using System;
+
 /// <summary>
 /// Stack-based Finite State Machine implementation for controlling a behaviour.
 /// </summary>
@@ -42,7 +44,7 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         currentState?.OnExitState();
         currentState = state;
         DebugDecision();
-        currentState.StartState();
+        currentState?.StartState();
     }
     #endregion
 

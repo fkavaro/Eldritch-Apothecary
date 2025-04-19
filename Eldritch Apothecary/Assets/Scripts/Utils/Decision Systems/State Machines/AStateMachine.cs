@@ -39,6 +39,16 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
         //Debug.LogWarning(controller.transform.name + " is " + currentState.ToString());
         controller.stateText.text = GetCurrentStateName();
     }
+
+    public void ForceState(AState<TController, TStateMachineType> newState)
+    {
+        if (newState == currentState) return;
+
+        // Don't exit the current state, just set and start the new one
+        currentState = newState;
+        DebugDecision();
+        currentState.StartState();
+    }
     #endregion
 
     #region UNITY EXECUTION EVENTS
