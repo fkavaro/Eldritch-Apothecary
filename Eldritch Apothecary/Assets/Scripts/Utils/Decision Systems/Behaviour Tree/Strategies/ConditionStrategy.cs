@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ConditionStrategy : IStrategy
+public class ConditionStrategy<TController> : IStrategy<TController>
+where TController : ABehaviourController<TController>
 {
     readonly Func<bool> _predicate;
 
@@ -12,8 +13,8 @@ public class ConditionStrategy : IStrategy
         _predicate = predicate;
     }
 
-    public Node.Status Update()
+    public Node<TController>.Status Update()
     {
-        return _predicate() ? Node.Status.Success : Node.Status.Failure;
+        return _predicate() ? Node<TController>.Status.Success : Node<TController>.Status.Failure;
     }
 }

@@ -6,9 +6,10 @@ using UnityEngine;
 /// <summary>
 /// UntilSuccessNode is a node that continues running its only child as long as it doesn't return success.
 /// </summary>
-public class UntilSuccessNode : Node
+public class UntilSuccessNode<TController> : Node<TController>
+where TController : ABehaviourController<TController>
 {
-    public UntilSuccessNode(string name) : base(name) { }
+    public UntilSuccessNode(TController controller, string name) : base(controller, name) { }
 
     public override Status UpdateNode()
     {

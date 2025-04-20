@@ -6,20 +6,29 @@ using UnityEngine;
 /// <summary>
 /// BehaviourTree 
 /// </summary>
-public class BehaviourTree : Node
+public class BehaviourTree<TController> : Node<TController>
+where TController : ABehaviourController<TController>
 {
-    public BehaviourTree(string name = "BehaviourTree") : base(name) { }
+    public BehaviourTree(TController controller, string name = "BehaviourTree") : base(controller, name) { }
+
+    protected override void DebugDecision()
+    {
+        if (_currentChildId < children.Count)
+            controller.stateText.text = children[_currentChildId].name;
+        else
+            controller.stateText.text = "None";
+    }
 
     public override Status UpdateNode()
     {
-        while (_currentChild < children.Count)
+        while (_currentChildId < children.Count)
         {
-            var status = children[_currentChild].UpdateNode();
+            var status = children[_currentChildId].UpdateNode();
 
             if (status != Status.Success)
                 return status;
 
-            _currentChild++;
+            _currentChildId++;
         }
         return Status.Success;
     }

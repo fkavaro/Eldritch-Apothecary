@@ -6,7 +6,8 @@ using UnityEngine;
 /// <summary>
 /// Base class for all nodes in the behaviour tree.
 /// </summary>
-public class Node
+public class Node<TController> : ADecisionSystem<TController>
+where TController : ABehaviourController<TController>
 {
     public enum Status
     {
@@ -18,31 +19,46 @@ public class Node
     public readonly string name;
     public readonly int priority;
 
-    public readonly List<Node> children = new();
-    protected int _currentChild;
+    public readonly List<Node<TController>> children = new();
+    protected int _currentChildId;
 
-    public Node(string name = "Node", int priority = 0)
+    public Node(TController controller, string name = "Node", int priority = 0) : base(controller)
     {
         this.name = name;
         this.priority = priority;
     }
 
-    public void AddChild(Node child)
+    #region INHERITED METHODS
+    protected override void DebugDecision()
+    {
+        controller.stateText.text = name;
+    }
+
+    public override void Update()
+    {
+        DebugDecision();
+        UpdateNode();
+    }
+
+    public override void Reset()
+    {
+        _currentChildId = 0;
+        foreach (var child in children)
+        {
+            child.Reset();
+        }
+    }
+    #endregion
+
+    #region PUBLIC	METHODS
+    public void AddChild(Node<TController> child)
     {
         children.Add(child);
     }
 
     public virtual Status UpdateNode()
     {
-        return children[_currentChild].UpdateNode();
+        return children[_currentChildId].UpdateNode();
     }
-
-    public virtual void Reset()
-    {
-        _currentChild = 0;
-        foreach (var child in children)
-        {
-            child.Reset();
-        }
-    }
+    #endregion
 }

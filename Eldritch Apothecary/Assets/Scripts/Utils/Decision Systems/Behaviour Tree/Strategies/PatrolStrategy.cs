@@ -7,7 +7,8 @@ using UnityEngine.AI;
 /// <summary>
 /// PatrolStrategy is a strategy for patrolling between a list of points using a NavMeshAgent.
 /// </summary>
-public class PatrolStrategy : IStrategy
+public class PatrolStrategy<TController> : IStrategy<TController>
+where TController : ABehaviourController<TController>
 {
     readonly Transform _entity;
     readonly NavMeshAgent _agent;
@@ -15,17 +16,17 @@ public class PatrolStrategy : IStrategy
     int _currentPatrolPointIndex;
     bool isPathCalculated;
 
-    public PatrolStrategy(Transform entity, NavMeshAgent agent, List<Transform> patrolPoints, float patrolSpeed)
+    public PatrolStrategy(Transform entity, NavMeshAgent agent, List<Transform> patrolPoints)
     {
         _entity = entity;
         _agent = agent;
         _patrolPoints = patrolPoints;
     }
 
-    public Node.Status Update()
+    public Node<TController>.Status Update()
     {
         if (_currentPatrolPointIndex >= _patrolPoints.Count)
-            return Node.Status.Success;
+            return Node<TController>.Status.Success;
 
         var target = _patrolPoints[_currentPatrolPointIndex];
         _agent.SetDestination(target.position);
@@ -42,7 +43,7 @@ public class PatrolStrategy : IStrategy
             isPathCalculated = true;
         }
 
-        return Node.Status.Running;
+        return Node<TController>.Status.Running;
     }
 
     public void Reset()

@@ -7,16 +7,17 @@ using UnityEngine;
 /// SequenceNode is a composite node that executes its children in sequence.
 /// Like a logical AND operation, it will return success only if all its children return success.
 /// </summary>
-public class SequenceNode : Node
+public class SequenceNode<TController> : Node<TController>
+where TController : ABehaviourController<TController>
 {
-    public SequenceNode(string name, int priority = 0) : base(name, priority) { }
+    public SequenceNode(TController controller, string name, int priority = 0) : base(controller, name, priority) { }
 
     public override Status UpdateNode()
     {
         // Execute every child
-        if (_currentChild < children.Count)
+        if (_currentChildId < children.Count)
         {
-            switch (children[_currentChild].UpdateNode())
+            switch (children[_currentChildId].UpdateNode())
             {
                 case Status.Running:
                     return Status.Running;
@@ -24,9 +25,9 @@ public class SequenceNode : Node
                     Reset();
                     return Status.Failure;
                 default: // Success
-                    _currentChild++; // Next one
+                    _currentChildId++; // Next one
                     // Success if it was the last, if not continue
-                    return _currentChild == children.Count ? Status.Success : Status.Running;
+                    return _currentChildId == children.Count ? Status.Success : Status.Running;
             }
         }
         Reset();

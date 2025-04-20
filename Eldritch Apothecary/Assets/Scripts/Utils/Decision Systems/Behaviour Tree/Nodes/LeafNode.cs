@@ -6,11 +6,12 @@ using UnityEngine;
 /// <summary>
 /// LeafNode is a node that has no children and executes an specific action.
 /// </summary>
-public class LeafNode : Node
+public class LeafNode<TController> : Node<TController>
+where TController : ABehaviourController<TController>
 {
-    readonly IStrategy _strategy;
+    readonly IStrategy<TController> _strategy;
 
-    public LeafNode(string name, IStrategy strategy, int priority = 0) : base(name, priority)
+    public LeafNode(TController controller, string name, IStrategy<TController> strategy, int priority = 0) : base(controller, name, priority)
     {
         _strategy = strategy;
     }

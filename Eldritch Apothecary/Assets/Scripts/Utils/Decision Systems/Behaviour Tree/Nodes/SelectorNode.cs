@@ -7,16 +7,17 @@ using UnityEngine;
 /// SelectorNode is a composite node that that executes its children in sequence.
 /// Like a logical OR operation, it will return success when a child return success.
 /// </summary>
-public class SelectorNode : Node
+public class SelectorNode<TController> : Node<TController>
+where TController : ABehaviourController<TController>
 {
-    public SelectorNode(string name, int priority = 0) : base(name, priority) { }
+    public SelectorNode(TController controller, string name, int priority = 0) : base(controller, name, priority) { }
 
     public override Status UpdateNode()
     {
         // Execute every child
-        if (_currentChild < children.Count)
+        if (_currentChildId < children.Count)
         {
-            switch (children[_currentChild].UpdateNode())
+            switch (children[_currentChildId].UpdateNode())
             {
                 case Status.Running:
                     return Status.Running;
@@ -24,9 +25,9 @@ public class SelectorNode : Node
                     Reset();
                     return Status.Success;
                 default: // Failure
-                    _currentChild++; // Next one
+                    _currentChildId++; // Next one
                     // Success if it was the last, if not continue
-                    return _currentChild == children.Count ? Status.Success : Status.Running;
+                    return _currentChildId == children.Count ? Status.Success : Status.Running;
             }
         }
         Reset();

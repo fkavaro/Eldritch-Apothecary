@@ -6,13 +6,14 @@ using UnityEngine;
 /// <summary>
 /// RepetitionNode is a node that continues running its only child X times.
 /// </summary>
-public class RepetitionNode : Node
+public class RepetitionNode<TController> : Node<TController>
+where TController : ABehaviourController<TController>
 {
     private int _repetitions;
     private int _currentRepetition = 0;
-    private Node _child; // Make sure we have a reference to the child
+    private Node<TController> _child; // Make sure we have a reference to the child
 
-    public RepetitionNode(string name, int repetitions, Node child) : base(name)
+    public RepetitionNode(TController controller, string name, int repetitions, Node<TController> child) : base(controller, name)
     {
         _repetitions = repetitions;
         AddChild(child); // Use the AddChild method to set the child

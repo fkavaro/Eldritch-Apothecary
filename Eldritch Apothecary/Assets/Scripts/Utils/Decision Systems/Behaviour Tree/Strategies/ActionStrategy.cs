@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ActionStrategy : IStrategy
+public class ActionStrategy<TController> : IStrategy<TController>
+where TController : ABehaviourController<TController>
 {
     readonly Action _action;
 
@@ -12,9 +13,9 @@ public class ActionStrategy : IStrategy
         _action = action;
     }
 
-    public Node.Status Update()
+    public Node<TController>.Status Update()
     {
         _action();
-        return Node.Status.Success;
+        return Node<TController>.Status.Success;
     }
 }

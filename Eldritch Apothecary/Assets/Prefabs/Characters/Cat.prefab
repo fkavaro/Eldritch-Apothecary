@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e5df9aff5e87c49a37d515b0bda7e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  debugMode: 1
   coroutineStarted: 0
   stateText: {fileID: 0}
   actionText: {fileID: 0}
@@ -101,7 +101,11 @@ MonoBehaviour:
   arrivedDistance: 0.3
   closeDistance: 2
   _avoidanceRadius: 0.7
-  wayPoints: []
+  wayPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &5841715561834592056
 PrefabInstance:
   m_ObjectHideFlags: 0

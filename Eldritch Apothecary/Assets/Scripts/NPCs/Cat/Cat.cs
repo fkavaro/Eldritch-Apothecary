@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cat : ANPC<Client>
+public class Cat : ANPC<Cat>
 {
     #region PUBLIC PROPERTIES
     [Header("Cat Properties")]
@@ -10,27 +10,28 @@ public class Cat : ANPC<Client>
     #endregion
 
     #region PRIVATE PROPERTIES
-    BehaviourTree _catBT;
+    BehaviourTree<Cat> _catBT;
     #endregion
 
     #region NODES
     #endregion
 
     #region INHERITED METHODS
-    protected override ADecisionSystem<Client> CreateDecisionSystem()
+    protected override ADecisionSystem<Cat> CreateDecisionSystem()
     {
-        return null;
+        _catBT = new(this, "Cat Behaviour Tree");
+        _catBT.AddChild(new LeafNode<Cat>(this, "Walking around", new PatrolStrategy<Cat>(transform, _agent, wayPoints)));
+        return _catBT;
     }
 
     protected override void OnStart()
     {
-        _catBT = new("Cat Behaviour Tree");
-        _catBT.AddChild(new LeafNode("Walking around", new PatrolStrategy(transform, _agent, wayPoints, speed)));
+
     }
 
     protected override void OnUpdate()
     {
-        _catBT.UpdateNode();
+
     }
     #endregion
 
