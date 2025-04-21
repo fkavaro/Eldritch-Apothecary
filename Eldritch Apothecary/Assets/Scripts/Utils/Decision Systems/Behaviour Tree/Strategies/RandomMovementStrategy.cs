@@ -30,7 +30,6 @@ where TController : ANPC<TController>
                 return Node<TController>.Status.Failure;
         }
         return Node<TController>.Status.Running;
-
     }
 
     /// <summary>

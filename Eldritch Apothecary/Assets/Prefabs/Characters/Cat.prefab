@@ -67,8 +67,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6052003388996043155}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 72387f7157c5685499108c0b6e23f175, type: 2}
+  m_Controller: {fileID: 9100000, guid: b3132ee1f05627e4dba6167749d686aa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
   coroutineStarted: 0
   stateText: {fileID: 0}
   actionText: {fileID: 0}
-  speed: 1.5
+  speed: 1
   rotationSpeed: 4
   maxSamplingDistance: 1
   arrivedDistance: 0.3
@@ -108,8 +108,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   centerPoint: {fileID: 0}
-  targetSamplingIterations: 30
-  areaRadious: 10
+  targetSamplingIterations: 20
+  areaRadious: 15
 --- !u!1001 &5841715561834592056
 PrefabInstance:
   m_ObjectHideFlags: 0
