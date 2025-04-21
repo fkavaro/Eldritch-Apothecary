@@ -9,9 +9,9 @@ using UnityEngine;
 public class LeafNode<TController> : Node<TController>
 where TController : ABehaviourController<TController>
 {
-    readonly IStrategy<TController> _strategy;
+    readonly AStrategy<TController> _strategy;
 
-    public LeafNode(TController controller, string name, IStrategy<TController> strategy, int priority = 0) : base(controller, name, priority)
+    public LeafNode(TController controller, string name, AStrategy<TController> strategy, int priority = 0) : base(controller, name, priority)
     {
         _strategy = strategy;
     }

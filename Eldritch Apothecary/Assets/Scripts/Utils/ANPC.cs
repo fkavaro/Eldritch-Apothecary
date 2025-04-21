@@ -23,14 +23,14 @@ where TController : ABehaviourController<TController>
     public float speed = 3f;
     [Tooltip("Agent rotation speed"), Range(0f, 5f)]
     public float rotationSpeed = 3f;
-    //[Tooltip("Threshold for target position sampling"), Range(0f, 1f)]
-    //public float targetThreshold = 1f;
+    [Tooltip("Max distance from the random point to a point on the navmesh, for target position sampling"), Range(0f, 5f)]
+    public float maxSamplingDistance = 1f;
     [Tooltip("Distance to which it's considered as arrived"), Range(0.3f, 1f)]
     public float arrivedDistance = 0.3f;
     [Tooltip("Distance to which it's close to the destination"), Range(2f, 5f)]
     public float closeDistance = 2f;
     [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
-    public float _avoidanceRadius = 0.7f;
+    public float avoidanceRadius = 0.7f;
     #endregion
 
     #region INHERITED METHODS
@@ -42,7 +42,7 @@ where TController : ABehaviourController<TController>
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = speed;
         _agent.angularSpeed = rotationSpeed * 100f;
-        _agent.radius = _avoidanceRadius;
+        _agent.radius = avoidanceRadius;
 
         base.OnAwake(); // Sets the animator component
     }
@@ -138,6 +138,7 @@ where TController : ABehaviourController<TController>
     {
         //Debug.Log($"{gameObject.name} is checking if it has arrived at {destination}.");
 
+        // TODO try this: agent.remainingDistance <= agent.stoppingDistance
         if (Vector3.Distance(transform.position, destination) < arrivedDistance)
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
@@ -177,14 +178,24 @@ where TController : ABehaviourController<TController>
     }
 
     /// <summary>
-    /// Checks if the NavMeshAgent can move to the specified target position.
+    /// Checks if the NavMeshAgent can move to the specified position,
+    /// taking out its nearest reachable position.
     /// </summary>
-    /// <param name="targetPos">The target position in world coordinates.</param>
-    /// <returns>True if the agent can move to the target position, otherwise false.</returns>
-    // public bool CanReachTarget(Vector3 targetPos)
-    // {
-    //     return NavMesh.SamplePosition(targetPos, out var _, targetThreshold, NavMesh.AllAreas);
-    // }
+    public bool CanReachPosition(Vector3 targetPos, out Vector3 reachablePos)
+    {
+        NavMeshHit hitLocation;
+
+        if (NavMesh.SamplePosition(targetPos, out hitLocation, maxSamplingDistance, NavMesh.AllAreas))
+        {
+            reachablePos = hitLocation.position;
+            return true;
+        }
+        else
+        {
+            reachablePos = Vector3.zero;
+            return false;
+        }
+    }
 
     /// <summary>
     /// Sets the NavMeshAgent to be stopped or not.
@@ -213,7 +224,12 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public void ResetAvoidanceRadius()
     {
-        _agent.radius = _avoidanceRadius;
+        _agent.radius = avoidanceRadius;
+    }
+
+    public bool IsPathPending()
+    {
+        return _agent.pathPending;
     }
 
     /// <summary>

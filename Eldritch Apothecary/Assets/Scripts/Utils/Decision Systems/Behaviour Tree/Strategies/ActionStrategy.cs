@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ActionStrategy<TController> : IStrategy<TController>
+public class ActionStrategy<TController> : AStrategy<TController>
 where TController : ABehaviourController<TController>
 {
     readonly Action _action;
 
-    public ActionStrategy(Action action)
+    public ActionStrategy(TController controller, Action action) : base(controller)
     {
         _action = action;
     }
 
-    public Node<TController>.Status Update()
+    public override Node<TController>.Status Update()
     {
         _action();
         return Node<TController>.Status.Success;

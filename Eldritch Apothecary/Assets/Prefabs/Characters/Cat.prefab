@@ -96,16 +96,20 @@ MonoBehaviour:
   coroutineStarted: 0
   stateText: {fileID: 0}
   actionText: {fileID: 0}
-  speed: 3
-  rotationSpeed: 3
+  speed: 1.5
+  rotationSpeed: 4
+  maxSamplingDistance: 1
   arrivedDistance: 0.3
   closeDistance: 2
-  _avoidanceRadius: 0.7
+  avoidanceRadius: 0.7
   wayPoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  centerPoint: {fileID: 0}
+  targetSamplingIterations: 30
+  areaRadious: 10
 --- !u!1001 &5841715561834592056
 PrefabInstance:
   m_ObjectHideFlags: 0
