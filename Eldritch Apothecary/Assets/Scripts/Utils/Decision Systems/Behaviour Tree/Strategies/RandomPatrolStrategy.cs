@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RandomMovementStrategy<TController> : AStrategy<TController>
+public class RandomPatrolStrategy<TController> : AStrategy<TController>
 where TController : ANPC<TController>
 {
     readonly Transform _centerPoint;
@@ -11,7 +11,7 @@ where TController : ANPC<TController>
     readonly float _areaRadious;
     Vector3 _randomDestination, _randomPoint;
 
-    public RandomMovementStrategy(TController controller, Transform centerPoint, int samplingIterations = 30, float areaRadious = 10f) : base(controller)
+    public RandomPatrolStrategy(TController controller, Transform centerPoint, int samplingIterations = 30, float areaRadious = 10f) : base(controller)
     {
         _centerPoint = centerPoint;
         _samplingIterations = samplingIterations;

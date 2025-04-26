@@ -7,14 +7,14 @@ using UnityEngine.AI;
 /// <summary>
 /// PatrolStrategy is a strategy for patrolling between a list of points using a NavMeshAgent.
 /// </summary>
-public class PatrolStrategy<TController> : AStrategy<TController>
+public class WaypointPatrolStrategy<TController> : AStrategy<TController>
 where TController : ANPC<TController>
 {
     readonly List<Transform> _patrolPoints;
     int _currentPatrolPointIndex;
     bool _isPathCalculated;
 
-    public PatrolStrategy(TController controller, List<Transform> patrolPoints) : base(controller)
+    public WaypointPatrolStrategy(TController controller, List<Transform> patrolPoints) : base(controller)
     {
         _patrolPoints = patrolPoints;
     }

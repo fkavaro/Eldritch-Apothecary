@@ -10,7 +10,7 @@ using UnityEngine;
 public class InverterNode<TController> : Node<TController>
 where TController : ABehaviourController<TController>
 {
-    public InverterNode(TController controller, string name) : base(controller, name) { }
+    public InverterNode(TController controller) : base(controller, "Inverter") { }
 
     public override Status UpdateNode()
     {

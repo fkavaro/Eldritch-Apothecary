@@ -10,7 +10,7 @@ using UnityEngine;
 public class SequenceNode<TController> : Node<TController>
 where TController : ABehaviourController<TController>
 {
-    public SequenceNode(TController controller, string name, int priority = 0) : base(controller, name, priority) { }
+    public SequenceNode(TController controller, int priority = 0) : base(controller, "Sequence", priority) { }
 
     public override Status UpdateNode()
     {

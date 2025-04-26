@@ -9,11 +9,17 @@ using UnityEngine;
 public class UntilFailNode<TController> : Node<TController>
 where TController : ABehaviourController<TController>
 {
-    public UntilFailNode(TController controller, string name) : base(controller, name) { }
+    private readonly Node<TController> _child; // Make sure we have a reference to the child
+
+    public UntilFailNode(TController controller, Node<TController> child) : base(controller, "UntilFail")
+    {
+        AddChild(child); // Use the AddChild method to set the child
+        _child = children[0]; // Store a direct reference for easier access
+    }
 
     public override Status UpdateNode()
     {
-        if (children[0].UpdateNode() == Status.Failure)
+        if (_child.UpdateNode() == Status.Failure)
         {
             Reset();
             return Status.Failure;

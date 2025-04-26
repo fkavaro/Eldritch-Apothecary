@@ -10,7 +10,7 @@ using UnityEngine;
 public class SelectorNode<TController> : Node<TController>
 where TController : ABehaviourController<TController>
 {
-    public SelectorNode(TController controller, string name, int priority = 0) : base(controller, name, priority) { }
+    public SelectorNode(TController controller, int priority = 0) : base(controller, "Selector", priority) { }
 
     public override Status UpdateNode()
     {

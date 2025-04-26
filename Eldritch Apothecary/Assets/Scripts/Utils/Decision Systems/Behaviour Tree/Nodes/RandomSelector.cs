@@ -10,7 +10,7 @@ using UnityEngine;
 public class RanndomSelectorNode<TController> : PrioritySelectorNode<TController>
 where TController : ABehaviourController<TController>
 {
-    public RanndomSelectorNode(TController controller, string name) : base(controller, name) { }
+    public RanndomSelectorNode(TController controller) : base(controller) { }
 
     protected override List<Node<TController>> SortChildren()
     {

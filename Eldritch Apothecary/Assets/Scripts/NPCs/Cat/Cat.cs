@@ -23,7 +23,7 @@ public class Cat : ANPC<Cat>
     protected override ADecisionSystem<Cat> CreateDecisionSystem()
     {
         // Strategies
-        RandomMovementStrategy<Cat> randomMovement = new RandomMovementStrategy<Cat>(this, centerPoint, targetSamplingIterations, areaRadious);
+        RandomPatrolStrategy<Cat> randomMovement = new RandomPatrolStrategy<Cat>(this, centerPoint, targetSamplingIterations, areaRadious);
 
         // Behaviour tree
         _catBT = new(this, "Cat Behaviour Tree");
