@@ -11,7 +11,7 @@ where TController : AHumanoid<TController>
 
     protected override bool SetDecisionFactor()
     {
-        return _controller.CatIsTooClose();
+        return _controller.CatIsBothering();
     }
 
     public override void StartAction()

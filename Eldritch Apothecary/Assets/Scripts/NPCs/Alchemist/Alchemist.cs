@@ -99,10 +99,16 @@ public class Alchemist : AHumanoid<Alchemist>
     {
         float distanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
 
-        if (distanceToCat < minDistanceToCat)
+        if (CatIsBothering())
         {
             alchemistSFSM.SwitchState(interruptedState);
         }
+    }
+
+    public override bool CatIsBothering()
+    {
+        // True if cat is close to the table
+        throw new NotImplementedException();
     }
 
     #endregion

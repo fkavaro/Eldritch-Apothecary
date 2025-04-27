@@ -73,6 +73,12 @@ public class Receptionist : AHumanoid<Receptionist>
     {
         throw new NotImplementedException();
     }
+
+    public override bool CatIsBothering()
+    {
+        // Cat never bothers the receptionist
+        return false;
+    }
     #endregion
 
     #region PRIVATE METHODS

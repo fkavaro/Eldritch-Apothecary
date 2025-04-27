@@ -24,9 +24,17 @@ public class Client : AHumanoid<Client>
 	public float timeWaiting = 0f;
 	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0, 1)]
 	public float normalizedWaitingTime;
+	[Tooltip("Triggering distance to cat"), Range(0, 4)]
+	public int minDistanceToCat = 1;
+	[Tooltip("Probability of being scared"), Range(0, 10)]
+	public int fear = 0;
+
+	[Tooltip("Maximum number of scares supported")]
+	public int maxScares = 100;
 	#endregion
 
 	#region PRIVATE PROPERTIES
+	int _scaresCount = 0;
 	StackFiniteStateMachine<Client> _clientSFSM;
 	UtilitySystem<Client> _clientUS;
 	TextMeshProUGUI _serviceText;
@@ -134,6 +142,25 @@ public class Client : AHumanoid<Client>
 	public void ForceState(AState<Client, StackFiniteStateMachine<Client>> newState)
 	{
 		_clientSFSM.ForceState(newState);
+	}
+
+	public override bool CatIsBothering()
+	{
+		// Cat is close and client is scared
+		if (Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position) < minDistanceToCat &&
+			UnityEngine.Random.Range(0, 10) < fear)
+		{
+			_scaresCount++;
+			return true;
+		}
+		// Cat is too far or client is not scared
+		else return false;
+	}
+
+	/// <returns>If client has been scared enough times</returns>
+	public bool HasReachedMaxScares()
+	{
+		return _scaresCount >= maxScares;
 	}
 	#endregion
 

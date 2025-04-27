@@ -24,7 +24,7 @@ public class Interrupted_AlchemistState : AState<Alchemist, StackFiniteStateMach
 
     private IEnumerator WaitForCatToLeave()
     {
-        while (Vector3.Distance(_controller.transform.position, ApothecaryManager.Instance.cat.transform.position) < _controller.minDistanceToCat)
+        while (_controller.CatIsBothering())
         {
             yield return null; // Espera un frame antes de volver a comprobar
         }
