@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 public class InfiniteLoopNode<TController> : Node<TController>
 where TController : ABehaviourController<TController>
 {
-    private readonly Node<TController> _child; // Make sure we have a reference to the child
+    private readonly Node<TController> _child;
+
     public InfiniteLoopNode(TController controller)
     : base(controller, "InfiniteLoop") { }
 

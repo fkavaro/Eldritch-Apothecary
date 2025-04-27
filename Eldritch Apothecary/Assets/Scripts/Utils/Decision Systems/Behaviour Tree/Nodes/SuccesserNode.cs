@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 public class SuccesserNode<TController> : Node<TController>
 where TController : ABehaviourController<TController>
 {
-    public SuccesserNode(TController controller) : base(controller, "Successer") { }
+    public SuccesserNode(TController controller, int priority = 0)
+    : base(controller, "Successer", priority) { }
 
     public override Status UpdateNode()
     {

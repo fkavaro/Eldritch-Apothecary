@@ -10,18 +10,19 @@ using UnityEngine;
 public class InverterNode<TController> : Node<TController>
 where TController : ABehaviourController<TController>
 {
-    public InverterNode(TController controller) : base(controller, "Inverter") { }
+    public InverterNode(TController controller, int priority = 0)
+    : base(controller, "Inverter", priority) { }
 
     public override Status UpdateNode()
     {
         switch (children[0].UpdateNode())
         {
-            case Status.Running:
-                return Status.Running;
+            case Status.Success:
+                return Status.Failure;
             case Status.Failure:
                 return Status.Success;
             default:
-                return Status.Failure;
+                return Status.Running;
         }
     }
 }

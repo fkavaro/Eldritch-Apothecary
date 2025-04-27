@@ -11,7 +11,8 @@ where TController : ABehaviourController<TController>
 {
     readonly AStrategy<TController> _strategy;
 
-    public LeafNode(TController controller, string name, AStrategy<TController> strategy, int priority = 0) : base(controller, name, priority)
+    public LeafNode(TController controller, string name, AStrategy<TController> strategy, int priority = 0)
+    : base(controller, name, priority)
     {
         _strategy = strategy;
     }

@@ -10,25 +10,36 @@ public class Cat : ANPC<Cat>
     public Transform centerPoint;
     public int targetSamplingIterations = 30;
     public float areaRadious = 10f;
-    #endregion
-
-    #region PRIVATE PROPERTIES
-    BehaviourTree<Cat> _catBT;
+    [Tooltip("Has to be recovered"), Range(0, 100)]
+    public int energy = 100;
+    [Tooltip("Energy is low below this value"), Range(10, 60)]
+    public int lowEnergyThreshold = 10;
     #endregion
 
     #region NODES
+    BehaviourTree<Cat> _catBT;
+    InfiniteLoopNode<Cat> infiniteLoop;
+    SequenceNode<Cat> sequence1;
+    LeafNode<Cat> walkAround;
+    #endregion
+
+    #region STRATEGIES
+    RandomDestinationStrategy<Cat> randomDestination;
     #endregion
 
     #region INHERITED METHODS
     protected override ADecisionSystem<Cat> CreateDecisionSystem()
     {
         // Strategies
-        RandomDestinationStrategy<Cat> randomMovement = new(this, centerPoint, targetSamplingIterations, areaRadious);
+        randomDestination = new(this, centerPoint, targetSamplingIterations, areaRadious);
 
-        // Behaviour tree
-        _catBT = new(this, "Cat Behaviour Tree");
-        _catBT.AddChild(new InfiniteLoopNode<Cat>(this,
-            new LeafNode<Cat>(this, "Walking around", randomMovement)));
+        // Nodes
+        walkAround = new(this, "Walking around", randomDestination);
+        sequence1 = new(this);
+        sequence1.AddChild(walkAround);
+
+        infiniteLoop = new(this, sequence1);
+        _catBT = new(this, infiniteLoop);
 
         return _catBT;
     }

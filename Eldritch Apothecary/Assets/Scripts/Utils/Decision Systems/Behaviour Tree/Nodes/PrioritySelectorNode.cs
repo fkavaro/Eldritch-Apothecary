@@ -13,7 +13,8 @@ where TController : ABehaviourController<TController>
     List<Node<TController>> sortedChildren;
     List<Node<TController>> SortedChildren => sortedChildren ??= SortChildren();
 
-    public PrioritySelectorNode(TController controller) : base(controller) { }
+    public PrioritySelectorNode(TController controller, int priority = 0)
+    : base(controller, priority) { }
 
     public override Status UpdateNode()
     {

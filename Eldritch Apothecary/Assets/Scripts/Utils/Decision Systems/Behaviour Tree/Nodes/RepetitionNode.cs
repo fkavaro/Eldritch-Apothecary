@@ -13,7 +13,8 @@ where TController : ABehaviourController<TController>
     private int _currentRepetition = 0;
     private Node<TController> _child; // Make sure we have a reference to the child
 
-    public RepetitionNode(TController controller, int repetitions, Node<TController> child) : base(controller, repetitions.ToString() + " repetions")
+    public RepetitionNode(TController controller, int repetitions, Node<TController> child, int priority = 0)
+    : base(controller, repetitions.ToString() + " repetions", priority)
     {
         _repetitions = repetitions;
         AddChild(child); // Use the AddChild method to set the child
