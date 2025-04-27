@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
-/// PatrolStrategy is a strategy for patrolling between a list of points using a NavMeshAgent.
+/// WaypointPatrolStrategy is a strategy for patrolling between a list of points using a NavMeshAgent.
 /// </summary>
 public class WaypointPatrolStrategy<TController> : AStrategy<TController>
 where TController : ANPC<TController>

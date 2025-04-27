@@ -198,6 +198,27 @@ where TController : ABehaviourController<TController>
     }
 
     /// <summary>
+    /// Returns true if a random point is reachable
+    /// </summary>
+    public bool CalculateRandomDestination(int samplingIterations, float areaRadious, Transform centerPoint, out Vector3 destination)
+    {
+        // Repeat until a random position in the navmesh is found
+        for (int i = 0; i < samplingIterations; i++)
+        {
+            // Random point inside a circular area
+            Vector3 randomPoint = centerPoint.position + UnityEngine.Random.insideUnitSphere * areaRadious;
+
+            // Try to find a position in the navmesh area sampled from the random position
+            if (CanReachPosition(randomPoint, out destination))
+                return true;
+        }
+
+        // Hasn't found any reachable point in the navmesh
+        destination = Vector3.zero;
+        return false;
+    }
+
+    /// <summary>
     /// Sets the NavMeshAgent to be stopped or not.
     /// </summary>
     public void SetIfStopped(bool isStopped)

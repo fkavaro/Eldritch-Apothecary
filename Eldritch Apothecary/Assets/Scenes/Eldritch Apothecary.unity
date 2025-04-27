@@ -6080,7 +6080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
-  simSpeed: 1
+  simSpeed: 2
   cat: {fileID: 966011607}
   receptionist: {fileID: 125054270}
   clientsParent: {fileID: 463564834}
