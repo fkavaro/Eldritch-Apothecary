@@ -31,11 +31,18 @@ where TController : ANPC<TController>
                 return Node<TController>.Status.Failure;
         }
 
-        // Success when destination is reached
+        // Has arrived
         if (_controller.HasArrivedAtDestination())
+            // Success
             return Node<TController>.Status.Success;
+        else // Hasn't arrived
+        {
+            // Reduce energy
+            _controller.ReduceEnergy(Time.deltaTime);
 
-        return Node<TController>.Status.Running;
+            // Running
+            return Node<TController>.Status.Running;
+        }
     }
 
     public override void Reset()

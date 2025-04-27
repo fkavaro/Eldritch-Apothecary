@@ -10,10 +10,6 @@ public class Cat : ANPC<Cat>
     public Transform centerPoint;
     public int targetSamplingIterations = 30;
     public float areaRadious = 10f;
-    [Tooltip("Has to be recovered"), Range(0, 100)]
-    public int energy = 100;
-    [Tooltip("Energy is low below this value"), Range(10, 60)]
-    public int lowEnergyThreshold = 10;
     #endregion
 
     #region NODES

@@ -18,7 +18,7 @@ where TController : ABehaviourController<TController>
     int _animationWhenArrived = -1;
 
     #region VARIABLES
-    [Header("Agent Properties")]
+    [Header("NavMeshAgent Properties")]
     [Tooltip("Agent speed"), Range(0f, 5f)]
     public float speed = 3f;
     [Tooltip("Agent rotation speed"), Range(0f, 5f)]
@@ -31,6 +31,12 @@ where TController : ABehaviourController<TController>
     public float closeDistance = 2f;
     [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
     public float avoidanceRadius = 0.7f;
+
+    [Header("Energy Properties")]
+    [Tooltip("Energy value"), Range(0, 100)]
+    public float energy = 100;
+    [Tooltip("Energy is low below this value"), Range(10, 60)]
+    public float lowEnergyThreshold = 10;
     #endregion
 
     #region INHERITED METHODS
@@ -260,6 +266,17 @@ where TController : ABehaviourController<TController>
     public Vector3 GetDestinationPos()
     {
         return _agent.destination;
+    }
+
+    public void ReduceEnergy(float amount)
+    {
+        if (energy > 0)
+            energy -= amount;
+    }
+
+    public bool IsEnergyLow()
+    {
+        return energy <= lowEnergyThreshold;
     }
     #endregion
 }
