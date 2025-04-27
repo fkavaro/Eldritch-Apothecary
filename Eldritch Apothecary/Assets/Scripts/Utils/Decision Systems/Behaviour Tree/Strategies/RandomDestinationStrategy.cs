@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// RandomDestinationStrategy is a strategy for calculating a random destination using a NavMeshAgent.
+/// RandomDestinationStrategy is a strategy for moving constantly between random points using a NavMeshAgent.
 /// </summary>
 public class RandomDestinationStrategy<TController> : RandomPatrolStrategy<TController>
 where TController : ANPC<TController>

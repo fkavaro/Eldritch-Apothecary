@@ -15,26 +15,38 @@ public class Cat : ANPC<Cat>
     #region NODES
     BehaviourTree<Cat> _catBT;
     InfiniteLoopNode<Cat> infiniteLoop;
-    SequenceNode<Cat> sequence1;
-    LeafNode<Cat> walkAround;
+    SequenceNode<Cat> behaviourSequence, restSequence;
+    LeafNode<Cat> walkAroundLeaf, isEnergyLowConditionLeaf, restLeaf;
     #endregion
 
     #region STRATEGIES
-    RandomDestinationStrategy<Cat> randomDestination;
+    RandomDestinationStrategy<Cat> randomDestinationStrategy;
+    ConditionStrategy<Cat> isEnergyLowStrategy;
+    RestStrategy<Cat> restStrategy;
     #endregion
 
     #region INHERITED METHODS
     protected override ADecisionSystem<Cat> CreateDecisionSystem()
     {
         // Strategies
-        randomDestination = new(this, centerPoint, targetSamplingIterations, areaRadious);
+        randomDestinationStrategy = new(this, centerPoint, targetSamplingIterations, areaRadious);
+        isEnergyLowStrategy = new(this, IsEnergyLow);
+        restStrategy = new(this);
 
         // Nodes
-        walkAround = new(this, "Walking around", randomDestination);
-        sequence1 = new(this);
-        sequence1.AddChild(walkAround);
+        walkAroundLeaf = new(this, "Walking around", randomDestinationStrategy);
+        isEnergyLowConditionLeaf = new(this, "IsEnergyLow", isEnergyLowStrategy);
+        restLeaf = new(this, "Resting", restStrategy);
 
-        infiniteLoop = new(this, sequence1);
+        restSequence = new(this);
+        restSequence.AddChild(isEnergyLowConditionLeaf);
+        restSequence.AddChild(restLeaf);
+
+        behaviourSequence = new(this);
+        behaviourSequence.AddChild(walkAroundLeaf);
+        behaviourSequence.AddChild(restSequence);
+
+        infiniteLoop = new(this, behaviourSequence);
         _catBT = new(this, infiniteLoop);
 
         return _catBT;

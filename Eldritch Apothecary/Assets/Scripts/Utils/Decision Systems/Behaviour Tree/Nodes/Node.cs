@@ -31,7 +31,10 @@ where TController : ABehaviourController<TController>
     #region INHERITED METHODS
     protected override void DebugDecision()
     {
-        controller.stateText.text = name;
+        if (_currentChildId < children.Count)
+            children[_currentChildId].DebugDecision();
+        else
+            controller.stateText.text = "None";
     }
 
     public override void Update()

@@ -18,13 +18,13 @@ where TController : ABehaviourController<TController>
         AddChild(child);
     }
 
-    protected override void DebugDecision()
-    {
-        if (_currentChildId < children.Count)
-            controller.stateText.text = children[_currentChildId].name;
-        else
-            controller.stateText.text = "None";
-    }
+    // protected override void DebugDecision()
+    // {
+    //     if (_currentChildId < children.Count)
+    //         controller.stateText.text = children[_currentChildId].name;
+    //     else
+    //         controller.stateText.text = "None";
+    // }
 
     public override Status UpdateNode()
     {

@@ -274,9 +274,20 @@ where TController : ABehaviourController<TController>
             energy -= amount;
     }
 
+    public void IncreaseEnergy(float amount)
+    {
+        if (energy < 100)
+            energy += amount;
+    }
+
     public bool IsEnergyLow()
     {
         return energy <= lowEnergyThreshold;
+    }
+
+    public bool IsEnergyAtMax()
+    {
+        return energy >= 100;
     }
     #endregion
 }

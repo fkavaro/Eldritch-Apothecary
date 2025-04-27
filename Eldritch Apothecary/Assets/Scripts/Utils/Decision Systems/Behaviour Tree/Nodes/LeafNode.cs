@@ -17,6 +17,11 @@ where TController : ABehaviourController<TController>
         _strategy = strategy;
     }
 
+    protected override void DebugDecision()
+    {
+        controller.stateText.text = name;
+    }
+
     public override Status UpdateNode()
     {
         return _strategy.Update();
