@@ -51,9 +51,8 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
                 _controller.timeWaiting += Time.deltaTime;
             }
         }
-
         // Has arrived the next queue position
-        if (_controller.HasArrivedAtDestination())
+        else if (_controller.HasArrivedAtDestination())
         {
             ApothecaryManager.Instance.waitingQueue.FixRotation(_controller);
             _controller.ChangeAnimationTo(_controller.waitAnim);
