@@ -102,6 +102,8 @@ MonoBehaviour:
   arrivedDistance: 0.3
   closeDistance: 2
   avoidanceRadius: 0.7
+  energy: 100
+  lowEnergyThreshold: 10
   wayPoints:
   - {fileID: 0}
   - {fileID: 0}

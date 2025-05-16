@@ -1,12 +1,12 @@
+using UnityEngine;
 
 /// <summary>
 /// Common action that makes the humanoid stunned by a cat.
 /// </summary>
 /// <typeparam name="TController"></typeparam>
-public class StunnedByCatAction<TController> : ABinaryAction<TController>
-where TController : AHumanoid<TController>
+public class StunnedByCat_ClientAction : ABinaryAction<Client>
 {
-    public StunnedByCatAction(UtilitySystem<TController> utilitySystem)
+    public StunnedByCat_ClientAction(UtilitySystem<Client> utilitySystem)
     : base("Stunned by cat", utilitySystem, 0.7f) { }
 
     protected override bool SetDecisionFactor()
@@ -16,6 +16,10 @@ where TController : AHumanoid<TController>
 
     public override void StartAction()
     {
+        Debug.Log(_controller.name + " stunned by cat");
+
+        //_controller.scaresCount++;
+
         _controller.SetIfStopped(true);
 
         _controller.ChangeAnimationTo(_controller.stunnedAnim);
@@ -30,6 +34,7 @@ where TController : AHumanoid<TController>
     {
         if (_controller.IsAnimationFinished())
         {
+            Debug.Log(_controller.name + " not stunned by cat anymore");
             _controller.SetIfStopped(false);
             return true; // Action finished
         }

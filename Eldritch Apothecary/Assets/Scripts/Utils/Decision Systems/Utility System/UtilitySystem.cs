@@ -36,7 +36,7 @@ where TController : ABehaviourController<TController>
     public override void Update()
     {
         // Check actions utilities while in default action 
-        if (_currentAction == _defaultAction)
+        if (IsCurrentAction(_defaultAction))
             MakeDecision();
 
         // Update the current action
@@ -105,7 +105,7 @@ where TController : ABehaviourController<TController>
     #region PRIVATE METHODS
     void MakeDecision()
     {
-        //Debug.Log(controller.name + " making decision...");
+        Debug.Log(controller.name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
@@ -122,13 +122,13 @@ where TController : ABehaviourController<TController>
         }
 
         // Start the best action if it's different from the current one
-        if (bestAction != _currentAction)
+        if (!IsCurrentAction(bestAction))
         {
-            _currentAction = bestAction;
-            _currentAction.StartAction();
-
             // Debug the decision made
-            //Debug.Log($"Decision made: {_currentAction.Name} with utility {_actionUtilities[_currentAction]}");
+            Debug.Log($"{controller.name} decided to: {bestAction.Name} with utility {_actionUtilities[bestAction]}");
+
+            _currentAction = bestAction; // Update current action
+            _currentAction.StartAction();
         }
 
         DebugDecision();

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Complain_ClientAction : ABinaryAction<Client>
@@ -16,8 +17,12 @@ public class Complain_ClientAction : ABinaryAction<Client>
     {
         _controller.CoroutineFinishedEvent += FinishedComplaining;
 
-        // Leave the queue for next turn and go to the complaining position
-        ApothecaryManager.Instance.waitingQueue.NextTurn();
+        // Still in waiting queue 
+        if (ApothecaryManager.Instance.waitingQueue.Contains(_controller))
+            // Leave the queue for next turn
+            ApothecaryManager.Instance.waitingQueue.NextTurn();
+
+        // Go to complaining position
         _controller.SetDestination(ApothecaryManager.Instance.complainingPosition.position);
     }
 

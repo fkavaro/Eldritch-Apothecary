@@ -24,17 +24,17 @@ public class Client : AHumanoid<Client>
 	public float timeWaiting = 0f;
 	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0, 1)]
 	public float normalizedWaitingTime;
-	[Tooltip("Triggering distance to cat"), Range(0, 4)]
-	public int minDistanceToCat = 1;
+	[Tooltip("Triggering distance to cat"), Range(0.5f, 2f)]
+	public float minDistanceToCat = 1;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
-	public int fear = 0;
+	public int fear = 10;
 
-	[Tooltip("Maximum number of scares supported")]
-	public int maxScares = 100;
+	[Tooltip("Maximum number of scares supported"), Range(1, 10)]
+	public int maxScares = 10;
+	public int scaresCount = 0;
 	#endregion
 
 	#region PRIVATE PROPERTIES
-	int _scaresCount = 0;
 	StackFiniteStateMachine<Client> _clientSFSM;
 	UtilitySystem<Client> _clientUS;
 	TextMeshProUGUI _serviceText;
@@ -51,7 +51,7 @@ public class Client : AHumanoid<Client>
 
 	#region ACTIONS
 	public StateMachineAction<Client, StackFiniteStateMachine<Client>> fsmAction;
-	public StunnedByCatAction<Client> stunnedByCatAction;
+	public StunnedByCat_ClientAction stunnedByCatAction;
 	public Complain_ClientAction complainAction;
 	#endregion
 
@@ -133,7 +133,7 @@ public class Client : AHumanoid<Client>
 
 	public void DontMindAnything()
 	{
-		_scaresCount = 0;
+		scaresCount = 0;
 		timeWaiting = 0f;
 		normalizedWaitingTime = 0f;
 		fear = 0;
@@ -146,13 +146,13 @@ public class Client : AHumanoid<Client>
 
 	public override bool CatIsBothering()
 	{
-		// Cat is close and client is scared
-		if (Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position) < minDistanceToCat &&
-			UnityEngine.Random.Range(0, 10) < fear)
-		{
-			_scaresCount++;
+		float currentDistanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
+
+		if (currentDistanceToCat < minDistanceToCat // Cat is close
+		&& _clientUS.IsCurrentAction(fsmAction)) // Not stunned nor complaining
+												 //&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
 			return true;
-		}
+
 		// Cat is too far or client is not scared
 		else return false;
 	}
@@ -160,7 +160,7 @@ public class Client : AHumanoid<Client>
 	/// <returns>If client has been scared enough times</returns>
 	public bool HasReachedMaxScares()
 	{
-		return _scaresCount >= maxScares;
+		return scaresCount >= maxScares;
 	}
 	#endregion
 
@@ -172,8 +172,11 @@ public class Client : AHumanoid<Client>
 	{
 		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
 		maxMinutesWaiting = UnityEngine.Random.Range(1, 5); // Chooses a random number of minutes to wait
-		fear = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
-		maxScares = UnityEngine.Random.Range(1, 6); // Chooses a random number of supported scares
+
+		//minDistanceToCat = UnityEngine.Random.Range(0.5f, 2f); // Chooses a random distance to cat
+		//fear = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
+
+		maxScares = UnityEngine.Random.Range(1, 11); // Chooses a random number of supported scares
 
 		if (_serviceText == null)
 			_serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();

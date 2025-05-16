@@ -15,7 +15,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 5)]
-    public int simSpeed = 1;
+    public float simSpeed = 1;
 
     [Header("Staff members")]
     public GameObject cat;

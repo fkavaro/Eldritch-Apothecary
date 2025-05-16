@@ -45,8 +45,17 @@ where TController : ABehaviourController<TController>
     public virtual bool IsAnimationFinished()
     {
         // Check if the current animation is finished
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.normalizedTime >= 1f;
+        AnimatorStateInfo currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        // If the animation is looping, it's never 'finished'
+        if (currentStateInfo.loop)
+        {
+            Debug.LogWarning("Loop animation wont't finish");
+            return false;
+        }
+
+        // For non-looping animations, check if normalizedTime >= 1
+        return currentStateInfo.normalizedTime >= 1f;
     }
 
     public IEnumerator PlayAnimationRandomTime(int animation, string animationName)
