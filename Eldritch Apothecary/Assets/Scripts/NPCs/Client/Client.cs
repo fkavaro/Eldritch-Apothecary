@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem.Controls;
 
 /// <summary>
 /// Client class that represents a client in the game.
@@ -149,10 +150,10 @@ public class Client : AHumanoid<Client>
 		float currentDistanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
 
 		if (currentDistanceToCat < minDistanceToCat // Cat is close
-		&& _clientUS.IsCurrentAction(fsmAction)) // Not stunned nor complaining
-												 //&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
+		&& _clientUS.IsCurrentAction(fsmAction) // Not stunned nor complaining
+												//&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
+		)
 			return true;
-
 		// Cat is too far or client is not scared
 		else return false;
 	}

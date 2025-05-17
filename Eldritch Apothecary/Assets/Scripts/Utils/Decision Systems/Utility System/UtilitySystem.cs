@@ -44,7 +44,7 @@ where TController : ABehaviourController<TController>
 
         // Check if it has finished
         if (_currentAction.IsFinished())
-            Reset();
+            CurrentAsDefaultAction(); // Reset to default action
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ where TController : ABehaviourController<TController>
     #region PRIVATE METHODS
     void MakeDecision()
     {
-        Debug.Log(controller.name + " making decision...");
+        //Debug.Log(controller.name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)

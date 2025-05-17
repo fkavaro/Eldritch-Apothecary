@@ -10,7 +10,7 @@ public abstract class AAnimationController<TController> : ABehaviourController<T
 where TController : ABehaviourController<TController>
 {
     protected Animator animator;
-    protected int currentAnimation;
+    protected int currentAnimation, lastAnimation;
 
     #region COMMON ANIMATIONS
     readonly public int idleAnim = Animator.StringToHash("Idle"),
@@ -34,11 +34,20 @@ where TController : ABehaviourController<TController>
         // Not same as current
         if (currentAnimation != newAnimation)
         {
+            lastAnimation = currentAnimation;
             currentAnimation = newAnimation;
 
             // Interpolate transition to new animation
             animator.CrossFade(newAnimation, duration);
         }
+    }
+
+    /// <summary>
+    /// Crossfade to previous animation.
+    /// </summary>
+    public virtual void ChangeToPreviousAnimation(float duration = 0.2f)
+    {
+        ChangeAnimationTo(lastAnimation, duration);
     }
 
     /// <returns> True if the current animation is finished, false otherwise.</returns>
@@ -50,7 +59,7 @@ where TController : ABehaviourController<TController>
         // If the animation is looping, it's never 'finished'
         if (currentStateInfo.loop)
         {
-            Debug.LogWarning("Loop animation wont't finish");
+            //Debug.LogWarning("Loop animation wont't finish");
             return false;
         }
 
