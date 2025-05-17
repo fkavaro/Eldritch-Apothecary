@@ -31,7 +31,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
         if (finishedComplaining) return;
 
         // Is close to the complaining position
-        if (_controller.HasArrivedAtDestination())
+        if (_controller.IsCloseToDestination())
             _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining"));
     }
 

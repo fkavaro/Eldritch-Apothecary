@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
-using UnityEngine.InputSystem.Controls;
 
 /// <summary>
 /// Client class that represents a client in the game.
@@ -95,8 +94,6 @@ public class Client : AHumanoid<Client>
 
 		// Normalize time between 0 and the 1 as the maximum waiting time of the client
 		normalizedWaitingTime = Mathf.Clamp01(timeWaiting / (maxMinutesWaiting * 60f));
-
-		//if (!HasReachedMaxScares()) CatIsTooClose();
 	}
 	#endregion
 
@@ -153,7 +150,10 @@ public class Client : AHumanoid<Client>
 		&& _clientUS.IsCurrentAction(fsmAction) // Not stunned nor complaining
 												//&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
 		)
+		{
+			Debug.Log("Cat is bothering " + name);
 			return true;
+		}
 		// Cat is too far or client is not scared
 		else return false;
 	}

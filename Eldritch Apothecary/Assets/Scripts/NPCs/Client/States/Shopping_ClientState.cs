@@ -33,7 +33,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
                     // Pick up a product and change to the next state
-                    _controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects"));
+                    SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
             }
         }
     }

@@ -33054,10 +33054,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 785081295808287133, guid: 995b17597825a5948989ec928a828d4f, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 785081295808287133, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: centerPoint
       value: 
       objectReference: {fileID: 139391770}
@@ -33077,13 +33073,9 @@ PrefabInstance:
       propertyPath: 'wayPoints.Array.data[3]'
       value: 
       objectReference: {fileID: 757622922}
-    - target: {fileID: 951111988705680287, guid: 995b17597825a5948989ec928a828d4f, type: 3}
-      propertyPath: m_AgentTypeID
-      value: -334000983
-      objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.86
+      value: 14.5
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -33091,7 +33083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.98
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalRotation.w

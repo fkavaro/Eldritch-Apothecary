@@ -35,7 +35,7 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
 
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
-                    _controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.leavingState, _controller.sitDownAnim, "Sitting down"));
+                    SwitchStateAfterRandomTime(_controller.leavingState, _controller.sitDownAnim, "Sitting down");
             }
         }
     }

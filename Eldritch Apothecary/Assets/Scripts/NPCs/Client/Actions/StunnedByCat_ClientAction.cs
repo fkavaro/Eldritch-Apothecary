@@ -16,7 +16,7 @@ public class StunnedByCat_ClientAction : ABinaryAction<Client>
 
     public override void StartAction()
     {
-        Debug.Log(_controller.name + " stunned by cat");
+        //Debug.Log(_controller.name + " stunned by cat");
 
         _controller.scaresCount++;
 
@@ -34,7 +34,7 @@ public class StunnedByCat_ClientAction : ABinaryAction<Client>
     {
         if (_controller.IsAnimationFinished())
         {
-            Debug.Log(_controller.name + " not stunned by cat anymore");
+            //Debug.Log(_controller.name + " not stunned by cat anymore");
             _controller.SetIfStopped(false);
             _controller.ChangeToPreviousAnimation();
             return true; // Action finished

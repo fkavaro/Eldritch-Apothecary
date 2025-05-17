@@ -31,7 +31,7 @@ public class PickPotionUp_ClientState : ANPCState<Client, StackFiniteStateMachin
 
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
-                    _controller.StartCoroutine(SwitchStateAfterCertainTime(1f, _controller.leavingState, _controller.pickUpAnim, "Picking up potion"));
+                    SwitchStateAfterCertainTime(1f, _controller.leavingState, _controller.pickUpAnim, "Picking up potion");
             }
         }
     }

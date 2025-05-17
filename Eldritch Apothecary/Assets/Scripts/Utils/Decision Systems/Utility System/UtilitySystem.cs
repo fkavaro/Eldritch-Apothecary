@@ -125,7 +125,7 @@ where TController : ABehaviourController<TController>
         if (!IsCurrentAction(bestAction))
         {
             // Debug the decision made
-            Debug.Log($"{controller.name} decided to: {bestAction.Name} with utility {_actionUtilities[bestAction]}");
+            //Debug.Log($"{controller.name} decided to: {bestAction.Name} with utility {_actionUtilities[bestAction]}");
 
             _currentAction = bestAction; // Update current action
             _currentAction.StartAction();
