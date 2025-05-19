@@ -8,6 +8,21 @@ TagManager:
   - Storing stand
   - Alchemist stand
   - Sorcerer stand
+  - Entrance
+  - Exit
+  - Clients parent
+  - Client seat
+  - Waiting seat
+  - Potion pick-up
+  - Potion serve
+  - Complain position
+  - Attending position
+  - Queue exit
+  - Receptionist
+  - Alchemist
+  - Sorcerer
+  - Replenisher
+  - Cat
   layers:
   - Default
   - TransparentFX

@@ -13,58 +13,50 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public ObjectPool<Client> clientsPool;
     public WaitingQueue waitingQueue;
 
+    [HideInInspector] public GameObject cat;
+    [HideInInspector] public GameObject alchemist;
+    [HideInInspector] public GameObject sorcerer;
+    [HideInInspector] public GameObject replenisher;
+    [HideInInspector] public Receptionist receptionist;
+    [HideInInspector] public Spot clientSeat;
+    [HideInInspector] public Transform complainingPosition;
+    [HideInInspector] public Transform queueExitPosition;
+    [HideInInspector] public Spot receptionistAttendingPos;
+
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 5)]
     public float simSpeed = 1;
 
-    [Header("Staff members")]
-    public GameObject cat;
-    public Receptionist receptionist;
-
-    [Header("Clients properties")]
-    [Tooltip("Parent for all instantiated clients")]
-    public Transform clientsParent;
-    [Tooltip("Spot where clients sit while attended by the sorcerer")]
-    public Spot sorcererSeat;
-    [Tooltip("Position where clients complain")]
-    public Transform complainingPosition;
-    [Tooltip("Position where clients enter the apothecary")]
-    public Transform entrancePosition;
-    [Tooltip("Position where clients leave the apothecary")]
-    public Transform exitPosition;
-    [Tooltip("Position where clients leave the waiting queue")]
-    public Transform queueExitPosition;
-
-    [Header("Receptionist positions")]
-    [Tooltip("Spot where the receptionist attends clients")]
-    public Spot receptionistAttendingPos;
-
     [Header("Positions parents")]
-    [Tooltip("Parent of all shop stands gameobjects")]
-    public Transform shopStandsParent;
     [Tooltip("Parent of all queue positions gameobjects")]
     public Transform queuePositionsParent;
-    [Tooltip("Parent of all waiting seats gameobjects")]
-    public Transform seatsPositionsParent;
-    [Tooltip("Parent of all potion pick-up positions gameobjects")]
-    public Transform pickUpPositionsParent;
 
     [Header("Clients pool")]
+    [HideInInspector]
+    public Transform exitPosition;
     [Tooltip("All clients models to be spawned randomly")]
     public GameObject[] clientPrefabs;
     [Tooltip("Maximum number of clients in the apothecary at once")]
     public int maxClients = 10;
-    [Tooltip("Maximum number of clients in the apothecary at once"), Range(5, 20)]
+    [Tooltip("Time passed between clients spawning"), Range(5, 20)]
     public float spawnTimer = 5f;
     #endregion
 
     #region PRIVATE PROPERTIES
+    Transform _clientsParent,
+        _entrancePosition;
+
     List<Transform> _queuePositions = new(),
-        _pickUpPositions = new();
+        _potionServePositions = new(),
+        _potionsPickUpPositions = new();
 
     List<Spot> _shopStands = new(),
-        _seatsPositions = new();
-    float _spawnNextClientTime = 0f;
+        _replenisherStands = new(),
+        _alchemistStands = new(),
+        _sorcererStands = new(),
+        _waitingSeats = new();
+
+    float _lastSpawnTime = 0f;
     #endregion
 
     #region EXECUTION METHODS
@@ -72,13 +64,37 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         base.Awake();// Ensures the Singleton logic runs
 
-        FillChildrenList(shopStandsParent, _shopStands);
-        FillChildrenList(queuePositionsParent, _queuePositions);
-        FillChildrenList(seatsPositionsParent, _seatsPositions);
-        FillChildrenList(pickUpPositionsParent, _pickUpPositions);
+        //Staff
+        receptionist = GameObject.FindGameObjectsWithTag("Receptionist")[0].GetComponent<Receptionist>();
+        alchemist = GameObject.FindGameObjectsWithTag("Alchemist")[0];
+        sorcerer = GameObject.FindGameObjectsWithTag("Sorcerer")[0];
+        replenisher = GameObject.FindGameObjectsWithTag("Replenisher")[0];
+        cat = GameObject.FindGameObjectsWithTag("Cat")[0];
+        _clientsParent = GameObject.FindGameObjectsWithTag("Clients parent")[0].GetComponent<Transform>();
 
+        //Spots
+        FillSpotList(GameObject.FindGameObjectsWithTag("Shop stand"), _shopStands);
+        FillSpotList(GameObject.FindGameObjectsWithTag("Alchemist stand"), _alchemistStands);
+        FillSpotList(GameObject.FindGameObjectsWithTag("Sorcerer stand"), _sorcererStands);
+        FillSpotList(GameObject.FindGameObjectsWithTag("Storing stand"), _replenisherStands);
+        FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
+
+        //Positions
+        _entrancePosition = GameObject.FindGameObjectsWithTag("Entrance")[0].GetComponent<Transform>();
+        exitPosition = GameObject.FindGameObjectsWithTag("Exit")[0].GetComponent<Transform>();
+        clientSeat = GameObject.FindGameObjectsWithTag("Client seat")[0].GetComponent<Spot>();
+        complainingPosition = GameObject.FindGameObjectsWithTag("Complain position")[0].GetComponent<Transform>();
+        queueExitPosition = GameObject.FindGameObjectsWithTag("Queue exit")[0].GetComponent<Transform>();
+        FillTranformList(GameObject.FindGameObjectsWithTag("Potion pick-up"), _potionsPickUpPositions);
+        FillTranformList(GameObject.FindGameObjectsWithTag("Potion serve"), _potionServePositions);
+
+        // Fill waiting queue positions in child order
+        FillTransformChildrenList(queuePositionsParent, _queuePositions);
+
+        // Waiting queue creation
         waitingQueue = new WaitingQueue(_queuePositions);
 
+        // Clients pool creation
         clientsPool = new ObjectPool<Client>(
             createFunc: CreateClient,
             actionOnGet: GetClient,
@@ -92,8 +108,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         if (_shopStands.Count == 0 ||
             _queuePositions.Count == 0 ||
-            _seatsPositions.Count == 0 ||
-            _pickUpPositions.Count == 0)
+            _waitingSeats.Count == 0 ||
+            _potionsPickUpPositions.Count == 0)
             Debug.LogError("A positions list is empty.");
     }
 
@@ -103,9 +119,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             Time.timeScale = simSpeed;
 
         // Clients keep coming if there's room for them
-        if (Time.time >= _spawnNextClientTime && clientsPool.CountActive < maxClients)
+        if (Time.time >= _lastSpawnTime && clientsPool.CountActive < maxClients)
         {
-            _spawnNextClientTime = Time.time + spawnTimer; // Reset timer
+            _lastSpawnTime = Time.time + spawnTimer; // Reset timer
             clientsPool.Get();
         }
     }
@@ -114,12 +130,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #region PUBLIC METHODS
     public Spot RandomWaitingSeat()
     {
-        return RandomSpot(_seatsPositions);
+        return RandomSpot(_waitingSeats);
     }
 
     public Vector3 RandomPickUp()
     {
-        return RandomPosition(_pickUpPositions);
+        return RandomPosition(_potionsPickUpPositions);
     }
 
     public Spot RandomShopShelves()
@@ -144,7 +160,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         switch (client.wantedService)
         {
             case Client.WantedService.Sorcerer:
-                return !sorcererSeat.IsOccupied();
+                return !clientSeat.IsOccupied();
             case Client.WantedService.Alchemist:
                 return true;
             default:
@@ -154,16 +170,28 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #endregion
 
     #region PRIVATE METHODS
-    void FillChildrenList(Transform parent, List<Transform> childrenList)
+    void FillTransformChildrenList(Transform parent, List<Transform> childrenList)
     {
         foreach (Transform child in parent)
             childrenList.Add(child);
     }
 
-    void FillChildrenList(Transform parent, List<Spot> childrenList)
+    void FillSpotChildrenList(Transform parent, List<Spot> childrenList)
     {
         foreach (Transform child in parent)
             childrenList.Add(child.GetComponent<Spot>());
+    }
+
+    void FillSpotList(GameObject[] gameObjects, List<Spot> spots)
+    {
+        foreach (GameObject gameobject in gameObjects)
+            spots.Add(gameobject.GetComponent<Spot>());
+    }
+
+    private void FillTranformList(GameObject[] gameObjects, List<Transform> transforms)
+    {
+        foreach (GameObject gameobject in gameObjects)
+            transforms.Add(gameobject.transform);
     }
 
     Spot RandomSpot(List<Spot> spots)
@@ -184,9 +212,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         Client client = Instantiate(
             clientPrefabs[UnityEngine.Random.Range(0, clientPrefabs.Length)],
-            entrancePosition.position,
+            _entrancePosition.position,
             Quaternion.identity,
-            clientsParent)
+            _clientsParent)
         .GetComponent<Client>();
         return client;
     }
@@ -196,7 +224,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     /// </summary>>
     void GetClient(Client client)
     {
-        client.transform.position = entrancePosition.position;
+        client.transform.position = _entrancePosition.position;
         client.gameObject.SetActive(true);
         client.Reset();
     }

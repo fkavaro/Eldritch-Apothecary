@@ -10,7 +10,7 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
 
     public override void StartState()
     {
-        _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.clientSeat);
     }
 
     public override void UpdateState()

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 505153293521300784}
   m_Layer: 0
   m_Name: Stand (1)
-  m_TagString: Alchemist stand
+  m_TagString: Sorcerer stand
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 3088479003465253329}
   m_Layer: 0
   m_Name: Stand
-  m_TagString: Alchemist stand
+  m_TagString: Sorcerer stand
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
