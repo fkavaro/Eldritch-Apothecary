@@ -20,7 +20,7 @@ where TController : ABehaviourController<TController>
     /// <summary>
     /// Flag to check if the coroutine has started.
     /// </summary>
-    public bool coroutineStarted = false;
+    [HideInInspector] public bool coroutineStarted = false;
 
     [HideInInspector] public TextMeshProUGUI stateText, actionText;
     ADecisionSystem<TController> _decisionSystem;

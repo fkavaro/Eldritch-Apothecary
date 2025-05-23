@@ -69,8 +69,11 @@ public class Client : AHumanoid<Client>
 		pickPotionUpState = new(_clientSFSM);
 		leavingState = new(_clientSFSM);
 
-		// Initial state according to client's wanted service
-		if (wantedService == WantedService.OnlyShop)
+		// Initial state
+		// If the client wants to shop, set the shopping state as the initial state
+		// There's also a chance to also go shopping although a service is wanted
+		if (wantedService == WantedService.OnlyShop ||
+			UnityEngine.Random.Range(0, 11) < 5) // 50% chance
 			_clientSFSM.SetInitialState(shoppingState);
 		else
 			_clientSFSM.SetInitialState(waitForReceptionistState);
@@ -173,11 +176,10 @@ public class Client : AHumanoid<Client>
 	{
 		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
 		maxMinutesWaiting = UnityEngine.Random.Range(1, 5); // Chooses a random number of minutes to wait
+		maxScares = UnityEngine.Random.Range(1, 11); // Chooses a random number of supported scares
 
 		//minDistanceToCat = UnityEngine.Random.Range(0.5f, 2f); // Chooses a random distance to cat
 		//fear = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
-
-		maxScares = UnityEngine.Random.Range(1, 11); // Chooses a random number of supported scares
 
 		if (_serviceText == null)
 			_serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();

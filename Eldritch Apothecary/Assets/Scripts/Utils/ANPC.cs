@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,15 +21,15 @@ where TController : ABehaviourController<TController>
     #region VARIABLES
     [Header("NavMeshAgent Properties")]
     [Tooltip("Agent speed"), Range(0f, 5f)]
-    public float speed = 3f;
+    public float speed = 2f;
     [Tooltip("Agent rotation speed"), Range(0f, 5f)]
     public float rotationSpeed = 3f;
     [Tooltip("Max distance from the random point to a point on the navmesh, for target position sampling"), Range(0f, 5f)]
     public float maxSamplingDistance = 1f;
     [Tooltip("Distance to which it's considered as arrived"), Range(0.3f, 1f)]
-    public float arrivedDistance = 0.3f;
+    public float stoppingDistance = 0.3f;
     [Tooltip("Distance to which it's close to the destination"), Range(2f, 5f)]
-    public float closeDistance = 2f;
+    public float nearDistance = 2f;
     [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
     public float avoidanceRadius = 0.7f;
 
@@ -48,6 +49,7 @@ where TController : ABehaviourController<TController>
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = speed;
         _agent.angularSpeed = rotationSpeed * 100f;
+        _agent.stoppingDistance = stoppingDistance;
         _agent.radius = avoidanceRadius;
 
         base.OnAwake(); // Sets the animator component
@@ -116,8 +118,8 @@ where TController : ABehaviourController<TController>
 
     public bool IsCloseTo(Vector3 destination, float checkingDistance = 2f)
     {
-        if (checkingDistance <= closeDistance)
-            checkingDistance = closeDistance;
+        if (checkingDistance <= nearDistance)
+            checkingDistance = nearDistance;
 
         if (Vector3.Distance(transform.position, destination) < checkingDistance)
             return true;
@@ -130,9 +132,9 @@ where TController : ABehaviourController<TController>
     /// and if the target is a spot, fixes its rotation if wanted.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrivedAtDestination(bool fixRotation = true)
+    public bool HasArrivedAtDestination(bool fixRotation = true, bool fixPosition = true)
     {
-        return HasArrived(_agent.destination, fixRotation);
+        return HasArrived(_agent.destination, fixRotation, fixPosition);
     }
 
     /// <summary>
@@ -140,12 +142,12 @@ where TController : ABehaviourController<TController>
     /// and if the target is a spot, fixes its rotation if wanted.
     /// </summary>
     /// <returns>True if the agent has arrived, otherwise false.</returns>
-    public bool HasArrived(Vector3 destination, bool fixRotation = true)
+    public bool HasArrived(Vector3 destination, bool fixRotation = true, bool fixPosition = true)
     {
         //Debug.Log($"{gameObject.name} is checking if it has arrived at {destination}.");
 
-        // TODO try this: agent.remainingDistance <= agent.stoppingDistance
-        if (Vector3.Distance(transform.position, destination) < arrivedDistance)
+        if (Vector3.Distance(transform.position, destination) < stoppingDistance)
+        //if (_agent.remainingDistance <= _agent.stoppingDistance)
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
 
@@ -155,6 +157,8 @@ where TController : ABehaviourController<TController>
 
                 if (fixRotation)
                     ForceRotation(_destinationSpot.DirectionToVector()); // Fix rotation to the target position
+                if (fixPosition)
+                    transform.position = _destinationSpot.transform.position;
             }
 
             if (_animationWhenArrived != -1)

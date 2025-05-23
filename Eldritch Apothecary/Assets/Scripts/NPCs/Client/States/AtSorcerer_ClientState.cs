@@ -15,28 +15,18 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
 
     public override void UpdateState()
     {
-        // // Has reached the sorcerer seat
-        // if (_behaviourController.HasArrivedAtDestination())
-        //     _behaviourController.StartCoroutine(WaitAndSwitchState(_behaviourController.leavingState, _behaviourController.sitDownAnim, "Sitting down"));
-
-        // Is close to the sorcerer seat
-        if (_controller.IsCloseToDestination())
+        // Has reached exact position
+        if (_controller.HasArrivedAtDestination())
         {
-            // Sorcerer seat is occupied
-            if (_controller.DestinationSpotIsOccupied())
-            {
-                // Stop and wait
-                _controller.SetIfStopped(true);
-                _controller.ChangeAnimationTo(_controller.waitAnim);
-            }
-            else // sorcerer seat is free
-            {
-                _controller.SetIfStopped(false);
-
-                // Has reached exact position
-                if (_controller.HasArrivedAtDestination())
-                    SwitchStateAfterRandomTime(_controller.leavingState, _controller.sitDownAnim, "Sitting down");
-            }
+            _controller.SetIfStopped(false);
+            SwitchStateAfterRandomTime(_controller.leavingState, _controller.sitDownAnim, "Sitting down");
+        }
+        // Is close to the sorcerer seat but it's occupied
+        else if (_controller.IsCloseToDestination() && _controller.DestinationSpotIsOccupied())
+        {
+            // Stop and wait
+            _controller.SetIfStopped(true);
+            _controller.ChangeAnimationTo(_controller.waitAnim);
         }
     }
 }
