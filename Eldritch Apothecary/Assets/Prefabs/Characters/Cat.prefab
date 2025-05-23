@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4910066379852211344}
   - component: {fileID: 951111988705680287}
   - component: {fileID: 7522177816459881789}
-  - component: {fileID: 785081295808287133}
   - component: {fileID: 364140241498775080}
   - component: {fileID: 5074537400657096382}
+  - component: {fileID: 785081295808287133}
   m_Layer: 0
   m_Name: Cat
   m_TagString: Cat
@@ -82,38 +82,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &785081295808287133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6052003388996043155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33e5df9aff5e87c49a37d515b0bda7e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMode: 1
-  coroutineStarted: 0
-  stateText: {fileID: 0}
-  actionText: {fileID: 0}
-  speed: 1
-  rotationSpeed: 4
-  maxSamplingDistance: 1
-  stoppingDistance: 0.3
-  nearDistance: 2
-  avoidanceRadius: 0.7
-  energy: 100
-  lowEnergyThreshold: 10
-  wayPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  centerPoint: {fileID: 0}
-  targetSamplingIterations: 20
-  areaRadious: 20
 --- !u!136 &364140241498775080
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -164,6 +132,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &785081295808287133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6052003388996043155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e5df9aff5e87c49a37d515b0bda7e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 1
+  coroutineStarted: 0
+  stateText: {fileID: 0}
+  actionText: {fileID: 0}
+  speed: 1
+  rotationSpeed: 4
+  maxSamplingDistance: 1
+  stoppingDistance: 0.3
+  nearDistance: 2
+  avoidanceRadius: 0.7
+  energy: 100
+  lowEnergyThreshold: 10
+  wayPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  centerPoint: {fileID: 0}
+  targetSamplingIterations: 20
+  areaRadious: 20
+  botherDistance: 5
 --- !u!1001 &5841715561834592056
 PrefabInstance:
   m_ObjectHideFlags: 0

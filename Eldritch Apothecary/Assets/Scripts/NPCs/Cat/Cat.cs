@@ -8,21 +8,45 @@ public class Cat : ANPC<Cat>
     [Header("Cat Properties")]
     public List<Transform> wayPoints = new();
     public Transform centerPoint;
+    [Tooltip("Maximum iterations allowed to calculate a destination"), Range(5, 30)]
     public int targetSamplingIterations = 30;
+    [Tooltip("Movement radious"), Range(5f, 20f)]
     public float areaRadious = 10f;
+    [Tooltip("Minimum distance to detect someone to bother"), Range(2f, 5f)]
+    public float botherDistance = 5f;
+    public Transform alchemistTable,
+        sorcererTable;
+    #endregion
+
+    #region PRIVATE PROPERTIES
     #endregion
 
     #region NODES
     BehaviourTree<Cat> _catBT;
     InfiniteLoopNode<Cat> infiniteLoop;
-    SequenceNode<Cat> behaviourSequence, restSequence;
-    LeafNode<Cat> walkAroundLeaf, isEnergyLowConditionLeaf, restLeaf;
+    SequenceNode<Cat> behaviourSequence,
+        annoyAlchemistSequence,
+        annoySorcererSequence,
+        restSequence;
+    SelectorNode<Cat> annoyWorkerSelector;
+    LeafNode<Cat> isAlchemistNearLeaf,
+        annoyAlchemistLeaf,
+        isSorcererNearLeaf,
+        annoySorcererLeaf,
+        walkAroundLeaf,
+        isEnergyLowConditionLeaf,
+        restLeaf;
+    SuccesserNode<Cat> successerAnnoyWorker;
     #endregion
 
     #region STRATEGIES
     RandomDestinationStrategy<Cat> randomDestinationStrategy;
-    ConditionStrategy<Cat> isEnergyLowStrategy;
+    ConditionStrategy<Cat> isAlchemistNearStrategy,
+        isSorcererNearStrategy,
+        isEnergyLowStrategy;
     RestStrategy<Cat> restStrategy;
+    AnnoyingStrategy<Cat> annoyingAlchemistStrategy,
+        annoyingSorcererStrategy;
     #endregion
 
     #region INHERITED METHODS
@@ -30,19 +54,49 @@ public class Cat : ANPC<Cat>
     {
         // Strategies
         randomDestinationStrategy = new(this, centerPoint, targetSamplingIterations, areaRadious);
+        isAlchemistNearStrategy = new(this, IsAlchemistNear);
+        annoyingAlchemistStrategy = new(this, alchemistTable);
+        isSorcererNearStrategy = new(this, IsSorcererNear);
+        annoyingSorcererStrategy = new(this, sorcererTable);
         isEnergyLowStrategy = new(this, IsEnergyLow);
         restStrategy = new(this);
 
-        // Nodes
+        // Annoy alchemist sequence
+        isAlchemistNearLeaf = new(this, "IsAlchemistNear", isAlchemistNearStrategy);
+        annoyAlchemistLeaf = new(this, "Annoying Alchemist", annoyingAlchemistStrategy);
+        annoyAlchemistSequence = new(this);
+        annoyAlchemistSequence.AddChild(isAlchemistNearLeaf);
+        annoyAlchemistSequence.AddChild(annoyAlchemistLeaf);
+
+        // Annoy sorcerer sequence
+        isSorcererNearLeaf = new(this, "IsSorcererNear", isSorcererNearStrategy);
+        annoySorcererLeaf = new(this, "Annoying Sorcerer", annoyingSorcererStrategy);
+        annoySorcererSequence = new(this);
+        annoyAlchemistSequence.AddChild(isSorcererNearLeaf);
+        annoySorcererSequence.AddChild(annoySorcererLeaf);
+
+        // Annoy worker selector
+        annoyWorkerSelector = new(this);
+        annoyWorkerSelector.AddChild(annoyAlchemistSequence);
+        annoyWorkerSelector.AddChild(annoySorcererSequence);
+
+        // Selector succeder
+        successerAnnoyWorker = new(this);
+        successerAnnoyWorker.AddChild(annoyWorkerSelector);
+
+        // Walk around
         walkAroundLeaf = new(this, "Walking around", randomDestinationStrategy);
+
+        // Rest sequence
         isEnergyLowConditionLeaf = new(this, "IsEnergyLow", isEnergyLowStrategy);
         restLeaf = new(this, "Resting", restStrategy);
-
         restSequence = new(this);
         restSequence.AddChild(isEnergyLowConditionLeaf);
         restSequence.AddChild(restLeaf);
 
+        // Behaviour sequence
         behaviourSequence = new(this);
+        behaviourSequence.AddChild(successerAnnoyWorker);
         behaviourSequence.AddChild(walkAroundLeaf);
         behaviourSequence.AddChild(restSequence);
 
@@ -69,5 +123,21 @@ public class Cat : ANPC<Cat>
 
     #region PRIVATE	METHODS
 
+    bool IsAlchemistNear()
+    {
+        return IsNear(alchemistTable);
+    }
+
+    bool IsSorcererNear()
+    {
+        return IsNear(sorcererTable);
+    }
+
+    bool IsNear(Transform whereToAnnoy)
+    {
+        if (whereToAnnoy == null) return false;
+
+        return Vector3.Distance(transform.position, whereToAnnoy.position) <= botherDistance;
+    }
     #endregion
 }
