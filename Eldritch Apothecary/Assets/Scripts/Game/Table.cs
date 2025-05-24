@@ -16,7 +16,7 @@ public class Table : MonoBehaviour
     {
         if (other.gameObject == annoyingCreature)
         {
-            Debug.Log("Annoying creature over " + name + "!!");
+            //Debug.Log("Annoying creature over " + name + "!!");
             AnnoyingOnTable?.Invoke(other.gameObject);
         }
     }
@@ -25,7 +25,7 @@ public class Table : MonoBehaviour
     {
         if (other.gameObject == annoyingCreature)
         {
-            Debug.Log("Annoying creature off " + name);
+            //Debug.Log("Annoying creature off " + name);
             AnnoyingOffTable?.Invoke(other.gameObject);
         }
     }

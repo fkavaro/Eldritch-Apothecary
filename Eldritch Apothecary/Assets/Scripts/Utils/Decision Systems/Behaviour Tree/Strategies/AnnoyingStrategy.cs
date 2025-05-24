@@ -8,24 +8,30 @@ public class AnnoyingStrategy<TController> : AStrategy<TController>
 where TController : ANPC<TController>
 {
     readonly Transform positionWhereAnnoy;
+    bool finishedAnnoying = false;
 
     public AnnoyingStrategy(TController controller, Transform positionWhereAnnoy) : base(controller)
     {
         this.positionWhereAnnoy = positionWhereAnnoy;
+        _controller.CoroutineFinishedEvent += () => finishedAnnoying = true;
     }
 
     public override Node<TController>.Status Update()
     {
-        // Position where annoy is not yet the destination
+        // Set position where annoy as destination if it's not already
         if (_controller.GetDestinationPos() != positionWhereAnnoy.position)
             _controller.SetDestination(positionWhereAnnoy.position);
-        // Has arrived at destination
-        if (_controller.HasArrivedAtDestination() && !_controller.coroutineStarted)
+
+        // Return success if has finished annoying (coroutine finished)
+        if (finishedAnnoying)
         {
-            // Stay there annoying for some time
-            _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.idleAnim, "Annoying"));
+            finishedAnnoying = false;
             return Node<TController>.Status.Success;
         }
+        // Keep annoying for some time if destination arrived
+        else if (_controller.HasArrivedAtDestination() && !_controller.coroutineStarted)
+            _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.idleAnim, "Annoying"));
+
 
         return Node<TController>.Status.Running;
     }

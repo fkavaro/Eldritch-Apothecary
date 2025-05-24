@@ -15,7 +15,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
 
     public override void StartAction()
     {
-        _controller.CoroutineFinishedEvent += FinishedComplaining;
+        _controller.CoroutineFinishedEvent += () => finishedComplaining = true; ;
 
         // Still in waiting queue 
         if (ApothecaryManager.Instance.waitingQueue.Contains(_controller))
@@ -38,6 +38,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
         if (finishedComplaining)
         {
             _controller.ForceState(_controller.leavingState);
+            finishedComplaining = false;
             return true; // Action finished
         }
         else return false; // Action not finished
