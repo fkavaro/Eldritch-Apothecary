@@ -15974,7 +15974,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SerializedVersion: 0
-  m_Size: {x: 11, y: 3, z: 13.3126335}
+  m_Size: {x: 13, y: 3, z: 13.3126335}
   m_Center: {x: 0, y: 0, z: 1.660305}
   m_Area: 1
   m_AffectedAgents: a98c17ec
@@ -71363,8 +71363,8 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: -334000983
   m_CollectObjects: 1
-  m_Size: {x: 35, y: 3, z: 42}
-  m_Center: {x: -0.5, y: 1, z: 1}
+  m_Size: {x: 35, y: 3, z: 40}
+  m_Center: {x: -0.5, y: 1, z: 2}
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295

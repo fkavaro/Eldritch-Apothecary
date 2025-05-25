@@ -34,7 +34,7 @@ public class Cat : ANPC<Cat>
         walkAroundLeaf,
         isEnergyLowConditionLeaf,
         restLeaf;
-    SuccesserNode<Cat> successerAnnoyWorker;
+    SuccederNode<Cat> successerAnnoyWorker;
     #endregion
 
     #region STRATEGIES
