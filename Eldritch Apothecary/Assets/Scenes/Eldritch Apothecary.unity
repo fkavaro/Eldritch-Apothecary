@@ -16760,7 +16760,7 @@ MonoBehaviour:
   complainingPosition: {fileID: 1332325583}
   queueExitPosition: {fileID: 629453370}
   receptionistAttendingPos: {fileID: 631480857}
-  simSpeed: 5
+  simSpeed: 1
   queuePositionsParent: {fileID: 2102996951}
   exitPosition: {fileID: 1671213725}
   clientPrefabs:

@@ -37,7 +37,7 @@ where TController : ABehaviourController<TController>
     {
         // Check actions utilities while in default action 
         if (IsCurrentAction(_defaultAction))
-            MakeDecision();
+            CalculateActionsUtilities();
 
         // Update the current action
         _currentAction.UpdateAction();
@@ -103,7 +103,7 @@ where TController : ABehaviourController<TController>
     #endregion
 
     #region PRIVATE METHODS
-    void MakeDecision()
+    void CalculateActionsUtilities()
     {
         //Debug.Log(controller.name + " making decision...");
 
@@ -127,6 +127,7 @@ where TController : ABehaviourController<TController>
             // Debug the decision made
             //Debug.Log($"{controller.name} decided to: {bestAction.Name} with utility {_actionUtilities[bestAction]}");
 
+            _currentAction.FinishAction();
             _currentAction = bestAction; // Update current action
             _currentAction.StartAction();
         }
