@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Stack-based Finite State Machine implementation for controlling a behaviour.
@@ -20,9 +21,10 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     #region INHERITED METHODS
     public override void Start()
     {
-        // Previous state will be initial state at start and after changing
-        // will be able to return the previous state from Utility System.Reset()
-        Pop();
+        currentState = initialState;
+        PushCurrentState();
+        DebugDecision();
+        currentState?.StartState();
     }
 
     /// <summary>
@@ -33,8 +35,6 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         if (state == currentState) return;
 
         initialState = state;
-        currentState = state;
-        PushCurrentState();
     }
 
     /// <summary>
@@ -71,7 +71,8 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     /// </summary>
     public void PushCurrentState()
     {
-        _stateStack.Push(currentState);
+        if (currentState != null)
+            _stateStack.Push(currentState);
         //SwitchState(targetState);
     }
 
@@ -80,10 +81,10 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     /// </summary>
     public void Pop()
     {
-        if (_stateStack.Count == 0) return;
-
-        var targetState = _stateStack.Pop();
-        SwitchState(targetState);
+        if (_stateStack.Count == 0)
+            Debug.LogError("State stack is empty");
+        else
+            SwitchState(_stateStack.Pop());
     }
     #endregion
 }
