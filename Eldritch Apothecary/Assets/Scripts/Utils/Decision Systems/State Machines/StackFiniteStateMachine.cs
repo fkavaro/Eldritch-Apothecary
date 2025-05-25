@@ -1,5 +1,7 @@
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// Stack-based Finite State Machine implementation for controlling a behaviour.
@@ -9,7 +11,9 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     /// <summary>
     /// The last active state of the state machine
     /// </summary>
-    AState<TController, StackFiniteStateMachine<TController>> previousState;
+    //AState<TController, StackFiniteStateMachine<TController>> previousState;
+
+    Stack<AState<TController, StackFiniteStateMachine<TController>>> _stateStack = new();
 
     public StackFiniteStateMachine(TController controller) : base(controller) { }
 
@@ -18,7 +22,7 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     {
         // Previous state will be initial state at start and after changing
         // will be able to return the previous state from Utility System.Reset()
-        ReturnToPreviousState();
+        Pop();
     }
 
     /// <summary>
@@ -29,30 +33,32 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         if (state == currentState) return;
 
         initialState = state;
-        previousState = initialState;
+        currentState = state;
+        PushCurrentState();
     }
 
     /// <summary>
     /// Switchs to another state after exiting the current,
-    /// storing the previous state.
+    /// storing it in the stack.
     /// </summary>
-    public override void SwitchState(AState<TController, StackFiniteStateMachine<TController>> state)
+    public override void SwitchState(AState<TController, StackFiniteStateMachine<TController>> newState)
     {
-        if (state == currentState) return;
+        if (newState == currentState) return;
 
-        previousState = currentState;
+        PushCurrentState();
         currentState?.OnExitState();
-        currentState = state;
+        currentState = newState;
         DebugDecision();
         currentState?.StartState();
     }
+
 
     public override void ForceState(AState<TController, StackFiniteStateMachine<TController>> newState)
     {
         if (newState == currentState) return;
 
+        PushCurrentState();
         // Don't exit the current state, just set and start the new one
-        previousState = newState;
         currentState = newState;
         DebugDecision();
         currentState.StartState();
@@ -61,11 +67,23 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
 
     #region PUBLIC METHODS
     /// <summary>
-    /// Switchs to previous state after exiting the current.
+    /// Save the last state in the stack.
     /// </summary>
-    public void ReturnToPreviousState()
+    public void PushCurrentState()
     {
-        SwitchState(previousState);
+        _stateStack.Push(currentState);
+        //SwitchState(targetState);
+    }
+
+    /// <summary>
+    /// Return to the last state saved in the stack, if exists.
+    /// </summary>
+    public void Pop()
+    {
+        if (_stateStack.Count == 0) return;
+
+        var targetState = _stateStack.Pop();
+        SwitchState(targetState);
     }
     #endregion
 }

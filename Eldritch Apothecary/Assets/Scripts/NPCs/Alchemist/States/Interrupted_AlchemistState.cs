@@ -29,6 +29,6 @@ public class Interrupted_AlchemistState : AState<Alchemist, StackFiniteStateMach
             yield return null; // Espera un frame antes de volver a comprobar
         }
 
-        _stateMachine.ReturnToPreviousState(); // Vuelve al estado anterior cuando el gato se vaya
+        _stateMachine.Pop(); // Vuelve al estado anterior cuando el gato se vaya
     }
 }

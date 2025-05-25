@@ -33,7 +33,7 @@ public abstract class AState<TController, TStateMachine>
         // StateMachine is an stack state machine
         if (_stateMachine is StackFiniteStateMachine<TController> stateFSM)
         {
-            stateFSM.ReturnToPreviousState();
+            stateFSM.Pop();
         }
         else
         {
