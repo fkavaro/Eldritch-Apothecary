@@ -12,7 +12,7 @@ public class Cat : ANPC<Cat>
     public int movementRadious = 10;
     [Tooltip("Minimum distance to detect someone to annoy"), Range(1, 20)]
     public int annoyDistance = 5;
-    public Transform alchemistTable,
+    public Table alchemistTable,
         sorcererTable;
     #endregion
 
@@ -53,9 +53,9 @@ public class Cat : ANPC<Cat>
         // Strategies
         randomDestinationStrategy = new(this, targetSamplingIterations, movementRadious);
         isAlchemistNearStrategy = new(this, IsAlchemistNear);
-        annoyingAlchemistStrategy = new(this, alchemistTable);
+        annoyingAlchemistStrategy = new(this, alchemistTable.annoyPosition);
         isSorcererNearStrategy = new(this, IsSorcererNear);
-        annoyingSorcererStrategy = new(this, sorcererTable);
+        annoyingSorcererStrategy = new(this, sorcererTable.annoyPosition);
         isEnergyLowStrategy = new(this, IsEnergyLow);
         restStrategy = new(this);
 
@@ -123,12 +123,12 @@ public class Cat : ANPC<Cat>
 
     bool IsAlchemistNear()
     {
-        return IsNear(alchemistTable);
+        return IsNear(alchemistTable.annoyPosition);
     }
 
     bool IsSorcererNear()
     {
-        return IsNear(sorcererTable);
+        return IsNear(sorcererTable.annoyPosition);
     }
 
     bool IsNear(Transform whereToAnnoy)

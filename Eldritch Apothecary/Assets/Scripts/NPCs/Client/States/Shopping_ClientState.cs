@@ -16,8 +16,12 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
     public override void UpdateState()
     {
+        // Has reached exact position
+        if (_controller.HasArrivedAtDestination())
+            // Pick up a product and change to the next state
+            SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
         // Is close to the shelves spot
-        if (_controller.IsCloseToDestination())
+        else if (_controller.IsCloseToDestination())
         {
             // Shelves spot is occupied
             if (_controller.DestinationSpotIsOccupied())
@@ -29,11 +33,6 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             else // Spot is free
             {
                 _controller.SetIfStopped(false);
-
-                // Has reached exact position
-                if (_controller.HasArrivedAtDestination())
-                    // Pick up a product and change to the next state
-                    SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
             }
         }
     }

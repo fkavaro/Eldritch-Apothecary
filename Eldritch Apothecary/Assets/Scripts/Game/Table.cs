@@ -11,6 +11,7 @@ public class Table : MonoBehaviour
 
     // The specific GameObject to watch for
     public GameObject annoyingCreature;
+    public Transform annoyPosition;
 
     void OnTriggerEnter(Collider other)
     {
