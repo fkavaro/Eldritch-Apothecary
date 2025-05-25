@@ -28,8 +28,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
     public override void UpdateAction()
     {
         // Is close to the complaining position and hasn't started complaining yet
-        if (_controller.IsCloseTo(ApothecaryManager.Instance.complainingPosition.position, 3f)
-            && !_controller.coroutineStarted)
+        if (_controller.IsCloseTo(ApothecaryManager.Instance.complainingPosition.position, 3f))
             _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining"));
     }
 

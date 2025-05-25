@@ -20,9 +20,10 @@ TagManager:
   - Replenisher
   - Cat
   - Shop shelf
-  - Supply shelf
   - Alchemist shelf
   - Sorcerer shelf
+  - Shop supply shelf
+  - Staff supply shelf
   layers:
   - Default
   - TransparentFX

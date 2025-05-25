@@ -69,22 +69,26 @@ where TController : ABehaviourController<TController>
 
     public IEnumerator PlayAnimationRandomTime(int animation, string animationName)
     {
+        //if (isCoroutineExecuting) yield break;
+
         int waitTime = Random.Range(5, 21);
         return PlayAnimationCertainTime(waitTime, animation, animationName);
     }
 
     public IEnumerator PlayAnimationCertainTime(float waitTime, int animation, string animationName)
     {
+        if (isCoroutineExecuting) yield break;
+
         actionText.text = animationName + " for " + waitTime + " seconds...";
 
         ChangeAnimationTo(animation);
 
-        coroutineStarted = true;
+        isCoroutineExecuting = true;
 
         yield return new WaitForSeconds(waitTime);
 
         actionText.text = "";
-        coroutineStarted = false;
+        isCoroutineExecuting = false;
         InvokeCoroutineFinishedEvent();
     }
     #endregion

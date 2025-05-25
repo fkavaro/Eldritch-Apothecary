@@ -16,19 +16,17 @@ public abstract class ANPCState<TController, TStateMachine> : AState<TController
     /// </summary>
     protected void SwitchStateAfterRandomTime(AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
-        if (!_controller.coroutineStarted)
-        {
-            int waitTime = Random.Range(5, 21);
-            SwitchStateAfterCertainTime(waitTime, nextState, animation, animationName);
-        }
+        if (_controller.isCoroutineExecuting) return;
+
+        int waitTime = Random.Range(5, 21);
+        SwitchStateAfterCertainTime(waitTime, nextState, animation, animationName);
     }
 
     protected void SwitchStateAfterCertainTime(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
-        if (!_controller.coroutineStarted)
-        {
-            _controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName));
-        }
+        if (_controller.isCoroutineExecuting) return;
+
+        _controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName));
     }
 
     /// <summary>

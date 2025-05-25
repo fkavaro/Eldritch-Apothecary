@@ -52,7 +52,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         _potionsPickUpPositions = new();
 
     List<Shelf> _shopShelves = new(),
-        _replenisherShelves = new(),
+        _shopSuppliesShelves = new(),
+        _staffSuppliesShelves = new(),
         _alchemistShelves = new(),
         _sorcererShelves = new();
 
@@ -78,7 +79,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), _shopShelves);
         FillShelfList(GameObject.FindGameObjectsWithTag("Alchemist shelf"), _alchemistShelves);
         FillShelfList(GameObject.FindGameObjectsWithTag("Sorcerer shelf"), _sorcererShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Supply shelf"), _replenisherShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), _shopSuppliesShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), _staffSuppliesShelves);
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
 
         //Positions
@@ -112,7 +114,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             _alchemistShelves.Count == 0 ||
             _queuePositions.Count == 0 ||
             _sorcererShelves.Count == 0 ||
-            _replenisherShelves.Count == 0 ||
+            _shopSuppliesShelves.Count == 0 ||
+            _staffSuppliesShelves.Count == 0 ||
             _waitingSeats.Count == 0 ||
             _potionServePositions.Count == 0 ||
             _potionsPickUpPositions.Count == 0)

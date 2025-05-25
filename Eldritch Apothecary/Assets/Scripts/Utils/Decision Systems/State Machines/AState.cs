@@ -48,12 +48,12 @@ public abstract class AState<TController, TStateMachine>
     /// </summary>
     protected virtual IEnumerator SwitchStateAfterCertainTime(float waitTime, AState<TController, TStateMachine> nextState)
     {
-        _controller.coroutineStarted = true;
+        _controller.isCoroutineExecuting = true;
 
         yield return new WaitForSeconds(waitTime);
 
         _stateMachine?.SwitchState(nextState);
-        _controller.coroutineStarted = false;
+        _controller.isCoroutineExecuting = false;
     }
 
     /// <summary>

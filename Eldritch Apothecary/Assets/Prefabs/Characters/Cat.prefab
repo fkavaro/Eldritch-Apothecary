@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  coroutineStarted: 0
+  isCoroutineExecuting: 0
   stateText: {fileID: 0}
   actionText: {fileID: 0}
   speed: 1

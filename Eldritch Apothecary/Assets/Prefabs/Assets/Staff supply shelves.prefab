@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3330838049211175321}
   m_Layer: 0
   m_Name: Shelf (3)
-  m_TagString: Supply shelf
-  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_TagString: Staff supply shelf
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -58,8 +58,8 @@ GameObject:
   - component: {fileID: 1100902842549377411}
   m_Layer: 0
   m_Name: Shelf (2)
-  m_TagString: Supply shelf
-  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_TagString: Staff supply shelf
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -104,8 +104,8 @@ GameObject:
   - component: {fileID: 6936068318974713838}
   m_Layer: 0
   m_Name: Shelf
-  m_TagString: Supply shelf
-  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_TagString: Staff supply shelf
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -150,8 +150,8 @@ GameObject:
   - component: {fileID: 5199488800126774449}
   m_Layer: 0
   m_Name: Shelf (1)
-  m_TagString: Supply shelf
-  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_TagString: Staff supply shelf
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -246,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8828539712338053753, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
       propertyPath: m_Name
-      value: Supply shelves
+      value: Staff supply shelves
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

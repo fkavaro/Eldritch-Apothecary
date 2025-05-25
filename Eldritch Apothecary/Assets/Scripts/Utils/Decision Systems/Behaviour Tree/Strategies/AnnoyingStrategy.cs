@@ -27,7 +27,7 @@ where TController : ANPC<TController>
             return Node<TController>.Status.Success;
         }
         // Keep annoying for some time if destination arrived
-        else if (_controller.HasArrivedAtDestination() && !_controller.coroutineStarted)
+        else if (_controller.HasArrivedAtDestination())
             _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.idleAnim, "Annoying"));
 
         return Node<TController>.Status.Running;
