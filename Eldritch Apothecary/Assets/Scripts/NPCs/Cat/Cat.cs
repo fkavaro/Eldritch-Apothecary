@@ -72,7 +72,7 @@ public class Cat : ANPC<Cat>
         isSorcererNearLeaf = new(this, "IsSorcererNear", isSorcererNearStrategy);
         annoySorcererLeaf = new(this, "Annoying Sorcerer", annoyingSorcererStrategy);
         annoySorcererSequence = new(this);
-        annoyAlchemistSequence.AddChild(isSorcererNearLeaf);
+        annoySorcererSequence.AddChild(isSorcererNearLeaf);
         annoySorcererSequence.AddChild(annoySorcererLeaf);
 
         // Annoy worker selector
