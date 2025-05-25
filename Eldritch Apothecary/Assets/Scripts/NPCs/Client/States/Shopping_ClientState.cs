@@ -31,11 +31,19 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             if (!_amountTaken)
             {
                 // Take needed amount from shelf
-                _shopShelf.Take(_amountNeeded);
-                _amountTaken = true;
-
-                // Go to waiting queue after animation
-                SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
+                if (_shopShelf.Take(_amountNeeded))
+                {
+                    _amountTaken = true;
+                    // Go to waiting queue after animation
+                    SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
+                }
+                else
+                {
+                    // Wait
+                    _controller.ChangeAnimationTo(_controller.waitAnim);
+                    _controller.secondsWaiting += Time.deltaTime;
+                    _controller.actionText.text = "Waiting for replenishment";
+                }
             }
         }
         // Is close to the shelves spot
@@ -48,8 +56,13 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
                 _controller.SetIfStopped(true);
                 _controller.ChangeAnimationTo(_controller.waitAnim);
                 _controller.secondsWaiting += Time.deltaTime;
+
+                // Not enough supply
+                if (!_shopShelf.CanTake(_amountNeeded))
+                    _controller.actionText.text = "Waiting for replenishment";
             }
-            else // Spot is free or there is enough supply
+            // Spot is free and has enough supplies
+            else if (!_controller.DestinationSpotIsOccupied() && _shopShelf.CanTake(_amountNeeded))
             {
                 _controller.SetIfStopped(false);
                 _controller.ChangeAnimationTo(_controller.walkAnim);
@@ -59,7 +72,9 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
     public override void ExitState()
     {
+        _amountTaken = false;
         _controller.secondsWaiting = 0f;
         _controller.normalizedWaitingTime = 0f;
+        _controller.actionText.text = "";
     }
 }

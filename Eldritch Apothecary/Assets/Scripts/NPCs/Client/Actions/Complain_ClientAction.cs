@@ -13,6 +13,8 @@ public class Complain_ClientAction : ABinaryAction<Client>
 
     public override void StartAction()
     {
+        finishedComplaining = false;
+
         // Finished complaining when coroutine finished
         _controller.CoroutineFinishedEvent += () => finishedComplaining = true; ;
 
@@ -36,6 +38,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
     {
         if (finishedComplaining)
         {
+            _controller.actionText.text = "";
             _controller.ForceState(_controller.leavingState);
             finishedComplaining = false;
             return true; // Action finished
