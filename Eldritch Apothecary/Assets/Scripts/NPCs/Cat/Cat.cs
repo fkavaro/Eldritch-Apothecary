@@ -6,14 +6,12 @@ public class Cat : ANPC<Cat>
 {
     #region PUBLIC PROPERTIES
     [Header("Cat Properties")]
-    [Tooltip("Movement center point")]
-    public Transform movementCenterPoint;
     [Tooltip("Maximum iterations allowed to calculate a destination"), Range(5, 30)]
     public int targetSamplingIterations = 30;
-    [Tooltip("Movement radious"), Range(5f, 20f)]
-    public float areaRadious = 10f;
-    [Tooltip("Minimum distance to detect someone to bother"), Range(1, 5)]
-    public int annoyDistance = 2;
+    [Tooltip("Movement radious"), Range(1, 20)]
+    public int movementRadious = 10;
+    [Tooltip("Minimum distance to detect someone to annoy"), Range(1, 20)]
+    public int annoyDistance = 5;
     public Transform alchemistTable,
         sorcererTable;
     #endregion
@@ -53,7 +51,7 @@ public class Cat : ANPC<Cat>
     protected override ADecisionSystem<Cat> CreateDecisionSystem()
     {
         // Strategies
-        randomDestinationStrategy = new(this, movementCenterPoint, targetSamplingIterations, areaRadious);
+        randomDestinationStrategy = new(this, targetSamplingIterations, movementRadious);
         isAlchemistNearStrategy = new(this, IsAlchemistNear);
         annoyingAlchemistStrategy = new(this, alchemistTable);
         isSorcererNearStrategy = new(this, IsSorcererNear);
@@ -142,7 +140,7 @@ public class Cat : ANPC<Cat>
 
         if (isNear)
         {
-            Debug.Log("Cat is near " + whereToAnnoy.name + ": " + distance);
+            //Debug.Log("Cat is near " + whereToAnnoy.name + ": " + distance);
         }
 
         return isNear;

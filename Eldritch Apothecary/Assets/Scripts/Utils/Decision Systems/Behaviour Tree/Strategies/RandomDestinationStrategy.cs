@@ -11,8 +11,9 @@ where TController : ANPC<TController>
 {
     bool _destinationIsSet = false; // Dirty flag
 
-    public RandomDestinationStrategy(TController controller, Transform centerPoint, int samplingIterations = 30, float areaRadious = 10f)
-    : base(controller, centerPoint, samplingIterations, areaRadious) { }
+    // Center point is the controller transform
+    public RandomDestinationStrategy(TController controller, int samplingIterations = 30, float areaRadious = 10f)
+    : base(controller, controller.transform, samplingIterations, areaRadious) { }
 
 
     public override Node<TController>.Status Update()
@@ -20,7 +21,7 @@ where TController : ANPC<TController>
         // Destination not yet set
         if (!_destinationIsSet)
         {
-            // Random destination is reachable
+            // Random destination is reachable, calculated from controller position
             if (_controller.CalculateRandomDestination(_samplingIterations, _areaRadious, _centerPoint, out Vector3 randomDestination))
             {
                 _controller.SetDestination(randomDestination);

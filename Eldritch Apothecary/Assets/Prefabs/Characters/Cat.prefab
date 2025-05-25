@@ -156,15 +156,11 @@ MonoBehaviour:
   avoidanceRadius: 0.7
   energy: 100
   lowEnergyThreshold: 10
-  wayPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  centerPoint: {fileID: 0}
   targetSamplingIterations: 20
-  areaRadious: 20
-  botherDistance: 5
+  movementRadious: 12
+  annoyDistance: 8
+  alchemistTable: {fileID: 0}
+  sorcererTable: {fileID: 0}
 --- !u!1001 &5841715561834592056
 PrefabInstance:
   m_ObjectHideFlags: 0
