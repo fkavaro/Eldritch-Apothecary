@@ -21,7 +21,7 @@ public class Client : AHumanoid<Client>
 	[Tooltip("Maximum waiting minutes"), Range(1, 4)]
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Seconds waiting first in line")]
-	public float secondsWaitingFirstInLine = 0f;
+	public float secondsWaiting = 0f;
 	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0, 1)]
 	public float normalizedWaitingTime;
 	[Tooltip("Triggering distance to cat"), Range(0.5f, 2f)]
@@ -100,7 +100,7 @@ public class Client : AHumanoid<Client>
 			_serviceText.gameObject.SetActive(debugMode);
 
 		// Normalize time between 0 and the 1 as the maximum waiting time of the client
-		normalizedWaitingTime = Mathf.Clamp01(secondsWaitingFirstInLine / (maxMinutesWaiting * 60f));
+		normalizedWaitingTime = Mathf.Clamp01(secondsWaiting / (maxMinutesWaiting * 60f));
 	}
 	#endregion
 
@@ -118,7 +118,7 @@ public class Client : AHumanoid<Client>
 	/// <returns> True if the client has waited too long, false otherwise.</returns>
 	public bool WaitedTooLong()
 	{
-		return secondsWaitingFirstInLine >= maxMinutesWaiting * 60f;
+		return secondsWaiting >= maxMinutesWaiting * 60f;
 	}
 
 	public bool InWaitingQueue()
@@ -139,7 +139,7 @@ public class Client : AHumanoid<Client>
 	public void DontMindAnything()
 	{
 		scaresCount = 0;
-		secondsWaitingFirstInLine = 0f;
+		secondsWaiting = 0f;
 		normalizedWaitingTime = 0f;
 		fear = 0;
 	}

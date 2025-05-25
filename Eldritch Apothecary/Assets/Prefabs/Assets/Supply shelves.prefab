@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3649747015580661314}
   - component: {fileID: 3330838049211175321}
   m_Layer: 0
-  m_Name: Stand (3)
-  m_TagString: Storing stand
+  m_Name: Shelf (3)
+  m_TagString: Supply shelf
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,8 +57,8 @@ GameObject:
   - component: {fileID: 4835056211399166158}
   - component: {fileID: 1100902842549377411}
   m_Layer: 0
-  m_Name: Stand (2)
-  m_TagString: Storing stand
+  m_Name: Shelf (2)
+  m_TagString: Supply shelf
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,8 +103,8 @@ GameObject:
   - component: {fileID: 3133245138467112950}
   - component: {fileID: 6936068318974713838}
   m_Layer: 0
-  m_Name: Stand
-  m_TagString: Storing stand
+  m_Name: Shelf
+  m_TagString: Supply shelf
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,8 +149,8 @@ GameObject:
   - component: {fileID: 141488259981556096}
   - component: {fileID: 5199488800126774449}
   m_Layer: 0
-  m_Name: Stand (1)
-  m_TagString: Storing stand
+  m_Name: Shelf (1)
+  m_TagString: Supply shelf
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -192,6 +192,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 394531175063426614, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153610241730919823, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153610241730919823, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4827566160370592624, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -234,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8828539712338053753, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
       propertyPath: m_Name
-      value: Storing shelves
+      value: Supply shelves
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

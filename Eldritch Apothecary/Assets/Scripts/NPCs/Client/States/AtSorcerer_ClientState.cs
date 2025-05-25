@@ -21,12 +21,21 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
             _controller.SetIfStopped(false);
             SwitchStateAfterRandomTime(_controller.leavingState, _controller.sitDownAnim, "Sitting down");
         }
-        // Is close to the sorcerer seat but it's occupied
-        else if (_controller.IsCloseToDestination() && _controller.DestinationSpotIsOccupied())
+        // Is close to the sorcerer seat
+        else if (_controller.IsCloseToDestination(4f))
         {
-            // Stop and wait
-            _controller.SetIfStopped(true);
-            _controller.ChangeAnimationTo(_controller.waitAnim);
+            // Is occupied
+            if (_controller.DestinationSpotIsOccupied())
+            {
+                // Stop and wait
+                _controller.SetIfStopped(true);
+                _controller.ChangeAnimationTo(_controller.waitAnim);
+            }
+            else // Is free
+            {
+                _controller.SetIfStopped(false);
+                _controller.ChangeAnimationTo(_controller.walkAnim);
+            }
         }
     }
 }

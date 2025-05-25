@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3421670109688887521}
   - component: {fileID: 505153293521300784}
   m_Layer: 0
-  m_Name: Stand (1)
-  m_TagString: Storing stand
+  m_Name: Shelf (1)
+  m_TagString: Supply shelf
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,8 +57,8 @@ GameObject:
   - component: {fileID: 6778018902110355775}
   - component: {fileID: 3088479003465253329}
   m_Layer: 0
-  m_Name: Stand
-  m_TagString: Storing stand
+  m_Name: Shelf
+  m_TagString: Supply shelf
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,6 +100,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1991120730176612880, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4171
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938478958172959159, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2125
+      objectReference: {fileID: 0}
     - target: {fileID: 4827566160370592624, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -140,9 +148,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5119086980676540894, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5119086980676540894, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136916126235023369, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2069
+      objectReference: {fileID: 0}
+    - target: {fileID: 5940665829563298407, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594224806366185398, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4499
+      objectReference: {fileID: 0}
+    - target: {fileID: 7654935309644284157, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2226
+      objectReference: {fileID: 0}
     - target: {fileID: 8828539712338053753, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_Name
-      value: Storing shelves 1
+      value: Supply shelves 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020744517142977068, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_VersionIndex
+      value: 5234
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

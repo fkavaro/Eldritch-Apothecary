@@ -1,4 +1,3 @@
-using BehaviourAPI.StateMachines.StackFSMs;
 using UnityEngine;
 
 /// <summary>
@@ -6,34 +5,61 @@ using UnityEngine;
 /// </summary>
 public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
 {
+    Shelf _shopShelf;
+    int _amountNeeded;
+    bool _amountTaken = false;
+
     public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm)
     : base("Shopping", sfsm) { }
 
     public override void StartState()
     {
-        _controller.SetDestinationSpot(ApothecaryManager.Instance.RandomShopShelves());
+        _amountTaken = false;
+        _controller.secondsWaiting = 0f;
+        _controller.normalizedWaitingTime = 0f;
+
+        _amountNeeded = Random.Range(10, 21); // Random amount needed
+        _shopShelf = ApothecaryManager.Instance.RandomShopShelves();
+        _controller.SetDestinationSpot(_shopShelf);
     }
 
     public override void UpdateState()
     {
         // Has reached exact position
         if (_controller.HasArrivedAtDestination())
-            // Pick up a product and change to the next state
-            SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
+        {
+            if (!_amountTaken)
+            {
+                // Take needed amount from shelf
+                _shopShelf.Take(_amountNeeded);
+                _amountTaken = true;
+
+                // Go to waiting queue after animation
+                SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
+            }
+        }
         // Is close to the shelves spot
         else if (_controller.IsCloseToDestination())
         {
-            // Shelves spot is occupied
-            if (_controller.DestinationSpotIsOccupied())
+            // Shelves spot is occupied or not enough supply for needed amount
+            if (_controller.DestinationSpotIsOccupied() || !_shopShelf.CanTake(_amountNeeded))
             {
                 // Stop and wait
                 _controller.SetIfStopped(true);
                 _controller.ChangeAnimationTo(_controller.waitAnim);
+                _controller.secondsWaiting += Time.deltaTime;
             }
-            else // Spot is free
+            else // Spot is free or there is enough supply
             {
                 _controller.SetIfStopped(false);
+                _controller.ChangeAnimationTo(_controller.walkAnim);
             }
         }
+    }
+
+    public override void ExitState()
+    {
+        _controller.secondsWaiting = 0f;
+        _controller.normalizedWaitingTime = 0f;
     }
 }

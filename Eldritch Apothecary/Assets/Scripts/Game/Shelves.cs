@@ -12,8 +12,7 @@ public class Shelves : MonoBehaviour
 
     [Header("Values")]
     public int maxValue = 100;
-    public float currentValue;
-    float _newValue;
+    public int currentValue;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,21 +20,15 @@ public class Shelves : MonoBehaviour
         supplyBar.maxValue = maxValue;
         currentValue = maxValue;
 
-        _newValue = maxValue;
+        // Set supply bar value to currenValue
+        supplyBar.value = currentValue;
+        fill.color = colorGradient.Evaluate(supplyBar.normalizedValue);
+        valueText.text = currentValue.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // If the current value is greater than the new value
-        if (currentValue > _newValue)
-            // Reduce it by one second each time
-            currentValue -= Time.deltaTime;
-        // If current value is less than the new value
-        else if (currentValue < _newValue)
-            // Increase it by one second each time
-            currentValue += Time.deltaTime;
-
         // Supply bar isn't updated
         if (supplyBar.value != currentValue)
         {
@@ -49,18 +42,27 @@ public class Shelves : MonoBehaviour
     /// <summary>
     /// Returns true if the amount can be taken.
     /// </summary>
-    public bool Take(int amount)
+    internal bool CanTake(int amount)
     {
         // Enough supplying
-        if (_newValue >= amount && _newValue > 0)
+        if (currentValue >= amount && currentValue > 0)
+            return true;
+        else // Not enough supplying
+            return false;
+    }
+
+    /// <summary>
+    /// Takes the specified amount from the shelves if possible.
+    /// </summary>
+    public bool Take(int amount)
+    {
+        if (CanTake(amount))
         {
-            _newValue -= amount;
+            currentValue -= amount;
             return true;
         }
-        else // Not enough supplying
-        {
+        else
             return false;
-        }
     }
 
     /// <summary>
@@ -68,6 +70,8 @@ public class Shelves : MonoBehaviour
     /// </summary>
     public void Resupply()
     {
-        _newValue = maxValue;
+        currentValue = maxValue;
     }
+
+
 }

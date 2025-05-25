@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -24,7 +25,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     [HideInInspector] public Spot receptionistAttendingPos;
 
     [Header("Simulation")]
-    [Tooltip("Simulation speed"), Range(0, 5)]
+    [Tooltip("Simulation speed"), Range(0, 10)]
     public float simSpeed = 1;
 
     [Header("Positions parents")]
@@ -50,11 +51,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         _potionServePositions = new(),
         _potionsPickUpPositions = new();
 
-    List<Spot> _shopStands = new(),
-        _replenisherStands = new(),
-        _alchemistStands = new(),
-        _sorcererStands = new(),
-        _waitingSeats = new();
+    List<Shelf> _shopShelves = new(),
+        _replenisherShelves = new(),
+        _alchemistShelves = new(),
+        _sorcererShelves = new();
+
+    List<Spot> _waitingSeats = new();
 
     float _lastSpawnTime = 0f;
     #endregion
@@ -73,10 +75,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         _clientsParent = GameObject.FindGameObjectsWithTag("Clients parent")[0].GetComponent<Transform>();
 
         //Spots
-        FillSpotList(GameObject.FindGameObjectsWithTag("Shop stand"), _shopStands);
-        FillSpotList(GameObject.FindGameObjectsWithTag("Alchemist stand"), _alchemistStands);
-        FillSpotList(GameObject.FindGameObjectsWithTag("Sorcerer stand"), _sorcererStands);
-        FillSpotList(GameObject.FindGameObjectsWithTag("Storing stand"), _replenisherStands);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), _shopShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Alchemist shelf"), _alchemistShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Sorcerer shelf"), _sorcererShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Supply shelf"), _replenisherShelves);
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
 
         //Positions
@@ -106,9 +108,13 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     void Start()
     {
-        if (_shopStands.Count == 0 ||
+        if (_shopShelves.Count == 0 ||
+            _alchemistShelves.Count == 0 ||
             _queuePositions.Count == 0 ||
+            _sorcererShelves.Count == 0 ||
+            _replenisherShelves.Count == 0 ||
             _waitingSeats.Count == 0 ||
+            _potionServePositions.Count == 0 ||
             _potionsPickUpPositions.Count == 0)
             Debug.LogError("A positions list is empty.");
     }
@@ -138,9 +144,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         return RandomPosition(_potionsPickUpPositions);
     }
 
-    public Spot RandomShopShelves()
+    public Shelf RandomShopShelves()
     {
-        return RandomSpot(_shopStands);
+        return RandomShelf(_shopShelves);
     }
 
     public bool SomeoneComplaining()
@@ -188,6 +194,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             spots.Add(gameobject.GetComponent<Spot>());
     }
 
+    void FillShelfList(GameObject[] gameObjects, List<Shelf> shelfs)
+    {
+        foreach (GameObject gameobject in gameObjects)
+            shelfs.Add(gameobject.GetComponent<Shelf>());
+    }
+
     private void FillTranformList(GameObject[] gameObjects, List<Transform> transforms)
     {
         foreach (GameObject gameobject in gameObjects)
@@ -197,6 +209,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     Spot RandomSpot(List<Spot> spots)
     {
         return spots[UnityEngine.Random.Range(0, spots.Count)];
+    }
+
+    Shelf RandomShelf(List<Shelf> shelves)
+    {
+        return shelves[UnityEngine.Random.Range(0, shelves.Count)];
     }
 
     Vector3 RandomPosition(List<Transform> positions)
