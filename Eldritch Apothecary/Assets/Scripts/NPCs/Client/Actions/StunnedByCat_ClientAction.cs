@@ -20,6 +20,8 @@ public class StunnedByCat_ClientAction : ABinaryAction<Client>
 
         _controller.scaresCount++;
 
+        _controller.lastScareTime = Time.time;
+
         _controller.SetIfStopped(true);
 
         _controller.ChangeAnimationTo(_controller.stunnedAnim);

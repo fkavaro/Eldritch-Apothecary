@@ -48,7 +48,7 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
             else
             {
                 // Increase time waiting
-                _controller.timeWaiting += Time.deltaTime;
+                _controller.secondsWaitingFirstInLine += Time.deltaTime;
             }
         }
         // Has arrived the next queue position
@@ -66,7 +66,7 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
 
         _controller.ResetAvoidanceRadius(); // Reset avoidance radius
 
-        _controller.timeWaiting = 0f;
+        _controller.secondsWaitingFirstInLine = 0f;
         _controller.normalizedWaitingTime = 0f;
     }
 }

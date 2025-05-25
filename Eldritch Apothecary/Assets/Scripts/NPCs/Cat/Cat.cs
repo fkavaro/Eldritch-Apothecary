@@ -6,14 +6,14 @@ public class Cat : ANPC<Cat>
 {
     #region PUBLIC PROPERTIES
     [Header("Cat Properties")]
-    public List<Transform> wayPoints = new();
-    public Transform centerPoint;
+    [Tooltip("Movement center point")]
+    public Transform movementCenterPoint;
     [Tooltip("Maximum iterations allowed to calculate a destination"), Range(5, 30)]
     public int targetSamplingIterations = 30;
     [Tooltip("Movement radious"), Range(5f, 20f)]
     public float areaRadious = 10f;
-    [Tooltip("Minimum distance to detect someone to bother"), Range(2f, 5f)]
-    public float botherDistance = 5f;
+    [Tooltip("Minimum distance to detect someone to bother"), Range(1, 5)]
+    public int annoyDistance = 2;
     public Transform alchemistTable,
         sorcererTable;
     #endregion
@@ -53,7 +53,7 @@ public class Cat : ANPC<Cat>
     protected override ADecisionSystem<Cat> CreateDecisionSystem()
     {
         // Strategies
-        randomDestinationStrategy = new(this, centerPoint, targetSamplingIterations, areaRadious);
+        randomDestinationStrategy = new(this, movementCenterPoint, targetSamplingIterations, areaRadious);
         isAlchemistNearStrategy = new(this, IsAlchemistNear);
         annoyingAlchemistStrategy = new(this, alchemistTable);
         isSorcererNearStrategy = new(this, IsSorcererNear);
@@ -137,7 +137,15 @@ public class Cat : ANPC<Cat>
     {
         if (whereToAnnoy == null) return false;
 
-        return Vector3.Distance(transform.position, whereToAnnoy.position) <= botherDistance;
+        float distance = Vector3.Distance(transform.position, whereToAnnoy.position);
+        bool isNear = distance <= annoyDistance;
+
+        if (isNear)
+        {
+            Debug.Log("Cat is near " + whereToAnnoy.name + ": " + distance);
+        }
+
+        return isNear;
     }
     #endregion
 }

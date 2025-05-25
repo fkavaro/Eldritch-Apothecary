@@ -82668,9 +82668,17 @@ PrefabInstance:
       propertyPath: alchemistTable
       value: 
       objectReference: {fileID: 16535533}
+    - target: {fileID: 785081295808287133, guid: 995b17597825a5948989ec928a828d4f, type: 3}
+      propertyPath: botherDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 785081295808287133, guid: 995b17597825a5948989ec928a828d4f, type: 3}
+      propertyPath: movementCenterPoint
+      value: 
+      objectReference: {fileID: 139391770}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.25
+      value: 9.25
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -82678,7 +82686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 15.75
+      value: -14.25
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalRotation.w

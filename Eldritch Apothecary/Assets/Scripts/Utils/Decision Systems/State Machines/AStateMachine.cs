@@ -21,6 +21,11 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
         return currentState?.StateName;
     }
 
+    public bool IsCurrentState(AState<TController, TStateMachineType> state)
+    {
+        return currentState == state;
+    }
+
     #region INHERITED METHODS
     /// <summary>
     /// Switchs back to initial state

@@ -1,5 +1,3 @@
-using Unity.VisualScripting;
-using UnityEngine;
 
 public class Complain_ClientAction : ABinaryAction<Client>
 {
@@ -15,6 +13,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
 
     public override void StartAction()
     {
+        // Finished complaining when coroutine finished
         _controller.CoroutineFinishedEvent += () => finishedComplaining = true; ;
 
         // Still in waiting queue 
@@ -42,10 +41,5 @@ public class Complain_ClientAction : ABinaryAction<Client>
             return true; // Action finished
         }
         else return false; // Action not finished
-    }
-
-    void FinishedComplaining()
-    {
-        finishedComplaining = true;
     }
 }

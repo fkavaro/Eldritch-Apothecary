@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class AnnoyingStrategy<TController> : AStrategy<TController>
@@ -13,6 +9,8 @@ where TController : ANPC<TController>
     public AnnoyingStrategy(TController controller, Transform positionWhereAnnoy) : base(controller)
     {
         this.positionWhereAnnoy = positionWhereAnnoy;
+
+        // Finished annoying when coroutine finished
         _controller.CoroutineFinishedEvent += () => finishedAnnoying = true;
     }
 
@@ -31,7 +29,6 @@ where TController : ANPC<TController>
         // Keep annoying for some time if destination arrived
         else if (_controller.HasArrivedAtDestination() && !_controller.coroutineStarted)
             _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.idleAnim, "Annoying"));
-
 
         return Node<TController>.Status.Running;
     }

@@ -21,20 +21,24 @@ public class Client : AHumanoid<Client>
 	[Tooltip("Maximum waiting minutes"), Range(1, 4)]
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Seconds waiting first in line")]
-	public float timeWaiting = 0f;
+	public float secondsWaitingFirstInLine = 0f;
 	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0, 1)]
 	public float normalizedWaitingTime;
 	[Tooltip("Triggering distance to cat"), Range(0.5f, 2f)]
 	public float minDistanceToCat = 1;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
 	public int fear = 10;
+	[Tooltip("Minimum seconds between scares"), Range(10f, 120f)]
+	public float minSecondsBetweenScares = 30f;
 
 	[Tooltip("Maximum number of scares supported"), Range(1, 10)]
 	public int maxScares = 10;
 	public int scaresCount = 0;
+	[HideInInspector] public float lastScareTime = -Mathf.Infinity;
 	#endregion
 
 	#region PRIVATE PROPERTIES
+
 	StackFiniteStateMachine<Client> _clientSFSM;
 	UtilitySystem<Client> _clientUS;
 	TextMeshProUGUI _serviceText;
@@ -96,7 +100,7 @@ public class Client : AHumanoid<Client>
 			_serviceText.gameObject.SetActive(debugMode);
 
 		// Normalize time between 0 and the 1 as the maximum waiting time of the client
-		normalizedWaitingTime = Mathf.Clamp01(timeWaiting / (maxMinutesWaiting * 60f));
+		normalizedWaitingTime = Mathf.Clamp01(secondsWaitingFirstInLine / (maxMinutesWaiting * 60f));
 	}
 	#endregion
 
@@ -114,7 +118,7 @@ public class Client : AHumanoid<Client>
 	/// <returns> True if the client has waited too long, false otherwise.</returns>
 	public bool WaitedTooLong()
 	{
-		return timeWaiting >= maxMinutesWaiting * 60f;
+		return secondsWaitingFirstInLine >= maxMinutesWaiting * 60f;
 	}
 
 	public bool InWaitingQueue()
@@ -135,7 +139,7 @@ public class Client : AHumanoid<Client>
 	public void DontMindAnything()
 	{
 		scaresCount = 0;
-		timeWaiting = 0f;
+		secondsWaitingFirstInLine = 0f;
 		normalizedWaitingTime = 0f;
 		fear = 0;
 	}
@@ -148,10 +152,13 @@ public class Client : AHumanoid<Client>
 	public override bool CatIsBothering()
 	{
 		float currentDistanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
+		bool enoughTimeSinceLastScare = (Time.time - lastScareTime) >= minSecondsBetweenScares;
 
 		if (currentDistanceToCat < minDistanceToCat // Cat is close
-		&& _clientUS.IsCurrentAction(fsmAction) // Not stunned nor complaining
-												//&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
+		&& _clientUS.IsCurrentAction(fsmAction) // Executing SFSM (not stunned nor complaining)
+		&& !_clientSFSM.IsCurrentState(leavingState) // Not leaving
+		&& enoughTimeSinceLastScare // Enough time has passed since last scare
+									//&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
 		)
 		{
 			Debug.Log("Cat is bothering " + name);
