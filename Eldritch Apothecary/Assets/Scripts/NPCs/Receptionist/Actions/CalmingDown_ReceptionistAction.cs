@@ -7,24 +7,27 @@ public class CalmingDown_ReceptionistAction : ABinaryAction<Receptionist>
 
     protected override bool SetDecisionFactor()
     {
-        return ApothecaryManager.Instance.SomeoneComplaining();
+        return ApothecaryManager.Instance.IsSomeoneComplaining();
     }
 
     public override void StartAction()
     {
         // Approaches the client and calms them down
-        _controller.SetDestination(ApothecaryManager.Instance.complainingPosition.position);
+        _controller.SetDestination(ApothecaryManager.Instance.receptionistCalmDownSpot.transform.position);
     }
 
     public override void UpdateAction()
     {
-        if (_controller.HasArrivedAtDestination())
+        if (_controller.HasArrivedAtDestination() && ApothecaryManager.Instance.IsSomeoneComplaining())
+        {
+            _controller.transform.LookAt(ApothecaryManager.Instance.CurrentComplainingClient().transform.position);
             _controller.ChangeAnimationTo(_controller.argueAnim);
+        }
     }
 
     public override bool IsFinished()
     {
-        // True if client has left
-        throw new System.NotImplementedException();
+        // Noone is complaining
+        return !ApothecaryManager.Instance.IsSomeoneComplaining();
     }
 }

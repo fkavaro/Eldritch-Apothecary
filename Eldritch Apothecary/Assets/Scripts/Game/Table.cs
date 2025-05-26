@@ -3,14 +3,24 @@ using UnityEngine;
 
 public class Table : MonoBehaviour
 {
-    // Event triggered when object enters the trigger area
+    /// <summary>
+    /// Event triggered when object enters the trigger area
+    /// </summary>
     public event Action<GameObject> AnnoyingOnTable;
 
-    // Event triggered when object exits the trigger area
+    /// <summary>
+    /// Event triggered when object exits the trigger area
+    /// </summary>
     public event Action<GameObject> AnnoyingOffTable;
 
-    // The specific GameObject to watch for
+    /// <summary>
+    /// The specific GameObject to watch for
+    /// </summary>
     public GameObject annoyingCreature;
+
+    /// <summary>
+    /// Position where the creature will annoy
+    /// </summary>
     public Transform annoyPosition;
 
     void OnTriggerEnter(Collider other)

@@ -1,12 +1,11 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Receptionist : AHumanoid<Receptionist>
 {
     #region PUBLIC PROPERTIES
-    [Header("Receptionist Properties")]
-    [Tooltip("Whether the receptionist is busy attending clients")]
-    public bool isBusy => ApothecaryManager.Instance.waitingQueue.HasAnyClient();
+
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -64,10 +63,19 @@ public class Receptionist : AHumanoid<Receptionist>
     /// <summary>
     /// Returns true if the receptionist is ready to attend clients at the counter.
     /// </summary>
-    /// <returns></returns>
     public bool CanAttend()
     {
-        return _receptionistUS.IsCurrentAction(_attendingAction);
+        return _receptionistUS.IsCurrentAction(_attendingAction)
+        && HasArrived(ApothecaryManager.Instance.receptionistAttendingPos.transform.position);
+    }
+
+    /// <summary>
+    /// Returns true if the receptionist is ready to attend clients complaining
+    /// </summary>
+    internal bool CanCalmDown()
+    {
+        return _receptionistUS.IsCurrentAction(_calmingDownAction)
+        && HasArrived(ApothecaryManager.Instance.receptionistCalmDownSpot.transform.position);
     }
     #endregion
 

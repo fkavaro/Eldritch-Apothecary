@@ -34,7 +34,13 @@ public class Complain_ClientAction : ABinaryAction<Client>
         if (_controller.IsCloseTo(ApothecaryManager.Instance.complainingPosition.position, 3f))
         {
             _controller.SetIfStopped(true);
-            _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining"));
+            _controller.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
+            ApothecaryManager.Instance.WantsToComplain(_controller);
+
+            if (ApothecaryManager.Instance.receptionist.CanCalmDown())
+                _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining"));
+            else
+                _controller.ChangeAnimationTo(_controller.waitAnim);
         }
     }
 
@@ -43,6 +49,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
         if (finishedComplaining)
         {
             _controller.animationText.text = "";
+            ApothecaryManager.Instance.StopsComplaining(_controller);
             _controller.fsmAction.ForceState(_controller.leavingState);
             finishedComplaining = false;
             return true;

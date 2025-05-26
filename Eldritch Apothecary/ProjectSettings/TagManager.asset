@@ -24,6 +24,7 @@ TagManager:
   - Sorcerer shelf
   - Shop supply shelf
   - Staff supply shelf
+  - Calm down position
   layers:
   - Default
   - TransparentFX

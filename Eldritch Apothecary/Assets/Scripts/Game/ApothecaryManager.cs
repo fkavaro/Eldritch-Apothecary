@@ -19,10 +19,13 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     [HideInInspector] public GameObject sorcerer;
     [HideInInspector] public GameObject replenisher;
     [HideInInspector] public Receptionist receptionist;
-    [HideInInspector] public Spot clientSeat;
-    [HideInInspector] public Transform complainingPosition;
-    [HideInInspector] public Transform queueExitPosition;
-    [HideInInspector] public Spot receptionistAttendingPos;
+    [HideInInspector]
+    public Spot clientSeat,
+        receptionistCalmDownSpot,
+        receptionistAttendingPos;
+    [HideInInspector]
+    public Transform complainingPosition,
+        queueExitPosition;
 
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 10)]
@@ -60,6 +63,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     List<Spot> _waitingSeats = new();
 
     float _lastSpawnTime = 0f;
+    List<Client> _clientsComplaining = new();
     #endregion
 
     #region EXECUTION METHODS
@@ -87,6 +91,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         _entrancePosition = GameObject.FindGameObjectsWithTag("Entrance")[0].GetComponent<Transform>();
         exitPosition = GameObject.FindGameObjectsWithTag("Exit")[0].GetComponent<Transform>();
         clientSeat = GameObject.FindGameObjectsWithTag("Client seat")[0].GetComponent<Spot>();
+        receptionistAttendingPos = GameObject.FindGameObjectsWithTag("Attending position")[0].GetComponent<Spot>();
+        receptionistCalmDownSpot = GameObject.FindGameObjectsWithTag("Calm down position")[0].GetComponent<Spot>();
         complainingPosition = GameObject.FindGameObjectsWithTag("Complain position")[0].GetComponent<Transform>();
         queueExitPosition = GameObject.FindGameObjectsWithTag("Queue exit")[0].GetComponent<Transform>();
         FillTranformList(GameObject.FindGameObjectsWithTag("Potion pick-up"), _potionsPickUpPositions);
@@ -152,9 +158,30 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         return RandomShelf(_shopShelves);
     }
 
-    public bool SomeoneComplaining()
+    public void WantsToComplain(Client client)
     {
-        return false; // TODO
+        if (!_clientsComplaining.Contains(client))
+            _clientsComplaining.Add(client);
+    }
+
+    public void StopsComplaining(Client client)
+    {
+        if (_clientsComplaining.Contains(client))
+            _clientsComplaining.Remove(client);
+    }
+
+    public bool IsSomeoneComplaining()
+    {
+        return _clientsComplaining.Count > 0;
+    }
+
+
+    public Client CurrentComplainingClient()
+    {
+        if (IsSomeoneComplaining())
+            return _clientsComplaining[0];
+        else
+            return null;
     }
 
     public float GetNormalizedPreparedPotionsNumber()

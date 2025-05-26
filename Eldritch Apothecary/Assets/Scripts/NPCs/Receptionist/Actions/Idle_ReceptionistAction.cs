@@ -6,7 +6,7 @@ public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
 
     protected override bool SetDecisionFactor()
     {
-        return !_controller.IsBusy();
+        return !_controller.IsBusy() && !ApothecaryManager.Instance.IsSomeoneComplaining();
     }
 
     public override void StartAction()
