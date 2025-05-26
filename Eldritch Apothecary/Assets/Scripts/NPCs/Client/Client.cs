@@ -89,8 +89,6 @@ public class Client : AHumanoid<Client>
 		stunnedByCatAction = new(_clientUS);
 		complainAction = new(_clientUS);
 
-		_clientUS.SetDefaultAction(fsmAction);
-
 		return _clientUS;
 	}
 
@@ -144,11 +142,6 @@ public class Client : AHumanoid<Client>
 		fear = 0;
 	}
 
-	public void ForceState(AState<Client, StackFiniteStateMachine<Client>> newState)
-	{
-		_clientSFSM.ForceState(newState);
-	}
-
 	public override bool CatIsBothering()
 	{
 		float currentDistanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
@@ -161,7 +154,7 @@ public class Client : AHumanoid<Client>
 									//&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
 		)
 		{
-			Debug.Log("Cat is bothering " + name);
+			//Debug.Log("Cat is bothering " + name);
 			return true;
 		}
 		// Cat is too far or client is not scared

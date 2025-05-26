@@ -16760,7 +16760,7 @@ MonoBehaviour:
   complainingPosition: {fileID: 1332325583}
   queueExitPosition: {fileID: 629453370}
   receptionistAttendingPos: {fileID: 631480857}
-  simSpeed: 1
+  simSpeed: 3
   queuePositionsParent: {fileID: 2102996951}
   exitPosition: {fileID: 1671213725}
   clientPrefabs:
@@ -82615,6 +82615,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1972303531597532699, guid: bec6afca5b3e86c4eb3fffa4072df551, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6044787250781978861, guid: bec6afca5b3e86c4eb3fffa4072df551, type: 3}
       propertyPath: m_Name
       value: Replenisher
@@ -83003,7 +83007,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 13.999942
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -83011,7 +83015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 18.99995
+      value: 8.999873
       objectReference: {fileID: 0}
     - target: {fileID: 4910066379852211344, guid: 995b17597825a5948989ec928a828d4f, type: 3}
       propertyPath: m_LocalRotation.w

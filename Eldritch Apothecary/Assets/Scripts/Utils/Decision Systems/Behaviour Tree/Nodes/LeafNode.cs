@@ -19,7 +19,7 @@ where TController : ABehaviourController<TController>
 
     protected override void DebugDecision()
     {
-        controller.stateText.text = name;
+        controller.actionText.text = name;
     }
 
     public override Status UpdateNode()

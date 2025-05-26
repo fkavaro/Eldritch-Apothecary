@@ -26,11 +26,9 @@ public abstract class AAction<TController, TFactor> : IAction where TController 
     public abstract void StartAction();
     public abstract void UpdateAction();
     public abstract bool IsFinished();
-    public virtual void Reset()
-    {
-        _utilitySystem.Restart();
-    }
+    public virtual void Reset() { }
 
+    /// <returns>Action name</returns>
     public virtual string DebugDecision()
     {
         return Name;

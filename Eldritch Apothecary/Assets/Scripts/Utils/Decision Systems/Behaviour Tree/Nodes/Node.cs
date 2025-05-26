@@ -34,7 +34,7 @@ where TController : ABehaviourController<TController>
         if (_currentChildId < children.Count)
             children[_currentChildId].DebugDecision();
         else
-            controller.stateText.text = "None";
+            controller.actionText.text = "None";
     }
 
     public override void Update()

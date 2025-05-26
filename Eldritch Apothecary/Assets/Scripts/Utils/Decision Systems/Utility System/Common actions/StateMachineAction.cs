@@ -1,4 +1,6 @@
 
+using System;
+
 /// <summary>
 /// Action that runs a finite state machine (FSM) by an Utility System.
 /// </summary>
@@ -7,6 +9,7 @@ where TController : ABehaviourController<TController>
 where TStateMachine : AStateMachine<TController, TStateMachine>
 {
     TStateMachine _stateMachine;
+    bool _alreadyStarted = false;
 
     public StateMachineAction(UtilitySystem<TController> utilitySystem, TStateMachine stateMachine)
         : base("FSM", utilitySystem, 0.5f)
@@ -21,7 +24,12 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
 
     public override void StartAction()
     {
-        _stateMachine.Start();
+        // Start just once - to maintain current state after returning from other action
+        if (!_alreadyStarted)
+        {
+            _alreadyStarted = true;
+            _stateMachine.Start();
+        }
     }
 
     public override void UpdateAction()
@@ -31,9 +39,10 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
 
     public override bool IsFinished()
     {
-        return false; // FSM action never finishes unless interrupted by another action
+        return true; // Allows evaluation of other actions
     }
 
+    /// <returns>State name of FSM action</returns>
     public override string DebugDecision()
     {
         return _stateMachine.GetCurrentStateName();
@@ -41,7 +50,12 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
 
     public override void Reset()
     {
-        _utilitySystem.CurrentAsDefaultAction();
+        _alreadyStarted = false;
         _stateMachine.Reset();
+    }
+
+    public void ForceState(AState<TController, TStateMachine> newState)
+    {
+        _stateMachine.ForceState(newState);
     }
 }

@@ -2,11 +2,11 @@
 public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
 {
     public Idle_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem)
-    : base("Idle", utilitySystem, true) { }
+    : base("Idle", utilitySystem, 0.1f) { }
 
     protected override bool SetDecisionFactor()
     {
-        return _controller.IsBusy();
+        return !_controller.IsBusy();
     }
 
     public override void StartAction()
@@ -23,6 +23,6 @@ public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
 
     public override bool IsFinished()
     {
-        return false; // Idle action never finishes unless interrupted by another action
+        return true; // Allows avaluation of other actions
     }
 }

@@ -244,6 +244,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     /// </summary>>
     void GetClient(Client client)
     {
+        // TODO: change model
         client.transform.position = _entrancePosition.position;
         client.gameObject.SetActive(true);
         client.Reset();

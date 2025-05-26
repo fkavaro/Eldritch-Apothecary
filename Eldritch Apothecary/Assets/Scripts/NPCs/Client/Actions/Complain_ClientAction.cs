@@ -14,6 +14,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
     public override void StartAction()
     {
         finishedComplaining = false;
+        _controller.animationText.text = "";
 
         // Finished complaining when coroutine finished
         _controller.CoroutineFinishedEvent += () => finishedComplaining = true; ;
@@ -31,18 +32,21 @@ public class Complain_ClientAction : ABinaryAction<Client>
     {
         // Is close to the complaining position and hasn't started complaining yet
         if (_controller.IsCloseTo(ApothecaryManager.Instance.complainingPosition.position, 3f))
+        {
+            _controller.SetIfStopped(true);
             _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining"));
+        }
     }
 
     public override bool IsFinished()
     {
         if (finishedComplaining)
         {
-            _controller.actionText.text = "";
-            _controller.ForceState(_controller.leavingState);
+            _controller.animationText.text = "";
+            _controller.fsmAction.ForceState(_controller.leavingState);
             finishedComplaining = false;
-            return true; // Action finished
+            return true;
         }
-        else return false; // Action not finished
+        else return false;
     }
 }

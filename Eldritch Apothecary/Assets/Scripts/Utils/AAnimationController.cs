@@ -79,7 +79,7 @@ where TController : ABehaviourController<TController>
     {
         if (isCoroutineExecuting) yield break;
 
-        actionText.text = animationName + " for " + waitTime + " seconds...";
+        animationText.text = animationName + " for " + waitTime + " seconds...";
 
         ChangeAnimationTo(animation);
 
@@ -87,7 +87,7 @@ where TController : ABehaviourController<TController>
 
         yield return new WaitForSeconds(waitTime);
 
-        actionText.text = "";
+        animationText.text = "";
         isCoroutineExecuting = false;
         InvokeCoroutineFinishedEvent();
     }

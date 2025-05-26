@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6857068373359649551}
   - component: {fileID: 2971246600855955527}
   m_Layer: 5
-  m_Name: ActionText
+  m_Name: Animation text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &8789842340552840740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 8826248045257441519}
   - component: {fileID: 1406912966062850764}
   m_Layer: 5
-  m_Name: StateText
+  m_Name: Action text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

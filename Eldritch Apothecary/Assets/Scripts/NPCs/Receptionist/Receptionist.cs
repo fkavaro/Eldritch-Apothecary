@@ -1,9 +1,6 @@
 using System;
 using UnityEngine;
 
-/// <summary>
-/// Class representing the receptionist NPC in the game.
-/// </summary>
 public class Receptionist : AHumanoid<Receptionist>
 {
     #region PUBLIC PROPERTIES
@@ -35,8 +32,6 @@ public class Receptionist : AHumanoid<Receptionist>
         _attendingAction = new(_receptionistUS);
         _calmingDownAction = new(_receptionistUS);
 
-        _receptionistUS.SetDefaultAction(_idleAction);
-
         return _receptionistUS;
     }
 
@@ -48,6 +43,12 @@ public class Receptionist : AHumanoid<Receptionist>
     protected override void OnUpdate()
     {
 
+    }
+
+    public override bool CatIsBothering()
+    {
+        // Cat never bothers the receptionist
+        return false;
     }
     #endregion
 
@@ -67,17 +68,6 @@ public class Receptionist : AHumanoid<Receptionist>
     public bool CanAttend()
     {
         return _receptionistUS.IsCurrentAction(_attendingAction);
-    }
-
-    internal void SetTargetPos(Vector3 position, float v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override bool CatIsBothering()
-    {
-        // Cat never bothers the receptionist
-        return false;
     }
     #endregion
 

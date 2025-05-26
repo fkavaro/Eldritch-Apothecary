@@ -22,7 +22,7 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public bool isCoroutineExecuting = false;
 
-    [HideInInspector] public TextMeshProUGUI stateText, actionText;
+    [HideInInspector] public TextMeshProUGUI actionText, animationText;
     ADecisionSystem<TController> _decisionSystem;
 
     /// <summary>
@@ -47,8 +47,8 @@ where TController : ABehaviourController<TController>
     private void Awake()
     {
         debugCanvas = transform.Find("DebugCanvas")?.transform;
-        stateText = debugCanvas?.Find("StateText").GetComponent<TextMeshProUGUI>();
-        actionText = debugCanvas?.Find("ActionText").GetComponent<TextMeshProUGUI>();
+        actionText = debugCanvas?.Find("Action text").GetComponent<TextMeshProUGUI>();
+        animationText = debugCanvas?.Find("Animation text").GetComponent<TextMeshProUGUI>();
 
         OnAwake();
         _decisionSystem?.Awake();
@@ -59,7 +59,7 @@ where TController : ABehaviourController<TController>
     {
         OnStart();
         _decisionSystem = CreateDecisionSystem();
-        stateText.gameObject.SetActive(debugMode);
+        actionText.gameObject.SetActive(debugMode);
         _decisionSystem?.Start();
     }
     protected virtual void OnStart() { } // Optionally implemented in subclasses
@@ -68,10 +68,10 @@ where TController : ABehaviourController<TController>
     {
         //if (coroutineStarted) return; // Avoids starting the coroutine repeatedly
 
-        if (stateText.gameObject.activeSelf != debugMode)
+        if (actionText.gameObject.activeSelf != debugMode)
         {
-            stateText.gameObject.SetActive(debugMode);
             actionText.gameObject.SetActive(debugMode);
+            animationText.gameObject.SetActive(debugMode);
         }
 
         OnUpdate();

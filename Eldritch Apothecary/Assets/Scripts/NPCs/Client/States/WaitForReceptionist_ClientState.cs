@@ -44,6 +44,7 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
             // Receptionist is not at the counter
             else
             {
+                _controller.ChangeAnimationTo(_controller.waitAnim);
                 // Increase time waiting
                 _controller.secondsWaiting += Time.deltaTime;
             }

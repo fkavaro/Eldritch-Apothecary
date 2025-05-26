@@ -42,7 +42,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
                     // Wait
                     _controller.ChangeAnimationTo(_controller.waitAnim);
                     _controller.secondsWaiting += Time.deltaTime;
-                    _controller.actionText.text = "Waiting for replenishment";
+                    _controller.animationText.text = "Waiting for replenishment";
                 }
             }
         }
@@ -59,7 +59,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
                 // Not enough supply
                 if (!_shopShelf.CanTake(_amountNeeded))
-                    _controller.actionText.text = "Waiting for replenishment";
+                    _controller.animationText.text = "Waiting for replenishment";
             }
             // Spot is free and has enough supplies
             else if (!_controller.DestinationSpotIsOccupied() && _shopShelf.CanTake(_amountNeeded))
@@ -75,6 +75,6 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
         _amountTaken = false;
         _controller.secondsWaiting = 0f;
         _controller.normalizedWaitingTime = 0f;
-        _controller.actionText.text = "";
+        _controller.animationText.text = "";
     }
 }
