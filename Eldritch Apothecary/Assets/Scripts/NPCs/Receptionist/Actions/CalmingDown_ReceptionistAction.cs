@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CalmingDown_ReceptionistAction : ABinaryAction<Receptionist>

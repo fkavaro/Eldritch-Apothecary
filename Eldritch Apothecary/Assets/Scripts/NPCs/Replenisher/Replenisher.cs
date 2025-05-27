@@ -12,10 +12,13 @@ public class Replenisher : AHumanoid<Replenisher>
     #endregion
 
     #region PRIVATE PROPERTIES
-
+    UtilitySystem<Replenisher> _replenisherUS;
     #endregion
 
     #region ACTIONS
+    Replenish_ReplenisherAction replenishShopAction;
+    Replenish_ReplenisherAction replenishAlchemistAction;
+    Replenish_ReplenisherAction replenishSorcererAction;
     // Look for lacking shop supplies (each shelf added to dictionary):
     // - Walk around the store and ask blackboard shop shelves lacking supplies
 
@@ -36,7 +39,38 @@ public class Replenisher : AHumanoid<Replenisher>
     #region INHERITED METHODS
     protected override ADecisionSystem<Replenisher> CreateDecisionSystem()
     {
-        throw new NotImplementedException();
+        // Utility System
+        _replenisherUS = new(this);
+
+        // Actions initialization
+        replenishShopAction = new(
+            "Replenishing shop",
+            _replenisherUS,
+            ApothecaryManager.Instance.shopShelves,
+            ApothecaryManager.Instance.shopSuppliesShelves,
+            ApothecaryManager.Instance.shopLack,
+            ApothecaryManager.Instance.normalisedShopLack
+        );
+
+        replenishAlchemistAction = new(
+            "Replenishing alchemist",
+            _replenisherUS,
+            ApothecaryManager.Instance.alchemistShelves,
+            ApothecaryManager.Instance.staffSuppliesShelves,
+            ApothecaryManager.Instance.alchemistLack,
+            ApothecaryManager.Instance.normalisedAlchemistLack
+        );
+
+        replenishSorcererAction = new(
+            "Replenishing sorcerer",
+            _replenisherUS,
+            ApothecaryManager.Instance.sorcererShelves,
+            ApothecaryManager.Instance.staffSuppliesShelves,
+            ApothecaryManager.Instance.sorcererLack,
+            ApothecaryManager.Instance.normalisedSorcererLack
+        );
+
+        return _replenisherUS;
     }
 
     protected override void OnStart()
@@ -51,7 +85,7 @@ public class Replenisher : AHumanoid<Replenisher>
 
     public override bool CatIsBothering()
     {
-        return false;
+        return false; // Cat never bothers
     }
     #endregion
 }

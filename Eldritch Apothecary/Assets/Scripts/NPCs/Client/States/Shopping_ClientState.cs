@@ -16,10 +16,10 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
     {
         _amountTaken = false;
         _controller.secondsWaiting = 0f;
-        _controller.normalizedWaitingTime = 0f;
+        _controller.normalisedWaitingTime = 0f;
 
         _amountNeeded = Random.Range(10, 21); // Random amount needed
-        _shopShelf = ApothecaryManager.Instance.RandomShopShelves();
+        _shopShelf = ApothecaryManager.Instance.RandomShopShelf();
         _controller.SetDestinationSpot(_shopShelf);
     }
 
@@ -74,7 +74,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
     {
         _amountTaken = false;
         _controller.secondsWaiting = 0f;
-        _controller.normalizedWaitingTime = 0f;
+        _controller.normalisedWaitingTime = 0f;
         _controller.animationText.text = "";
     }
 }

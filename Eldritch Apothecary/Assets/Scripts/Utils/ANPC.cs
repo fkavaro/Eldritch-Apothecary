@@ -63,6 +63,8 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public void SetDestinationSpot(Spot destinationSpot, int animationWhenArrived = -1)
     {
+        if (_destinationSpot == destinationSpot) return;
+
         if (!_agent.isOnNavMesh)
         {
             Debug.LogError("SetDestinationSpot(): NavMeshAgent is not on a NavMesh.");
@@ -80,6 +82,8 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public void SetDestination(Vector3 destinationPos, int animationWhenArrived = -1)
     {
+        if (_agent.destination == destinationPos) return;
+
         if (!_agent.isOnNavMesh)
         {
             Debug.LogError("SetDestination(): NavMeshAgent is not on a NavMesh.");

@@ -23,7 +23,7 @@ public class Client : AHumanoid<Client>
 	[Tooltip("Seconds waiting first in line")]
 	public float secondsWaiting = 0f;
 	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0, 1)]
-	public float normalizedWaitingTime;
+	public float normalisedWaitingTime;
 	[Tooltip("Triggering distance to cat"), Range(0.5f, 2f)]
 	public float minDistanceToCat = 1;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
@@ -97,8 +97,8 @@ public class Client : AHumanoid<Client>
 		if (_serviceText.gameObject.activeSelf != debugMode)
 			_serviceText.gameObject.SetActive(debugMode);
 
-		// Normalize time between 0 and the 1 as the maximum waiting time of the client
-		normalizedWaitingTime = Mathf.Clamp01(secondsWaiting / (maxMinutesWaiting * 60f));
+		// Normalise time between 0 and the 1 as the maximum waiting time of the client
+		normalisedWaitingTime = Mathf.Clamp01(secondsWaiting / (maxMinutesWaiting * 60f));
 	}
 	#endregion
 
@@ -138,7 +138,7 @@ public class Client : AHumanoid<Client>
 	{
 		scaresCount = 0;
 		secondsWaiting = 0f;
-		normalizedWaitingTime = 0f;
+		normalisedWaitingTime = 0f;
 		fear = 0;
 	}
 

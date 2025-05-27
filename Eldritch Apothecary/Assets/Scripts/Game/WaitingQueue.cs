@@ -98,7 +98,7 @@ public class WaitingQueue
 
         lock (_queueLock)
         {
-            return _clientsQueue.Peek().normalizedWaitingTime;
+            return _clientsQueue.Peek().normalisedWaitingTime;
         }
     }
 

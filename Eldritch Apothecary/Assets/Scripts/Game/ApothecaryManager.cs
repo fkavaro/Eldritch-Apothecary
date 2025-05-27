@@ -14,18 +14,25 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public ObjectPool<Client> clientsPool;
     public WaitingQueue waitingQueue;
 
-    [HideInInspector] public GameObject cat;
-    [HideInInspector] public GameObject alchemist;
-    [HideInInspector] public GameObject sorcerer;
-    [HideInInspector] public GameObject replenisher;
-    [HideInInspector] public Receptionist receptionist;
+    [HideInInspector]
+    public GameObject cat,
+        alchemist,
+        sorcerer,
+        replenisher;
+
+    [HideInInspector]
+    public Receptionist receptionist;
+
     [HideInInspector]
     public Spot clientSeat,
         receptionistCalmDownSpot,
         receptionistAttendingPos;
+
     [HideInInspector]
     public Transform complainingPosition,
-        queueExitPosition;
+        queueExitPosition,
+        exitPosition,
+        entrancePosition;
 
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 10)]
@@ -35,30 +42,50 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     [Tooltip("Parent of all queue positions gameobjects")]
     public Transform queuePositionsParent;
 
+
     [Header("Clients pool")]
-    [HideInInspector]
-    public Transform exitPosition;
     [Tooltip("All clients models to be spawned randomly")]
     public GameObject[] clientPrefabs;
     [Tooltip("Maximum number of clients in the apothecary at once")]
     public int maxClients = 10;
     [Tooltip("Time passed between clients spawning"), Range(5, 20)]
     public float spawnTimer = 5f;
+
+
+    [Header("Shop supplies")]
+    [Tooltip("Normalized between 0 and the maximum store capacity of shop"), Range(0, 1)]
+    public float normalisedShopLack;
+    public int shopLack;
+    public int totalShopCapacity;
+
+
+    [Header("Alchemist supplies")]
+    [Tooltip("Normalized between 0 and the maximum store capacity of alchemist"), Range(0, 1)]
+    public float normalisedAlchemistLack;
+    public int alchemistLack;
+    public int totalAlchemistCapacity;
+
+
+    [Header("Sorcerer supplies")]
+    [Tooltip("Normalized between 0 and the maximum store capacity of sorcerer"), Range(0, 1)]
+    public float normalisedSorcererLack;
+    public int sorcererLack;
+    public int totalSorcererCapacity;
     #endregion
 
     #region PRIVATE PROPERTIES
-    Transform _clientsParent,
-        _entrancePosition;
+    Transform _clientsParent;
 
     List<Transform> _queuePositions = new(),
         _potionServePositions = new(),
         _potionsPickUpPositions = new();
 
-    List<Shelf> _shopShelves = new(),
-        _shopSuppliesShelves = new(),
-        _staffSuppliesShelves = new(),
-        _alchemistShelves = new(),
-        _sorcererShelves = new();
+    [HideInInspector]
+    public List<Shelf> shopShelves = new(),
+            shopSuppliesShelves = new(),
+            staffSuppliesShelves = new(),
+            alchemistShelves = new(),
+            sorcererShelves = new();
 
     List<Spot> _waitingSeats = new();
 
@@ -80,15 +107,15 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         _clientsParent = GameObject.FindGameObjectsWithTag("Clients parent")[0].GetComponent<Transform>();
 
         //Spots
-        FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), _shopShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Alchemist shelf"), _alchemistShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Sorcerer shelf"), _sorcererShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), _shopSuppliesShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), _staffSuppliesShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), shopShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Alchemist shelf"), alchemistShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Sorcerer shelf"), sorcererShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), shopSuppliesShelves);
+        FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), staffSuppliesShelves);
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
 
         //Positions
-        _entrancePosition = GameObject.FindGameObjectsWithTag("Entrance")[0].GetComponent<Transform>();
+        entrancePosition = GameObject.FindGameObjectsWithTag("Entrance")[0].GetComponent<Transform>();
         exitPosition = GameObject.FindGameObjectsWithTag("Exit")[0].GetComponent<Transform>();
         clientSeat = GameObject.FindGameObjectsWithTag("Client seat")[0].GetComponent<Spot>();
         receptionistAttendingPos = GameObject.FindGameObjectsWithTag("Attending position")[0].GetComponent<Spot>();
@@ -116,16 +143,20 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     void Start()
     {
-        if (_shopShelves.Count == 0 ||
-            _alchemistShelves.Count == 0 ||
+        if (shopShelves.Count == 0 ||
+            alchemistShelves.Count == 0 ||
             _queuePositions.Count == 0 ||
-            _sorcererShelves.Count == 0 ||
-            _shopSuppliesShelves.Count == 0 ||
-            _staffSuppliesShelves.Count == 0 ||
+            sorcererShelves.Count == 0 ||
+            shopSuppliesShelves.Count == 0 ||
+            staffSuppliesShelves.Count == 0 ||
             _waitingSeats.Count == 0 ||
             _potionServePositions.Count == 0 ||
             _potionsPickUpPositions.Count == 0)
             Debug.LogError("A positions list is empty.");
+
+        totalShopCapacity = CalculateTotalCapacity(shopShelves);
+        totalAlchemistCapacity = CalculateTotalCapacity(alchemistShelves);
+        totalSorcererCapacity = CalculateTotalCapacity(sorcererShelves);
     }
 
     void Update()
@@ -139,49 +170,80 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             _lastSpawnTime = Time.time + spawnTimer; // Reset timer
             clientsPool.Get();
         }
+
+        // Update lacks
+        shopLack = CalculateTotalLack(shopShelves);
+        alchemistLack = CalculateTotalLack(alchemistShelves);
+        sorcererLack = CalculateTotalLack(sorcererShelves);
+
+        // Update normalised values of supplies
+        normalisedShopLack = Mathf.Clamp01(shopLack / totalShopCapacity);
+        normalisedAlchemistLack = Mathf.Clamp01(alchemistLack / totalAlchemistCapacity);
+        normalisedSorcererLack = Mathf.Clamp01(sorcererLack / totalSorcererCapacity);
     }
     #endregion
 
     #region PUBLIC METHODS
+    /// <returns>Random waiting seat spot</returns>
     public Spot RandomWaitingSeat()
     {
         return RandomSpot(_waitingSeats);
     }
 
+    /// <returns>Random potion serve spot</returns>
     public Vector3 RandomPickUp()
     {
         return RandomPosition(_potionsPickUpPositions);
     }
 
-    public Shelf RandomShopShelves()
+    /// <returns>Random shop shelf</returns>
+    public Shelf RandomShopShelf()
     {
-        return RandomShelf(_shopShelves);
+        return RandomShelf(shopShelves);
     }
 
-    public void WantsToComplain(Client client)
+    public Shelf RandomShelf(List<Shelf> shelves)
+    {
+        return shelves[UnityEngine.Random.Range(0, shelves.Count)];
+    }
+
+    /// <summary>
+    /// Adds client to complaining list if it's not already
+    /// </summary>
+    public void AddToComplains(Client client)
     {
         if (!_clientsComplaining.Contains(client))
             _clientsComplaining.Add(client);
     }
 
-    public void StopsComplaining(Client client)
+    /// <summary>
+    /// Removes client from complaining list if it's already
+    /// </summary>
+    public void RemoveFromComplains(Client client)
     {
         if (_clientsComplaining.Contains(client))
             _clientsComplaining.Remove(client);
     }
 
+    /// <returns>True if list contains any client</returns>
     public bool IsSomeoneComplaining()
     {
         return _clientsComplaining.Count > 0;
     }
 
-
+    /// <returns>Firs client in complaining list</returns>
     public Client CurrentComplainingClient()
     {
         if (IsSomeoneComplaining())
             return _clientsComplaining[0];
         else
             return null;
+    }
+
+    /// <returns>Normalised value of lacking supplies from shelves respect to the total amount that they can store</returns>
+    public float GetNormalizedLackingAmount(List<Shelf> consumedShelves)
+    {
+        throw new NotImplementedException();
     }
 
     public float GetNormalizedPreparedPotionsNumber()
@@ -241,11 +303,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         return spots[UnityEngine.Random.Range(0, spots.Count)];
     }
 
-    Shelf RandomShelf(List<Shelf> shelves)
-    {
-        return shelves[UnityEngine.Random.Range(0, shelves.Count)];
-    }
-
     Vector3 RandomPosition(List<Transform> positions)
     {
         return positions[UnityEngine.Random.Range(0, positions.Count)].position;
@@ -259,7 +316,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         Client client = Instantiate(
             clientPrefabs[UnityEngine.Random.Range(0, clientPrefabs.Length)],
-            _entrancePosition.position,
+            entrancePosition.position,
             Quaternion.identity,
             _clientsParent)
         .GetComponent<Client>();
@@ -272,7 +329,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     void GetClient(Client client)
     {
         // TODO: change model
-        client.transform.position = _entrancePosition.position;
+        client.transform.position = entrancePosition.position;
         client.gameObject.SetActive(true);
         client.Reset();
     }
@@ -283,6 +340,46 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     void ReleaseClient(Client client)
     {
         client.gameObject.SetActive(false);
+    }
+
+    private int CalculateTotalCapacity(List<Shelf> shelfList)
+    {
+        int totalCapacity = 0;
+
+        // Find all different shelves objetcs
+        List<Shelves> uniqueShelves = new();
+
+        // Each shelf
+        foreach (Shelf shelf in shelfList)
+            // If its shelves is new
+            if (!uniqueShelves.Contains(shelf.shelves))
+            {
+                uniqueShelves.Add(shelf.shelves);
+                // Add its capacity
+                totalCapacity += shelf.shelves.capacity;
+            }
+
+        return totalCapacity;
+    }
+
+    private int CalculateTotalLack(List<Shelf> shelfList)
+    {
+        int totalLack = 0;
+
+        // Find all different shelves objetcs
+        List<Shelves> uniqueShelves = new();
+
+        // Each shelf
+        foreach (Shelf shelf in shelfList)
+            // If its shelves is new
+            if (!uniqueShelves.Contains(shelf.shelves))
+            {
+                uniqueShelves.Add(shelf.shelves);
+                // Add its capacity
+                totalLack += shelf.shelves.lackingAmount;
+            }
+
+        return totalLack;
     }
     #endregion
 }

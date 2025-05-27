@@ -11,7 +11,7 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
     public override void StartState()
     {
         _controller.secondsWaiting = 0f;
-        _controller.normalizedWaitingTime = 0f;
+        _controller.normalisedWaitingTime = 0f;
 
         // Set target to the last position in line
         _controller.SetDestination(ApothecaryManager.Instance.waitingQueue.LastInLinePos());
@@ -65,6 +65,6 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
         _controller.ResetAvoidanceRadius(); // Reset avoidance radius
 
         _controller.secondsWaiting = 0f;
-        _controller.normalizedWaitingTime = 0f;
+        _controller.normalisedWaitingTime = 0f;
     }
 }
