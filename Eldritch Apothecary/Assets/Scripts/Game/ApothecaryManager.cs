@@ -134,7 +134,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), shopSuppliesShelves);
         FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), staffSuppliesShelves);
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
-        clientSeat = GameObject.FindGameObjectsWithTag("Client seat")[0].GetComponent<Spot>();
+        clientSeat = GameObject.FindGameObjectWithTag("Client seat").GetComponent<Spot>();
         replenisherSeat = GameObject.FindGameObjectWithTag("Replenisher seat").GetComponent<Spot>();
         receptionistAttendingSpot = GameObject.FindGameObjectWithTag("Attending position").GetComponent<Spot>();
         receptionistCalmDownSpot = GameObject.FindGameObjectWithTag("Calm down position").GetComponent<Spot>();

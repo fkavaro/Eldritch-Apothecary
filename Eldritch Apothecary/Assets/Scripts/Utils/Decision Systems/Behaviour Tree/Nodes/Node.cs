@@ -21,6 +21,7 @@ where TController : ABehaviourController<TController>
 
     public readonly List<Node<TController>> children = new();
     protected int _currentChildId;
+    public Status status;
 
     public Node(TController controller, string name = "Node", int priority = 0) : base(controller)
     {
@@ -40,7 +41,7 @@ where TController : ABehaviourController<TController>
     public override void Update()
     {
         DebugDecision();
-        UpdateNode();
+        status = UpdateNode();
     }
 
     public override void Reset()

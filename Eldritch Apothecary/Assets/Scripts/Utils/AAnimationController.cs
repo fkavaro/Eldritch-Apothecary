@@ -75,11 +75,12 @@ where TController : ABehaviourController<TController>
         return PlayAnimationCertainTime(waitTime, animation, animationName);
     }
 
-    public IEnumerator PlayAnimationCertainTime(float waitTime, int animation, string animationName)
+    public IEnumerator PlayAnimationCertainTime(float waitTime, int animation, string animationName, bool showtext = true)
     {
         if (isCoroutineExecuting) yield break;
 
-        animationText.text = animationName + " for " + waitTime + " seconds...";
+        if (showtext)
+            animationText.text = animationName + " for " + waitTime + " seconds...";
 
         ChangeAnimationTo(animation);
 

@@ -4,124 +4,64 @@ using UnityEngine;
 
 public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
 {
-    /// <summary>
-    /// List of shelves to be replenished
-    /// </summary>
-    List<Shelf> _consumedShelves = new();
-    Shelf _consumedShelf;
+    #region PROPERTIES
+    List<Shelf> _supplyShelves,
+        _shelvesToResupply;
+    #endregion
 
-    /// <summary>
-    /// List of shelves from which supplies are being taken
-    /// </summary>
-    List<Shelf> _supplyShelves = new();
-    Shelf _supplyShelf;
+    #region NODES
+    BehaviourTree<Replenisher> _replenishBT;
+    SequenceNode<Replenisher> _behaviourSequence;
+    LeafNode<Replenisher> _takeSuppliesLeaf, _resupplyLeaf;
+    #endregion
 
-    /// <summary>
-    /// Amount of supplies lacking
-    /// </summary>
-    int _lackingAmount;
-    float _normalisedLackingAmount;
+    #region STRATEGIES
+    TakeSuppliesStrategy _takeSuppliesStrategy;
+    ResupplyStrategy _resupplyStrategy;
+    #endregion
 
-    bool _hasTakenAllSupplies = false;
-
-    public Replenish_ReplenisherAction(string name, UtilitySystem<Replenisher> utilitySystem, List<Shelf> consumedShelves, List<Shelf> supplyShelves)
+    public Replenish_ReplenisherAction(string name, UtilitySystem<Replenisher> utilitySystem, List<Shelf> shelvesToResupply, List<Shelf> supplyShelves)
     : base(name, utilitySystem)
     {
-        _consumedShelves = consumedShelves;
+        _shelvesToResupply = shelvesToResupply;
         _supplyShelves = supplyShelves;
     }
 
     protected override float SetDecisionFactor()
     {
-        // Normalized value of lacking supplies respect to the total amount that can be stored
-        _normalisedLackingAmount = ApothecaryManager.Instance.GetNormalisedLack(_consumedShelves);
-        return _normalisedLackingAmount;
+        // Normalised value of lacking supplies respect to the total amount that can be stored
+        return ApothecaryManager.Instance.GetNormalisedLack(_shelvesToResupply);
     }
 
     public override void StartAction()
     {
-        _lackingAmount = ApothecaryManager.Instance.GetTotalLack(_consumedShelves);
-        _supplyShelf = ApothecaryManager.Instance.RandomShelf(_supplyShelves);
+        int lackingAmount = ApothecaryManager.Instance.GetTotalLack(_shelvesToResupply);
+
+        // Strategies
+        _takeSuppliesStrategy = new(_controller, _supplyShelves, lackingAmount);
+        _resupplyStrategy = new(_controller, _shelvesToResupply);
+
+        // Build BT
+        _takeSuppliesLeaf = new(_controller, "Taking supplies", _takeSuppliesStrategy);
+        _resupplyLeaf = new(_controller, "Resupplying shelves", _resupplyStrategy);
+        _behaviourSequence = new(_controller);
+        _behaviourSequence.AddChild(_takeSuppliesLeaf);
+        _behaviourSequence.AddChild(_resupplyLeaf);
+        _replenishBT = new(_controller, _behaviourSequence);
     }
 
     public override void UpdateAction()
     {
-        if (_supplyShelf == null) return;
+        // Update BT
+        _replenishBT.Update();
 
-        // Replenisher carries all lacking supplies
-        if (_hasTakenAllSupplies)
-        {
-            // Order list incrementally from smallest amount to bigges amount
-            _consumedShelves.Sort((a, b) => b.Amount - a.Amount);
-
-            // Look for a shelf with lacking supplies
-            foreach (Shelf shelf in _consumedShelves)
-            {
-                if (!shelf.IsFull())
-                {
-                    _consumedShelf = shelf;
-                    break;
-                }
-            }
-
-            // Has arrived to that shelf with lacking supplies
-            if (_controller.HasArrived(_consumedShelf.transform.position))
-                // Rplenish it, reducing carried amount
-                _controller.carriedSuppliesAmount = _consumedShelf.Replenish(_controller.carriedSuppliesAmount);
-            // Hasn't arrived to that shelf
-            else
-                // Keep it as destination
-                _controller.SetDestinationSpot(_consumedShelf);
-
-        }
-        // Replenisher can carry more lacking suppplies
-        else
-        {
-            // Has arrived to supplies shelf
-            if (_controller.HasArrived(_supplyShelf.transform.position))
-            {
-                // Calculate remaining amount that can be carried
-                int remainingAmountToCarry = 100 - _controller.carriedSuppliesAmount;
-                int amountToTake;
-
-                // Is greater than 10
-                if (remainingAmountToCarry >= 10)
-                    // Take random amount of supplies
-                    amountToTake = UnityEngine.Random.Range(10, remainingAmountToCarry + 1);
-                else
-                    // Take remaining amount
-                    amountToTake = remainingAmountToCarry;
-
-                // Carrying more supplies
-                _controller.carriedSuppliesAmount += amountToTake;
-
-                // Can't take anymore supplies
-                if (_controller.carriedSuppliesAmount >= 100 || _controller.carriedSuppliesAmount >= _lackingAmount)
-                {
-                    _hasTakenAllSupplies = true;
-
-                    // Fix carried amount
-                    if (_controller.carriedSuppliesAmount > 100)
-                        _controller.carriedSuppliesAmount = 100;
-                    else if (_controller.carriedSuppliesAmount > _lackingAmount)
-                        _controller.carriedSuppliesAmount = _lackingAmount;
-                }
-                // Replenisher still can carry more lacking supplies 
-                else //if (_controller.carriedSuppliesAmount < 100 || _controller.carriedSuppliesAmount < _lackingAmount)
-                    // Go to another supply shelf
-                    _supplyShelf = ApothecaryManager.Instance.RandomShelf(_supplyShelves);
-            }
-            // Hasn't arrived to supplies shelf
-            else
-                // Keep it as destination
-                _controller.SetDestinationSpot(_supplyShelf);
-        }
-
+        if (_replenishBT.status == Node<Replenisher>.Status.Success && _controller.debugMode)
+            Debug.LogWarning("Replenisher action completed successfully");
     }
 
     public override bool IsFinished()
     {
-        // True if all supplies lacking were replenished
-        return _hasTakenAllSupplies && _controller.carriedSuppliesAmount <= 0;
+        // Behaviour tree has finished its sequence
+        return _replenishBT.status == Node<Replenisher>.Status.Success;
     }
 }
