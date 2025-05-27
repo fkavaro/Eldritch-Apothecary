@@ -19,6 +19,7 @@ public class Replenisher : AHumanoid<Replenisher>
     Replenish_ReplenisherAction replenishShopAction;
     Replenish_ReplenisherAction replenishAlchemistAction;
     Replenish_ReplenisherAction replenishSorcererAction;
+    Idle_ReplenisherAction idleAction;
     // Look for lacking shop supplies (each shelf added to dictionary):
     // - Walk around the store and ask blackboard shop shelves lacking supplies
 
@@ -69,6 +70,8 @@ public class Replenisher : AHumanoid<Replenisher>
             ApothecaryManager.Instance.sorcererLack,
             ApothecaryManager.Instance.normalisedSorcererLack
         );
+
+        idleAction = new(_replenisherUS);
 
         return _replenisherUS;
     }

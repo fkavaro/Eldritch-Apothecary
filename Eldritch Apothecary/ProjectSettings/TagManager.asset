@@ -25,6 +25,7 @@ TagManager:
   - Shop supply shelf
   - Staff supply shelf
   - Calm down position
+  - Replenisher seat
   layers:
   - Default
   - TransparentFX

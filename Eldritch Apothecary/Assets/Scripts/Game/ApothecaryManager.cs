@@ -25,6 +25,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     [HideInInspector]
     public Spot clientSeat,
+        replenisherSeat,
         receptionistCalmDownSpot,
         receptionistAttendingPos;
 
@@ -118,6 +119,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         entrancePosition = GameObject.FindGameObjectsWithTag("Entrance")[0].GetComponent<Transform>();
         exitPosition = GameObject.FindGameObjectsWithTag("Exit")[0].GetComponent<Transform>();
         clientSeat = GameObject.FindGameObjectsWithTag("Client seat")[0].GetComponent<Spot>();
+        replenisherSeat = GameObject.FindGameObjectsWithTag("Replenisher seat")[0].GetComponent<Spot>();
         receptionistAttendingPos = GameObject.FindGameObjectsWithTag("Attending position")[0].GetComponent<Spot>();
         receptionistCalmDownSpot = GameObject.FindGameObjectsWithTag("Calm down position")[0].GetComponent<Spot>();
         complainingPosition = GameObject.FindGameObjectsWithTag("Complain position")[0].GetComponent<Transform>();
@@ -157,6 +159,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         totalShopCapacity = CalculateTotalCapacity(shopShelves);
         totalAlchemistCapacity = CalculateTotalCapacity(alchemistShelves);
         totalSorcererCapacity = CalculateTotalCapacity(sorcererShelves);
+
+        if (totalShopCapacity <= 0
+            || totalAlchemistCapacity <= 0
+            || totalSorcererCapacity <= 0)
+            Debug.LogWarning("A capacity is 0");
     }
 
     void Update()
