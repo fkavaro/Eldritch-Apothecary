@@ -101,7 +101,7 @@ where TController : ABehaviourController<TController>
         if (_actionUtilities[bestAction] < 0f || bestAction == null)
         {
             if (controller.debugMode)
-                Debug.LogError($"{controller.name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
+                Debug.LogError($"   {controller.name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
 
             bestAction = _currentAction;
         }
@@ -116,7 +116,7 @@ where TController : ABehaviourController<TController>
 
         // Debug the decision made
         if (controller.debugMode)
-            Debug.Log($"{controller.name} decided to: {_currentAction.Name} with utility {_actionUtilities[_currentAction]}");
+            Debug.Log($"{controller.name} is {_currentAction.Name}");
 
         DebugDecision();
 

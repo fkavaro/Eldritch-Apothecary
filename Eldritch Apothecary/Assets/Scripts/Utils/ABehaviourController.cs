@@ -22,7 +22,8 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public bool isCoroutineExecuting = false;
 
-    public TextMeshProUGUI actionText, animationText;
+    [HideInInspector] public TextMeshProUGUI actionText, animationText;
+
     ADecisionSystem<TController> _decisionSystem;
 
     /// <summary>

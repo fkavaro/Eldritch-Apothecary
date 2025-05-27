@@ -78,8 +78,11 @@ public class Shelves : MonoBehaviour
 
         // Max amount surpassed
         if (currentAmount > capacity)
+        {
             // Return the amount that was not replenished
             supplyAmount = capacity - currentAmount;
+            currentAmount = capacity;
+        }
         else
             // All supplies were replenished
             supplyAmount = 0;

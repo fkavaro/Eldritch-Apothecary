@@ -95,7 +95,7 @@ MonoBehaviour:
   isCoroutineExecuting: 0
   actionText: {fileID: 0}
   animationText: {fileID: 0}
-  speed: 2
+  speed: 4
   rotationSpeed: 3
   maxSamplingDistance: 1
   stoppingDistance: 0.3
