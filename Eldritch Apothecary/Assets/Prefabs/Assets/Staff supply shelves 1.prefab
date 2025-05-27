@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3421670109688887521}
-  - component: {fileID: 505153293521300784}
+  - component: {fileID: 2173088708308226399}
   m_Layer: 0
   m_Name: Shelf (1)
   m_TagString: Staff supply shelf
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2113632688942821356}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &505153293521300784
+--- !u!114 &2173088708308226399
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,11 +41,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1576856678474913649}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Script: {fileID: 11500000, guid: 07701320d411d6d4488d4bb1ac5c4c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 3
+  direction: 0
   _occupied: 0
+  shelves: {fileID: 0}
 --- !u!1 &7407338983527939292
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +56,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6778018902110355775}
-  - component: {fileID: 3088479003465253329}
+  - component: {fileID: 1914565758579036160}
   m_Layer: 0
   m_Name: Shelf
   m_TagString: Staff supply shelf
@@ -78,7 +79,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2113632688942821356}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3088479003465253329
+--- !u!114 &1914565758579036160
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,11 +88,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7407338983527939292}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Script: {fileID: 11500000, guid: 07701320d411d6d4488d4bb1ac5c4c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 3
+  direction: 0
   _occupied: 0
+  shelves: {fileID: 0}
 --- !u!1001 &6893837176497423516
 PrefabInstance:
   m_ObjectHideFlags: 0

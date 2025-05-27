@@ -87,7 +87,7 @@ public class Shelves : MonoBehaviour
         return supplyAmount;
     }
 
-    internal bool IsFull()
+    public bool IsFull()
     {
         return currentAmount >= capacity;
     }

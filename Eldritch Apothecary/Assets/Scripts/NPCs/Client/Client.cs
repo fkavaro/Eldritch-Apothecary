@@ -22,7 +22,7 @@ public class Client : AHumanoid<Client>
 	public int maxMinutesWaiting = 2;
 	[Tooltip("Seconds waiting first in line")]
 	public float secondsWaiting = 0f;
-	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0, 1)]
+	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0f, 1f)]
 	public float normalisedWaitingTime;
 	[Tooltip("Triggering distance to cat"), Range(0.5f, 2f)]
 	public float minDistanceToCat = 1;

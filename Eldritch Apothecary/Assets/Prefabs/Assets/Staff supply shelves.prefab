@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3649747015580661314}
-  - component: {fileID: 3330838049211175321}
+  - component: {fileID: 6986303266535041921}
   m_Layer: 0
   m_Name: Shelf (3)
   m_TagString: Staff supply shelf
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1584270160208248556}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3330838049211175321
+--- !u!114 &6986303266535041921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,11 +41,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5356300537042942305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Script: {fileID: 11500000, guid: 07701320d411d6d4488d4bb1ac5c4c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 2
+  direction: 0
   _occupied: 0
+  shelves: {fileID: 0}
 --- !u!1 &6296774686482788454
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +56,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4835056211399166158}
-  - component: {fileID: 1100902842549377411}
+  - component: {fileID: 6104659856705631149}
   m_Layer: 0
   m_Name: Shelf (2)
   m_TagString: Staff supply shelf
@@ -78,7 +79,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1584270160208248556}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1100902842549377411
+--- !u!114 &6104659856705631149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,11 +88,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6296774686482788454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Script: {fileID: 11500000, guid: 07701320d411d6d4488d4bb1ac5c4c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 2
+  direction: 0
   _occupied: 0
+  shelves: {fileID: 0}
 --- !u!1 &7609725373430855964
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3133245138467112950}
-  - component: {fileID: 6936068318974713838}
+  - component: {fileID: 8512103351110824320}
   m_Layer: 0
   m_Name: Shelf
   m_TagString: Staff supply shelf
@@ -124,7 +126,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1584270160208248556}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6936068318974713838
+--- !u!114 &8512103351110824320
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,11 +135,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7609725373430855964}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Script: {fileID: 11500000, guid: 07701320d411d6d4488d4bb1ac5c4c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 3
+  direction: 0
   _occupied: 0
+  shelves: {fileID: 0}
 --- !u!1 &8463147922611773954
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,7 +150,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 141488259981556096}
-  - component: {fileID: 5199488800126774449}
+  - component: {fileID: 2720053819930085457}
   m_Layer: 0
   m_Name: Shelf (1)
   m_TagString: Staff supply shelf
@@ -170,7 +173,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1584270160208248556}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5199488800126774449
+--- !u!114 &2720053819930085457
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,11 +182,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8463147922611773954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5582f24ef8a764b4a8c56077521d171a, type: 3}
+  m_Script: {fileID: 11500000, guid: 07701320d411d6d4488d4bb1ac5c4c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 3
+  direction: 0
   _occupied: 0
+  shelves: {fileID: 0}
 --- !u!1001 &6269714959196968348
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -53,21 +53,21 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
 
     [Header("Shop supplies")]
-    [Tooltip("Normalized between 0 and the maximum store capacity of shop"), Range(0, 1)]
+    [Tooltip("Normalized between 0 and the maximum store capacity of shop"), Range(0f, 1f)]
     public float normalisedShopLack;
     public int shopLack;
     public int totalShopCapacity;
 
 
     [Header("Alchemist supplies")]
-    [Tooltip("Normalized between 0 and the maximum store capacity of alchemist"), Range(0, 1)]
+    [Tooltip("Normalized between 0 and the maximum store capacity of alchemist"), Range(0f, 1f)]
     public float normalisedAlchemistLack;
     public int alchemistLack;
     public int totalAlchemistCapacity;
 
 
     [Header("Sorcerer supplies")]
-    [Tooltip("Normalized between 0 and the maximum store capacity of sorcerer"), Range(0, 1)]
+    [Tooltip("Normalized between 0 and the maximum store capacity of sorcerer"), Range(0f, 1f)]
     public float normalisedSorcererLack;
     public int sorcererLack;
     public int totalSorcererCapacity;
@@ -80,12 +80,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         _potionServePositions = new(),
         _potionsPickUpPositions = new();
 
-    [HideInInspector]
+
     public List<Shelf> shopShelves = new(),
-            shopSuppliesShelves = new(),
-            staffSuppliesShelves = new(),
             alchemistShelves = new(),
-            sorcererShelves = new();
+            sorcererShelves = new(),
+            shopSuppliesShelves = new(),
+            staffSuppliesShelves = new();
 
     List<Spot> _waitingSeats = new();
 
@@ -204,7 +204,21 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     public Shelf RandomShelf(List<Shelf> shelves)
     {
-        return shelves[UnityEngine.Random.Range(0, shelves.Count)];
+        Shelf randomShelf = null;
+
+        if (shelves.Count == 0 || shelves == null)
+        {
+            Debug.LogError("Shelves list is empty or null");
+        }
+        else
+        {
+            randomShelf = shelves[UnityEngine.Random.Range(0, shelves.Count)];
+
+            if (randomShelf == null)
+                Debug.LogError("Random shelf is null");
+        }
+
+        return randomShelf;
     }
 
     /// <summary>

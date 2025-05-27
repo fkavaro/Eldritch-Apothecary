@@ -2196,8 +2196,9 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   fill: {fileID: 8611566894799780967}
   valueText: {fileID: 2485854131051587550}
-  maxValue: 50
-  currentValue: 50
+  capacity: 50
+  currentAmount: 0
+  lackingAmount: 0
 --- !u!1001 &8593873485696951683
 PrefabInstance:
   m_ObjectHideFlags: 0

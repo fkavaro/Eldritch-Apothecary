@@ -43,9 +43,6 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
     public override void StartAction()
     {
         _supplyShelf = ApothecaryManager.Instance.RandomShelf(_supplyShelves);
-
-        if (_supplyShelf == null)
-            Debug.LogError("Supply shelf is null");
     }
 
     public override void UpdateAction()
