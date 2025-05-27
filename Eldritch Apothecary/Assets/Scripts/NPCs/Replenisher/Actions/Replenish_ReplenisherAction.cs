@@ -24,23 +24,23 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
 
     bool _hasTakenAllSupplies = false;
 
-    public Replenish_ReplenisherAction(string name, UtilitySystem<Replenisher> utilitySystem, List<Shelf> consumedShelves, List<Shelf> supplyShelves, int lack, float normalisedLack)
+    public Replenish_ReplenisherAction(string name, UtilitySystem<Replenisher> utilitySystem, List<Shelf> consumedShelves, List<Shelf> supplyShelves)
     : base(name, utilitySystem)
     {
         _consumedShelves = consumedShelves;
         _supplyShelves = supplyShelves;
-        _lackingAmount = lack;
-        _normalisedLackingAmount = normalisedLack;
     }
 
     protected override float SetDecisionFactor()
     {
         // Normalized value of lacking supplies respect to the total amount that can be stored
+        _normalisedLackingAmount = ApothecaryManager.Instance.GetNormalisedLack(_consumedShelves);
         return _normalisedLackingAmount;
     }
 
     public override void StartAction()
     {
+        _lackingAmount = ApothecaryManager.Instance.GetTotalLack(_consumedShelves);
         _supplyShelf = ApothecaryManager.Instance.RandomShelf(_supplyShelves);
     }
 

@@ -86,7 +86,13 @@ where TController : ABehaviourController<TController>
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
+        {
+            if (controller.debugMode)
+                Debug.Log($"{controller.name}: {action.Name} has utility of {action.Utility}");
+
             _actionUtilities.Add(action, action.Utility);
+        }
+
 
         // Find the action with the highest utility
         IAction bestAction = _actionUtilities.OrderByDescending(pair => pair.Value).FirstOrDefault().Key;
@@ -103,14 +109,14 @@ where TController : ABehaviourController<TController>
         // Start the best action if it's different from the current one
         if (!IsCurrentAction(bestAction))
         {
-            // Debug the decision made
-            if (controller.debugMode)
-                Debug.Log($"{controller.name} decided to: {bestAction.Name} with utility {_actionUtilities[bestAction]}");
-
             _currentAction?.FinishAction();
             _currentAction = bestAction; // Update current action
             _currentAction.StartAction();
         }
+
+        // Debug the decision made
+        if (controller.debugMode)
+            Debug.Log($"{controller.name} decided to: {_currentAction.Name} with utility {_actionUtilities[_currentAction]}");
 
         DebugDecision();
 

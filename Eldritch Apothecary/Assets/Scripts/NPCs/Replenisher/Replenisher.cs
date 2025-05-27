@@ -45,27 +45,21 @@ public class Replenisher : AHumanoid<Replenisher>
             "Replenishing shop",
             _replenisherUS,
             ApothecaryManager.Instance.shopShelves,
-            ApothecaryManager.Instance.shopSuppliesShelves,
-            ApothecaryManager.Instance.shopLack,
-            ApothecaryManager.Instance.normalisedShopLack
+            ApothecaryManager.Instance.shopSuppliesShelves
         );
 
         replenishAlchemistAction = new(
             "Replenishing alchemist",
             _replenisherUS,
             ApothecaryManager.Instance.alchemistShelves,
-            ApothecaryManager.Instance.staffSuppliesShelves,
-            ApothecaryManager.Instance.alchemistLack,
-            ApothecaryManager.Instance.normalisedAlchemistLack
+            ApothecaryManager.Instance.staffSuppliesShelves
         );
 
         replenishSorcererAction = new(
             "Replenishing sorcerer",
             _replenisherUS,
             ApothecaryManager.Instance.sorcererShelves,
-            ApothecaryManager.Instance.staffSuppliesShelves,
-            ApothecaryManager.Instance.sorcererLack,
-            ApothecaryManager.Instance.normalisedSorcererLack
+            ApothecaryManager.Instance.staffSuppliesShelves
         );
 
         idleAction = new(_replenisherUS);

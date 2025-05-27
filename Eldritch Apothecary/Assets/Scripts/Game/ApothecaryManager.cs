@@ -267,6 +267,30 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             return null;
     }
 
+    public float GetNormalisedLack(List<Shelf> lackingShelves)
+    {
+        if (lackingShelves == shopShelves)
+            return normalisedShopLack;
+        else if (lackingShelves == alchemistShelves)
+            return normalisedAlchemistLack;
+        else if (lackingShelves == sorcererShelves)
+            return normalisedSorcererLack;
+        else
+            return 0f;
+    }
+
+    public int GetTotalLack(List<Shelf> lackingShelves)
+    {
+        if (lackingShelves == shopShelves)
+            return shopLack;
+        else if (lackingShelves == alchemistShelves)
+            return alchemistLack;
+        else if (lackingShelves == sorcererShelves)
+            return sorcererLack;
+        else
+            return 0;
+    }
+
     // TODO: IMPLEMENT TURNS SYSTEM
     internal bool IsTurn(Client client)
     {
