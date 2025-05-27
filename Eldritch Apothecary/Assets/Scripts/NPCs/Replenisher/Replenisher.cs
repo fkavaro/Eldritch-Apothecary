@@ -7,8 +7,6 @@ public class Replenisher : AHumanoid<Replenisher>
     [Header("Replenisher Properties")]
     [Tooltip("Amount of supplies carrying"), Range(0, 100)]
     public int carriedSuppliesAmount = 0;
-    // Shop shelves lacking supplies dictionary (shelf, lacking amount)
-    // Staff shelves lacking supplies dictionary (shelf, lacking amount)
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -35,7 +33,6 @@ public class Replenisher : AHumanoid<Replenisher>
     // Replenish staff shelves from dictionary, reducing carried supplies amount
 
     #endregion
-
 
     #region INHERITED METHODS
     protected override ADecisionSystem<Replenisher> CreateDecisionSystem()

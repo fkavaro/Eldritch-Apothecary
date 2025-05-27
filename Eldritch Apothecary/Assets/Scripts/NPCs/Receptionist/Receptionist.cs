@@ -65,7 +65,7 @@ public class Receptionist : AHumanoid<Receptionist>
     public bool CanAttend()
     {
         return _receptionistUS.IsCurrentAction(_attendingAction)
-        && HasArrived(ApothecaryManager.Instance.receptionistAttendingPos.transform.position);
+        && HasArrived(ApothecaryManager.Instance.receptionistAttendingSpot.transform.position);
     }
 
     /// <summary>

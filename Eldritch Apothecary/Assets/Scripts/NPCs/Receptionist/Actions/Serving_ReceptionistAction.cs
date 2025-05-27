@@ -9,7 +9,7 @@ public class Serving_ReceptionistAction : ALinearAction<Receptionist>
     {
         // Return the number of potions already prepared, ready to be served
         // Normalized between 0 and the maximum number of potions that can wait to be served
-        return ApothecaryManager.Instance.GetNormalizedPreparedPotionsNumber();
+        return ApothecaryManager.Instance.normalisedPreparedPotions;
     }
 
     public override void StartAction()

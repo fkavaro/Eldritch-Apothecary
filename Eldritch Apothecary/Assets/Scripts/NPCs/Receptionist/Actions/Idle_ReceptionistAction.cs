@@ -14,7 +14,7 @@ public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
     public override void StartAction()
     {
         // Move to counter and wait doing nothing
-        _controller.SetDestinationSpot(ApothecaryManager.Instance.receptionistAttendingPos);
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.receptionistAttendingSpot);
     }
 
     public override void UpdateAction()

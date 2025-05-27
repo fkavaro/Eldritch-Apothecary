@@ -27,7 +27,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public Spot clientSeat,
         replenisherSeat,
         receptionistCalmDownSpot,
-        receptionistAttendingPos;
+        receptionistAttendingSpot;
 
     [HideInInspector]
     public Transform complainingPosition,
@@ -35,9 +35,18 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         exitPosition,
         entrancePosition;
 
+    [HideInInspector]
+    public List<Shelf> shopShelves = new(),
+        alchemistShelves = new(),
+        sorcererShelves = new(),
+        shopSuppliesShelves = new(),
+        staffSuppliesShelves = new();
+
+
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 10)]
     public float simSpeed = 1;
+
 
     [Header("Positions parents")]
     [Tooltip("Parent of all queue positions gameobjects")]
@@ -72,24 +81,20 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public float normalisedSorcererLack;
     public int sorcererLack;
     public int totalSorcererCapacity;
+
+    [Header("Prepared potions")]
+    [Tooltip("Normalized between 0 and the maximum capacity of prepared potions"), Range(0f, 1f)]
+    public float normalisedPreparedPotions;
+    public int totalPreparedPotions;
+    public int preparedPotionsCapacity;
     #endregion
 
     #region PRIVATE PROPERTIES
     Transform _clientsParent;
-
     List<Transform> _queuePositions = new(),
         _potionServePositions = new(),
         _potionsPickUpPositions = new();
-
-
-    public List<Shelf> shopShelves = new(),
-            alchemistShelves = new(),
-            sorcererShelves = new(),
-            shopSuppliesShelves = new(),
-            staffSuppliesShelves = new();
-
     List<Spot> _waitingSeats = new();
-
     float _lastSpawnTime = 0f;
     List<Client> _clientsComplaining = new();
     #endregion
@@ -99,7 +104,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         base.Awake();// Ensures the Singleton logic runs
 
-        //Staff
+        //Characters
         receptionist = GameObject.FindGameObjectsWithTag("Receptionist")[0].GetComponent<Receptionist>();
         alchemist = GameObject.FindGameObjectsWithTag("Alchemist")[0];
         sorcerer = GameObject.FindGameObjectsWithTag("Sorcerer")[0];
@@ -114,14 +119,14 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), shopSuppliesShelves);
         FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), staffSuppliesShelves);
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
+        clientSeat = GameObject.FindGameObjectsWithTag("Client seat")[0].GetComponent<Spot>();
+        replenisherSeat = GameObject.FindGameObjectsWithTag("Replenisher seat")[0].GetComponent<Spot>();
+        receptionistAttendingSpot = GameObject.FindGameObjectsWithTag("Attending position")[0].GetComponent<Spot>();
+        receptionistCalmDownSpot = GameObject.FindGameObjectsWithTag("Calm down position")[0].GetComponent<Spot>();
 
         //Positions
         entrancePosition = GameObject.FindGameObjectsWithTag("Entrance")[0].GetComponent<Transform>();
         exitPosition = GameObject.FindGameObjectsWithTag("Exit")[0].GetComponent<Transform>();
-        clientSeat = GameObject.FindGameObjectsWithTag("Client seat")[0].GetComponent<Spot>();
-        replenisherSeat = GameObject.FindGameObjectsWithTag("Replenisher seat")[0].GetComponent<Spot>();
-        receptionistAttendingPos = GameObject.FindGameObjectsWithTag("Attending position")[0].GetComponent<Spot>();
-        receptionistCalmDownSpot = GameObject.FindGameObjectsWithTag("Calm down position")[0].GetComponent<Spot>();
         complainingPosition = GameObject.FindGameObjectsWithTag("Complain position")[0].GetComponent<Transform>();
         queueExitPosition = GameObject.FindGameObjectsWithTag("Queue exit")[0].GetComponent<Transform>();
         FillTranformList(GameObject.FindGameObjectsWithTag("Potion pick-up"), _potionsPickUpPositions);
@@ -160,14 +165,15 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         totalAlchemistCapacity = CalculateTotalCapacity(alchemistShelves);
         totalSorcererCapacity = CalculateTotalCapacity(sorcererShelves);
 
-        if (totalShopCapacity <= 0
-            || totalAlchemistCapacity <= 0
-            || totalSorcererCapacity <= 0)
+        if (totalShopCapacity == 0
+            || totalAlchemistCapacity == 0
+            || totalSorcererCapacity == 0)
             Debug.LogWarning("A capacity is 0");
     }
 
     void Update()
     {
+        // Update time scale
         if (Time.timeScale != simSpeed)
             Time.timeScale = simSpeed;
 
@@ -184,7 +190,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         sorcererLack = CalculateTotalLack(sorcererShelves);
 
         // Update normalised values of supplies
-        normalisedShopLack = Mathf.Clamp01(shopLack / totalShopCapacity);
+        normalisedShopLack = Mathf.Clamp01((float)shopLack / totalShopCapacity);
         normalisedAlchemistLack = Mathf.Clamp01(alchemistLack / totalAlchemistCapacity);
         normalisedSorcererLack = Mathf.Clamp01(sorcererLack / totalSorcererCapacity);
     }
@@ -259,17 +265,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             return _clientsComplaining[0];
         else
             return null;
-    }
-
-    /// <returns>Normalised value of lacking supplies from shelves respect to the total amount that they can store</returns>
-    public float GetNormalizedLackingAmount(List<Shelf> consumedShelves)
-    {
-        throw new NotImplementedException();
-    }
-
-    public float GetNormalizedPreparedPotionsNumber()
-    {
-        return 0f; // TODO
     }
 
     // TODO: IMPLEMENT TURNS SYSTEM
