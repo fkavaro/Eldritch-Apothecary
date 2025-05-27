@@ -17,8 +17,12 @@ public class StunnedByCat_ClientAction : ABinaryAction<Client>
     public override void StartAction()
     {
         _controller.scaresCount++;
+
         _controller.lastScareTime = Time.time;
-        _controller.ChangeAnimationTo(_controller.stunnedAnim, true);
+
+        _controller.SetIfStopped(true);
+
+        _controller.ChangeAnimationTo(_controller.stunnedAnim);
     }
 
     public override void UpdateAction()
@@ -30,6 +34,7 @@ public class StunnedByCat_ClientAction : ABinaryAction<Client>
     {
         if (_controller.IsAnimationFinished())
         {
+            _controller.SetIfStopped(false);
             _controller.ChangeToPreviousAnimation();
             return true;
         }

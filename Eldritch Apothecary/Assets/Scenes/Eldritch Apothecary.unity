@@ -15969,7 +15969,7 @@ MonoBehaviour:
   sorcererShelves: []
   shopSuppliesShelves: []
   staffSuppliesShelves: []
-  simSpeed: 1
+  simSpeed: 3
   queuePositionsParent: {fileID: 2102996951}
   clientPrefabs:
   - {fileID: 1907023332690292858, guid: 201a29a2609858c4d96295c6b440041e, type: 3}

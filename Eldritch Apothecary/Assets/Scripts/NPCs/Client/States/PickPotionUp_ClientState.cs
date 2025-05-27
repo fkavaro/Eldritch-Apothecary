@@ -23,7 +23,7 @@ public class PickPotionUp_ClientState : ANPCState<Client, StackFiniteStateMachin
             {
                 // Stop and wait
                 _controller.SetIfStopped(true);
-                _controller.ChangeAnimationTo(_controller.waitAnim, true);
+                _controller.ChangeAnimationTo(_controller.waitAnim);
             }
             else // Pick up position is free
             {
@@ -31,7 +31,7 @@ public class PickPotionUp_ClientState : ANPCState<Client, StackFiniteStateMachin
 
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
-                    SwitchStateAfterCertainTime(1f, _controller.leavingState, _controller.pickUpAnim, "Picking up potion", true);
+                    SwitchStateAfterCertainTime(1f, _controller.leavingState, _controller.pickUpAnim, "Picking up potion");
             }
         }
     }

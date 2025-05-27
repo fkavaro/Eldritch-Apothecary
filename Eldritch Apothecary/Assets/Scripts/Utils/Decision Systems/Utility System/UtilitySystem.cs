@@ -88,7 +88,7 @@ where TController : ABehaviourController<TController>
         foreach (var action in _actions)
         {
             if (controller.debugMode)
-                Debug.Log($"    {controller.name}: {action.Name} has utility of {action.Utility}");
+                Debug.Log($"{controller.name}: {action.Name} has utility of {action.Utility}");
 
             _actionUtilities.Add(action, action.Utility);
         }
@@ -116,7 +116,7 @@ where TController : ABehaviourController<TController>
 
         // Debug the decision made
         if (controller.debugMode)
-            Debug.Log($"{controller.name} is {_currentAction.Name}");
+            Debug.Log($"{controller.name} decided to: {_currentAction.Name} with utility {_actionUtilities[_currentAction]}");
 
         DebugDecision();
 

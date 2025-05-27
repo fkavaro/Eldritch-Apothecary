@@ -14,27 +14,27 @@ public abstract class ANPCState<TController, TStateMachine> : AState<TController
     /// <summary>
     /// Coroutine to wait for a random amount of time playing an animation before switching to the next state.
     /// </summary>
-    protected void SwitchStateAfterRandomTime(AState<TController, TStateMachine> nextState, int animation, string animationName, bool isStopped = false)
+    protected void SwitchStateAfterRandomTime(AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
         if (_controller.isCoroutineExecuting) return;
 
         int waitTime = Random.Range(5, 21);
-        _controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName, isStopped));
+        SwitchStateAfterCertainTime(waitTime, nextState, animation, animationName);
     }
 
-    protected void SwitchStateAfterCertainTime(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName, bool isStopped = false)
+    protected void SwitchStateAfterCertainTime(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
         if (_controller.isCoroutineExecuting) return;
 
-        _controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName, isStopped));
+        _controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName));
     }
 
     /// <summary>
     /// Coroutine to wait for a specified amount of time playing an animation before switching to the next state.
     /// </summary>
-    protected IEnumerator SwitchStateAfterCertainTimeCoroutine(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName, bool isStopped = false)
+    protected IEnumerator SwitchStateAfterCertainTimeCoroutine(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
-        yield return _controller.PlayAnimationCertainTime(waitTime, animation, animationName, isStopped);
+        yield return _controller.PlayAnimationCertainTime(waitTime, animation, animationName);
 
         SwitchState(nextState);
     }

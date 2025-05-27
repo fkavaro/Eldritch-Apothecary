@@ -27,17 +27,9 @@ where TController : ABehaviourController<TController>
 
     #region PUBLIC METHODS
     /// <summary>
-    /// Crossfade to previous animation.
-    /// </summary>
-    public void ChangeToPreviousAnimation(float crossFadeDuration = 0.2f)
-    {
-        ChangeAnimationTo(lastAnimation, crossFadeDuration);
-    }
-
-    /// <summary>
     /// Crossfade to new animation.
     /// </summary>
-    public void ChangeAnimationTo(int newAnimation, float crossFadeDuration = 0.2f)
+    public virtual void ChangeAnimationTo(int newAnimation, float duration = 0.2f)
     {
         // Not same as current
         if (currentAnimation != newAnimation)
@@ -46,12 +38,39 @@ where TController : ABehaviourController<TController>
             currentAnimation = newAnimation;
 
             // Interpolate transition to new animation
-            animator.CrossFade(newAnimation, crossFadeDuration);
+            animator.CrossFade(newAnimation, duration);
         }
+    }
+
+    /// <summary>
+    /// Crossfade to previous animation.
+    /// </summary>
+    public virtual void ChangeToPreviousAnimation(float duration = 0.2f)
+    {
+        ChangeAnimationTo(lastAnimation, duration);
+    }
+
+    /// <returns> True if the current animation is finished, false otherwise.</returns>
+    public virtual bool IsAnimationFinished()
+    {
+        // Check if the current animation is finished
+        AnimatorStateInfo currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        // If the animation is looping, it's never 'finished'
+        if (currentStateInfo.loop)
+        {
+            //Debug.LogWarning("Loop animation wont't finish");
+            return false;
+        }
+
+        // For non-looping animations, check if normalizedTime >= 1
+        return currentStateInfo.normalizedTime >= 1f;
     }
 
     public IEnumerator PlayAnimationRandomTime(int animation, string animationName)
     {
+        //if (isCoroutineExecuting) yield break;
+
         int waitTime = Random.Range(5, 21);
         return PlayAnimationCertainTime(waitTime, animation, animationName);
     }
@@ -71,23 +90,6 @@ where TController : ABehaviourController<TController>
         animationText.text = "";
         isCoroutineExecuting = false;
         InvokeCoroutineFinishedEvent();
-    }
-
-    /// <returns> True if the current animation is finished, false otherwise.</returns>
-    public virtual bool IsAnimationFinished()
-    {
-        // Check if the current animation is finished
-        AnimatorStateInfo currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-        // If the animation is looping, it's never 'finished'
-        if (currentStateInfo.loop)
-        {
-            //Debug.LogWarning("Loop animation wont't finish");
-            return false;
-        }
-
-        // For non-looping animations, check if normalizedTime >= 1
-        return currentStateInfo.normalizedTime >= 1f;
     }
     #endregion
 }

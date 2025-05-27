@@ -1,7 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
 
 /// <summary>
 /// Abstract base class for NPC (Non-Player Character).
@@ -297,57 +296,6 @@ where TController : ABehaviourController<TController>
     public bool IsEnergyAtMax()
     {
         return energy >= 100;
-    }
-
-    /// <summary>
-    /// Crossfade to previous animation.
-    /// </summary>
-    public void ChangeToPreviousAnimation(bool isStopped = false, float crossFadeDuration = 0.2f)
-    {
-        ChangeAnimationTo(lastAnimation, isStopped, crossFadeDuration);
-    }
-
-    /// <summary>
-    /// Crossfade to new animation.
-    /// </summary>
-    public void ChangeAnimationTo(int newAnimation, bool isStopped = false, float crossFadeDuration = 0.2f)
-    {
-        _agent.isStopped = isStopped;
-
-        // Not same as current
-        if (currentAnimation != newAnimation)
-        {
-            lastAnimation = currentAnimation;
-            currentAnimation = newAnimation;
-
-            // Interpolate transition to new animation
-            animator.CrossFade(newAnimation, crossFadeDuration);
-        }
-    }
-
-    public IEnumerator PlayAnimationRandomTime(int animation, string animationName, bool isStopped = true)
-    {
-        int waitTime = Random.Range(5, 21);
-        return PlayAnimationCertainTime(waitTime, animation, animationName, isStopped);
-    }
-
-    public IEnumerator PlayAnimationCertainTime(float waitTime, int animation, string animationName, bool isStopped = false)
-    {
-        if (isCoroutineExecuting) yield break;
-
-        animationText.text = animationName + " for " + waitTime + " seconds...";
-
-        ChangeAnimationTo(animation, isStopped);
-
-        isCoroutineExecuting = true;
-
-        yield return new WaitForSeconds(waitTime);
-
-        isCoroutineExecuting = false;
-
-        animationText.text = "";
-        _agent.isStopped = false;
-        InvokeCoroutineFinishedEvent();
     }
     #endregion
 }
