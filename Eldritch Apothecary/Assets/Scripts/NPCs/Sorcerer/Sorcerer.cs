@@ -29,6 +29,9 @@ public class Sorcerer : AHumanoid<Sorcerer>
         waitForClientState = new(_sorcererSFSM);
         waitForIngredientState = new(_sorcererSFSM);
 
+        _sorcererSFSM.SetInitialState(attendingClientsState);
+        Debug.Log("Hechicero creado");
+
         return _sorcererSFSM;
     }
     public override bool CatIsBothering()

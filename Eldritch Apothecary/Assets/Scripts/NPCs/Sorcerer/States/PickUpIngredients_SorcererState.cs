@@ -7,7 +7,7 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
 
     public override void StartState()
     {
-        _controller.SetDestination(ApothecaryManager.Instance.RandomPickUp());
+        _controller.SetDestination(ApothecaryManager.Instance.RandomShopShelves().transform.position);
     }
 
     public override void UpdateState()
@@ -28,7 +28,7 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
 
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
-                    SwitchStateAfterCertainTime(1f, _controller.attendingClientsState, _controller.pickUpAnim, "Picking up potion");
+                    SwitchStateAfterCertainTime(1f, _controller.attendingClientsState, _controller.pickUpAnim, "Picking up ingredient");
             }
         }
     }

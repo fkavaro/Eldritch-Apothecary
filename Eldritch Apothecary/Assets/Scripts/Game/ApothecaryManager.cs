@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -16,13 +17,14 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     [HideInInspector] public GameObject cat;
     [HideInInspector] public GameObject alchemist;
-    [HideInInspector] public GameObject sorcerer;
+    [HideInInspector] public Sorcerer sorcerer;
     [HideInInspector] public GameObject replenisher;
     [HideInInspector] public Receptionist receptionist;
     [HideInInspector] public Spot clientSeat;
     [HideInInspector] public Transform complainingPosition;
     [HideInInspector] public Transform queueExitPosition;
     [HideInInspector] public Spot receptionistAttendingPos;
+    [HideInInspector] public Spot sorcererAttendingPos;
 
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 10)]
@@ -70,10 +72,19 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         //Staff
         receptionist = GameObject.FindGameObjectsWithTag("Receptionist")[0].GetComponent<Receptionist>();
         alchemist = GameObject.FindGameObjectsWithTag("Alchemist")[0];
-        sorcerer = GameObject.FindGameObjectsWithTag("Sorcerer")[0];
+        sorcerer = GameObject.FindGameObjectsWithTag("Sorcerer")[0].GetComponent<Sorcerer>();
         replenisher = GameObject.FindGameObjectsWithTag("Replenisher")[0];
         cat = GameObject.FindGameObjectsWithTag("Cat")[0];
         _clientsParent = GameObject.FindGameObjectsWithTag("Clients parent")[0].GetComponent<Transform>();
+
+        if (sorcerer == null)
+        {
+            Debug.Log("No hay sorcerer");
+        }
+        else
+        {
+            Debug.Log("Hay sorcerer");
+        }
 
         //Spots
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), _shopShelves);
