@@ -18,24 +18,17 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
         // Has reached exact position
         if (_controller.HasArrivedAtDestination())
         {
-            _controller.SetIfStopped(false);
-            SwitchStateAfterRandomTime(_controller.leavingState, _controller.sitDownAnim, "Sitting down");
+            SwitchStateAfterRandomTime(_controller.leavingState, _controller.sitDownAnim, "Sitting down", true);
         }
         // Is close to the sorcerer seat
         else if (_controller.IsCloseToDestination(4f))
         {
             // Is occupied
             if (_controller.DestinationSpotIsOccupied())
-            {
                 // Stop and wait
-                _controller.SetIfStopped(true);
-                _controller.ChangeAnimationTo(_controller.waitAnim);
-            }
+                _controller.ChangeAnimationTo(_controller.waitAnim, true);
             else // Is free
-            {
-                _controller.SetIfStopped(false);
                 _controller.ChangeAnimationTo(_controller.walkAnim);
-            }
         }
     }
 }

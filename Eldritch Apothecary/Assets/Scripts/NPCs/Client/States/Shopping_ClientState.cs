@@ -53,8 +53,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             if (_controller.DestinationSpotIsOccupied() || !_shopShelf.CanTake(_amountNeeded))
             {
                 // Stop and wait
-                _controller.SetIfStopped(true);
-                _controller.ChangeAnimationTo(_controller.waitAnim);
+                _controller.ChangeAnimationTo(_controller.waitAnim, true);
                 _controller.secondsWaiting += Time.deltaTime;
 
                 // Not enough supply
@@ -64,7 +63,6 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             // Spot is free and has enough supplies
             else if (!_controller.DestinationSpotIsOccupied() && _shopShelf.CanTake(_amountNeeded))
             {
-                _controller.SetIfStopped(false);
                 _controller.ChangeAnimationTo(_controller.walkAnim);
             }
         }

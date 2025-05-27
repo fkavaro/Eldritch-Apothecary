@@ -66,8 +66,13 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
 
             // Has arrived to that shelf with lacking supplies
             if (_controller.HasArrived(_consumedShelf.transform.position))
+            {
+                _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Replenishing", true));
+
                 // Rplenish it, reducing carried amount
                 _controller.carriedSuppliesAmount = _consumedShelf.Replenish(_controller.carriedSuppliesAmount);
+            }
+
             // Hasn't arrived to that shelf
             else
                 // Keep it as destination
@@ -92,8 +97,10 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
                     // Take remaining amount
                     amountToTake = remainingAmountToCarry;
 
-                // Carrying more supplies
+                // Take more supplies
                 _controller.carriedSuppliesAmount += amountToTake;
+
+                _controller.StartCoroutine(_controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Taking supplies", true));
 
                 // Can't take anymore supplies
                 if (_controller.carriedSuppliesAmount >= 100 || _controller.carriedSuppliesAmount >= _lackingAmount)
