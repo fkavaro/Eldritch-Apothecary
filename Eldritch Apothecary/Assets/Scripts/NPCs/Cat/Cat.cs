@@ -16,9 +16,6 @@ public class Cat : ANPC<Cat>
         sorcererTable;
     #endregion
 
-    #region PRIVATE PROPERTIES
-    #endregion
-
     #region NODES
     BehaviourTree<Cat> _catBT;
     InfiniteLoopNode<Cat> infiniteLoop;
@@ -103,20 +100,6 @@ public class Cat : ANPC<Cat>
 
         return _catBT;
     }
-
-    protected override void OnStart()
-    {
-
-    }
-
-    protected override void OnUpdate()
-    {
-
-    }
-    #endregion
-
-    #region PUBLIC	METHODS
-
     #endregion
 
     #region PRIVATE	METHODS
@@ -137,11 +120,6 @@ public class Cat : ANPC<Cat>
 
         float distance = Vector3.Distance(transform.position, whereToAnnoy.position);
         bool isNear = distance <= annoyDistance;
-
-        if (isNear)
-        {
-            //Debug.Log("Cat is near " + whereToAnnoy.name + ": " + distance);
-        }
 
         return isNear;
     }

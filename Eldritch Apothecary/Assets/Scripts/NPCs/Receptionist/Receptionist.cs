@@ -3,15 +3,8 @@ using UnityEngine;
 
 public class Receptionist : AHumanoid<Receptionist>
 {
-    #region PUBLIC PROPERTIES
-
-    #endregion
-
-    #region PRIVATE PROPERTIES
+    #region UTILITY SYSTEM
     UtilitySystem<Receptionist> _receptionistUS;
-    #endregion
-
-    #region ACTIONS
     Idle_ReceptionistAction _idleAction;
     Serving_ReceptionistAction _servingAction;
     Attending_ReceptionistAction _attendingAction;
@@ -31,16 +24,6 @@ public class Receptionist : AHumanoid<Receptionist>
         _calmingDownAction = new(_receptionistUS);
 
         return _receptionistUS;
-    }
-
-    protected override void OnStart()
-    {
-
-    }
-
-    protected override void OnUpdate()
-    {
-
     }
 
     public override bool CatIsBothering()
@@ -76,8 +59,5 @@ public class Receptionist : AHumanoid<Receptionist>
         return _receptionistUS.IsCurrentAction(_calmingDownAction)
         && HasArrived(ApothecaryManager.Instance.receptionistCalmDownSpot.transform.position);
     }
-    #endregion
-
-    #region PRIVATE METHODS
     #endregion
 }

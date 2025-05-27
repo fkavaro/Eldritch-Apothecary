@@ -12,7 +12,7 @@ public class WaitingIngredients_AlchemistState : ANPCState<Alchemist, StackFinit
         //Accion esperar ingredientes (Espera de 7 segundos)
         if (_controller.HasIngredients())
         {
-            _controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.preparingPotionState));
+            //_controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.preparingPotionState));
         }
         else
         {

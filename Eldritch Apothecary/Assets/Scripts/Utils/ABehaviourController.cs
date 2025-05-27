@@ -8,22 +8,14 @@ using TMPro;
 public abstract class ABehaviourController<TController> : MonoBehaviour
 where TController : ABehaviourController<TController>
 {
-    // Event for whe coroutine is finished
-    public event Action CoroutineFinishedEvent;
-
     [Header("Behaviour Controller Properties")]
-    [Tooltip("Whether to show debug messages in the console")]
+    [Tooltip("Whether to show debug messages in the console or not")]
     public bool debugMode = false;
-
-    protected Transform debugCanvas;
-
-    /// <summary>
-    /// Flag to check if the coroutine has started.
-    /// </summary>
-    public bool isCoroutineExecuting = false;
+    [Tooltip("Whether to update next frame or not")]
+    [SerializeField] protected bool isExecutionPaused = false;
 
     [HideInInspector] public TextMeshProUGUI actionText, animationText;
-
+    protected Transform debugCanvas;
     ADecisionSystem<TController> _decisionSystem;
 
     /// <summary>
@@ -37,11 +29,6 @@ where TController : ABehaviourController<TController>
     public void ResetBehaviour()
     {
         _decisionSystem?.Reset();
-    }
-
-    protected void InvokeCoroutineFinishedEvent()
-    {
-        CoroutineFinishedEvent?.Invoke();
     }
 
     #region UNITY EXECUTION EVENTS
@@ -67,7 +54,10 @@ where TController : ABehaviourController<TController>
     private void Update()
     {
         OnUpdate();
-        _decisionSystem?.Update();
+
+        // Don't update if execution is paused
+        if (!isExecutionPaused)
+            _decisionSystem?.Update();
     }
     protected virtual void OnUpdate() { } // Optionally implemented in subclasses
     # endregion

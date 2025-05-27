@@ -38,7 +38,6 @@ public class Client : AHumanoid<Client>
 	#endregion
 
 	#region PRIVATE PROPERTIES
-
 	StackFiniteStateMachine<Client> _clientSFSM;
 	UtilitySystem<Client> _clientUS;
 	TextMeshProUGUI _serviceText;
@@ -94,6 +93,8 @@ public class Client : AHumanoid<Client>
 
 	protected override void OnUpdate()
 	{
+		base.OnUpdate();
+
 		// Normalise time between 0 and the 1 as the maximum waiting time of the client
 		normalisedWaitingTime = Mathf.Clamp01(secondsWaiting / (maxMinutesWaiting * 60f));
 	}

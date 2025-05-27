@@ -32,6 +32,7 @@ where TController : ABehaviourController<TController>
     public float nearDistance = 2f;
     [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
     public float avoidanceRadius = 0.7f;
+    public bool isStopped;
 
     [Header("Energy Properties")]
     [Tooltip("Energy value"), Range(0, 100)]
@@ -53,6 +54,13 @@ where TController : ABehaviourController<TController>
         _agent.radius = avoidanceRadius;
 
         base.OnAwake(); // Sets the animator component
+    }
+
+    protected override void OnUpdate()
+    {
+        // Stop moving if execution is paused
+        isStopped = isExecutionPaused;
+        _agent.isStopped = isStopped;
     }
     #endregion
 
@@ -99,7 +107,6 @@ where TController : ABehaviourController<TController>
         if (animationWhenArrived != -1)
             _animationWhenArrived = animationWhenArrived; // Set the animation to play when arriving
 
-        _agent.isStopped = false;
         _agent.updateRotation = true;
         _agent.SetDestination(destinationPos);
 

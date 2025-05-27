@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,16 +17,12 @@ public class Replenisher : AHumanoid<Replenisher>
 
     #endregion
 
-    #region PRIVATE PROPERTIES
+    #region UTILITY SYSTEM
     UtilitySystem<Replenisher> _replenisherUS;
-    #endregion
-
-    #region ACTIONS
     Replenish_ReplenisherAction replenishShopAction;
     Replenish_ReplenisherAction replenishAlchemistAction;
     Replenish_ReplenisherAction replenishSorcererAction;
     Idle_ReplenisherAction idleAction;
-
     #endregion
 
     #region INHERITED METHODS
@@ -65,6 +60,8 @@ public class Replenisher : AHumanoid<Replenisher>
 
     protected override void OnStart()
     {
+        base.OnStart();
+
         supplyBar.maxValue = capacity;
 
         // Set supply bar value to currenValue
@@ -74,6 +71,8 @@ public class Replenisher : AHumanoid<Replenisher>
 
     protected override void OnUpdate()
     {
+        base.OnUpdate();
+
         // Supply bar isn't updated
         if (supplyBar.value != currentAmount)
         {

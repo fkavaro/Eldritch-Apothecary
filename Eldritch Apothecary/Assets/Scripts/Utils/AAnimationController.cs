@@ -67,30 +67,32 @@ where TController : ABehaviourController<TController>
         return currentStateInfo.normalizedTime >= 1f;
     }
 
-    public IEnumerator PlayAnimationRandomTime(int animation, string animationName)
+    public void PlayAnimationCertainTime(float waitTime, int animation, string animationName, bool showtext = true)
     {
-        //if (isCoroutineExecuting) yield break;
-
-        int waitTime = Random.Range(5, 21);
-        return PlayAnimationCertainTime(waitTime, animation, animationName);
+        StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, showtext));
     }
 
-    public IEnumerator PlayAnimationCertainTime(float waitTime, int animation, string animationName, bool showtext = true)
+    public void PlayAnimationRandomTime(int animation, string animationName, bool showtext = true)
     {
-        if (isCoroutineExecuting) yield break;
+        int waitTime = Random.Range(5, 21);
+        StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, showtext));
+    }
+
+    public IEnumerator PlayAnimationCertainTimeCoroutine(float waitTime, int animation, string animationName, bool showtext = true)
+    {
+        if (isExecutionPaused) yield break;
+
+        isExecutionPaused = true;
 
         if (showtext)
             animationText.text = animationName + " for " + waitTime + " seconds...";
 
         ChangeAnimationTo(animation);
 
-        isCoroutineExecuting = true;
-
         yield return new WaitForSeconds(waitTime);
 
         animationText.text = "";
-        isCoroutineExecuting = false;
-        InvokeCoroutineFinishedEvent();
+        isExecutionPaused = false;
     }
     #endregion
 }
