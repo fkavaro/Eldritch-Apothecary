@@ -91,26 +91,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f87f8a03aece0dd4790b145eb731b828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
-  coroutineStarted: 0
-  stateText: {fileID: 0}
+  debugMode: 0
+  isCoroutineExecuting: 0
   actionText: {fileID: 0}
+  animationText: {fileID: 0}
   speed: 2
   rotationSpeed: 3
   maxSamplingDistance: 1
-  arrivedDistance: 0.3
-  closeDistance: 2
+  stoppingDistance: 0.3
+  nearDistance: 2
   avoidanceRadius: 0.7
   energy: 100
   lowEnergyThreshold: 10
   wantedService: 0
   maxMinutesWaiting: 2
-  timeWaiting: 0
-  normalizedWaitingTime: 0
+  secondsWaiting: 0
+  normalisedWaitingTime: 0
   minDistanceToCat: 2
   fear: 10
+  minSecondsBetweenScares: 30
   maxScares: 3
   scaresCount: 0
+  lastScareTime: -Infinity
 --- !u!1001 &5133661696583511748
 PrefabInstance:
   m_ObjectHideFlags: 0

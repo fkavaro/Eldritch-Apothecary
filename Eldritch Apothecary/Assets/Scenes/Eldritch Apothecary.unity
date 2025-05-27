@@ -16806,11 +16806,16 @@ MonoBehaviour:
   clientSeat: {fileID: 0}
   replenisherSeat: {fileID: 0}
   receptionistCalmDownSpot: {fileID: 0}
-  receptionistAttendingPos: {fileID: 631480857}
+  receptionistAttendingSpot: {fileID: 0}
   complainingPosition: {fileID: 1332325583}
   queueExitPosition: {fileID: 629453370}
   exitPosition: {fileID: 1671213725}
   entrancePosition: {fileID: 0}
+  shopShelves: []
+  alchemistShelves: []
+  sorcererShelves: []
+  shopSuppliesShelves: []
+  staffSuppliesShelves: []
   simSpeed: 3
   queuePositionsParent: {fileID: 2102996951}
   clientPrefabs:
@@ -16836,11 +16841,9 @@ MonoBehaviour:
   normalisedSorcererLack: 0
   sorcererLack: 0
   totalSorcererCapacity: 0
-  shopShelves: []
-  alchemistShelves: []
-  sorcererShelves: []
-  shopSuppliesShelves: []
-  staffSuppliesShelves: []
+  normalisedPreparedPotions: 0
+  totalPreparedPotions: 0
+  preparedPotionsCapacity: 0
 --- !u!43 &371353449
 Mesh:
   m_ObjectHideFlags: 0
@@ -84608,6 +84611,10 @@ PrefabInstance:
     - target: {fileID: 7229619649384197523, guid: 5d819315111dc474f9d90945e99826ca, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8171815740549969153, guid: 5d819315111dc474f9d90945e99826ca, type: 3}
+      propertyPath: debugMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8171815740549969153, guid: 5d819315111dc474f9d90945e99826ca, type: 3}
       propertyPath: m_Enabled

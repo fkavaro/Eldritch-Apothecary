@@ -22,7 +22,7 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public bool isCoroutineExecuting = false;
 
-    [HideInInspector] public TextMeshProUGUI actionText, animationText;
+    public TextMeshProUGUI actionText, animationText;
     ADecisionSystem<TController> _decisionSystem;
 
     /// <summary>
@@ -59,21 +59,12 @@ where TController : ABehaviourController<TController>
     {
         OnStart();
         _decisionSystem = CreateDecisionSystem();
-        actionText.gameObject.SetActive(debugMode);
         _decisionSystem?.Start();
     }
     protected virtual void OnStart() { } // Optionally implemented in subclasses
 
     private void Update()
     {
-        //if (coroutineStarted) return; // Avoids starting the coroutine repeatedly
-
-        if (actionText.gameObject.activeSelf != debugMode)
-        {
-            actionText.gameObject.SetActive(debugMode);
-            animationText.gameObject.SetActive(debugMode);
-        }
-
         OnUpdate();
         _decisionSystem?.Update();
     }

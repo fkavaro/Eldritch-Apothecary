@@ -81,7 +81,8 @@ where TController : ABehaviourController<TController>
     /// </summary>
     void CalculateActionsUtilities()
     {
-        //Debug.Log(controller.name + " making decision...");
+        if (controller.debugMode)
+            Debug.Log(controller.name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
@@ -93,7 +94,9 @@ where TController : ABehaviourController<TController>
         // If the best action has negative utility, continue with current action
         if (_actionUtilities[bestAction] < 0f || bestAction == null)
         {
-            Debug.LogError($"Best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
+            if (controller.debugMode)
+                Debug.LogError($"{controller.name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
+
             bestAction = _currentAction;
         }
 
@@ -101,7 +104,8 @@ where TController : ABehaviourController<TController>
         if (!IsCurrentAction(bestAction))
         {
             // Debug the decision made
-            //Debug.Log($"{controller.name} decided to: {bestAction.Name} with utility {_actionUtilities[bestAction]}");
+            if (controller.debugMode)
+                Debug.Log($"{controller.name} decided to: {bestAction.Name} with utility {_actionUtilities[bestAction]}");
 
             _currentAction?.FinishAction();
             _currentAction = bestAction; // Update current action

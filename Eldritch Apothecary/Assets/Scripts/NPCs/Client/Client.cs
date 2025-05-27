@@ -94,9 +94,6 @@ public class Client : AHumanoid<Client>
 
 	protected override void OnUpdate()
 	{
-		if (_serviceText.gameObject.activeSelf != debugMode)
-			_serviceText.gameObject.SetActive(debugMode);
-
 		// Normalise time between 0 and the 1 as the maximum waiting time of the client
 		normalisedWaitingTime = Mathf.Clamp01(secondsWaiting / (maxMinutesWaiting * 60f));
 	}
