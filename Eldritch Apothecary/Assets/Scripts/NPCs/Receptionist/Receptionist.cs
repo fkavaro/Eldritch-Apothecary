@@ -37,8 +37,11 @@ public class Receptionist : AHumanoid<Receptionist>
         base.OnUpdate();
 
         isBusy = ApothecaryManager.Instance.waitingQueue.HasAnyClient()
-            || !ApothecaryManager.Instance.IsSomeoneComplaining()
+            || ApothecaryManager.Instance.IsSomeoneComplaining()
             || ApothecaryManager.Instance.ArePotionsReady();
+
+        canAttend = _receptionistUS.IsCurrentAction(_attendingAction)
+            && HasArrived(ApothecaryManager.Instance.receptionistAttendingSpot);
     }
 
     public override bool CatIsBothering()

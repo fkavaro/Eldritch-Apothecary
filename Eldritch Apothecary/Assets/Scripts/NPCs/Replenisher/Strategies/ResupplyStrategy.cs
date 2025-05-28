@@ -20,7 +20,7 @@ public class ResupplyStrategy : AStrategy<Replenisher>
         // Has arrived to shelf to be resupplied
         if (_controller.HasArrivedAtDestination())
         {
-            _controller.PlayAnimationCertainTime(2f, _controller.pickUpAnim, "Picking up supplies", false);
+            _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Resuplying");
 
             // Replenish it, reducing carried amount
             _controller.currentAmount = _nextShelf.Replenish(_controller.currentAmount);

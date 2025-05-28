@@ -22,7 +22,7 @@ public class TakeSuppliesStrategy : AStrategy<Replenisher>
         // Has arrived to supplies shelf
         if (_controller.HasArrivedAtDestination())
         {
-            _controller.PlayAnimationCertainTime(10f, _controller.pickUpAnim, "Picking up supplies", false);
+            _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Taking supplies");
 
             int amountToTake;
 

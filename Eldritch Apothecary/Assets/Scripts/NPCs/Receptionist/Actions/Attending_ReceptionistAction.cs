@@ -29,12 +29,7 @@ public class Attending_ReceptionistAction : ALinearAction<Receptionist>
     public override void UpdateAction()
     {
         if (_controller.HasArrivedAtDestination())
-        {
-            _controller.canAttend = true;
             _controller.ChangeAnimationTo(_controller.talkAnim);
-        }
-        else
-            _controller.canAttend = false;
     }
 
     public override bool IsFinished()

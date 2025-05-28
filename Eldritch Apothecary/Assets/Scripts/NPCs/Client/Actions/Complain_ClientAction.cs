@@ -25,6 +25,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
 
         // Go to complaining position
         _controller.SetDestination(ApothecaryManager.Instance.complainingPosition.position);
+        _controller.isExecutionPaused = false;
     }
 
     public override void UpdateAction()

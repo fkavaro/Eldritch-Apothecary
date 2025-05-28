@@ -142,17 +142,24 @@ where TController : ABehaviourController<TController>
     /// Checks if the NavMeshAgent has arrived at its destination, 
     /// and if the target is a spot, fixes its rotation if wanted.
     /// </summary>
-    /// <returns>True if the agent has arrived, otherwise false.</returns>
     public bool HasArrivedAtDestination(bool fixRotation = true, bool fixPosition = true)
     {
         return HasArrived(_agent.destination, fixRotation, fixPosition);
     }
 
     /// <summary>
+    /// Checks if the NavMeshAgent has arrived at certain spot position
+    /// and if the target is a spot, fixes its rotation if wanted.
+    /// </summary>
+    public bool HasArrived(Spot spot, bool fixRotation = true, bool fixPosition = true)
+    {
+        return HasArrived(spot.transform.position, fixRotation, fixPosition);
+    }
+
+    /// <summary>
     /// Checks if the NavMeshAgent has arrived at certain destination
     /// and if the target is a spot, fixes its rotation if wanted.
     /// </summary>
-    /// <returns>True if the agent has arrived, otherwise false.</returns>
     public bool HasArrived(Vector3 destination, bool fixRotation = true, bool fixPosition = true)
     {
         //Debug.Log($"{gameObject.name} is checking if it has arrived at {destination}.");

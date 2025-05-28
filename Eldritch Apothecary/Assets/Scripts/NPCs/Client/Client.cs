@@ -31,8 +31,8 @@ public class Client : AHumanoid<Client>
 	[Tooltip("Minimum seconds between scares"), Range(10f, 120f)]
 	public float minSecondsBetweenScares = 30f;
 
-	[Tooltip("Maximum number of scares supported"), Range(1, 10)]
-	public int maxScares = 10;
+	[Tooltip("Maximum number of scares supported"), Range(1, 3)]
+	public int maxScares = 2;
 	public int scaresCount = 0;
 	[HideInInspector] public float lastScareTime = -Mathf.Infinity;
 	#endregion
@@ -175,7 +175,7 @@ public class Client : AHumanoid<Client>
 	{
 		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
 		maxMinutesWaiting = UnityEngine.Random.Range(1, 5); // Chooses a random number of minutes to wait
-		maxScares = UnityEngine.Random.Range(1, 11); // Chooses a random number of supported scares
+		maxScares = UnityEngine.Random.Range(1, 4); // Chooses a random number of supported scares
 
 		//minDistanceToCat = UnityEngine.Random.Range(0.5f, 2f); // Chooses a random distance to cat
 		//fear = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
