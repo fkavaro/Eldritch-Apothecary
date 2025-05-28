@@ -48,10 +48,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public float simSpeed = 1;
 
     [Header("Turns system")]
-    [Tooltip("Number of next sorcerer turn")]
-    public int sorcererTurn = 0;
-    [Tooltip("Number of next alchemist turn")]
-    public int alchemistTurn = 0;
+    public int generatedSorcererTurns = 0;
+    public int currentSorcererTurn = 0;
+    public int generatedAlchemistTurns = 0;
+    public int currentAlchemistTurn = 0;
 
     [Header("Clients pool")]
     [Tooltip("All clients models to be spawned randomly")]
@@ -202,7 +202,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #region PUBLIC METHODS
     public Spot RandomWaitingSeat()
     {
-        return RandomSpot(_waitingSeats);
+        return RandomSpot(_waitingSeats, false);
     }
 
     public Vector3 RandomPickUp()
@@ -296,19 +296,45 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             return 0;
     }
 
-    // TODO: IMPLEMENT TURNS SYSTEM
+    /// <returns>True if it's this client turn, according to wanted service</returns>
     internal bool IsTurn(Client client)
     {
         // Switch wanted service
         switch (client.wantedService)
         {
             case Client.WantedService.SPELL:
-                return sorcerer.sfsm.IsCurrentState(sorcerer.waitForClientState);
+                return sorcerer.sfsm.IsCurrentState(sorcerer.waitForClientState)
+                && client.turnNumber == currentSorcererTurn;
             case Client.WantedService.POTION:
                 return true;
             default:
                 return true;
         }
+    }
+
+    /// <summary>
+    /// Assigns a turn number to client according to wanted service
+    /// </summary>
+    public void TakeTurn(Client client)
+    {
+        switch (client.wantedService)
+        {
+            case Client.WantedService.SPELL:
+                client.turnNumber = ++generatedSorcererTurns;
+                client.turnText.text = client.turnNumber.ToString();
+                break;
+            case Client.WantedService.POTION:
+                client.turnNumber = ++generatedAlchemistTurns;
+                client.turnText.text = client.turnNumber.ToString();
+                break;
+            default: // SHOOPING
+                break; // Nothing
+        }
+    }
+
+    public void NextSorcererTurn()
+    {
+        ++currentSorcererTurn;
     }
 
 
@@ -349,9 +375,15 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             transforms.Add(gameobject.transform);
     }
 
-    Spot RandomSpot(List<Spot> spots)
+    Spot RandomSpot(List<Spot> spots, bool takeOccupied = true)
     {
-        return spots[UnityEngine.Random.Range(0, spots.Count)];
+        Spot randomSpot = spots[UnityEngine.Random.Range(0, spots.Count)];
+
+        if (!takeOccupied)
+            while (randomSpot.IsOccupied())
+                randomSpot = spots[UnityEngine.Random.Range(0, spots.Count)];
+
+        return randomSpot;
     }
 
     Vector3 RandomPosition(List<Transform> positions)
@@ -379,8 +411,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     /// </summary>>
     void GetClient(Client client)
     {
-        // TODO: change model
         client.transform.position = entrancePosition.position;
+        client.ChangeAnimationTo(client.walkAnim);
         client.gameObject.SetActive(true);
         client.Reset();
     }
@@ -393,7 +425,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         client.gameObject.SetActive(false);
     }
 
-    private int CalculateTotalCapacity(List<Shelf> shelfList)
+    int CalculateTotalCapacity(List<Shelf> shelfList)
     {
         int totalCapacity = 0;
 
@@ -413,7 +445,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         return totalCapacity;
     }
 
-    private int CalculateTotalLack(List<Shelf> shelfList)
+    int CalculateTotalLack(List<Shelf> shelfList)
     {
         int totalLack = 0;
 
@@ -431,23 +463,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             }
 
         return totalLack;
-    }
-
-    public void TakeTurn(Client client)
-    {
-        switch (client.wantedService)
-        {
-            case Client.WantedService.SPELL:
-                client.turnNumber = ++sorcererTurn;
-                client.turnText.text = client.turnNumber.ToString();
-                break;
-            case Client.WantedService.POTION:
-                client.turnNumber = ++alchemistTurn;
-                client.turnText.text = client.turnNumber.ToString();
-                break;
-            default:
-                break;
-        }
     }
     #endregion
 }

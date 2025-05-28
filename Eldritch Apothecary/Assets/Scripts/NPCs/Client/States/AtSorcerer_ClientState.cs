@@ -18,7 +18,13 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
         // Has reached exact position
         if (_controller.HasArrivedAtDestination())
         {
-            SwitchStateAfterRandomTime(_controller.leavingState, _controller.sitDownAnim, "Sitting down");
+            // Sit
+            _controller.ChangeAnimationTo(_controller.sitDownAnim);
+
+            // Wait until the sorcerer is finished and waiting for another client
+            if (ApothecaryManager.Instance.sorcerer.sfsm.IsCurrentState(ApothecaryManager.Instance.sorcerer.waitForClientState)
+                && _controller.turnNumber != ApothecaryManager.Instance.currentSorcererTurn)
+                SwitchState(_controller.leavingState);
         }
         // Is close to the sorcerer seat
         else if (_controller.IsCloseToDestination(4f))

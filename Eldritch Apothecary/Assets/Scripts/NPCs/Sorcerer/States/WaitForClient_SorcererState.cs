@@ -8,6 +8,7 @@ public class WaitForClient_SorcererState : ANPCState<Sorcerer, StackFiniteStateM
 
     public override void StartState()
     {
+        ApothecaryManager.Instance.NextSorcererTurn();
         _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
     }
 
