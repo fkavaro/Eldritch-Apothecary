@@ -52,7 +52,7 @@ public class Client : AHumanoid<Client>
 	public WaitForReceptionist_ClientState waitForReceptionistState;
 	public WaitForService_ClientState waitForServiceState;
 	public AtSorcerer_ClientState atSorcererState;
-	public PickPotionUp_ClientState pickPotionUpState;
+	public TakePotion_ClientState pickPotionUpState;
 	public Leaving_ClientState leavingState;
 	#endregion
 

@@ -37,8 +37,7 @@ public class Receptionist : AHumanoid<Receptionist>
         base.OnUpdate();
 
         isBusy = ApothecaryManager.Instance.waitingQueue.HasAnyClient()
-            || ApothecaryManager.Instance.IsSomeoneComplaining()
-            || ApothecaryManager.Instance.ArePotionsReady();
+            || ApothecaryManager.Instance.IsSomeoneComplaining();
 
         canAttend = _receptionistUS.IsCurrentAction(_attendingAction)
             && HasArrived(ApothecaryManager.Instance.receptionistAttendingSpot);

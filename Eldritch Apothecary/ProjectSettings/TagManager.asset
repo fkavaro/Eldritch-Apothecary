@@ -9,8 +9,6 @@ TagManager:
   - Clients parent
   - Client seat
   - Waiting seat
-  - Potion pick-up
-  - Potion serve
   - Complain position
   - Attending position
   - Queue exit
@@ -30,6 +28,8 @@ TagManager:
   - Receptionist attending spot
   - Sorcerer seat
   - Queue positions
+  - Ready potion
+  - Prepared potion
   layers:
   - Default
   - TransparentFX

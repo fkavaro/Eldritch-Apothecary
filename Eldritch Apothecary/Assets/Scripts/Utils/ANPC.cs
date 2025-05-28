@@ -122,18 +122,23 @@ where TController : ABehaviourController<TController>
             return _destinationSpot.IsOccupied();
     }
 
-    public bool IsCloseToDestination(float checkingDistance = 2f)
+    public bool IsCloseToDestination(float checkingDistance = 2f, bool fixRotation = false)
     {
-        return IsCloseTo(_agent.destination, checkingDistance);
+        return IsCloseTo(_agent.destination, checkingDistance, fixRotation);
     }
 
-    public bool IsCloseTo(Vector3 destination, float checkingDistance = 2f)
+    public bool IsCloseTo(Vector3 destination, float checkingDistance = 2f, bool fixRotation = false)
     {
         if (checkingDistance <= nearDistance)
             checkingDistance = nearDistance;
 
         if (Vector3.Distance(transform.position, destination) < checkingDistance)
+        {
+            if (fixRotation)
+                transform.LookAt(destination);
+
             return true;
+        }
         else
             return false;
     }

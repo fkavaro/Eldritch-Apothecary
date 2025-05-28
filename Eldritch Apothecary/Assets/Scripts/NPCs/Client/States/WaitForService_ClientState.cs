@@ -22,7 +22,6 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
             // It's its turn
             if (ApothecaryManager.Instance.IsTurn(_controller))
             {
-                _controller.turnText.text = "";
                 switch (_controller.wantedService)
                 {
                     case Client.WantedService.SPELL:
@@ -38,7 +37,8 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
                         break;
                 }
             }
-            else // It's not
+            // It's not
+            else
                 // Wait
                 _controller.ChangeAnimationTo(_controller.sitDownAnim);
         }

@@ -85,16 +85,16 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     [Header("Prepared potions")]
     [Tooltip("Normalized between 0 and the maximum capacity of prepared potions"), Range(0f, 1f)]
     public float normalisedPreparedPotions;
-    public int totalPreparedPotions;
+    public int totalPotionsToBeServed;
     public int preparedPotionsCapacity;
     #endregion
 
     #region PRIVATE PROPERTIES
     Transform _clientsParent;
-    List<Transform> _queuePositions = new(),
-        _potionServePositions = new(),
-        _potionsPickUpPositions = new();
+    List<Transform> _queuePositions = new();
     List<Spot> _waitingSeats = new();
+    List<Potion> _preparedPotions = new(),
+        _readyPotions = new();
     float _lastSpawnTime = 0f;
     List<Client> _clientsComplaining = new();
     #endregion
@@ -135,6 +135,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), shopSuppliesShelves);
         FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), staffSuppliesShelves);
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
+        FillPotionList(GameObject.FindGameObjectsWithTag("Ready potion"), _readyPotions);
+        FillPotionList(GameObject.FindGameObjectsWithTag("Prepared potion"), _preparedPotions);
         clientSeat = GameObject.FindGameObjectWithTag("Client seat").GetComponent<Spot>();
         replenisherSeat = GameObject.FindGameObjectWithTag("Replenisher seat").GetComponent<Spot>();
         sorcererSeat = GameObject.FindGameObjectWithTag("Sorcerer seat").GetComponent<Spot>();
@@ -147,8 +149,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         complainingPosition = GameObject.FindGameObjectWithTag("Complain position").transform;
         receptionistCalmDownPosition = GameObject.FindGameObjectWithTag("Calm down position").transform;
         queueExitPosition = GameObject.FindGameObjectWithTag("Queue exit").transform;
-        FillTranformList(GameObject.FindGameObjectsWithTag("Potion pick-up"), _potionsPickUpPositions);
-        FillTranformList(GameObject.FindGameObjectsWithTag("Potion serve"), _potionServePositions);
     }
 
     void Start()
@@ -160,13 +160,14 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             shopSuppliesShelves.Count == 0 ||
             staffSuppliesShelves.Count == 0 ||
             _waitingSeats.Count == 0 ||
-            _potionServePositions.Count == 0 ||
-            _potionsPickUpPositions.Count == 0)
+            _preparedPotions.Count == 0 ||
+            _readyPotions.Count == 0)
             Debug.LogError("A positions list is empty.");
 
         totalShopCapacity = CalculateTotalCapacity(shopShelves);
         totalAlchemistCapacity = CalculateTotalCapacity(alchemistShelves);
         totalSorcererCapacity = CalculateTotalCapacity(sorcererShelves);
+        preparedPotionsCapacity = _preparedPotions.Count;
 
         if (totalShopCapacity == 0
             || totalAlchemistCapacity == 0
@@ -196,18 +197,52 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         normalisedShopLack = Mathf.Clamp01((float)shopLack / totalShopCapacity);
         normalisedAlchemistLack = Mathf.Clamp01((float)alchemistLack / totalAlchemistCapacity);
         normalisedSorcererLack = Mathf.Clamp01((float)sorcererLack / totalSorcererCapacity);
+
+        // Update normalised value of prepared potions
+        totalPotionsToBeServed = PotionsToBeServed();
+        normalisedPreparedPotions = Mathf.Clamp01((float)totalPotionsToBeServed / preparedPotionsCapacity);
     }
     #endregion
 
     #region PUBLIC METHODS
+    /// <summary>
+    /// Check if any ready potion has clients's turn number
+    /// </summary>
+    /// <returns>Corresponding potion</returns>
+    public Potion AssignedPotion(Client client)
+    {
+        Potion clientPotion = null;
+
+        foreach (Potion potion in _readyPotions)
+            if (potion.ThisNumber(client.turnNumber))
+                clientPotion = potion;
+
+        return clientPotion;
+    }
+
+    /// <summary>
+    /// Assigns a current turn to unassigned prepared potion
+    /// </summary>
+    public Potion AssignTurnToRandomPotion()
+    {
+        Potion randomPotion = RandomPreparedPotion(false);
+        randomPotion.Assign(++currentAlchemistTurn);
+        return randomPotion;
+    }
+
+    public Potion RandomPreparedPotion(bool isAssigned)
+    {
+        return RandomPotion(_preparedPotions, isAssigned);
+    }
+
+    public Potion RandomReadyPotion()
+    {
+        return RandomPotion(_readyPotions, false);
+    }
+
     public Spot RandomWaitingSeat()
     {
         return RandomSpot(_waitingSeats, false);
-    }
-
-    public Vector3 RandomPickUp()
-    {
-        return RandomPosition(_potionsPickUpPositions);
     }
 
     public Shelf RandomShopShelf()
@@ -222,21 +257,22 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     public Shelf RandomShelf(List<Shelf> shelves)
     {
-        Shelf randomShelf = null;
+        return shelves[UnityEngine.Random.Range(0, shelves.Count)];
+    }
 
-        if (shelves.Count == 0 || shelves == null)
-        {
-            Debug.LogError("Shelves list is empty or null");
-        }
-        else
-        {
-            randomShelf = shelves[UnityEngine.Random.Range(0, shelves.Count)];
+    /// <summary>
+    /// Check if any prepared potion has any turn number
+    /// </summary>
+    /// <returns> Number of potions ready to be served</returns>
+    public int PotionsToBeServed()
+    {
+        int number = 0;
 
-            if (randomShelf == null)
-                Debug.LogError("Random shelf is null");
-        }
+        foreach (Potion potion in _preparedPotions)
+            if (potion.IsAssigned())
+                number++;
 
-        return randomShelf;
+        return number;
     }
 
     /// <summary>
@@ -299,17 +335,15 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     /// <returns>True if it's this client turn, according to wanted service</returns>
     internal bool IsTurn(Client client)
     {
-        // Switch wanted service
-        switch (client.wantedService)
+        return client.wantedService switch
         {
-            case Client.WantedService.SPELL:
-                return sorcerer.sfsm.IsCurrentState(sorcerer.waitForClientState)
-                && client.turnNumber == currentSorcererTurn;
-            case Client.WantedService.POTION:
-                return true;
-            default:
-                return true;
-        }
+            // If sorcerer is waiting client's turn
+            Client.WantedService.SPELL => sorcerer.sfsm.IsCurrentState(sorcerer.waitForClientState)
+                                        && client.turnNumber == currentSorcererTurn,
+            // If a potion is ready for client's turn
+            Client.WantedService.POTION => AssignedPotion(client),
+            _ => true,
+        };
     }
 
     /// <summary>
@@ -326,6 +360,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             case Client.WantedService.POTION:
                 client.turnNumber = ++generatedAlchemistTurns;
                 client.turnText.text = client.turnNumber.ToString();
+                AssignTurnToRandomPotion(); // TODO: should be called after potion is prepared by alchemist
                 break;
             default: // SHOOPING
                 break; // Nothing
@@ -336,12 +371,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         ++currentSorcererTurn;
     }
-
-
-    public bool ArePotionsReady()
-    {
-        return false; // TODO
-    }
     #endregion
 
     #region PRIVATE METHODS
@@ -351,16 +380,16 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             childrenList.Add(child);
     }
 
-    void FillSpotChildrenList(Transform parent, List<Spot> childrenList)
-    {
-        foreach (Transform child in parent)
-            childrenList.Add(child.GetComponent<Spot>());
-    }
-
     void FillSpotList(GameObject[] gameObjects, List<Spot> spots)
     {
         foreach (GameObject gameobject in gameObjects)
             spots.Add(gameobject.GetComponent<Spot>());
+    }
+
+    void FillPotionList(GameObject[] gameObjects, List<Potion> potions)
+    {
+        foreach (GameObject gameobject in gameObjects)
+            potions.Add(gameobject.GetComponent<Potion>());
     }
 
     void FillShelfList(GameObject[] gameObjects, List<Shelf> shelfs)
@@ -375,15 +404,26 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             transforms.Add(gameobject.transform);
     }
 
-    Spot RandomSpot(List<Spot> spots, bool takeOccupied = true)
+    Spot RandomSpot(List<Spot> spots, bool isOccupied = true)
     {
         Spot randomSpot = spots[UnityEngine.Random.Range(0, spots.Count)];
 
-        if (!takeOccupied)
-            while (randomSpot.IsOccupied())
+        if (isOccupied) // Random spot must be occupied
+            while (!randomSpot.IsOccupied())
                 randomSpot = spots[UnityEngine.Random.Range(0, spots.Count)];
 
         return randomSpot;
+    }
+
+    Potion RandomPotion(List<Potion> potions, bool isAssigned = true)
+    {
+        Potion randomPotion = potions[UnityEngine.Random.Range(0, potions.Count)];
+
+        if (isAssigned) // Random potion must be assigned
+            while (!randomPotion.IsAssigned())
+                randomPotion = potions[UnityEngine.Random.Range(0, potions.Count)];
+
+        return randomPotion;
     }
 
     Vector3 RandomPosition(List<Transform> positions)
