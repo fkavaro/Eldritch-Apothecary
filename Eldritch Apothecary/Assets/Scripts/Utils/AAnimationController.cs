@@ -85,7 +85,7 @@ where TController : ABehaviourController<TController>
 
         isExecutionPaused = true;
 
-        if (showtext)
+        if (showtext && waitTime >= 2f)
             animationText.text = animationName + " for " + waitTime + " seconds...";
 
         ChangeAnimationTo(animation);

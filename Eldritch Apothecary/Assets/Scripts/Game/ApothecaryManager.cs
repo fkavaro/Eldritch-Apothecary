@@ -411,6 +411,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         if (isOccupied) // Random spot must be occupied
             while (!randomSpot.IsOccupied())
                 randomSpot = spots[UnityEngine.Random.Range(0, spots.Count)];
+        else // Random spot musn't be occupied
+            while (randomSpot.IsOccupied())
+                randomSpot = spots[UnityEngine.Random.Range(0, spots.Count)];
 
         return randomSpot;
     }
@@ -421,6 +424,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
         if (isAssigned) // Random potion must be assigned
             while (!randomPotion.IsAssigned())
+                randomPotion = potions[UnityEngine.Random.Range(0, potions.Count)];
+        else // Mustn't be assigned
+            while (randomPotion.IsAssigned())
                 randomPotion = potions[UnityEngine.Random.Range(0, potions.Count)];
 
         return randomPotion;
@@ -453,6 +459,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         client.transform.position = entrancePosition.position;
         client.ChangeAnimationTo(client.walkAnim);
+        client.turnText.text = "";
         client.gameObject.SetActive(true);
         client.Reset();
     }
