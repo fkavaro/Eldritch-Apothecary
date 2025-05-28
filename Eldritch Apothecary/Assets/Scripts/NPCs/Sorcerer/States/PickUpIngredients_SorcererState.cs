@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
+    Shelf shelf;
+
     public PickUpIngredients_SorcererState(StackFiniteStateMachine<Sorcerer> sfsm)
         : base("Picking up ingredient", sfsm) { }
 
     public override void StartState()
     {
-        _controller.SetDestination(ApothecaryManager.Instance.RandomShopShelves().transform.position);
+        shelf = ApothecaryManager.Instance.RandomSorcererShelf();
+        _controller.SetDestinationSpot(shelf);
     }
 
     public override void UpdateState()

@@ -26,6 +26,8 @@ TagManager:
   - Staff supply shelf
   - Calm down position
   - Replenisher seat
+  - Sorcerer attending spot
+  - Receptionist attending spot
   layers:
   - Default
   - TransparentFX

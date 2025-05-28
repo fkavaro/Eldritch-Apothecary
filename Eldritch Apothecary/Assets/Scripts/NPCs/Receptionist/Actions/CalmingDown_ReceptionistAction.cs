@@ -14,7 +14,7 @@ public class CalmingDown_ReceptionistAction : ABinaryAction<Receptionist>
     public override void StartAction()
     {
         // Approaches the client and calms them down
-        _controller.SetDestination(ApothecaryManager.Instance.receptionistCalmDownSpot.transform.position);
+        _controller.SetDestination(ApothecaryManager.Instance.receptionistCalmDownPosition.transform.position);
     }
 
     public override void UpdateAction()

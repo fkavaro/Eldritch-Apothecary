@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f181769d8b8974f4f92fb16a67999a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
+  debugMode: 0
   isExecutionPaused: 0
   actionText: {fileID: 0}
   animationText: {fileID: 0}

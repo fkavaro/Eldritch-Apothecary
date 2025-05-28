@@ -15,15 +15,31 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public ObjectPool<Client> clientsPool;
     public WaitingQueue waitingQueue;
 
-    [HideInInspector] public GameObject cat;
-    [HideInInspector] public GameObject alchemist;
-    [HideInInspector] public GameObject sorcerer;
-    [HideInInspector] public GameObject replenisher;
+    [HideInInspector]
+    public List<Shelf> shopShelves = new(),
+            alchemistShelves = new(),
+            sorcererShelves = new(),
+            shopSuppliesShelves = new(),
+            staffSuppliesShelves = new();
+
+    [HideInInspector]
+    public Transform complainingPosition,
+        receptionistCalmDownPosition,
+        queueExitPosition,
+        exitPosition,
+        entrancePosition;
+
+    [HideInInspector]
+    public Spot clientSeat,
+        replenisherSeat,
+        receptionistAttendingSpot,
+        sorcererAttendingSpot;
+
+    [HideInInspector] public Cat cat;
+    [HideInInspector] public Alchemist alchemist;
+    [HideInInspector] public Sorcerer sorcerer;
+    [HideInInspector] public Replenisher replenisher;
     [HideInInspector] public Receptionist receptionist;
-    [HideInInspector] public Spot clientSeat;
-    [HideInInspector] public Transform complainingPosition;
-    [HideInInspector] public Transform queueExitPosition;
-    [HideInInspector] public Spot receptionistAttendingPos;
 
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 10)]
@@ -86,31 +102,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         base.Awake();// Ensures the Singleton logic runs
 
-        //Staff
-        receptionist = GameObject.FindGameObjectsWithTag("Receptionist")[0].GetComponent<Receptionist>();
-        alchemist = GameObject.FindGameObjectsWithTag("Alchemist")[0];
-        sorcerer = GameObject.FindGameObjectsWithTag("Sorcerer")[0];
-        replenisher = GameObject.FindGameObjectsWithTag("Replenisher")[0];
-        cat = GameObject.FindGameObjectsWithTag("Cat")[0];
-        _clientsParent = GameObject.FindGameObjectsWithTag("Clients parent")[0].GetComponent<Transform>();
-
-        //Spots
-        FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), _shopShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Alchemist shelf"), _alchemistShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Sorcerer shelf"), _sorcererShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), _shopSuppliesShelves);
-        FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), _staffSuppliesShelves);
-        FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
-
-        //Positions
-        _entrancePosition = GameObject.FindGameObjectsWithTag("Entrance")[0].GetComponent<Transform>();
-        exitPosition = GameObject.FindGameObjectsWithTag("Exit")[0].GetComponent<Transform>();
-        clientSeat = GameObject.FindGameObjectsWithTag("Client seat")[0].GetComponent<Spot>();
-        complainingPosition = GameObject.FindGameObjectsWithTag("Complain position")[0].GetComponent<Transform>();
-        queueExitPosition = GameObject.FindGameObjectsWithTag("Queue exit")[0].GetComponent<Transform>();
-        FillTranformList(GameObject.FindGameObjectsWithTag("Potion pick-up"), _potionsPickUpPositions);
-        FillTranformList(GameObject.FindGameObjectsWithTag("Potion serve"), _potionServePositions);
-
         // Fill waiting queue positions in child order
         FillTransformChildrenList(queuePositionsParent, _queuePositions);
 
@@ -126,12 +117,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             maxSize: maxClients
         );
 
-        //Characters
+        //Staff
         receptionist = GameObject.FindGameObjectWithTag("Receptionist").GetComponent<Receptionist>();
-        alchemist = GameObject.FindGameObjectWithTag("Alchemist");
-        sorcerer = GameObject.FindGameObjectWithTag("Sorcerer");
-        replenisher = GameObject.FindGameObjectWithTag("Replenisher");
-        cat = GameObject.FindGameObjectWithTag("Cat");
+        alchemist = GameObject.FindGameObjectWithTag("Alchemist").GetComponent<Alchemist>();
+        sorcerer = GameObject.FindGameObjectWithTag("Sorcerer").GetComponent<Sorcerer>();
+        replenisher = GameObject.FindGameObjectWithTag("Replenisher").GetComponent<Replenisher>();
+        cat = GameObject.FindGameObjectWithTag("Cat").GetComponent<Cat>();
         _clientsParent = GameObject.FindGameObjectWithTag("Clients parent").GetComponent<Transform>();
 
         //Spots
@@ -143,14 +134,15 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
         clientSeat = GameObject.FindGameObjectWithTag("Client seat").GetComponent<Spot>();
         replenisherSeat = GameObject.FindGameObjectWithTag("Replenisher seat").GetComponent<Spot>();
-        receptionistAttendingSpot = GameObject.FindGameObjectWithTag("Attending position").GetComponent<Spot>();
-        receptionistCalmDownSpot = GameObject.FindGameObjectWithTag("Calm down position").GetComponent<Spot>();
+        receptionistAttendingSpot = GameObject.FindGameObjectWithTag("Receptionist attending spot").GetComponent<Spot>();
+        sorcererAttendingSpot = GameObject.FindGameObjectWithTag("Sorcerer attending spot").GetComponent<Spot>();
 
         //Positions
-        entrancePosition = GameObject.FindGameObjectWithTag("Entrance").GetComponent<Transform>();
-        exitPosition = GameObject.FindGameObjectWithTag("Exit").GetComponent<Transform>();
-        complainingPosition = GameObject.FindGameObjectWithTag("Complain position").GetComponent<Transform>();
-        queueExitPosition = GameObject.FindGameObjectWithTag("Queue exit").GetComponent<Transform>();
+        entrancePosition = GameObject.FindGameObjectWithTag("Entrance").transform;
+        exitPosition = GameObject.FindGameObjectWithTag("Exit").transform;
+        complainingPosition = GameObject.FindGameObjectWithTag("Complain position").transform;
+        receptionistCalmDownPosition = GameObject.FindGameObjectWithTag("Calm down position").transform;
+        queueExitPosition = GameObject.FindGameObjectWithTag("Queue exit").transform;
         FillTranformList(GameObject.FindGameObjectsWithTag("Potion pick-up"), _potionsPickUpPositions);
         FillTranformList(GameObject.FindGameObjectsWithTag("Potion serve"), _potionServePositions);
     }
@@ -204,22 +196,24 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #endregion
 
     #region PUBLIC METHODS
-    /// <returns>Random waiting seat spot</returns>
     public Spot RandomWaitingSeat()
     {
         return RandomSpot(_waitingSeats);
     }
 
-    /// <returns>Random potion serve spot</returns>
     public Vector3 RandomPickUp()
     {
         return RandomPosition(_potionsPickUpPositions);
     }
 
-    /// <returns>Random shop shelf</returns>
     public Shelf RandomShopShelf()
     {
         return RandomShelf(shopShelves);
+    }
+
+    public Shelf RandomSorcererShelf()
+    {
+        return RandomShelf(sorcererShelves);
     }
 
     public Shelf RandomShelf(List<Shelf> shelves)

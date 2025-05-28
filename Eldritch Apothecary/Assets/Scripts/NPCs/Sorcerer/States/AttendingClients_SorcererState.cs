@@ -5,12 +5,11 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
     private float waitTimer = 0f;
     private bool isWaiting = false;
     public AttendingClients_SorcererState(StackFiniteStateMachine<Sorcerer> sfsm)
-    : base("Attending Clients", sfsm) { }
+    : base("Attending clients", sfsm) { }
 
     public override void StartState()
     {
-        _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererAttendingPos);
-        Debug.Log("Atendiendo cliente");
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererAttendingSpot);
     }
 
     public override void UpdateState()
@@ -28,7 +27,7 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
 
             if (waitTimer >= 5f)
             {
-                // Cambia al estado de Pickup Potion después de esperar 5 segundos
+                // Cambia al estado de Pickup Potion despuï¿½s de esperar 5 segundos
                 SwitchState(_controller.pickUpIngredientsState);
 
                 // Reinicia para evitar que vuelva a entrar en este bloque
