@@ -32,6 +32,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     [HideInInspector]
     public Spot clientSeat,
         replenisherSeat,
+        sorcererSeat,
         receptionistAttendingSpot,
         sorcererAttendingSpot;
 
@@ -134,6 +135,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
         clientSeat = GameObject.FindGameObjectWithTag("Client seat").GetComponent<Spot>();
         replenisherSeat = GameObject.FindGameObjectWithTag("Replenisher seat").GetComponent<Spot>();
+        sorcererSeat = GameObject.FindGameObjectWithTag("Sorcerer seat").GetComponent<Spot>();
         receptionistAttendingSpot = GameObject.FindGameObjectWithTag("Receptionist attending spot").GetComponent<Spot>();
         sorcererAttendingSpot = GameObject.FindGameObjectWithTag("Sorcerer attending spot").GetComponent<Spot>();
 
@@ -190,8 +192,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
         // Update normalised values of supplies
         normalisedShopLack = Mathf.Clamp01((float)shopLack / totalShopCapacity);
-        normalisedAlchemistLack = Mathf.Clamp01(alchemistLack / totalAlchemistCapacity);
-        normalisedSorcererLack = Mathf.Clamp01(sorcererLack / totalSorcererCapacity);
+        normalisedAlchemistLack = Mathf.Clamp01((float)alchemistLack / totalAlchemistCapacity);
+        normalisedSorcererLack = Mathf.Clamp01((float)sorcererLack / totalSorcererCapacity);
     }
     #endregion
 

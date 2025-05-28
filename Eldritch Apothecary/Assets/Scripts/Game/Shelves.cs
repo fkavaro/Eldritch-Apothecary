@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,6 +66,11 @@ public class Shelves : MonoBehaviour
         }
         else
             return false;
+    }
+
+    public bool TakeRandom(int maxAmout)
+    {
+        return Take(Random.Range(1, maxAmout + 1));
     }
 
     /// <summary>

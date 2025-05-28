@@ -28,6 +28,7 @@ TagManager:
   - Replenisher seat
   - Sorcerer attending spot
   - Receptionist attending spot
+  - Sorcerer seat
   layers:
   - Default
   - TransparentFX

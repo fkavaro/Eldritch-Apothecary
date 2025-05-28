@@ -9,7 +9,7 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
 
     public override void StartState()
     {
-        _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererAttendingSpot);
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
     }
 
     public override void UpdateState()

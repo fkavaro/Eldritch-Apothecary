@@ -17,6 +17,7 @@ public class Shelf : Spot
 
     public bool IsFull() => shelves.IsFull();
     public bool Take(int amount) => shelves.Take(amount);
+    public bool TakeRandom(int maxAmount) => shelves.TakeRandom(maxAmount);
     public bool CanTake(int amount) => shelves.CanTake(amount);
     public int Replenish(int amount) => shelves.Replenish(amount);
 }

@@ -31,7 +31,10 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
 
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
+                {
+                    shelf.TakeRandom(20);
                     SwitchStateAfterCertainTime(1f, _controller.attendingClientsState, _controller.pickUpAnim, "Picking up ingredient");
+                }
             }
         }
     }
