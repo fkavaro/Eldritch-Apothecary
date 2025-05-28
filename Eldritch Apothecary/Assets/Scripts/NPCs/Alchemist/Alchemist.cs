@@ -108,7 +108,7 @@ public class Alchemist : AHumanoid<Alchemist>
     public override bool CatIsBothering()
     {
         // True if cat is close to the table
-        throw new NotImplementedException();
+        return false;
     }
 
     #endregion
