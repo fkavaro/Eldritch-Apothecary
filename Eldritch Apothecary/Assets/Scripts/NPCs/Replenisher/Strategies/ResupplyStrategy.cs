@@ -22,8 +22,8 @@ public class ResupplyStrategy : AStrategy<Replenisher>
         {
             _controller.PlayAnimationCertainTime(4f, _controller.pickUpAnim, "Resuplying", Resupply, false);
 
-            // Isn't carrying anymore supplies
-            if (_controller.IsEmpty())
+            // Isn't carrying anymore supplies or no more lacking supplies
+            if (_controller.IsEmpty() || ApothecaryManager.Instance.GetNormalisedLack(_shelvesToResupply) <= 0)
                 return Node<Replenisher>.Status.Success;
             else
                 return Node<Replenisher>.Status.Running;
@@ -52,7 +52,8 @@ public class ResupplyStrategy : AStrategy<Replenisher>
         // Look for a shelf with lacking supplies
         foreach (Shelf shelf in _shelvesToResupply)
         {
-            if (!shelf.IsFull())
+            // Not full nor occupied
+            if (!shelf.IsFull() && !shelf.IsOccupied())
             {
                 _nextShelf = shelf;
                 break;

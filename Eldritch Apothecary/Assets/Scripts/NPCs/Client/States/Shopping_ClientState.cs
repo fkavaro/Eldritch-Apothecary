@@ -13,8 +13,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
     public override void StartState()
     {
-        _controller.secondsWaiting = 0f;
-        _controller.normalisedWaitingTime = 0f;
+        _controller.ResetWaitingTime();
 
         _amountNeeded = Random.Range(10, 21); // Random amount needed
         _shopShelf = ApothecaryManager.Instance.RandomShopShelf();
@@ -66,8 +65,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
     public override void ExitState()
     {
-        _controller.secondsWaiting = 0f;
-        _controller.normalisedWaitingTime = 0f;
+        _controller.ResetWaitingTime();
         _controller.animationText.text = "";
     }
 }

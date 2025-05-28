@@ -19,7 +19,7 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
         if (_controller.HasArrivedAtDestination())
         {
             // It's its turn
-            if (_controller.IsTurn())
+            if (ApothecaryManager.Instance.IsTurn(_controller))
             {
                 switch (_controller.wantedService)
                 {

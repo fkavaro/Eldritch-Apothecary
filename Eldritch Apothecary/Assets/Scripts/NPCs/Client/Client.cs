@@ -117,21 +117,6 @@ public class Client : AHumanoid<Client>
 		return secondsWaiting >= maxMinutesWaiting * 60f;
 	}
 
-	public bool InWaitingQueue()
-	{
-		return ApothecaryManager.Instance.waitingQueue.Contains(this);
-	}
-
-	public void EnterWaitingQueue()
-	{
-		ApothecaryManager.Instance.waitingQueue.Enter(this);
-	}
-
-	public bool IsTurn()
-	{
-		return ApothecaryManager.Instance.IsTurn(this);
-	}
-
 	public void DontMindAnything()
 	{
 		scaresCount = 0;
@@ -150,14 +135,12 @@ public class Client : AHumanoid<Client>
 		&& _clientUS.IsCurrentAction(fsmAction) // Executing SFSM (not stunned nor complaining)
 		&& !_clientSFSM.IsCurrentState(leavingState) // Not leaving
 		&& enoughTimeSinceLastScare // Enough time has passed since last scare
-									//&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
+		&& !ApothecaryManager.Instance.waitingQueue.Contains(this) // Not in waiting queue
+																   //&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability
 		)
-		{
-			//Debug.Log("Cat is bothering " + name);
 			return true;
-		}
-		// Cat is too far or client is not scared
-		else return false;
+		else
+			return false;
 	}
 
 	/// <returns>If client has been scared enough times</returns>
@@ -184,6 +167,12 @@ public class Client : AHumanoid<Client>
 			_serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
 
 		_serviceText.text = wantedService.ToString();
+	}
+
+	public void ResetWaitingTime()
+	{
+		secondsWaiting = 0f;
+		normalisedWaitingTime = 0f;
 	}
 	#endregion
 }

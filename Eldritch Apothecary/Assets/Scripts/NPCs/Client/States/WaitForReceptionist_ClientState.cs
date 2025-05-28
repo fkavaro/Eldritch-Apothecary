@@ -10,8 +10,7 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
 
     public override void StartState()
     {
-        _controller.secondsWaiting = 0f;
-        _controller.normalisedWaitingTime = 0f;
+        _controller.ResetWaitingTime();
 
         // Set target to the last position in line
         _controller.SetDestination(ApothecaryManager.Instance.waitingQueue.LastInLinePos());
@@ -21,12 +20,12 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
     {
         // Is close to the last position in line and is not in the queue
         if (_controller.IsCloseTo(ApothecaryManager.Instance.waitingQueue.LastInLinePos())
-                && !_controller.InWaitingQueue())
+            && !ApothecaryManager.Instance.waitingQueue.Contains(_controller))
         {
             // Reduce avoidance radius to avoid being blocked by other clients
             _controller.SetAvoidanceRadius(0.5f);
             // Enters queue
-            _controller.EnterWaitingQueue();
+            ApothecaryManager.Instance.waitingQueue.Enter(_controller);
         }
         // Has arrived the receptionist counter, first position in line
         else if (_controller.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLinePos()))
@@ -59,12 +58,12 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
 
     public override void ExitState()
     {
-        // Leave the queue for next turn
-        ApothecaryManager.Instance.waitingQueue.NextTurn();
+        // Still in waiting queue 
+        if (ApothecaryManager.Instance.waitingQueue.Contains(_controller))
+            // Leave the queue for next turn
+            ApothecaryManager.Instance.waitingQueue.NextTurn();
 
-        _controller.ResetAvoidanceRadius(); // Reset avoidance radius
-
-        _controller.secondsWaiting = 0f;
-        _controller.normalisedWaitingTime = 0f;
+        _controller.ResetAvoidanceRadius();
+        _controller.ResetWaitingTime();
     }
 }
