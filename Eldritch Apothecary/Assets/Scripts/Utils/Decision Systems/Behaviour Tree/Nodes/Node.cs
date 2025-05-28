@@ -41,7 +41,8 @@ where TController : ABehaviourController<TController>
     public override void Update()
     {
         DebugDecision();
-        status = UpdateNode();
+        if (!controller.isExecutionPaused)
+            status = UpdateNode();
     }
 
     public override void Reset()
@@ -58,7 +59,6 @@ where TController : ABehaviourController<TController>
     public void AddChild(Node<TController> child)
     {
         children.Add(child);
-        //child.controller = controller;
     }
 
     public virtual Status UpdateNode()

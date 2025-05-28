@@ -14,7 +14,7 @@ where TController : ABehaviourController<TController>
     [Tooltip("Whether to show debug messages in the console or not")]
     public bool debugMode = false;
     [Tooltip("Whether to update next frame or not")]
-    [SerializeField] protected bool isExecutionPaused = false;
+    [SerializeField] public bool isExecutionPaused = false;
 
     [HideInInspector] public TextMeshProUGUI actionText, animationText;
     protected Transform debugCanvas;
@@ -61,10 +61,7 @@ where TController : ABehaviourController<TController>
     private void Update()
     {
         OnUpdate();
-
-        // Don't update if execution is paused
-        if (!isExecutionPaused)
-            _decisionSystem?.Update();
+        _decisionSystem?.Update();
     }
     protected virtual void OnUpdate() { } // Optionally implemented in subclasses
     # endregion

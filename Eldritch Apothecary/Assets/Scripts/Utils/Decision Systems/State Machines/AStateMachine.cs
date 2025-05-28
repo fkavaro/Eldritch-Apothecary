@@ -66,7 +66,8 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
 
     public override void Update()
     {
-        currentState?.OnUpdateState();
+        if (!controller.isExecutionPaused)
+            currentState?.OnUpdateState();
     }
     #endregion
 

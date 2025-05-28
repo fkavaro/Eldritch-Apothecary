@@ -35,8 +35,8 @@ where TController : ABehaviourController<TController>
 
     public override void Update()
     {
-        // Update the current action
-        _currentAction.UpdateAction();
+        if (!controller.isExecutionPaused)
+            _currentAction.UpdateAction();
 
         // Check if it has finished
         if (_currentAction.IsFinished())
@@ -123,7 +123,5 @@ where TController : ABehaviourController<TController>
         // Clear the action utilities for the next decision cycle
         _actionUtilities.Clear();
     }
-
-
     #endregion
 }
