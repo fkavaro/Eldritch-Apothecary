@@ -106,13 +106,16 @@ where TController : ABehaviourController<TController>
             bestAction = _currentAction;
         }
 
-        // Start the best action if it's different from the current one
-        if (!IsCurrentAction(bestAction))
-        {
-            _currentAction?.FinishAction();
-            _currentAction = bestAction; // Update current action
-            _currentAction.StartAction();
-        }
+        // // Start the best action if it's different from the current one
+        // if (!IsCurrentAction(bestAction))
+        // {
+        //     _currentAction?.FinishAction();
+        //     _currentAction = bestAction; // Update current action
+        //     _currentAction.StartAction();
+        // }
+
+        _currentAction = bestAction; // Update current action
+        _currentAction.StartAction();
 
         // Debug the decision made
         if (controller.debugMode)

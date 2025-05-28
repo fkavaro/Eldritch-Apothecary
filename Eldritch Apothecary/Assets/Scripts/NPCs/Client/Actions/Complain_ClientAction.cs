@@ -13,9 +13,6 @@ public class Complain_ClientAction : ABinaryAction<Client>
 
     public override void StartAction()
     {
-        // Finished complaining when coroutine finished
-        _controller.OnCoroutineFinished += () => finishedComplaining = true;
-
         _controller.animationText.text = "";
 
         // Still in waiting queue 
@@ -38,7 +35,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
             ApothecaryManager.Instance.AddToComplains(_controller);
 
             if (ApothecaryManager.Instance.receptionist.canCalmDown)
-                _controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining");
+                _controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining", () => finishedComplaining = true);
             else
                 _controller.ChangeAnimationTo(_controller.waitAnim);
         }

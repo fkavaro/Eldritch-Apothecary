@@ -8,8 +8,6 @@ using TMPro;
 public abstract class ABehaviourController<TController> : MonoBehaviour
 where TController : ABehaviourController<TController>
 {
-    public event Action OnCoroutineFinished;
-
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console or not")]
     public bool debugMode = false;
@@ -31,11 +29,6 @@ where TController : ABehaviourController<TController>
     public void ResetBehaviour()
     {
         _decisionSystem?.Reset();
-    }
-
-    protected void InvokeOnCoroutineFinished()
-    {
-        OnCoroutineFinished?.Invoke();
     }
 
     #region UNITY EXECUTION EVENTS

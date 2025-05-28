@@ -76,7 +76,7 @@ public class Client : AHumanoid<Client>
 		// If the client wants to shop, set the shopping state as the initial state
 		// There's also a chance to also go shopping although a service is wanted
 		if (wantedService == WantedService.OnlyShop ||
-			UnityEngine.Random.Range(0, 11) < 5) // 50% chance
+			UnityEngine.Random.Range(0, 11) < 7) // 70% chance
 			_clientSFSM.SetInitialState(shoppingState);
 		else
 			_clientSFSM.SetInitialState(waitForReceptionistState);

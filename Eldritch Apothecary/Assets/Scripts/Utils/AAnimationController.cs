@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 /// <summary>
 /// Defines a common class for all animation controllers.
@@ -67,18 +68,18 @@ where TController : ABehaviourController<TController>
         return currentStateInfo.normalizedTime >= 1f;
     }
 
-    public void PlayAnimationCertainTime(float waitTime, int animation, string animationName, bool showtext = true)
+    public void PlayAnimationCertainTime(float waitTime, int animation, string animationName, Action onComplete = null, bool showtext = true)
     {
-        StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, showtext));
+        StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, onComplete, showtext));
     }
 
-    public void PlayAnimationRandomTime(int animation, string animationName, bool showtext = true)
+    public void PlayAnimationRandomTime(int animation, string animationName, Action onComplete = null, bool showtext = true)
     {
-        int waitTime = Random.Range(5, 21);
-        StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, showtext));
+        int waitTime = UnityEngine.Random.Range(5, 21);
+        StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, onComplete, showtext));
     }
 
-    public IEnumerator PlayAnimationCertainTimeCoroutine(float waitTime, int animation, string animationName, bool showtext = true)
+    public IEnumerator PlayAnimationCertainTimeCoroutine(float waitTime, int animation, string animationName, Action onComplete = null, bool showtext = true)
     {
         if (isExecutionPaused) yield break;
 
@@ -93,7 +94,7 @@ where TController : ABehaviourController<TController>
 
         animationText.text = "";
         isExecutionPaused = false;
-        InvokeOnCoroutineFinished();
+        onComplete?.Invoke();
     }
     #endregion
 }

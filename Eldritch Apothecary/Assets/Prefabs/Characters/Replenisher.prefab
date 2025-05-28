@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
-  isCoroutineExecuting: 0
+  isExecutionPaused: 0
   actionText: {fileID: 0}
   animationText: {fileID: 0}
   speed: 3
@@ -103,6 +103,7 @@ MonoBehaviour:
   stoppingDistance: 0.3
   nearDistance: 2
   avoidanceRadius: 0.7
+  isStopped: 0
   energy: 100
   lowEnergyThreshold: 10
   capacity: 100

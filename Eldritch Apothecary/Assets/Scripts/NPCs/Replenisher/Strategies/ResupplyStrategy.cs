@@ -20,19 +20,13 @@ public class ResupplyStrategy : AStrategy<Replenisher>
         // Has arrived to shelf to be resupplied
         if (_controller.HasArrivedAtDestination())
         {
-            _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Resuplying");
-
-            // Replenish it, reducing carried amount
-            _controller.currentAmount = _nextShelf.Replenish(_controller.currentAmount);
+            _controller.PlayAnimationCertainTime(4f, _controller.pickUpAnim, "Resuplying", Resupply, false);
 
             // Isn't carrying anymore supplies
             if (_controller.IsEmpty())
                 return Node<Replenisher>.Status.Success;
             else
-            {
-                NextMostLackingShelf();
                 return Node<Replenisher>.Status.Running;
-            }
         }
         // Hasn't arrived to shelf
         else
@@ -40,10 +34,20 @@ public class ResupplyStrategy : AStrategy<Replenisher>
 
     }
 
+    void Resupply()
+    {
+        // Replenish it, reducing carried amount
+        _controller.currentAmount = _nextShelf.Replenish(_controller.currentAmount);
+
+        // Is carrying more supplies
+        if (!_controller.IsEmpty())
+            NextMostLackingShelf();
+    }
+
     private void NextMostLackingShelf()
     {
         // Order list incrementally from smallest amount to biggest amount
-        _shelvesToResupply.Sort((a, b) => b.Amount - a.Amount);
+        _shelvesToResupply.Sort((a, b) => a.Amount - b.Amount);
 
         // Look for a shelf with lacking supplies
         foreach (Shelf shelf in _shelvesToResupply)

@@ -22,42 +22,50 @@ public class TakeSuppliesStrategy : AStrategy<Replenisher>
         // Has arrived to supplies shelf
         if (_controller.HasArrivedAtDestination())
         {
-            _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Taking supplies");
-
-            int amountToTake;
-
-            // Is greater than 10
-            if (_controller.remainingAmount >= 10)
-                // Take random amount of supplies
-                amountToTake = UnityEngine.Random.Range(10, _controller.remainingAmount + 1);
-            else
-                // Take remaining amount
-                amountToTake = _controller.remainingAmount;
-
-            // Carrying more supplies
-            _controller.currentAmount += amountToTake;
+            _controller.PlayAnimationCertainTime(4f, _controller.pickUpAnim, "Taking supplies", TakeSupply, false);
 
             // Can't take anymore supplies
             if (_controller.IsFull() || _controller.currentAmount >= _lackingAmount)
-            {
-                // Fix carried amount
-                if (_controller.currentAmount > _lackingAmount)
-                    _controller.currentAmount = _lackingAmount;
-
                 return Node<Replenisher>.Status.Success;
-            }
             // Replenisher still can carry more lacking supplies 
             else
-            {
-                // Go to another supply shelf
-                NextRandomSupplyShelf();
                 return Node<Replenisher>.Status.Running;
-            }
         }
         // Hasn't arrived to shelf
         else
+        {
             return Node<Replenisher>.Status.Running;
+        }
+    }
 
+    void TakeSupply()
+    {
+        int amountToTake;
+
+        // Is greater than 10
+        if (_controller.remainingAmount >= 10)
+            // Take random amount of supplies
+            amountToTake = UnityEngine.Random.Range(10, 51);
+        else
+            // Take remaining amount
+            amountToTake = _controller.remainingAmount;
+
+        // Carrying more supplies
+        _controller.currentAmount += amountToTake;
+
+        // Can't take anymore supplies
+        if (_controller.IsFull() || _controller.currentAmount >= _lackingAmount)
+        {
+            // Fix carried amount
+            if (_controller.currentAmount > _lackingAmount)
+                _controller.currentAmount = _lackingAmount;
+        }
+        // Replenisher still can carry more lacking supplies 
+        else
+        {
+            // Go to another supply shelf
+            NextRandomSupplyShelf();
+        }
     }
 
     private void NextRandomSupplyShelf()

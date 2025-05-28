@@ -92,18 +92,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04bbd19a6ed8603409988a030a256c9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
-  coroutineStarted: 0
-  stateText: {fileID: 0}
+  debugMode: 0
+  isExecutionPaused: 0
   actionText: {fileID: 0}
+  animationText: {fileID: 0}
   speed: 3
   rotationSpeed: 3
   maxSamplingDistance: 1
-  arrivedDistance: 0.3
-  closeDistance: 2
+  stoppingDistance: 0.3
+  nearDistance: 2
   avoidanceRadius: 0.7
+  isStopped: 0
   energy: 100
   lowEnergyThreshold: 10
+  canCalmDown: 0
+  canAttend: 0
+  isBusy: 0
 --- !u!1001 &4001432830442057766
 PrefabInstance:
   m_ObjectHideFlags: 0
