@@ -9,17 +9,19 @@ public class Client : AHumanoid<Client>
 {
 	public enum WantedService
 	{
-		OnlyShop,
-		Sorcerer,
-		Alchemist
+		SHOPPING,
+		SPELL,
+		POTION
 	}
 
 	#region PUBLIC PROPERTIES
 	[Header("Client Properties")]
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
-	[Tooltip("Maximum waiting minutes"), Range(1, 4)]
+	[Tooltip("Maximum waiting minutes"), Range(1, 3)]
 	public int maxMinutesWaiting = 2;
+	[Tooltip("Turn number assigned to this client")]
+	public int turnNumber = -1;
 	[Tooltip("Seconds waiting first in line")]
 	public float secondsWaiting = 0f;
 	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0f, 1f)]
@@ -35,12 +37,14 @@ public class Client : AHumanoid<Client>
 	public int maxScares = 2;
 	public int scaresCount = 0;
 	[HideInInspector] public float lastScareTime = -Mathf.Infinity;
+	[HideInInspector] public TextMeshProUGUI turnText;
 	#endregion
 
 	#region PRIVATE PROPERTIES
 	StackFiniteStateMachine<Client> _clientSFSM;
 	UtilitySystem<Client> _clientUS;
 	TextMeshProUGUI _serviceText;
+
 	#endregion
 
 	#region STATES
@@ -75,7 +79,7 @@ public class Client : AHumanoid<Client>
 		// Initial state
 		// If the client wants to shop, set the shopping state as the initial state
 		// There's also a chance to also go shopping although a service is wanted
-		if (wantedService == WantedService.OnlyShop ||
+		if (wantedService == WantedService.SHOPPING ||
 			UnityEngine.Random.Range(0, 11) < 7) // 70% chance
 			_clientSFSM.SetInitialState(shoppingState);
 		else
@@ -89,6 +93,14 @@ public class Client : AHumanoid<Client>
 		complainAction = new(_clientUS);
 
 		return _clientUS;
+	}
+
+	protected override void OnAwake()
+	{
+		base.OnAwake();
+
+		_serviceText = debugCanvas.Find("Service").GetComponent<TextMeshProUGUI>();
+		turnText = debugCanvas.Find("Turn").GetComponent<TextMeshProUGUI>();
 	}
 
 	protected override void OnUpdate()
@@ -157,14 +169,11 @@ public class Client : AHumanoid<Client>
 	void RandomizeProperties()
 	{
 		wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
-		maxMinutesWaiting = UnityEngine.Random.Range(1, 5); // Chooses a random number of minutes to wait
+		maxMinutesWaiting = UnityEngine.Random.Range(1, 4); // Chooses a random number of minutes to wait
 		maxScares = UnityEngine.Random.Range(1, 4); // Chooses a random number of supported scares
 
 		//minDistanceToCat = UnityEngine.Random.Range(0.5f, 2f); // Chooses a random distance to cat
 		//fear = UnityEngine.Random.Range(0, 11); // Chooses a random scare probability
-
-		if (_serviceText == null)
-			_serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
 
 		_serviceText.text = wantedService.ToString();
 	}

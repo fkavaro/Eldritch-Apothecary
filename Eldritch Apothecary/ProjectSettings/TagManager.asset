@@ -29,6 +29,7 @@ TagManager:
   - Sorcerer attending spot
   - Receptionist attending spot
   - Sorcerer seat
+  - Queue positions
   layers:
   - Default
   - TransparentFX

@@ -10,6 +10,7 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
 
     public override void StartState()
     {
+        ApothecaryManager.Instance.TakeTurn(_controller);
         _controller.SetDestinationSpot(ApothecaryManager.Instance.RandomWaitingSeat());
     }
 
@@ -21,13 +22,14 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
             // It's its turn
             if (ApothecaryManager.Instance.IsTurn(_controller))
             {
+                _controller.turnText.text = "";
                 switch (_controller.wantedService)
                 {
-                    case Client.WantedService.Sorcerer:
+                    case Client.WantedService.SPELL:
                         SwitchState(_controller.atSorcererState);
                         break;
 
-                    case Client.WantedService.Alchemist:
+                    case Client.WantedService.POTION:
                         SwitchState(_controller.pickPotionUpState);
                         break;
 

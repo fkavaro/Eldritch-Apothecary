@@ -6,8 +6,7 @@ public class Sorcerer : AHumanoid<Sorcerer>
 {
     #region PRIVATE PROPERTIES
 
-    StackFiniteStateMachine<Sorcerer> _sorcererSFSM;
-    //UtilitySystem<Client> _clientUS;
+    public StackFiniteStateMachine<Sorcerer> sfsm;
     TextMeshProUGUI _serviceText;
     #endregion
 
@@ -21,18 +20,17 @@ public class Sorcerer : AHumanoid<Sorcerer>
 
     protected override ADecisionSystem<Sorcerer> CreateDecisionSystem()
     {
-        _sorcererSFSM = new(this);
+        sfsm = new(this);
 
-        attendingClientsState = new(_sorcererSFSM);
-        interruptedState = new(_sorcererSFSM);
-        pickUpIngredientsState = new(_sorcererSFSM);
-        waitForClientState = new(_sorcererSFSM);
-        waitForIngredientState = new(_sorcererSFSM);
+        attendingClientsState = new(sfsm);
+        interruptedState = new(sfsm);
+        pickUpIngredientsState = new(sfsm);
+        waitForClientState = new(sfsm);
+        waitForIngredientState = new(sfsm);
 
-        _sorcererSFSM.SetInitialState(attendingClientsState);
-        Debug.Log("Hechicero creado");
+        sfsm.SetInitialState(waitForClientState);
 
-        return _sorcererSFSM;
+        return sfsm;
     }
     public override bool CatIsBothering()
     {

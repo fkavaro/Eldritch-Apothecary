@@ -27,7 +27,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         receptionistCalmDownPosition,
         queueExitPosition,
         exitPosition,
-        entrancePosition;
+        entrancePosition,
+        queuePositionsParent;
 
     [HideInInspector]
     public Spot clientSeat,
@@ -46,11 +47,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     [Tooltip("Simulation speed"), Range(0, 10)]
     public float simSpeed = 1;
 
-
-    [Header("Positions parents")]
-    [Tooltip("Parent of all queue positions gameobjects")]
-    public Transform queuePositionsParent;
-
+    [Header("Turns system")]
+    [Tooltip("Number of next sorcerer turn")]
+    public int sorcererTurn = 0;
+    [Tooltip("Number of next alchemist turn")]
+    public int alchemistTurn = 0;
 
     [Header("Clients pool")]
     [Tooltip("All clients models to be spawned randomly")]
@@ -103,6 +104,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         base.Awake();// Ensures the Singleton logic runs
 
+        queuePositionsParent = GameObject.FindGameObjectWithTag("Queue positions").transform;
         // Fill waiting queue positions in child order
         FillTransformChildrenList(queuePositionsParent, _queuePositions);
 
@@ -300,9 +302,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         // Switch wanted service
         switch (client.wantedService)
         {
-            case Client.WantedService.Sorcerer:
-                return !clientSeat.IsOccupied();
-            case Client.WantedService.Alchemist:
+            case Client.WantedService.SPELL:
+                return sorcerer.sfsm.IsCurrentState(sorcerer.waitForClientState);
+            case Client.WantedService.POTION:
                 return true;
             default:
                 return true;
@@ -429,6 +431,23 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             }
 
         return totalLack;
+    }
+
+    public void TakeTurn(Client client)
+    {
+        switch (client.wantedService)
+        {
+            case Client.WantedService.SPELL:
+                client.turnNumber = ++sorcererTurn;
+                client.turnText.text = client.turnNumber.ToString();
+                break;
+            case Client.WantedService.POTION:
+                client.turnNumber = ++alchemistTurn;
+                client.turnText.text = client.turnNumber.ToString();
+                break;
+            default:
+                break;
+        }
     }
     #endregion
 }

@@ -15115,6 +15115,7 @@ MonoBehaviour:
   queueExitPosition: {fileID: 629453370}
   exitPosition: {fileID: 1671213725}
   entrancePosition: {fileID: 0}
+  queuePositionsParent: {fileID: 2102996951}
   clientSeat: {fileID: 0}
   replenisherSeat: {fileID: 0}
   sorcererSeat: {fileID: 0}
@@ -15125,8 +15126,9 @@ MonoBehaviour:
   sorcerer: {fileID: 0}
   replenisher: {fileID: 0}
   receptionist: {fileID: 125054270}
-  simSpeed: 1
-  queuePositionsParent: {fileID: 2102996951}
+  simSpeed: 2
+  sorcererTurn: 0
+  alchemistTurn: 0
   clientPrefabs:
   - {fileID: 1907023332690292858, guid: 201a29a2609858c4d96295c6b440041e, type: 3}
   - {fileID: 1907023332690292858, guid: d90680a9341dfdd40958d576b0fbffaf, type: 3}
@@ -27612,7 +27614,7 @@ Transform:
   m_GameObject: {fileID: 720755766}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: -1.5}
+  m_LocalPosition: {x: 0.5, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -71890,7 +71892,7 @@ Transform:
   m_GameObject: {fileID: 2044957128}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: -3.5}
+  m_LocalPosition: {x: -2.25, y: 0, z: -3.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -73113,7 +73115,7 @@ Transform:
   m_GameObject: {fileID: 2088478091}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75, y: 0, z: -3.5}
+  m_LocalPosition: {x: -1, y: 0, z: -3.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -73445,7 +73447,7 @@ Transform:
   m_GameObject: {fileID: 2097898621}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -73792,7 +73794,7 @@ GameObject:
   - component: {fileID: 2102996951}
   m_Layer: 0
   m_Name: WaitingQueuePositions
-  m_TagString: Untagged
+  m_TagString: Queue positions
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

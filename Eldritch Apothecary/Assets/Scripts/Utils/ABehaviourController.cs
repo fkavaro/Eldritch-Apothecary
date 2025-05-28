@@ -35,8 +35,8 @@ where TController : ABehaviourController<TController>
     private void Awake()
     {
         debugCanvas = transform.Find("DebugCanvas")?.transform;
-        actionText = debugCanvas?.Find("Action text").GetComponent<TextMeshProUGUI>();
-        animationText = debugCanvas?.Find("Animation text").GetComponent<TextMeshProUGUI>();
+        actionText = debugCanvas?.Find("Action").GetComponent<TextMeshProUGUI>();
+        animationText = debugCanvas?.Find("Animation").GetComponent<TextMeshProUGUI>();
 
         OnAwake();
         _decisionSystem?.Awake();

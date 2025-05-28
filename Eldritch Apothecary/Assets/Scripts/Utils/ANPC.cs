@@ -47,13 +47,13 @@ where TController : ABehaviourController<TController>
     /// </summary>
     protected override void OnAwake()
     {
+        base.OnAwake(); // Sets the animator component
+
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = speed;
         _agent.angularSpeed = rotationSpeed * 100f;
         _agent.stoppingDistance = stoppingDistance;
         _agent.radius = avoidanceRadius;
-
-        base.OnAwake(); // Sets the animator component
     }
 
     protected override void OnUpdate()
