@@ -8,11 +8,14 @@ public class Complain_ClientAction : ABinaryAction<Client>
 
     protected override bool SetDecisionFactor()
     {
-        return _controller.HasReachedMaxScares() || _controller.WaitedTooLong();
+        return _controller.TooScared() || _controller.WaitedTooLong();
     }
 
     public override void StartAction()
     {
+        // Finished complaining when coroutine finished
+        _controller.OnCoroutineFinished += () => finishedComplaining = true;
+
         _controller.animationText.text = "";
 
         // Still in waiting queue 
@@ -33,11 +36,8 @@ public class Complain_ClientAction : ABinaryAction<Client>
             _controller.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
             ApothecaryManager.Instance.AddToComplains(_controller);
 
-            if (ApothecaryManager.Instance.receptionist.CanCalmDown())
-            {
+            if (ApothecaryManager.Instance.receptionist.canCalmDown)
                 _controller.PlayAnimationRandomTime(_controller.complainAnim, "Complaining");
-                finishedComplaining = true;
-            }
             else
                 _controller.ChangeAnimationTo(_controller.waitAnim);
         }

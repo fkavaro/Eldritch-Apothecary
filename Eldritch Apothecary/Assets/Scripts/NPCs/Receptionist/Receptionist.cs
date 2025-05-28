@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class Receptionist : AHumanoid<Receptionist>
 {
+    #region PUBLIC PROPERTIES
+    public bool canCalmDown,
+        canAttend,
+        isBusy;
+    #endregion
+
     #region UTILITY SYSTEM
     UtilitySystem<Receptionist> _receptionistUS;
     Idle_ReceptionistAction _idleAction;
@@ -26,38 +32,19 @@ public class Receptionist : AHumanoid<Receptionist>
         return _receptionistUS;
     }
 
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        isBusy = ApothecaryManager.Instance.waitingQueue.HasAnyClient()
+            || !ApothecaryManager.Instance.IsSomeoneComplaining()
+            || ApothecaryManager.Instance.ArePotionsReady();
+    }
+
     public override bool CatIsBothering()
     {
         // Cat never bothers the receptionist
         return false;
-    }
-    #endregion
-
-    #region PUBLIC METHODS
-    /// <summary>
-    /// Returns true if there is a client to attend or potion to serve.
-    /// </summary>
-    public bool IsBusy()
-    {
-        return ApothecaryManager.Instance.waitingQueue.HasAnyClient();// || ApothecaryManager.Instance.potionManager.HasPotionToServe();
-    }
-
-    /// <summary>
-    /// Returns true if the receptionist is ready to attend clients at the counter.
-    /// </summary>
-    public bool CanAttend()
-    {
-        return _receptionistUS.IsCurrentAction(_attendingAction)
-        && HasArrived(ApothecaryManager.Instance.receptionistAttendingSpot.transform.position);
-    }
-
-    /// <summary>
-    /// Returns true if the receptionist is ready to attend clients complaining
-    /// </summary>
-    internal bool CanCalmDown()
-    {
-        return _receptionistUS.IsCurrentAction(_calmingDownAction)
-        && HasArrived(ApothecaryManager.Instance.receptionistCalmDownSpot.transform.position);
     }
     #endregion
 }

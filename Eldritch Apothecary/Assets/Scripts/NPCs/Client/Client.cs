@@ -138,6 +138,7 @@ public class Client : AHumanoid<Client>
 		secondsWaiting = 0f;
 		normalisedWaitingTime = 0f;
 		fear = 0;
+		isExecutionPaused = false;
 	}
 
 	public override bool CatIsBothering()
@@ -160,7 +161,7 @@ public class Client : AHumanoid<Client>
 	}
 
 	/// <returns>If client has been scared enough times</returns>
-	public bool HasReachedMaxScares()
+	public bool TooScared()
 	{
 		return scaresCount >= maxScares;
 	}

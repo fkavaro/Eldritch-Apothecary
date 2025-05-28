@@ -305,6 +305,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
                 return true;
         }
     }
+
+
+    public bool ArePotionsReady()
+    {
+        return false; // TODO
+    }
     #endregion
 
     #region PRIVATE METHODS

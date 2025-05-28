@@ -21,9 +21,12 @@ public class CalmingDown_ReceptionistAction : ABinaryAction<Receptionist>
     {
         if (_controller.HasArrivedAtDestination() && ApothecaryManager.Instance.IsSomeoneComplaining())
         {
+            _controller.canCalmDown = true;
             _controller.transform.LookAt(ApothecaryManager.Instance.CurrentComplainingClient().transform.position);
             _controller.ChangeAnimationTo(_controller.argueAnim);
         }
+        else
+            _controller.canCalmDown = false;
     }
 
     public override bool IsFinished()

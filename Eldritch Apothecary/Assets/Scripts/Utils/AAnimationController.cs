@@ -93,6 +93,7 @@ where TController : ABehaviourController<TController>
 
         animationText.text = "";
         isExecutionPaused = false;
+        InvokeOnCoroutineFinished();
     }
     #endregion
 }
