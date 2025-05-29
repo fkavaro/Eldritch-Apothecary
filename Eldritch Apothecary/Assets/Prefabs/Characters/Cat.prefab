@@ -144,23 +144,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e5df9aff5e87c49a37d515b0bda7e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
-  isCoroutineExecuting: 0
-  stateText: {fileID: 0}
+  debugMode: 0
+  isExecutionPaused: 0
   actionText: {fileID: 0}
+  animationText: {fileID: 0}
   speed: 1
   rotationSpeed: 4
   maxSamplingDistance: 1
   stoppingDistance: 0.3
   nearDistance: 2
   avoidanceRadius: 0.7
+  isStopped: 0
   energy: 100
   lowEnergyThreshold: 10
   targetSamplingIterations: 20
   movementRadious: 12
   annoyDistance: 8
+  minSecondsBeforeAnnoying: 120
   alchemistTable: {fileID: 0}
   sorcererTable: {fileID: 0}
+  lastTimeAlchemistWasAnnoyed: -Infinity
+  lastTimeSorcererWasAnnoyed: -Infinity
 --- !u!1001 &5841715561834592056
 PrefabInstance:
   m_ObjectHideFlags: 0

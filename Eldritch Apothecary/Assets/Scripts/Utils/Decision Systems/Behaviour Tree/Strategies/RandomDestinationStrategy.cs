@@ -34,14 +34,15 @@ where TController : ANPC<TController>
 
         // Has arrived
         if (_controller.HasArrivedAtDestination())
-            // Success
+        {
+            if (_controller.debugMode) Debug.Log(_controller.name + " arrived at random destination");
             return Node<TController>.Status.Success;
+        }
         else // Hasn't arrived
         {
             // Reduce energy
             _controller.ReduceEnergy(Time.deltaTime);
 
-            // Running
             return Node<TController>.Status.Running;
         }
     }

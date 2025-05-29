@@ -12,8 +12,12 @@ public class Cat : ANPC<Cat>
     public int movementRadious = 10;
     [Tooltip("Minimum distance to detect someone to annoy"), Range(1, 20)]
     public int annoyDistance = 5;
+    [Tooltip("Minimum seconds between annoying the same person")]
+    public float minSecondsBeforeAnnoying = 120f;
     public Table alchemistTable,
         sorcererTable;
+    public float lastTimeAlchemistWasAnnoyed = -Mathf.Infinity;
+    public float lastTimeSorcererWasAnnoyed = -Mathf.Infinity;
     #endregion
 
     #region NODES
@@ -30,7 +34,9 @@ public class Cat : ANPC<Cat>
         annoySorcererLeaf,
         walkAroundLeaf,
         isEnergyLowConditionLeaf,
-        restLeaf;
+        restLeaf,
+        canAnnoyAlchemistLeaf,
+        canAnnoySorcererLeaf;
     SuccederNode<Cat> successerAnnoyWorker;
     #endregion
 
@@ -38,10 +44,12 @@ public class Cat : ANPC<Cat>
     RandomDestinationStrategy<Cat> randomDestinationStrategy;
     ConditionStrategy<Cat> isAlchemistNearStrategy,
         isSorcererNearStrategy,
-        isEnergyLowStrategy;
+        isEnergyLowStrategy,
+        canAnnoyAlchemistStrategy,
+        canAnnoySorcererStrategy;
     RestStrategy<Cat> restStrategy;
-    AnnoyingStrategy<Cat> annoyingAlchemistStrategy,
-        annoyingSorcererStrategy;
+    Annoying_CatStrategy annoyingAlchemistStrategy;
+    Annoying_CatStrategy annoyingSorcererStrategy;
     #endregion
 
     #region INHERITED METHODS
@@ -50,24 +58,30 @@ public class Cat : ANPC<Cat>
         // Strategies
         randomDestinationStrategy = new(this, targetSamplingIterations, movementRadious);
         isAlchemistNearStrategy = new(this, IsAlchemistNear);
-        annoyingAlchemistStrategy = new(this, alchemistTable.annoyPosition);
+        annoyingAlchemistStrategy = new(this, alchemistTable.annoyPosition, true);
         isSorcererNearStrategy = new(this, IsSorcererNear);
-        annoyingSorcererStrategy = new(this, sorcererTable.annoyPosition);
+        annoyingSorcererStrategy = new(this, sorcererTable.annoyPosition, false);
         isEnergyLowStrategy = new(this, IsEnergyLow);
         restStrategy = new(this);
+        canAnnoyAlchemistStrategy = new(this, CanAnnoyAlchemist);
+        canAnnoySorcererStrategy = new(this, CanAnnoySorcerer);
 
         // Annoy alchemist sequence
+        canAnnoyAlchemistLeaf = new(this, "CanAnnoyAlchemist", canAnnoyAlchemistStrategy);
         isAlchemistNearLeaf = new(this, "IsAlchemistNear", isAlchemistNearStrategy);
         annoyAlchemistLeaf = new(this, "Annoying Alchemist", annoyingAlchemistStrategy);
         annoyAlchemistSequence = new(this);
         annoyAlchemistSequence.AddChild(isAlchemistNearLeaf);
+        annoyAlchemistSequence.AddChild(canAnnoyAlchemistLeaf);
         annoyAlchemistSequence.AddChild(annoyAlchemistLeaf);
 
         // Annoy sorcerer sequence
+        canAnnoySorcererLeaf = new(this, "CanAnnoySorcerer", canAnnoySorcererStrategy);
         isSorcererNearLeaf = new(this, "IsSorcererNear", isSorcererNearStrategy);
         annoySorcererLeaf = new(this, "Annoying Sorcerer", annoyingSorcererStrategy);
         annoySorcererSequence = new(this);
         annoySorcererSequence.AddChild(isSorcererNearLeaf);
+        annoySorcererSequence.AddChild(canAnnoySorcererLeaf);
         annoySorcererSequence.AddChild(annoySorcererLeaf);
 
         // Annoy worker selector
@@ -103,15 +117,48 @@ public class Cat : ANPC<Cat>
     #endregion
 
     #region PRIVATE	METHODS
+    bool CanAnnoyAlchemist()
+    {
+        if ((Time.time - lastTimeAlchemistWasAnnoyed) >= minSecondsBeforeAnnoying)
+        {
+            if (debugMode) Debug.Log("Cat can annoy alchemist");
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool CanAnnoySorcerer()
+    {
+        if ((Time.time - lastTimeSorcererWasAnnoyed) >= minSecondsBeforeAnnoying)
+        {
+            if (debugMode) Debug.Log("Cat can annoy sorcerer");
+            return true;
+        }
+        else
+            return false;
+    }
 
     bool IsAlchemistNear()
     {
-        return IsNear(alchemistTable.annoyPosition);
+        if (IsNear(alchemistTable.annoyPosition))
+        {
+            if (debugMode) Debug.Log("Cat is near alchemist");
+            return true;
+        }
+        else
+            return false;
     }
 
     bool IsSorcererNear()
     {
-        return IsNear(sorcererTable.annoyPosition);
+        if (IsNear(sorcererTable.annoyPosition))
+        {
+            if (debugMode) Debug.Log("Cat is near sorcerer");
+            return true;
+        }
+        else
+            return false;
     }
 
     bool IsNear(Transform whereToAnnoy)

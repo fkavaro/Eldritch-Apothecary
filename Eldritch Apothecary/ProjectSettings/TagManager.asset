@@ -31,6 +31,7 @@ TagManager:
   - Ready potion
   - Prepared potion
   - Dump
+  - Cat spawn
   layers:
   - Default
   - TransparentFX

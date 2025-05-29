@@ -22,7 +22,10 @@ where TController : ANPC<TController>
         _controller.IncreaseEnergy(Time.deltaTime);
 
         if (_controller.IsEnergyAtMax())
+        {
+            if (_controller.debugMode) Debug.Log(_controller.name + " is fully rested");
             return Node<TController>.Status.Success;
+        }
         else
             return Node<TController>.Status.Running;
     }

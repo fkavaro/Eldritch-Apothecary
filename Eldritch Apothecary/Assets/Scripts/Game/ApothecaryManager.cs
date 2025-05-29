@@ -92,7 +92,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     #region PRIVATE PROPERTIES
     Transform _clientsParent;
-    List<Transform> _queuePositions = new();
+    List<Transform> _queuePositions = new(),
+        _catSpawningPositions = new();
     List<Spot> _waitingSeats = new();
     List<Potion> _preparedPotions = new(),
         _readyPotions = new(),
@@ -105,6 +106,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     protected override void Awake()
     {
         base.Awake();// Ensures the Singleton logic runs
+
+        FillTranformList(GameObject.FindGameObjectsWithTag("Cat spawn"), _catSpawningPositions);
 
         queuePositionsParent = GameObject.FindGameObjectWithTag("Queue positions").transform;
         // Fill waiting queue positions in child order
@@ -129,6 +132,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         replenisher = GameObject.FindGameObjectWithTag("Replenisher").GetComponent<Replenisher>();
         cat = GameObject.FindGameObjectWithTag("Cat").GetComponent<Cat>();
         _clientsParent = GameObject.FindGameObjectWithTag("Clients parent").GetComponent<Transform>();
+
+        // Cat starts in random position
+        cat.transform.position = RandomPosition(_catSpawningPositions);
 
         //Spots
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), shopShelves);
@@ -156,17 +162,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     void Start()
     {
-        if (shopShelves.Count == 0 ||
-            alchemistShelves.Count == 0 ||
-            _queuePositions.Count == 0 ||
-            sorcererShelves.Count == 0 ||
-            shopSuppliesShelves.Count == 0 ||
-            staffSuppliesShelves.Count == 0 ||
-            _waitingSeats.Count == 0 ||
-            _preparedPotions.Count == 0 ||
-            _readyPotions.Count == 0)
-            Debug.LogError("A positions list is empty.");
-
         totalShopCapacity = CalculateTotalCapacity(shopShelves);
         totalAlchemistCapacity = CalculateTotalCapacity(alchemistShelves);
         totalSorcererCapacity = CalculateTotalCapacity(sorcererShelves);
