@@ -15,6 +15,7 @@ public class Receptionist : AHumanoid<Receptionist>
     Serving_ReceptionistAction _servingAction;
     Attending_ReceptionistAction _attendingAction;
     CalmingDown_ReceptionistAction _calmingDownAction;
+    Dump_ReceptionistAction _dumpAction;
     #endregion
 
     #region INHERITED METHODS
@@ -28,6 +29,7 @@ public class Receptionist : AHumanoid<Receptionist>
         _servingAction = new(_receptionistUS);
         _attendingAction = new(_receptionistUS);
         _calmingDownAction = new(_receptionistUS);
+        _dumpAction = new(_receptionistUS);
 
         return _receptionistUS;
     }

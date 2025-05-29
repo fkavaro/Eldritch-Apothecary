@@ -30,6 +30,7 @@ TagManager:
   - Queue positions
   - Ready potion
   - Prepared potion
+  - Dump
   layers:
   - Default
   - TransparentFX

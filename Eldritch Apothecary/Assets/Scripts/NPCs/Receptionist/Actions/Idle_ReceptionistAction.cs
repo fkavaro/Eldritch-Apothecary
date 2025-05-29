@@ -4,7 +4,7 @@ using UnityEngine;
 public class Idle_ReceptionistAction : ABinaryAction<Receptionist>
 {
     public Idle_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem)
-    : base("Idle", utilitySystem, 0.1f) { }
+    : base("Idling", utilitySystem, 0.1f) { }
 
     protected override bool SetDecisionFactor()
     {

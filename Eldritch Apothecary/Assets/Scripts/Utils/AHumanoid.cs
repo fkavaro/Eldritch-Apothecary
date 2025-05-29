@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 /// <summary>
 /// Abstract class that determines the humanoid properties of the NPCs and its animations.

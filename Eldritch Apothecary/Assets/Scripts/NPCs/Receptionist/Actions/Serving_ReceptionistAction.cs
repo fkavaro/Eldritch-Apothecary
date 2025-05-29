@@ -3,7 +3,8 @@ using UnityEngine;
 public class Serving_ReceptionistAction : ALinearAction<Receptionist>
 {
     Potion potionToServe, readyPotion;
-    bool hasServed = false, hasTakenPotion;
+    bool hasTakenPotion,
+        hasServedPotion;
     int turnNumber;
 
     public Serving_ReceptionistAction(UtilitySystem<Receptionist> utilitySystem)
@@ -18,7 +19,7 @@ public class Serving_ReceptionistAction : ALinearAction<Receptionist>
 
     public override void StartAction()
     {
-        hasServed = false;
+        hasServedPotion = false;
         hasTakenPotion = false;
 
         // Select a random prepared potion (is assigned)
@@ -33,8 +34,7 @@ public class Serving_ReceptionistAction : ALinearAction<Receptionist>
             // Take it
             _controller.PlayAnimationCertainTime(1f, _controller.pickUpAnim, "Taking potion", TakePotion);
         // Has taken the potion to be served and it's close to the ready potion
-        else if (hasTakenPotion
-            && !hasServed
+        else if (hasTakenPotion && !hasServedPotion
             && _controller.IsCloseTo(readyPotion.transform.position, 1))
             // Serve it
             _controller.PlayAnimationCertainTime(1f, _controller.pickUpAnim, "Serving potion", PutPotion);
@@ -42,7 +42,7 @@ public class Serving_ReceptionistAction : ALinearAction<Receptionist>
 
     public override bool IsFinished()
     {
-        return hasServed;
+        return hasServedPotion;
     }
 
     void TakePotion()
@@ -55,7 +55,7 @@ public class Serving_ReceptionistAction : ALinearAction<Receptionist>
 
     void PutPotion()
     {
-        hasServed = true;
+        hasServedPotion = true;
         readyPotion.Assign(turnNumber);
     }
 }

@@ -28,7 +28,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         queueExitPosition,
         exitPosition,
         entrancePosition,
-        queuePositionsParent;
+        queuePositionsParent,
+        dump;
 
     [HideInInspector]
     public Spot clientSeat,
@@ -94,7 +95,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     List<Transform> _queuePositions = new();
     List<Spot> _waitingSeats = new();
     List<Potion> _preparedPotions = new(),
-        _readyPotions = new();
+        _readyPotions = new(),
+        _leftPotions = new();
     float _lastSpawnTime = 0f;
     List<Client> _clientsComplaining = new();
     #endregion
@@ -149,6 +151,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         complainingPosition = GameObject.FindGameObjectWithTag("Complain position").transform;
         receptionistCalmDownPosition = GameObject.FindGameObjectWithTag("Calm down position").transform;
         queueExitPosition = GameObject.FindGameObjectWithTag("Queue exit").transform;
+        dump = GameObject.FindGameObjectWithTag("Dump").transform;
     }
 
     void Start()
@@ -332,20 +335,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             return 0;
     }
 
-    /// <returns>True if it's this client turn, according to wanted service</returns>
-    internal bool IsTurn(Client client)
-    {
-        return client.wantedService switch
-        {
-            // If sorcerer is waiting client's turn
-            Client.WantedService.SPELL => sorcerer.sfsm.IsCurrentState(sorcerer.waitForClientState)
-                                        && client.turnNumber == currentSorcererTurn,
-            // If a potion is ready for client's turn
-            Client.WantedService.POTION => AssignedPotion(client),
-            _ => true,
-        };
-    }
-
     /// <summary>
     /// Assigns a turn number to client according to wanted service
     /// </summary>
@@ -367,9 +356,57 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         }
     }
 
+    /// <returns>True if it's this client turn, according to wanted service</returns>
+    internal bool IsTurn(Client client)
+    {
+        return client.wantedService switch
+        {
+            // If sorcerer is waiting client's turn
+            Client.WantedService.SPELL => sorcerer.sfsm.IsCurrentState(sorcerer.waitForClientState)
+                                        && client.turnNumber == currentSorcererTurn,
+            // If a potion is ready for client's turn
+            Client.WantedService.POTION => AssignedPotion(client),
+            _ => true,
+        };
+    }
+
     public void NextSorcererTurn()
     {
         ++currentSorcererTurn;
+    }
+
+
+    public bool IsCurrentSorcererTurn(Client client)
+    {
+        return client.turnNumber == currentSorcererTurn;
+    }
+
+    public Potion ALeftPotion()
+    {
+        Potion leftPotion = null;
+
+        if (_leftPotions.Count > 0)
+            leftPotion = _leftPotions[0];
+
+        return leftPotion;
+    }
+
+    public bool IsPotionLeft(Client client)
+    {
+        Potion clientsPotion = AssignedPotion(client);
+
+        if (clientsPotion != null)
+        {
+            _leftPotions.Add(clientsPotion);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public void DumpPotion(Potion potion)
+    {
+        _leftPotions.Remove(potion);
     }
     #endregion
 
@@ -460,6 +497,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         client.transform.position = entrancePosition.position;
         client.ChangeAnimationTo(client.walkAnim);
         client.turnText.text = "";
+        client.turnNumber = -1;
         client.gameObject.SetActive(true);
         client.Reset();
     }

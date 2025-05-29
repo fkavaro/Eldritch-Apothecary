@@ -23,7 +23,7 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
 
             // Wait until the sorcerer is finished and waiting for another client
             if (ApothecaryManager.Instance.sorcerer.sfsm.IsCurrentState(ApothecaryManager.Instance.sorcerer.waitForClientState)
-                && _controller.turnNumber != ApothecaryManager.Instance.currentSorcererTurn)
+                && !ApothecaryManager.Instance.IsCurrentSorcererTurn(_controller))
                 SwitchState(_controller.leavingState);
         }
         // Is close to the sorcerer seat
