@@ -95,26 +95,28 @@ MonoBehaviour:
   isExecutionPaused: 0
   actionText: {fileID: 0}
   animationText: {fileID: 0}
-  speed: 4
-  rotationSpeed: 3
+  speed: 3
+  rotationSpeed: 4
   maxSamplingDistance: 1
   stoppingDistance: 0.3
-  nearDistance: 2
+  nearDistance: 2.02
   avoidanceRadius: 0.7
   isStopped: 0
   energy: 100
   lowEnergyThreshold: 10
   wantedService: 0
-  maxMinutesWaiting: 2
   turnNumber: -1
-  secondsWaiting: 0
+  personality: 0
   normalisedWaitingTime: 0
+  maxMinutesWaiting: 3
+  secondsWaiting: 0
+  fear: 2
   minDistanceToCat: 2
-  fear: 10
   minSecondsBetweenScares: 30
   maxScares: 3
   scaresCount: 0
   lastScareTime: -Infinity
+  turnText: {fileID: 0}
 --- !u!1001 &5133661696583511748
 PrefabInstance:
   m_ObjectHideFlags: 0

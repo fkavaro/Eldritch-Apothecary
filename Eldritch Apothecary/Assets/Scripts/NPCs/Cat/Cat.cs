@@ -4,20 +4,31 @@ using UnityEngine;
 
 public class Cat : ANPC<Cat>
 {
+    public enum Personality
+    {
+        NORMAL, // Less annoy distance and more min seconds between annoying the same worker
+        TROUBLESOME, // More annoy distance and less min seconds between annoying the same worker
+    }
+
     #region PUBLIC PROPERTIES
-    [Header("Cat Properties")]
+    [Header("Personality Properties")]
+    public Personality personality = Personality.NORMAL;
+    [Tooltip("Minimum distance to detect someone to annoy"), Range(2, 6)]
+    public int annoyDistance = 4;
+    [Tooltip("Minimum seconds between annoying the same worker")]
+    public float minSecondsBeforeAnnoying = 120f;
+
+    [Header("Random Movement Properties")]
     [Tooltip("Maximum iterations allowed to calculate a destination"), Range(5, 30)]
     public int targetSamplingIterations = 30;
     [Tooltip("Movement radious"), Range(1, 20)]
     public int movementRadious = 10;
-    [Tooltip("Minimum distance to detect someone to annoy"), Range(1, 20)]
-    public int annoyDistance = 5;
-    [Tooltip("Minimum seconds between annoying the same person")]
-    public float minSecondsBeforeAnnoying = 120f;
-    public Table alchemistTable,
-        sorcererTable;
-    public float lastTimeAlchemistWasAnnoyed = -Mathf.Infinity;
-    public float lastTimeSorcererWasAnnoyed = -Mathf.Infinity;
+
+    [Header("Where to annoy")]
+    public Table alchemistTable;
+    public Table sorcererTable;
+    [HideInInspector] public float lastTimeAlchemistWasAnnoyed = -Mathf.Infinity;
+    [HideInInspector] public float lastTimeSorcererWasAnnoyed = -Mathf.Infinity;
     #endregion
 
     #region NODES
@@ -113,6 +124,27 @@ public class Cat : ANPC<Cat>
         _catBT = new(this, infiniteLoop);
 
         return _catBT;
+    }
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        personality = (Personality)UnityEngine.Random.Range(0, 2); // Chooses a personality randomly
+
+        switch (personality)
+        {
+            case Personality.NORMAL:
+                speed = UnityEngine.Random.Range(2, 4);
+                annoyDistance = UnityEngine.Random.Range(2, 4);
+                minSecondsBeforeAnnoying = UnityEngine.Random.Range(120f, 240f);
+                break;
+            case Personality.TROUBLESOME:
+                speed = UnityEngine.Random.Range(3, 5);
+                annoyDistance = UnityEngine.Random.Range(4, 7);
+                minSecondsBeforeAnnoying = UnityEngine.Random.Range(60f, 120f);
+                break;
+        }
     }
     #endregion
 

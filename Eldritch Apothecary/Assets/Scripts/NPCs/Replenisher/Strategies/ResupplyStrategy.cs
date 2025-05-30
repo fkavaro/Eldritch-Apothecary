@@ -20,7 +20,7 @@ public class ResupplyStrategy : AStrategy<Replenisher>
         // Has arrived to shelf to be resupplied
         if (_controller.HasArrivedAtDestination())
         {
-            _controller.PlayAnimationCertainTime(4f, _controller.pickUpAnim, "Resuplying", Resupply, false);
+            _controller.PlayAnimationCertainTime(_controller.timeToReplenish, _controller.pickUpAnim, "Resuplying", Resupply, false);
 
             // Isn't carrying anymore supplies or no more lacking supplies
             if (_controller.IsEmpty() || ApothecaryManager.Instance.GetNormalisedLack(_shelvesToResupply) <= 0)

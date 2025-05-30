@@ -15,29 +15,28 @@ where TController : ABehaviourController<TController>
     /// <summary>
     /// Animation to play when the agent arrives at target
     /// </summary>
-    int _animationWhenArrived = -1;
+    //int _animationWhenArrived = -1;
 
-    #region VARIABLES
+    #region PUBLIC PROPERTIES
     [Header("NavMeshAgent Properties")]
-    [Tooltip("Agent speed"), Range(0f, 5f)]
+    [Tooltip("Agent speed"), Range(2f, 5f)]
     public float speed = 2f;
     [Tooltip("Agent rotation speed"), Range(0f, 5f)]
     public float rotationSpeed = 3f;
-    [Tooltip("Max distance from the random point to a point on the navmesh, for target position sampling"), Range(0f, 5f)]
-    public float maxSamplingDistance = 1f;
-    [Tooltip("Distance to which it's considered as arrived"), Range(0.3f, 1f)]
-    public float stoppingDistance = 0.3f;
-    [Tooltip("Distance to which it's close to the destination"), Range(2f, 5f)]
-    public float nearDistance = 2f;
     [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
     public float avoidanceRadius = 0.7f;
-    public bool isStopped;
 
     [Header("Energy Properties")]
     [Tooltip("Energy value"), Range(0, 100)]
     public float energy = 100;
     [Tooltip("Energy is low below this value"), Range(10, 60)]
     public float lowEnergyThreshold = 10;
+    #endregion
+
+    #region PRIVATE PROPERTIES
+    float _maxSamplingDistance = 1f, // Max distance from the random point to a point on the navmesh, for target position sampling
+         _stoppingDistance = 0.3f, // Distance to which it's considered as arrived
+         _nearDistance = 2f; // Distance to which it's close to the destination
     #endregion
 
     #region INHERITED METHODS
@@ -51,15 +50,17 @@ where TController : ABehaviourController<TController>
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = speed;
         _agent.angularSpeed = rotationSpeed * 100f;
-        _agent.stoppingDistance = stoppingDistance;
+        _agent.stoppingDistance = _stoppingDistance;
         _agent.radius = avoidanceRadius;
     }
 
     protected override void OnUpdate()
     {
         // Stop moving if execution is paused
-        isStopped = isExecutionPaused;
-        _agent.isStopped = isStopped;
+        _agent.isStopped = isExecutionPaused;
+
+        if (_agent.speed != speed)
+            _agent.speed = speed;
     }
     #endregion
 
@@ -68,7 +69,7 @@ where TController : ABehaviourController<TController>
     /// Sets the target position for the NavMeshAgent to navigate to
     /// and optionally the animation to play when arriving.
     /// </summary>
-    public void SetDestinationSpot(Spot destinationSpot, int animationWhenArrived = -1)
+    public void SetDestinationSpot(Spot destinationSpot)
     {
         if (_destinationSpot == destinationSpot) return;
 
@@ -78,7 +79,7 @@ where TController : ABehaviourController<TController>
             return;
         }
 
-        SetDestination(destinationSpot.transform.position, animationWhenArrived); // Set the target position for the NavMeshAgent
+        SetDestination(destinationSpot.transform.position); // Set the target position for the NavMeshAgent
 
         _destinationSpot = destinationSpot;
     }
@@ -87,7 +88,7 @@ where TController : ABehaviourController<TController>
     /// Sets the target position for the NavMeshAgent to navigate to
     /// and optionally the animation to play when arriving.
     /// </summary>
-    public void SetDestination(Vector3 destinationPos, int animationWhenArrived = -1)
+    public void SetDestination(Vector3 destinationPos)
     {
         if (_agent.destination == destinationPos) return;
 
@@ -102,9 +103,6 @@ where TController : ABehaviourController<TController>
             _destinationSpot.SetOccupied(false); // Leave free current target spot
             _destinationSpot = null; // Reset the target spot
         }
-
-        if (animationWhenArrived != -1)
-            _animationWhenArrived = animationWhenArrived; // Set the animation to play when arriving
 
         _agent.updateRotation = true;
         _agent.SetDestination(destinationPos);
@@ -128,8 +126,8 @@ where TController : ABehaviourController<TController>
 
     public bool IsCloseTo(Vector3 destination, float checkingDistance = 2f, bool fixRotation = false)
     {
-        if (checkingDistance <= nearDistance)
-            checkingDistance = nearDistance;
+        if (checkingDistance <= _nearDistance)
+            checkingDistance = _nearDistance;
 
         if (Vector3.Distance(transform.position, destination) < checkingDistance)
         {
@@ -168,7 +166,7 @@ where TController : ABehaviourController<TController>
     {
         //Debug.Log($"{gameObject.name} is checking if it has arrived at {destination}.");
 
-        if (Vector3.Distance(transform.position, destination) < stoppingDistance)
+        if (Vector3.Distance(transform.position, destination) < _stoppingDistance)
         //if (_agent.remainingDistance <= _agent.stoppingDistance)
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
@@ -181,12 +179,6 @@ where TController : ABehaviourController<TController>
                     ForceRotation(_destinationSpot.DirectionToVector()); // Fix rotation to the target position
                 if (fixPosition)
                     transform.position = _destinationSpot.transform.position;
-            }
-
-            if (_animationWhenArrived != -1)
-            {
-                ChangeAnimationTo(_animationWhenArrived); // Play the animation when arriving
-                _animationWhenArrived = -1; // Reset the animation to play when arriving
             }
 
             return true;
@@ -217,7 +209,7 @@ where TController : ABehaviourController<TController>
     {
         NavMeshHit hitLocation;
 
-        if (NavMesh.SamplePosition(targetPos, out hitLocation, maxSamplingDistance, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(targetPos, out hitLocation, _maxSamplingDistance, NavMesh.AllAreas))
         {
             reachablePos = hitLocation.position;
             return true;

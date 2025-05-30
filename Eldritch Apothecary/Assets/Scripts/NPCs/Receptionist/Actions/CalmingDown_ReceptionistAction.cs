@@ -23,7 +23,10 @@ public class CalmingDown_ReceptionistAction : ABinaryAction<Receptionist>
         {
             _controller.canCalmDown = true;
             _controller.transform.LookAt(ApothecaryManager.Instance.CurrentComplainingClient().transform.position);
-            _controller.ChangeAnimationTo(_controller.argueAnim);
+            if (_controller.personality == Receptionist.Personality.UPSET)
+                _controller.ChangeAnimationTo(_controller.argueAnim);
+            else
+                _controller.ChangeAnimationTo(_controller.talkAnim);
         }
         else
             _controller.canCalmDown = false;

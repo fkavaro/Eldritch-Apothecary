@@ -56,8 +56,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public GameObject[] clientPrefabs;
     [Tooltip("Maximum number of clients in the apothecary at once")]
     public int maxClients = 10;
-    [Tooltip("Time passed between clients spawning"), Range(5, 20)]
-    public float spawnTimer = 5f;
+    public int minSecondsForNewClient = 2,
+        maxSecondsForNewClient = 15;
 
 
     [Header("Shop supplies")]
@@ -179,7 +179,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         // Clients keep coming if there's room for them
         if (Time.time >= _lastSpawnTime && clientsPool.CountActive < maxClients)
         {
-            _lastSpawnTime = Time.time + spawnTimer; // Reset timer
+            _lastSpawnTime = Time.time + UnityEngine.Random.Range(minSecondsForNewClient, maxSecondsForNewClient);
             clientsPool.Get();
         }
 

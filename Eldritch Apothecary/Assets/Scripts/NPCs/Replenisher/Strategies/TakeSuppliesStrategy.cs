@@ -22,7 +22,7 @@ public class TakeSuppliesStrategy : AStrategy<Replenisher>
         // Has arrived to supplies shelf
         if (_controller.HasArrivedAtDestination())
         {
-            _controller.PlayAnimationCertainTime(4f, _controller.pickUpAnim, "Taking supplies", TakeSupply, false);
+            _controller.PlayAnimationCertainTime(_controller.timeToReplenish, _controller.pickUpAnim, "Taking supplies", TakeSupply, false);
 
             // Can't take anymore supplies
             if (_controller.IsFull() || _controller.currentAmount >= _lackingAmount)

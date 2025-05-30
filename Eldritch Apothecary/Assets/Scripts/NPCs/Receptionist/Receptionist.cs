@@ -3,7 +3,16 @@ using UnityEngine;
 
 public class Receptionist : AHumanoid<Receptionist>
 {
+    public enum Personality
+    {
+        NORMAL, // Normal speed
+        LAZY, // Lower speed
+        UPSET // Higher speed and will argue (animation) with clients complaining
+    }
+
     #region PUBLIC PROPERTIES
+    [Header("Personality Properties")]
+    public Personality personality = Personality.NORMAL;
     public bool canCalmDown,
         canAttend,
         isBusy;
@@ -32,6 +41,26 @@ public class Receptionist : AHumanoid<Receptionist>
         _dumpAction = new(_receptionistUS);
 
         return _receptionistUS;
+    }
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
+
+        switch (personality)
+        {
+            case Personality.NORMAL:
+                speed = 3f;
+                break;
+            case Personality.LAZY:
+                speed = 2f;
+                break;
+            case Personality.UPSET:
+                speed = 4f;
+                break;
+        }
     }
 
     protected override void OnUpdate()

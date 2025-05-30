@@ -39,8 +39,12 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
             }
             // It's not
             else
+            {
+                // Increase time waiting
+                _controller.secondsWaiting += Time.deltaTime;
                 // Wait
                 _controller.ChangeAnimationTo(_controller.sitDownAnim);
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Idle_ReplenisherAction : ABinaryAction<Replenisher>
 {
     public Idle_ReplenisherAction(UtilitySystem<Replenisher> utilitySystem)
-    : base("Idle", utilitySystem, 0.1f) { }
+    : base("Idling", utilitySystem, utilitySystem.controller.replenishThreshold) { }
 
     protected override bool SetDecisionFactor()
     {

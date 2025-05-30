@@ -5,12 +5,26 @@ using UnityEngine.UI;
 
 public class Replenisher : AHumanoid<Replenisher>
 {
+    public enum Personality
+    {
+        NORMAL, // Normal speed and time replenishing each stand. 0.2 to stop idling
+        LAZY, // Lower speed and more time replenishing each stand. 0.3 to stop idling
+        ENERGISED // Higher speed and less time replenishing each stand. 0.1 to stop idling
+    }
+
     #region PUBLIC PROPERTIES
-    [Header("Replenisher Properties")]
-    [Tooltip("Amount of supplies carrying"), Range(0, 100)]
+    [Header("Personality Properties")]
+    public Personality personality = Personality.NORMAL;
+    [Tooltip("Seconds needed to take or replenish supplies"), Range(1, 5)]
+    public int timeToReplenish = 2;
+    [Tooltip("Value to consider any replenishing. Below will be idling"), Range(0f, 0.5f)]
+    public float replenishThreshold = 0.1f;
+    [Header("Supplies Properties")]
+    [Tooltip("Amount of carried supplies"), Range(0, 100)]
     public int capacity = 100;
     public int currentAmount = 0;
     public int remainingAmount;
+    [Header("Supply Canvas")]
     public Slider supplyBar;
     public Image fill;
     public TextMeshProUGUI valueText;
@@ -56,6 +70,32 @@ public class Replenisher : AHumanoid<Replenisher>
         idleAction = new(_replenisherUS);
 
         return _replenisherUS;
+    }
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
+
+        switch (personality)
+        {
+            case Personality.NORMAL:
+                speed = 3f;
+                timeToReplenish = UnityEngine.Random.Range(2, 4);
+                replenishThreshold = 0.2f;
+                break;
+            case Personality.LAZY:
+                speed = 2f;
+                timeToReplenish = UnityEngine.Random.Range(4, 6);
+                replenishThreshold = 0.3f;
+                break;
+            case Personality.ENERGISED:
+                speed = 4f;
+                timeToReplenish = 1;
+                replenishThreshold = 0.1f;
+                break;
+        }
     }
 
     protected override void OnStart()
