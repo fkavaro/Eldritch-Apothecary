@@ -86,5 +86,14 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         else
             SwitchState(_stateStack.Pop());
     }
+
+    /// <summary>
+    /// Returns the current active state (top of the stack).
+    /// </summary>
+    public AState<TController, StackFiniteStateMachine<TController>> Peek()
+    {
+        return currentState;
+    }
+
     #endregion
 }
