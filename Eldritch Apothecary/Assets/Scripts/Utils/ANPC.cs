@@ -25,12 +25,11 @@ where TController : ABehaviourController<TController>
     public float rotationSpeed = 3f;
     [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
     public float avoidanceRadius = 0.7f;
+    public bool isStopped = false;
 
     [Header("Energy Properties")]
     [Tooltip("Energy value"), Range(0, 100)]
     public float energy = 100;
-    [Tooltip("Energy is low below this value"), Range(10, 60)]
-    public float lowEnergyThreshold = 10;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -57,7 +56,15 @@ where TController : ABehaviourController<TController>
     protected override void OnUpdate()
     {
         // Stop moving if execution is paused
-        _agent.isStopped = isExecutionPaused;
+        if (isExecutionPaused)
+            _agent.isStopped = true;
+        else
+        {
+            if (isStopped)
+                _agent.isStopped = true;
+            else
+                _agent.isStopped = false;
+        }
 
         if (_agent.speed != speed)
             _agent.speed = speed;
@@ -300,7 +307,7 @@ where TController : ABehaviourController<TController>
 
     public bool IsEnergyLow()
     {
-        return energy <= lowEnergyThreshold;
+        return energy <= 0;
     }
 
     public bool IsEnergyAtMax()

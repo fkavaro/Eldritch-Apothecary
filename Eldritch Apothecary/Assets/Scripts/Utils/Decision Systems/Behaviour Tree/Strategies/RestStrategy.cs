@@ -24,9 +24,13 @@ where TController : ANPC<TController>
         if (_controller.IsEnergyAtMax())
         {
             if (_controller.debugMode) Debug.Log(_controller.name + " is fully rested");
+            _controller.isStopped = false;
             return Node<TController>.Status.Success;
         }
         else
+        {
+            _controller.isStopped = true;
             return Node<TController>.Status.Running;
+        }
     }
 }
