@@ -36,9 +36,9 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
             if (ApothecaryManager.Instance.receptionist.canAttend)
             {
                 if (_controller.wantedService == Client.WantedService.SHOPPING)
-                    SwitchStateAfterRandomTime(_controller.leavingState, _controller.talkAnim, "Talking");
+                    SwitchStateAfterRandomTime(_controller.fsmAction.leavingState, _controller.talkAnim, "Talking");
                 else
-                    SwitchStateAfterRandomTime(_controller.waitForServiceState, _controller.talkAnim, "Talking");
+                    SwitchStateAfterRandomTime(_controller.fsmAction.waitForServiceState, _controller.talkAnim, "Talking");
             }
             // Receptionist is not at the counter
             else

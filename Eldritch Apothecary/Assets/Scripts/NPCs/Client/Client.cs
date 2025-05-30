@@ -14,50 +14,47 @@ public class Client : AHumanoid<Client>
 		POTION
 	}
 
+	public enum Personality
+	{
+
+	}
+
 	#region PUBLIC PROPERTIES
-	[Header("Client Properties")]
+	[Header("Wanted Service Properties")]
 	[Tooltip("Desired service to be attended")]
 	public WantedService wantedService;
-	[Tooltip("Maximum waiting minutes"), Range(1, 3)]
-	public int maxMinutesWaiting = 2;
 	[Tooltip("Turn number assigned to this client")]
 	public int turnNumber = -1;
-	[Tooltip("Seconds waiting first in line")]
-	public float secondsWaiting = 0f;
+
+	[Header("Wait Properties")]
 	[Tooltip("Normalized between 0 and the maximum waiting time"), Range(0f, 1f)]
 	public float normalisedWaitingTime;
+	[Tooltip("Seconds waiting first in line")]
+	public float secondsWaiting = 0f;
+	[Tooltip("Maximum waiting minutes"), Range(1, 3)]
+	public int maxMinutesWaiting = 2;
 	[Tooltip("Triggering distance to cat"), Range(0.5f, 2f)]
 	public float minDistanceToCat = 1;
 	[Tooltip("Probability of being scared"), Range(0, 10)]
 	public int fear = 10;
 	[Tooltip("Minimum seconds between scares"), Range(10f, 120f)]
 	public float minSecondsBetweenScares = 30f;
-
 	[Tooltip("Maximum number of scares supported"), Range(1, 3)]
 	public int maxScares = 2;
 	public int scaresCount = 0;
+
 	[HideInInspector] public float lastScareTime = -Mathf.Infinity;
 	[HideInInspector] public TextMeshProUGUI turnText;
 	#endregion
 
 	#region PRIVATE PROPERTIES
-	StackFiniteStateMachine<Client> _clientSFSM;
-	UtilitySystem<Client> _clientUS;
+	StackFiniteStateMachine<Client> _fsm;
+	UtilitySystem<Client> _us;
 	TextMeshProUGUI _serviceText;
-
-	#endregion
-
-	#region STATES
-	public Shopping_ClientState shoppingState;
-	public WaitForReceptionist_ClientState waitForReceptionistState;
-	public WaitForService_ClientState waitForServiceState;
-	public AtSorcerer_ClientState atSorcererState;
-	public TakePotion_ClientState pickPotionUpState;
-	public Leaving_ClientState leavingState;
 	#endregion
 
 	#region ACTIONS
-	public StateMachineAction<Client, StackFiniteStateMachine<Client>> fsmAction;
+	public FSM_ClientAction fsmAction;
 	public StunnedByCat_ClientAction stunnedByCatAction;
 	public Complain_ClientAction complainAction;
 	#endregion
@@ -65,34 +62,17 @@ public class Client : AHumanoid<Client>
 	#region INHERITED METHODS
 	protected override ADecisionSystem<Client> CreateDecisionSystem()
 	{
-		// Stack Finite State Machine
-		_clientSFSM = new(this);
-
-		// States initialization
-		shoppingState = new(_clientSFSM);
-		waitForReceptionistState = new(_clientSFSM);
-		waitForServiceState = new(_clientSFSM);
-		atSorcererState = new(_clientSFSM);
-		pickPotionUpState = new(_clientSFSM);
-		leavingState = new(_clientSFSM);
-
-		// Initial state
-		// If the client wants to shop, set the shopping state as the initial state
-		// There's also a chance to also go shopping although a service is wanted
-		if (wantedService == WantedService.SHOPPING ||
-			UnityEngine.Random.Range(0, 11) < 7) // 70% chance
-			_clientSFSM.SetInitialState(shoppingState);
-		else
-			_clientSFSM.SetInitialState(waitForReceptionistState);
-
+		// Finite State Machine
+		_fsm = new(this);
 		// Utility System
-		_clientUS = new(this);
+		_us = new(this);
 
-		fsmAction = new(_clientUS, _clientSFSM);
-		stunnedByCatAction = new(_clientUS);
-		complainAction = new(_clientUS);
+		// Action
+		fsmAction = new(_us, _fsm);
+		stunnedByCatAction = new(_us);
+		complainAction = new(_us);
 
-		return _clientUS;
+		return _us;
 	}
 
 	protected override void OnAwake()
@@ -144,8 +124,8 @@ public class Client : AHumanoid<Client>
 		bool enoughTimeSinceLastScare = (Time.time - lastScareTime) >= minSecondsBetweenScares;
 
 		if (currentDistanceToCat < minDistanceToCat // Cat is close
-		&& _clientUS.IsCurrentAction(fsmAction) // Executing SFSM (not stunned nor complaining)
-		&& !_clientSFSM.IsCurrentState(leavingState) // Not leaving
+		&& _us.IsCurrentAction(fsmAction) // Executing SFSM (not stunned nor complaining)
+		&& !_fsm.IsCurrentState(fsmAction.leavingState) // Not leaving
 		&& enoughTimeSinceLastScare // Enough time has passed since last scare
 		&& !ApothecaryManager.Instance.waitingQueue.Contains(this) // Not in waiting queue
 																   //&& UnityEngine.Random.Range(0, 10) < fear) // Checks scare probability

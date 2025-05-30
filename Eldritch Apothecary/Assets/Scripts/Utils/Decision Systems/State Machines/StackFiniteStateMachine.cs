@@ -73,7 +73,6 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     {
         if (currentState != null)
             _stateStack.Push(currentState);
-        //SwitchState(targetState);
     }
 
     /// <summary>

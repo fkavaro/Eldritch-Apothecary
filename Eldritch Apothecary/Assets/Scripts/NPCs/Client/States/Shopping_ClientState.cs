@@ -29,7 +29,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             if (_shopShelf.Take(_amountNeeded))
             {
                 // Go to waiting queue after animation
-                SwitchStateAfterRandomTime(_controller.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
+                SwitchStateAfterRandomTime(_controller.fsmAction.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
             }
             else
             {

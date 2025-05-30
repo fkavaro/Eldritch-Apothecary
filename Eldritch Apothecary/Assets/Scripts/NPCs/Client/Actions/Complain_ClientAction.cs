@@ -47,7 +47,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
         {
             _controller.animationText.text = "";
             ApothecaryManager.Instance.RemoveFromComplains(_controller);
-            _controller.fsmAction.ForceState(_controller.leavingState);
+            _controller.fsmAction.ForceState(_controller.fsmAction.leavingState);
             finishedComplaining = false;
             return true;
         }

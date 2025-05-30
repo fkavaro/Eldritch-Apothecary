@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -346,7 +343,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
                 client.turnText.text = client.turnNumber.ToString();
                 AssignTurnToRandomPotion(); // TODO: should be called after potion is prepared by alchemist
                 break;
-            default: // SHOOPING
+            default: // SHOPPING
                 break; // Nothing
         }
     }

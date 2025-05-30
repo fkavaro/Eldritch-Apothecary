@@ -24,7 +24,7 @@ public class TakePotion_ClientState : ANPCState<Client, StackFiniteStateMachine<
             // Take it
             assignedPotion.Take();
             // Leave
-            SwitchStateAfterCertainTime(1f, _controller.leavingState, _controller.pickUpAnim, "Picking up potion");
+            SwitchStateAfterCertainTime(1f, _controller.fsmAction.leavingState, _controller.pickUpAnim, "Picking up potion");
         }
     }
 }

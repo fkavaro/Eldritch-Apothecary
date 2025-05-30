@@ -25,15 +25,15 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
                 switch (_controller.wantedService)
                 {
                     case Client.WantedService.SPELL:
-                        SwitchState(_controller.atSorcererState);
+                        SwitchState(_controller.fsmAction.atSorcererState);
                         break;
 
                     case Client.WantedService.POTION:
-                        SwitchState(_controller.pickPotionUpState);
+                        SwitchState(_controller.fsmAction.pickPotionUpState);
                         break;
 
                     default:
-                        SwitchState(_controller.leavingState);
+                        SwitchState(_controller.fsmAction.leavingState);
                         break;
                 }
             }
