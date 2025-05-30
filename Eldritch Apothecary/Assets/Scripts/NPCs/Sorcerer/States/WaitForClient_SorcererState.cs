@@ -8,7 +8,10 @@ public class WaitForClient_SorcererState : ANPCState<Sorcerer, StackFiniteStateM
 
     public override void StartState()
     {
-        ApothecaryManager.Instance.NextSorcererTurn();
+        if (ApothecaryManager.Instance.currentSorcererTurn == 0)
+        {
+            ApothecaryManager.Instance.NextSorcererTurn();
+        }
         _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
     }
 
@@ -20,7 +23,8 @@ public class WaitForClient_SorcererState : ANPCState<Sorcerer, StackFiniteStateM
             _controller.ChangeAnimationTo(_controller.sitDownAnim);
             // A client is as well
             if (ApothecaryManager.Instance.clientSeat.IsOccupied())
-                SwitchState(_controller.attendingClientsState);
+                // Espera aleatoria
+                SwitchState(_controller.pickUpIngredientsState);
         }
     }
 }

@@ -4,6 +4,11 @@ using TMPro;
 
 public class Sorcerer : AHumanoid<Sorcerer>
 {
+    #region PUBLIC PROPERTIES
+    [Tooltip("Triggering distance to cat"), Range(0.5f, 5f)]
+    public float minDistanceToCat = 5;
+
+    #endregion    
     #region PRIVATE PROPERTIES
 
     public StackFiniteStateMachine<Sorcerer> sfsm;
@@ -32,8 +37,38 @@ public class Sorcerer : AHumanoid<Sorcerer>
 
         return sfsm;
     }
+
+    void OnEnable()
+    {
+        Cat.OnSorcererAnnoyed += OnCatAnnoyedMe;
+    }
+
+    void OnDisable()
+    {
+        Cat.OnSorcererAnnoyed -= OnCatAnnoyedMe;
+    }
+
+    void OnCatAnnoyedMe()
+    {
+        if (!(sfsm.Peek() is Interrupted_SorcererState))
+        {
+            Debug.Log("Cat is bothering me");
+            sfsm.PushCurrentState();
+            sfsm.SwitchState(interruptedState);
+            Debug.Log("El hechicero fue interrumpido por el gato (evento).");
+        }
+    }
+
     public override bool CatIsBothering()
     {
-        throw new System.NotImplementedException();
+        float currentDistanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
+        if (currentDistanceToCat < minDistanceToCat)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

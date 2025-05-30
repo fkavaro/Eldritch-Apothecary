@@ -29,6 +29,8 @@ public class Cat : ANPC<Cat>
     public Table sorcererTable;
     [HideInInspector] public float lastTimeAlchemistWasAnnoyed = -Mathf.Infinity;
     [HideInInspector] public float lastTimeSorcererWasAnnoyed = -Mathf.Infinity;
+    public static event Action OnSorcererAnnoyed;
+
     #endregion
 
     #region NODES
@@ -165,6 +167,7 @@ public class Cat : ANPC<Cat>
         if ((Time.time - lastTimeSorcererWasAnnoyed) >= minSecondsBeforeAnnoying)
         {
             if (debugMode) Debug.Log("Cat can annoy sorcerer");
+            OnSorcererAnnoyed?.Invoke();
             return true;
         }
         else
