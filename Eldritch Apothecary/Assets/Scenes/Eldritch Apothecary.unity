@@ -15909,8 +15909,7 @@ MonoBehaviour:
   sorcerer: {fileID: 0}
   replenisher: {fileID: 0}
   receptionist: {fileID: 125054270}
-  simSpeed: 2
-  avoidancePredictionTime: 10
+  simSpeed: 5
   generatedSorcererTurns: 0
   currentSorcererTurn: 0
   generatedAlchemistTurns: 0
@@ -83614,7 +83613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1972303531597532699, guid: bec6afca5b3e86c4eb3fffa4072df551, type: 3}
       propertyPath: debugMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6044787250781978861, guid: bec6afca5b3e86c4eb3fffa4072df551, type: 3}
       propertyPath: m_Name

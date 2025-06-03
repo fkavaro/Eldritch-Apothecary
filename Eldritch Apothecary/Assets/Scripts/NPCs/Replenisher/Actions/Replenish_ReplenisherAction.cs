@@ -56,12 +56,12 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
         _replenishBT.Update();
 
         if (_replenishBT.status == Node<Replenisher>.Status.Success && _controller.debugMode)
-            Debug.LogWarning("Replenisher action completed successfully");
+            Debug.Log("Replenisher action completed successfully");
     }
 
     public override bool IsFinished()
     {
-        // Behaviour tree has finished its sequence
-        return _replenishBT.status == Node<Replenisher>.Status.Success;
+        // Behaviour tree has finished its sequence or failed
+        return _replenishBT.status != Node<Replenisher>.Status.Running;
     }
 }

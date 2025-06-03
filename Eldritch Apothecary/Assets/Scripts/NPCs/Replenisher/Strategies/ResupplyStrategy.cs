@@ -6,6 +6,7 @@ public class ResupplyStrategy : AStrategy<Replenisher>
 {
     List<Shelf> _shelvesToResupply;
     Shelf _nextShelf;
+    bool _foundShelfToResupply;
 
     public ResupplyStrategy(Replenisher controller, List<Shelf> shelvesToResupply) : base(controller)
     {
@@ -21,6 +22,16 @@ public class ResupplyStrategy : AStrategy<Replenisher>
         if (_controller.HasArrivedAtDestination())
         {
             _controller.PlayAnimationCertainTime(_controller.timeToReplenish, _controller.pickUpAnim, "Resuplying", Resupply, false);
+
+            if (_foundShelfToResupply)
+                _controller.SetDestinationSpot(_nextShelf);
+            else
+            {
+                if (_controller.debugMode)
+                    Debug.LogWarning("There was supposed to be a lacking shelf to resupply");
+
+                return Node<Replenisher>.Status.Failure;
+            }
 
             // Isn't carrying anymore supplies or no more lacking supplies
             if (_controller.IsEmpty() || ApothecaryManager.Instance.GetNormalisedLack(_shelvesToResupply) <= 0)
@@ -44,7 +55,7 @@ public class ResupplyStrategy : AStrategy<Replenisher>
             NextMostLackingShelf();
     }
 
-    private void NextMostLackingShelf()
+    void NextMostLackingShelf()
     {
         // Order list incrementally from smallest amount to biggest amount
         _shelvesToResupply.Sort((a, b) => a.Amount - b.Amount);
@@ -60,6 +71,9 @@ public class ResupplyStrategy : AStrategy<Replenisher>
             }
         }
 
-        _controller.SetDestinationSpot(_nextShelf);
+        if (_nextShelf != null)
+            _foundShelfToResupply = true;
+        else
+            _foundShelfToResupply = false;
     }
 }
