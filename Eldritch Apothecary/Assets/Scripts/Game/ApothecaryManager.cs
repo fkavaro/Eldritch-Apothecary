@@ -44,6 +44,8 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 10)]
     public float simSpeed = 1;
+    [Tooltip("Controls how far in the future agents predict collisions for avoidance")]
+    //public float avoidancePredictionTime = 3f;
 
     [Header("Turns system")]
     public int generatedSorcererTurns = 0;
@@ -155,6 +157,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         receptionistCalmDownPosition = GameObject.FindGameObjectWithTag("Calm down position").transform;
         queueExitPosition = GameObject.FindGameObjectWithTag("Queue exit").transform;
         dump = GameObject.FindGameObjectWithTag("Dump").transform;
+
+        // Setting how far in the future agents predict collisions for avoidance
+        //UnityEngine.AI.NavMesh.avoidancePredictionTime = avoidancePredictionTime;
     }
 
     void Start()

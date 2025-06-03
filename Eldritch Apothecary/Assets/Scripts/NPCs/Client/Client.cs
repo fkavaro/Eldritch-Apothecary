@@ -165,7 +165,7 @@ public class Client : AHumanoid<Client>
 				maxScares = UnityEngine.Random.Range(4, 6);
 				break;
 			case Personality.IMPATIENT:
-				speed = UnityEngine.Random.Range(4, 6);
+				speed = UnityEngine.Random.Range(3, 5);
 				maxMinutesWaiting = 1;
 				fear = UnityEngine.Random.Range(3, 6);
 				minDistanceToCat = 1f;

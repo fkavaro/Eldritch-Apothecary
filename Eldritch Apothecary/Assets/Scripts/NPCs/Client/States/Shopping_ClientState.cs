@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -6,7 +7,9 @@ using UnityEngine;
 public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
 {
     Shelf _shopShelf;
-    int _amountNeeded;
+    int _amountNeeded, _shopAgainProbability;
+    List<Shelf> _visitedShelf = new();
+
 
     public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm)
     : base("Shopping", sfsm) { }
@@ -15,9 +18,17 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
     {
         _controller.ResetWaitingTime();
 
-        _amountNeeded = Random.Range(10, 21); // Random amount needed
+        _amountNeeded = Random.Range(5, 16); // Random amount needed
         _shopShelf = ApothecaryManager.Instance.RandomShopShelf();
+        _visitedShelf.Add(_shopShelf);
         _controller.SetDestinationSpot(_shopShelf);
+        _controller.ChangeAnimationTo(_controller.walkAnim);
+
+        // Probability of going to other shelf after picking up according to wanted service
+        if (_controller.wantedService == Client.WantedService.SHOPPING)
+            _shopAgainProbability = 5; // Clients that only want to shop will shop again  more probably
+        else
+            _shopAgainProbability = 1; // Less likely to shop again after picking up
     }
 
     public override void UpdateState()
@@ -28,8 +39,11 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             // Take needed amount from shelf
             if (_shopShelf.Take(_amountNeeded))
             {
-                // Go to waiting queue after animation
-                SwitchStateAfterRandomTime(_controller.fsmAction.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
+                if (Random.Range(0, 11) <= _shopAgainProbability)
+                    _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Picking up objects", GoToOtherShelf);
+                else
+                    // Go to waiting queue after animation
+                    SwitchStateAfterRandomTime(_controller.fsmAction.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
             }
             else
             {
@@ -67,5 +81,18 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
     {
         _controller.ResetWaitingTime();
         _controller.animationText.text = "";
+    }
+
+    void GoToOtherShelf()
+    {
+        _controller.ResetWaitingTime();
+
+        _amountNeeded = Random.Range(5, 16); // Random amount needed
+        _shopShelf = ApothecaryManager.Instance.RandomShopShelf();
+        while (_visitedShelf.Contains(_shopShelf)) // Check that it's new
+            _shopShelf = ApothecaryManager.Instance.RandomShopShelf();
+        _visitedShelf.Add(_shopShelf);
+        _controller.SetDestinationSpot(_shopShelf);
+        _controller.ChangeAnimationTo(_controller.walkAnim);
     }
 }
