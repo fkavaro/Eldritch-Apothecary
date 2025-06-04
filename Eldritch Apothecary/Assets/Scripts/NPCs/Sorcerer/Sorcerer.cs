@@ -14,8 +14,6 @@ public class Sorcerer : AHumanoid<Sorcerer>
     #region PUBLIC PROPERTIES
     [Header("Personality Properties")]
     public Personality personality = Personality.NORMAL;
-    //[Tooltip("Triggering distance to cat"), Range(0.5f, 5f)]
-    //public float minDistanceToCat = 5;
     public GameObject spellVFXPrefab;
     private Transform spellSpawnPoint; // Opcional, para lanzar desde la mano u otra posición
 
@@ -47,6 +45,26 @@ public class Sorcerer : AHumanoid<Sorcerer>
         sfsm.SetInitialState(waitForClientState);
 
         return sfsm;
+    }
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
+
+        switch (personality)
+        {
+            case Personality.NORMAL:
+                speed = 3f;
+                break;
+            case Personality.LAZY:
+                speed = 2f;
+                break;
+            case Personality.ENERGISED:
+                speed = 4f;
+                break;
+        }
     }
 
     void OnEnable()
@@ -90,6 +108,7 @@ public class Sorcerer : AHumanoid<Sorcerer>
 
         if (spellVFXPrefab != null)
         {
+            spellVFXPrefab.SetActive(true);
             Vector3 spawnPos = spellSpawnPoint != null ? spellSpawnPoint.position : transform.position;
             Quaternion rotation = spellSpawnPoint != null ? spellSpawnPoint.rotation : Quaternion.identity;
 
@@ -97,6 +116,7 @@ public class Sorcerer : AHumanoid<Sorcerer>
             Destroy(vfx, spellCastingTime);
         }
 
+        spellVFXPrefab.SetActive(false);
         Destroy(spawn);
         //Debug.Log("Casting spell");
     }

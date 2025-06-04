@@ -2,17 +2,32 @@ using UnityEngine;
 
 public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
-    int spellCastingTime = Random.Range(5, 10); // Devuelve un entero entre 0 y 9
+    int spellCastingTime; // Devuelve un entero entre 0 y 9
 
     private float waitTimer = 0f;
     private bool isWaiting = false;
-    
+
     public AttendingClients_SorcererState(StackFiniteStateMachine<Sorcerer> sfsm)
     : base("Attending clients", sfsm) { }
 
     public override void StartState()
     {
         _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
+        switch (_controller.personality)
+        {
+
+            case Sorcerer.Personality.NORMAL:
+                spellCastingTime = Random.Range(5, 10);
+                break;
+
+            case Sorcerer.Personality.ENERGISED:
+                spellCastingTime = Random.Range(3, 5);
+                break;
+
+            case Sorcerer.Personality.LAZY:
+                spellCastingTime = Random.Range(10, 15);
+                break;
+        }
     }
 
     public override void UpdateState()
