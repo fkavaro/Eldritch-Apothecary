@@ -4,9 +4,20 @@ using TMPro;
 
 public class Sorcerer : AHumanoid<Sorcerer>
 {
+    public enum Personality
+    {
+        NORMAL, // Normal speed and time replenishing each stand. 0.2 to stop idling
+        LAZY, // Lower speed and more time replenishing each stand. 0.3 to stop idling
+        ENERGISED // Higher speed and less time replenishing each stand. 0.1 to stop idling
+    }
+
     #region PUBLIC PROPERTIES
-    [Tooltip("Triggering distance to cat"), Range(0.5f, 5f)]
-    public float minDistanceToCat = 5;
+    [Header("Personality Properties")]
+    public Personality personality = Personality.NORMAL;
+    //[Tooltip("Triggering distance to cat"), Range(0.5f, 5f)]
+    //public float minDistanceToCat = 5;
+    public GameObject spellVFXPrefab;
+    private Transform spellSpawnPoint; // Opcional, para lanzar desde la mano u otra posición
 
     #endregion    
     #region PRIVATE PROPERTIES
@@ -70,17 +81,38 @@ public class Sorcerer : AHumanoid<Sorcerer>
         }
     }
 
+    public void CastSpellEffect(int spellCastingTime)
+    {
+
+        GameObject spawn = new GameObject("SpellSpawnPoint");
+        spawn.transform.position = new Vector3(-11, 2, 17);
+        spellSpawnPoint = spawn.transform;
+
+        if (spellVFXPrefab != null)
+        {
+            Vector3 spawnPos = spellSpawnPoint != null ? spellSpawnPoint.position : transform.position;
+            Quaternion rotation = spellSpawnPoint != null ? spellSpawnPoint.rotation : Quaternion.identity;
+
+            GameObject vfx = GameObject.Instantiate(spellVFXPrefab, spawnPos, rotation);
+            Destroy(vfx, spellCastingTime);
+        }
+
+        Destroy(spawn);
+        //Debug.Log("Casting spell");
+    }
+
 
     public override bool CatIsBothering()
     {
-        float currentDistanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
-        if (currentDistanceToCat < minDistanceToCat)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        //float currentDistanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
+        //if (currentDistanceToCat < minDistanceToCat)
+        //{
+        //    return true;
+        //}
+        //else
+        //{
+        //    return false;
+        //}
+        return false;
     }
 }

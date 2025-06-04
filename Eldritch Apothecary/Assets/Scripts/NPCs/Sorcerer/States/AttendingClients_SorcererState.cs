@@ -22,6 +22,8 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
             if (!isWaiting)
             {
                 _controller.ChangeAnimationTo(_controller.sitDownAnim);
+                _controller.ChangeAnimationTo(_controller.castSpellAnim);
+                _controller.CastSpellEffect(spellCastingTime);
                 isWaiting = true;
                 waitTimer = 0f;
             }
