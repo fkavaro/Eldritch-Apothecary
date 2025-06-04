@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
-    int spellCastingTime; // Devuelve un entero entre 0 y 9
+    int spellCastingTime;
 
     private float waitTimer = 0f;
     private bool isWaiting = false;

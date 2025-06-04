@@ -11,9 +11,17 @@ public class Sorcerer : AHumanoid<Sorcerer>
         ENERGISED // Higher speed and less time replenishing each stand. 0.1 to stop idling
     }
 
+    public enum Efficiency
+    {
+        NORMAL,
+        EFFICIENT,
+        INEFFICIENT,
+    }
+
     #region PUBLIC PROPERTIES
     [Header("Personality Properties")]
     public Personality personality = Personality.NORMAL;
+    public Efficiency efficiency = Efficiency.NORMAL;
     public GameObject spellVFXPrefab;
     private Transform spellSpawnPoint; // Opcional, para lanzar desde la mano u otra posición
 
@@ -51,7 +59,8 @@ public class Sorcerer : AHumanoid<Sorcerer>
     {
         base.OnAwake();
 
-        personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
+        personality = (Personality)UnityEngine.Random.Range(0, 3);
+        efficiency = (Efficiency)UnityEngine.Random.Range(0, 3);
 
         switch (personality)
         {
