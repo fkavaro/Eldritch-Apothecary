@@ -17,11 +17,18 @@ public class Sorcerer : AHumanoid<Sorcerer>
         EFFICIENT,
         INEFFICIENT,
     }
+    public enum Skill
+    {
+        NOVICE,
+        ADEPT,
+        MASTER
+    }
 
     #region PUBLIC PROPERTIES
     [Header("Personality Properties")]
     public Personality personality = Personality.NORMAL;
     public Efficiency efficiency = Efficiency.NORMAL;
+    public Skill skill = Skill.ADEPT;
     public GameObject spellVFXPrefab;
     private Transform spellSpawnPoint; // Opcional, para lanzar desde la mano u otra posición
 
@@ -61,6 +68,7 @@ public class Sorcerer : AHumanoid<Sorcerer>
 
         personality = (Personality)UnityEngine.Random.Range(0, 3);
         efficiency = (Efficiency)UnityEngine.Random.Range(0, 3);
+        skill = (Skill)UnityEngine.Random.Range(0, 3);
 
         switch (personality)
         {

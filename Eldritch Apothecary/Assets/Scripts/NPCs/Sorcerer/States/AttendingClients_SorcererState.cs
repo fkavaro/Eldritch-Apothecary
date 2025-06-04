@@ -3,6 +3,7 @@ using UnityEngine;
 public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
     int spellCastingTime;
+    int failedSpell;
 
     private float waitTimer = 0f;
     private bool isWaiting = false;
@@ -28,6 +29,23 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
                 spellCastingTime = Random.Range(10, 15);
                 break;
         }
+
+        switch (_controller.skill)
+        {
+            case Sorcerer.Skill.NOVICE:
+                failedSpell = Random.Range(1, 4);
+                break;
+
+            case Sorcerer.Skill.ADEPT:
+                failedSpell = Random.Range(1, 6);
+
+                break;
+
+            case Sorcerer.Skill.MASTER:
+                failedSpell = Random.Range(1, 8);
+
+                break;
+        }
     }
 
     public override void UpdateState()
@@ -47,6 +65,12 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
 
             if (waitTimer >= spellCastingTime)
             {
+                if (failedSpell == 1)
+                {
+                    Debug.Log("Failed Spell");
+                }
+
+                failedSpell = 0;
                 ApothecaryManager.Instance.NextSorcererTurn();
                 // Cambia al estado de Pickup Potion despu�s de esperar 5 segundos
                 SwitchState(_controller.waitForClientState);
