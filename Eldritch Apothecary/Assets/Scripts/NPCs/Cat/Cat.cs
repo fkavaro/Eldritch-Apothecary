@@ -30,6 +30,7 @@ public class Cat : ANPC<Cat>
     [HideInInspector] public float lastTimeAlchemistWasAnnoyed = -Mathf.Infinity;
     [HideInInspector] public float lastTimeSorcererWasAnnoyed = -Mathf.Infinity;
     public static event Action OnSorcererAnnoyed;
+    public static event Action OnSorcererNoLongerAnnoyed;
 
     #endregion
 
@@ -206,4 +207,10 @@ public class Cat : ANPC<Cat>
         return isNear;
     }
     #endregion
+
+    public static void RaiseSorcererNoLongerAnnoyed()
+    {
+        OnSorcererNoLongerAnnoyed?.Invoke();
+    }
+
 }

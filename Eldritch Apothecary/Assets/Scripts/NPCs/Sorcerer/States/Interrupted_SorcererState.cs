@@ -9,7 +9,9 @@ public class Interrupted_SorcererState : ANPCState<Sorcerer, StackFiniteStateMac
     public override void StartState()
     {
         //Accion no hacer nada hasta que se vaya el gato 
-        _controller.StartCoroutine(WaitForCatToLeave());
+        //_controller.StartCoroutine(WaitForCatToLeave());
+        _controller.ChangeAnimationTo(_controller.argueAnim);
+
     }
 
     public override void UpdateState()

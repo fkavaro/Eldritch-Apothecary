@@ -41,11 +41,13 @@ public class Sorcerer : AHumanoid<Sorcerer>
     void OnEnable()
     {
         Cat.OnSorcererAnnoyed += OnCatAnnoyedMe;
+        Cat.OnSorcererNoLongerAnnoyed += OnCatStoppedAnnoying;
     }
 
     void OnDisable()
     {
         Cat.OnSorcererAnnoyed -= OnCatAnnoyedMe;
+        Cat.OnSorcererNoLongerAnnoyed -= OnCatStoppedAnnoying;
     }
 
     void OnCatAnnoyedMe()
@@ -58,6 +60,16 @@ public class Sorcerer : AHumanoid<Sorcerer>
             Debug.Log("El hechicero fue interrumpido por el gato (evento).");
         }
     }
+
+    void OnCatStoppedAnnoying()
+    {
+        if (sfsm.Peek() is Interrupted_SorcererState)
+        {
+            sfsm.Pop(); // Volver al estado anterior
+            Debug.Log("El gato se ha bajado de la mesa. El hechicero continúa su tarea.");
+        }
+    }
+
 
     public override bool CatIsBothering()
     {
