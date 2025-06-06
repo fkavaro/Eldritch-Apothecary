@@ -1,38 +1,26 @@
 using System.Collections;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class WaitingIngredients_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
     public WaitingIngredients_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
-    : base("Waiting Ingredients", stackFsm) { }
+        : base("Waiting Ingredients", stackFsm) { }
 
     public override void StartState()
     {
-        //Accion esperar ingredientes (Espera de 7 segundos)
-        if (_controller.HasIngredients())
-        {
-            //_controller.StartCoroutine(SwitchStateAfterRandomTime(_controller.preparingPotionState));
-        }
-        else
-        {
-            _controller.StartCoroutine(WaitingIngredients());
-        }
+        _controller.ChangeAnimationTo(_controller.idleAnim); // Esperando ingredientes
+        _controller.StartCoroutine(WaitingForIngredients());
     }
 
-    public override void UpdateState()
+    public override void UpdateState() { }
+    public override void ExitState() { }
+
+    private IEnumerator WaitingForIngredients()
     {
-    }
+        float waitTime = 3f;
+        yield return new WaitForSeconds(waitTime);
 
-    public override void ExitState()
-    {
+        // Reintenta coger ingredientes
+        _stateMachine.SwitchState(_controller.pickingUpIngredientsState);
     }
-    private IEnumerator WaitingIngredients()
-    {
-        yield return new WaitForSeconds(3f); // Espera 3 segundos
-
-        // Cambiar al siguiente estado (ejemplo: dejar la poci�n en la mesa)
-        _stateMachine.SwitchState(_controller.preparingPotionState);
-    }
-
 }

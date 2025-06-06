@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Interrupted_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
+public class Interrupted_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
     public Interrupted_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
     : base("Interrupted", stackFsm) { }

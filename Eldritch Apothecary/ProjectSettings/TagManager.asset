@@ -32,6 +32,9 @@ TagManager:
   - Prepared potion
   - Dump
   - Cat spawn
+  - AlchemistTable
+  - PreparedPotionsCounter
+  - Alchemist Seat
   layers:
   - Default
   - TransparentFX

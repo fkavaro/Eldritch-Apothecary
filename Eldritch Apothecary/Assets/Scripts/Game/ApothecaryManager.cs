@@ -32,8 +32,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public Spot clientSeat,
         replenisherSeat,
         sorcererSeat,
+        alchemistSeat,
+        alchemistTable,
         receptionistAttendingSpot,
-        sorcererAttendingSpot;
+        sorcererAttendingSpot,
+        preparedPotionsSpot;
 
     [HideInInspector] public Cat cat;
     [HideInInspector] public Alchemist alchemist;
@@ -147,8 +150,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         clientSeat = GameObject.FindGameObjectWithTag("Client seat").GetComponent<Spot>();
         replenisherSeat = GameObject.FindGameObjectWithTag("Replenisher seat").GetComponent<Spot>();
         sorcererSeat = GameObject.FindGameObjectWithTag("Sorcerer seat").GetComponent<Spot>();
+        alchemistSeat = GameObject.FindGameObjectWithTag("Alchemist Seat").GetComponent<Spot>();
+        alchemistTable = GameObject.FindGameObjectWithTag("AlchemistTable").GetComponent<Spot>();
         receptionistAttendingSpot = GameObject.FindGameObjectWithTag("Receptionist attending spot").GetComponent<Spot>();
         sorcererAttendingSpot = GameObject.FindGameObjectWithTag("Sorcerer attending spot").GetComponent<Spot>();
+        preparedPotionsSpot = GameObject.FindGameObjectWithTag("PreparedPotionsCounter").GetComponent<Spot>();
 
         //Positions
         entrancePosition = GameObject.FindGameObjectWithTag("Entrance").transform;
@@ -223,12 +229,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     /// <summary>
     /// Assigns a current turn to unassigned prepared potion
     /// </summary>
-    public Potion AssignTurnToRandomPotion()
+    /*public Potion AssignTurnToRandomPotion()
     {
         Potion randomPotion = RandomPreparedPotion(false);
         randomPotion.Assign(++currentAlchemistTurn);
         return randomPotion;
-    }
+    }*/
 
     public Potion RandomPreparedPotion(bool isAssigned)
     {
@@ -253,6 +259,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public Shelf RandomSorcererShelf()
     {
         return RandomShelf(sorcererShelves);
+    }
+
+    public Shelf RandomAlchemistShelf()
+    {
+        return RandomShelf(alchemistShelves);
     }
 
     public Shelf RandomShelf(List<Shelf> shelves)
@@ -346,7 +357,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             case Client.WantedService.POTION:
                 client.turnNumber = ++generatedAlchemistTurns;
                 client.turnText.text = client.turnNumber.ToString();
-                AssignTurnToRandomPotion(); // TODO: should be called after potion is prepared by alchemist
+                //AssignTurnToRandomPotion(); // TODO: should be called after potion is prepared by alchemist
                 break;
             default: // SHOPPING
                 break; // Nothing
@@ -371,6 +382,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         ++currentSorcererTurn;
     }
+    public void NextAlchemistTurn()
+    {
+        ++currentAlchemistTurn;
+    }
+
 
 
     public bool IsCurrentSorcererTurn(Client client)

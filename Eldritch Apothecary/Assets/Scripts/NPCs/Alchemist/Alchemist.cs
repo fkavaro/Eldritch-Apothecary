@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Alchemist : AHumanoid<Alchemist>
 {
@@ -10,13 +11,15 @@ public class Alchemist : AHumanoid<Alchemist>
     [Header("Alchemist Properties")]
     [Tooltip("Number of available ingredients"), Range(0f, 4f)]
     public int ingredientsAvailable = 10;
-
     [SerializeField] string stateName;
+    public Table alchemistTable;
     #endregion
 
     #region PRIVATE PROPERTIES
     StackFiniteStateMachine<Alchemist> alchemistSFSM;
     TextMeshProUGUI serviceText;
+
+    private bool annoyedByCat = false;
     #endregion
 
     #region STATES
@@ -25,7 +28,10 @@ public class Alchemist : AHumanoid<Alchemist>
     public PreparingPotion_AlchemistState preparingPotionState;
     public Waiting_AlchemistState waitingState;
     public WaitingIngredients_AlchemistState waitingIngredientsState;
+    public PickUpIngredients_AlchemistState pickingUpIngredientsState;
     #endregion
+
+
 
     protected override void OnAwake()
     {
@@ -33,19 +39,37 @@ public class Alchemist : AHumanoid<Alchemist>
 
         //RandomizeProperties();
 
-        //base.OnAwake(); // Sets agent and animator components
+        base.OnAwake(); // Sets agent and animator components
+       
+        alchemistTable.AnnoyingOnTable += OnAnnoyedByCat;
+        alchemistTable.AnnoyingOffTable += OnStopAnnoyedByCat;
+
+
     }
 
-    protected override void OnStart()
+    private void OnStopAnnoyedByCat(GameObject @object)
     {
-
+        annoyedByCat = false;
+        alchemistSFSM.Pop();
     }
+
+    private void OnAnnoyedByCat(GameObject @object)
+    {
+        //@object = GO_cat.gameObject;
+        if (alchemistSFSM.IsCurrentState(preparingPotionState))
+        {
+            Debug.Log("Alchemist fue molestado por: " + @object.name);
+            annoyedByCat = true;
+            alchemistSFSM.SwitchState(interruptedState);
+        }
+    }
+
 
     protected override void OnUpdate()
     {
         // if (stateName != alchemistSFSM.currentState.stateName)
         //     stateName = alchemistSFSM.currentState.stateName;
-        CheckCatProximity();
+        //CheckCatProximity();
 
         //if (!HasReachedMaxScares()) ReactToCat();
 
@@ -86,16 +110,18 @@ public class Alchemist : AHumanoid<Alchemist>
         preparingPotionState = new(alchemistSFSM);
         waitingState = new(alchemistSFSM);
         waitingIngredientsState = new(alchemistSFSM);
+        pickingUpIngredientsState = new(alchemistSFSM);
 
         alchemistSFSM.SetInitialState(waitingState);
 
         return alchemistSFSM;
     }
 
+
     /// <summary>
     /// Checks if the cat is close enough to scare the client
     /// </summary>
-    void CheckCatProximity()
+    /*void CheckCatProximity()
     {
         float distanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
 
@@ -103,12 +129,11 @@ public class Alchemist : AHumanoid<Alchemist>
         {
             alchemistSFSM.SwitchState(interruptedState);
         }
-    }
+    }*/
 
     public override bool CatIsBothering()
     {
-        // True if cat is close to the table
-        return false;
+        return annoyedByCat;
     }
 
     #endregion
