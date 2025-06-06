@@ -2,16 +2,18 @@
 
 public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
-    Shelf shelf;
     int numIngredients;
     public PickUpIngredients_AlchemistState(StackFiniteStateMachine<Alchemist> sfsm)
         : base("Picking up ingredient", sfsm) { }
 
     public override void StartState()
     {
-        shelf = ApothecaryManager.Instance.RandomAlchemistShelf();
+        if (_controller.newShelf)
+        {
+            _controller.currentShelf = ApothecaryManager.Instance.RandomAlchemistShelf();
+        }
         numIngredients = UnityEngine.Random.Range(5, 20);
-        _controller.SetDestinationSpot(shelf);
+        _controller.SetDestinationSpot(_controller.currentShelf);
     }
 
     public override void UpdateState()
@@ -30,22 +32,27 @@ public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFinite
                 if (_controller.HasArrivedAtDestination())
                 {
                     // Verifica si puede tomar ingredientes
-                    if (shelf.CanTake(numIngredients))
+                    if (_controller.currentShelf.CanTake(numIngredients))
                     {
-                        shelf.Take(numIngredients);
+                        _controller.currentShelf.Take(numIngredients);
                         if (UnityEngine.Random.Range(0, 10) < 5)
                         {
+                            _controller.newShelf = true;
+                            Debug.Log("Cogiendo Ingredientres");
                             SwitchStateAfterCertainTime(1f, _controller.preparingPotionState, _controller.pickUpAnim, "Picking up ingredient");
                         }
                         else
                         {
-                            StartState();
+                            Debug.Log("cambio de estanteria");
+                            _controller.currentShelf = ApothecaryManager.Instance.RandomAlchemistShelf();
+                            _controller.SetDestinationSpot(_controller.currentShelf);
+                            numIngredients = UnityEngine.Random.Range(5, 20);
                         }
                     }
                     else
                     {
                         Debug.Log("No hay ingredientes disponibles en esta estantería, esperando...");
-                        SwitchState(_controller.waitingIngredientsState);
+                        SwitchStateAfterCertainTime(1f, _controller.waitingIngredientsState, _controller.waitAnim, "Picking up ingredient");
                     }
                 }
             }

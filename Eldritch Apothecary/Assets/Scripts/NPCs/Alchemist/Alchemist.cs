@@ -13,6 +13,8 @@ public class Alchemist : AHumanoid<Alchemist>
     public int ingredientsAvailable = 10;
     [SerializeField] string stateName;
     public Table alchemistTable;
+    public Shelf currentShelf;
+    public bool newShelf = true;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -60,6 +62,7 @@ public class Alchemist : AHumanoid<Alchemist>
         {
             Debug.Log("Alchemist fue molestado por: " + @object.name);
             annoyedByCat = true;
+            stateName = interruptedState.StateName;
             alchemistSFSM.SwitchState(interruptedState);
         }
     }
@@ -81,12 +84,12 @@ public class Alchemist : AHumanoid<Alchemist>
     /// <summary>
     /// Resets the client's properties and behaviour
     /// </summary>
-
+    /*
     public bool HasIngredients()
     {
         return ingredientsAvailable > 0;
     }
-
+    */
     /* Para comprobar si tiene algun pedido
     public bool hasOrder()
     {

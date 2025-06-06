@@ -10,7 +10,8 @@ public class Interrupted_AlchemistState : ANPCState<Alchemist, StackFiniteStateM
     public override void StartState()
     {
         //Accion no hacer nada hasta que se vaya el gato 
-        _controller.StartCoroutine(WaitForCatToLeave());
+        // _controller.StartCoroutine(WaitForCatToLeave());
+        _controller.ChangeAnimationTo(_controller.yellAnim);
     }
 
     public override void UpdateState()
@@ -22,7 +23,7 @@ public class Interrupted_AlchemistState : ANPCState<Alchemist, StackFiniteStateM
     {
     }
 
-    private IEnumerator WaitForCatToLeave()
+    /*private IEnumerator WaitForCatToLeave()
     {
         while (_controller.CatIsBothering())
         {
@@ -30,5 +31,5 @@ public class Interrupted_AlchemistState : ANPCState<Alchemist, StackFiniteStateM
         }
 
         _stateMachine.Pop(); // Vuelve al estado anterior cuando el gato se vaya
-    }
+}*/
 }
