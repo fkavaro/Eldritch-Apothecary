@@ -68,6 +68,10 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
                 if (failedSpell == 1)
                 {
                     Debug.Log("Failed Spell");
+                    waitTimer = 0f;
+                    isWaiting = false;
+                    SwitchState(_controller.pickUpIngredientsState);
+                    return;
                 }
 
                 failedSpell = 0;
