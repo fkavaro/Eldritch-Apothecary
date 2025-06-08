@@ -26,5 +26,26 @@ public class WaitForClient_SorcererState : ANPCState<Sorcerer, StackFiniteStateM
                 // Espera aleatoria
                 SwitchState(_controller.pickUpIngredientsState);
         }
+
+        if (ApothecaryManager.Instance.sorcererClientsQueue.Count == 0)
+        {
+            return;
+        }
+
+        if (ApothecaryManager.Instance.sorcererClientsQueue[0].turnNumber == -1)
+        {
+            return;
+        }
+
+        if (ApothecaryManager.Instance.sorcererClientsQueue.Count > 0)
+        {
+            ApothecaryManager.Instance.currentSorcererTurn = ApothecaryManager.Instance.sorcererClientsQueue[0].turnNumber;
+        }
+
+
+        //if (ApothecaryManager.Instance.sorcererClientsQueue[0].turnNumber != ApothecaryManager.Instance.currentSorcererTurn)
+        //{
+        //    ApothecaryManager.Instance.currentSorcererTurn = ApothecaryManager.Instance.sorcererClientsQueue[0].turnNumber;
+        //}
     }
 }

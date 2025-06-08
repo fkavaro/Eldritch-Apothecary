@@ -15,6 +15,12 @@ public class Complain_ClientAction : ABinaryAction<Client>
     {
         _controller.animationText.text = "";
 
+        if ((_controller.wantedService == Client.WantedService.SPELL) && (_controller.turnNumber == ApothecaryManager.Instance.currentSorcererTurn))
+        {
+            ApothecaryManager.Instance.NextSorcererTurn();
+            ApothecaryManager.Instance.sorcererClientsQueue.Remove(_controller);
+        }
+
         // Still in waiting queue 
         if (ApothecaryManager.Instance.waitingQueue.Contains(_controller))
             // Leave the queue for next turn

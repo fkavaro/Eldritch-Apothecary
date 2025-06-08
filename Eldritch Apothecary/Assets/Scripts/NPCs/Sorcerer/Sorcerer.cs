@@ -33,6 +33,7 @@ public class Sorcerer : AHumanoid<Sorcerer>
     private Transform spellSpawnPoint; // Opcional, para lanzar desde la mano u otra posición
 
     #endregion    
+
     #region PRIVATE PROPERTIES
 
     public StackFiniteStateMachine<Sorcerer> sfsm;
