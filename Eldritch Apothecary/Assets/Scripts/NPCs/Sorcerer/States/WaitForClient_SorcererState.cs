@@ -41,11 +41,5 @@ public class WaitForClient_SorcererState : ANPCState<Sorcerer, StackFiniteStateM
         {
             ApothecaryManager.Instance.currentSorcererTurn = ApothecaryManager.Instance.sorcererClientsQueue[0].turnNumber;
         }
-
-
-        //if (ApothecaryManager.Instance.sorcererClientsQueue[0].turnNumber != ApothecaryManager.Instance.currentSorcererTurn)
-        //{
-        //    ApothecaryManager.Instance.currentSorcererTurn = ApothecaryManager.Instance.sorcererClientsQueue[0].turnNumber;
-        //}
     }
 }
