@@ -48,7 +48,6 @@ public class Sorcerer : AHumanoid<Sorcerer>
     public Interrupted_SorcererState interruptedState;
     public PickUpIngredients_SorcererState pickUpIngredientsState;
     public WaitForClient_SorcererState waitForClientState;
-    public WaitForIngredient_SorcererState waitForIngredientState;
     #endregion
 
     #region INHERITED METHODS
@@ -61,7 +60,6 @@ public class Sorcerer : AHumanoid<Sorcerer>
         interruptedState = new(sfsm);
         pickUpIngredientsState = new(sfsm);
         waitForClientState = new(sfsm);
-        waitForIngredientState = new(sfsm);
 
         sfsm.SetInitialState(waitForClientState);
 
