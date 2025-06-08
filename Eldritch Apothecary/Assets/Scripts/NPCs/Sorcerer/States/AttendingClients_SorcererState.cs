@@ -14,9 +14,10 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
     public override void StartState()
     {
         _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
+
+        // Takes a certain amount of time to cast a spell depending on personality
         switch (_controller.personality)
         {
-
             case Sorcerer.Personality.NORMAL:
                 spellCastingTime = Random.Range(5, 10);
                 break;
@@ -30,6 +31,7 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
                 break;
         }
 
+        // Changes the chance to fail a spell according to skill
         switch (_controller.skill)
         {
             case Sorcerer.Skill.NOVICE:
@@ -38,12 +40,10 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
 
             case Sorcerer.Skill.ADEPT:
                 failedSpell = Random.Range(1, 6);
-
                 break;
 
             case Sorcerer.Skill.MASTER:
                 failedSpell = Random.Range(1, 8);
-
                 break;
         }
     }
@@ -56,31 +56,39 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
             {
                 _controller.ChangeAnimationTo(_controller.sitDownAnim);
                 _controller.ChangeAnimationTo(_controller.castSpellAnim);
+
+                // Casts spell for a certain amount of time
                 _controller.CastSpellEffect(spellCastingTime);
                 isWaiting = true;
                 waitTimer = 0f;
             }
 
+            // Timer to track the spell duration
             waitTimer += Time.deltaTime;
 
+            // When sorcerer stops casting spell
             if (waitTimer >= spellCastingTime)
             {
+                // If spell is failed
                 if (failedSpell == 1)
                 {
-                    Debug.Log("Failed Spell");
+                    if (_controller.debugMode) Debug.Log("Failed Spell");
+                    // Resets timer
                     waitTimer = 0f;
                     isWaiting = false;
+                    // Starts from the beginning
                     SwitchState(_controller.pickUpIngredientsState);
                     return;
                 }
 
+                // If spell is successful, resets
                 failedSpell = 0;
+                // Adds one to the sorcerer turn
                 ApothecaryManager.Instance.NextSorcererTurn();
-                // Cambia al estado de Pickup Potion despu�s de esperar 5 segundos
+                // Sorcerer waits for the next client
                 SwitchState(_controller.waitForClientState);
-                //SwitchState(_controller.pickUpIngredientsState);
 
-                // Reinicia para evitar que vuelva a entrar en este bloque
+                // Restarts timer
                 waitTimer = 0f;
                 isWaiting = false;
             }

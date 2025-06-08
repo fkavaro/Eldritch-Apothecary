@@ -15,6 +15,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
     {
         _controller.animationText.text = "";
 
+        // If the client leaving is the next in line to the sorcerer, adds one to the sorcerer turn
         if ((_controller.wantedService == Client.WantedService.SPELL) && (_controller.turnNumber == ApothecaryManager.Instance.currentSorcererTurn))
         {
             ApothecaryManager.Instance.NextSorcererTurn();

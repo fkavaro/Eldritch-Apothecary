@@ -15,7 +15,7 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
 
     public override void UpdateState()
     {
-        // Is close to the pick up position
+        // If is close to the pick up position
         if (_controller.IsCloseToDestination())
         {
             // Pick up position is occupied
@@ -32,6 +32,7 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
                 {
+                    // Picks up different amounts according to efficiency
                     switch (_controller.efficiency)
                     {
                         case Sorcerer.Efficiency.INEFFICIENT:
