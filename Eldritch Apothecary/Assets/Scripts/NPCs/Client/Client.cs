@@ -152,7 +152,9 @@ public class Client : AHumanoid<Client>
     void RandomizeProperties()
     {
         wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
-        /*wantedService = (WantedService)1;*/ // Chooses a service randomly
+        /*wantedService = (WantedService)1;*/ // Sets wanted service to spell
+
+        // Updates sorcerer clients queue
         if (wantedService == WantedService.SPELL)
         {
             ApothecaryManager.Instance.sorcererClientsQueue.Add(this);

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Picks up an ingredient from a random shelf
+/// </summary>
 public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
     Shelf shelf;

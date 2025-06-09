@@ -19,6 +19,7 @@ public class Complain_ClientAction : ABinaryAction<Client>
         if ((_controller.wantedService == Client.WantedService.SPELL) && (_controller.turnNumber == ApothecaryManager.Instance.currentSorcererTurn))
         {
             ApothecaryManager.Instance.NextSorcererTurn();
+            // Updates sorcerer clients list
             ApothecaryManager.Instance.sorcererClientsQueue.Remove(_controller);
         }
 

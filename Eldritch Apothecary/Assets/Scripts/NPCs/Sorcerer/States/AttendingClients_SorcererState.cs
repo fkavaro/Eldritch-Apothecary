@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Casts a spell for the client
+/// </summary>
 public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
     int spellCastingTime;

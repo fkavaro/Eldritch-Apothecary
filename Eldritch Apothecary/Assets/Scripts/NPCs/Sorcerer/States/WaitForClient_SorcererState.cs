@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
+/// <summary>
+/// Waits for client until they are seated
+/// </summary>
 public class WaitForClient_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
     public WaitForClient_SorcererState(StackFiniteStateMachine<Sorcerer> sfsm)
