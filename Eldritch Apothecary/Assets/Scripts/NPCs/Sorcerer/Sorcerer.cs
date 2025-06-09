@@ -33,7 +33,7 @@ public class Sorcerer : AHumanoid<Sorcerer>
     public Efficiency efficiency = Efficiency.NORMAL;
     public Skill skill = Skill.ADEPT;
 
-    public GameObject spellVFXPrefab;
+    [SerializeField] public GameObject[] spellVFXPrefabs;
     #endregion    
 
     #region PRIVATE PROPERTIES
@@ -94,29 +94,31 @@ public class Sorcerer : AHumanoid<Sorcerer>
 
     #region PUBLIC METHODS
     /// <summary>
-    /// Spawns a temporary spell visual effect for a certain time, and then destroys it
+    /// Spawns a random spell visual effect from the list, plays it for a set duration
     /// </summary>
     public void CastSpellEffect(int spellCastingTime)
     {
-
         GameObject spawn = new GameObject("SpellSpawnPoint");
         spawn.transform.position = new Vector3(-11, 2, 17);
         spellSpawnPoint = spawn.transform;
 
-        if (spellVFXPrefab != null)
+        if (spellVFXPrefabs != null && spellVFXPrefabs.Length > 0)
         {
-            spellVFXPrefab.SetActive(true);
-            Vector3 spawnPos = spellSpawnPoint != null ? spellSpawnPoint.position : transform.position;
-            Quaternion rotation = spellSpawnPoint != null ? spellSpawnPoint.rotation : Quaternion.identity;
+            int index = UnityEngine.Random.Range(0, spellVFXPrefabs.Length);
+            GameObject selectedVFX = spellVFXPrefabs[index];
 
-            GameObject vfx = GameObject.Instantiate(spellVFXPrefab, spawnPos, rotation);
+            Vector3 spawnPos = spellSpawnPoint.position;
+            Quaternion rotation = spellSpawnPoint.rotation;
+
+            GameObject vfx = GameObject.Instantiate(selectedVFX, spawnPos, rotation);
             Destroy(vfx, spellCastingTime);
         }
 
-        spellVFXPrefab.SetActive(false);
         Destroy(spawn);
+
         if (debugMode) Debug.Log("Casting spell");
     }
+
 
     /// <summary>
     /// Determines if the cat is currently bothering the sorcerer 
@@ -170,6 +172,6 @@ public class Sorcerer : AHumanoid<Sorcerer>
             sfsm.Pop();
             if (debugMode) Debug.Log("Cat is no longer bothering me. Continuing my tasks");
         }
-    } 
+    }
     #endregion
 }
