@@ -38,7 +38,10 @@ public class FinishPotion_AlchemistState : AState<Alchemist, StackFiniteStateMac
          // Asignar el turno actual del alquimista a ese spot
             if (UnityEngine.Random.Range(0, 10) < _controller.failProbability)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
             {
                 //Se spawnea el charco
                 GameObject.Instantiate(_controller.puddle, _controller.transform.position, _controller.transform.rotation);

@@ -5,6 +5,10 @@ public class PreparingPotion_AlchemistState : AState<Alchemist, StackFiniteState
 {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    int timeToPrepare = 0;
+>>>>>>> Stashed changes
 =======
     int timeToPrepare = 0;
 >>>>>>> Stashed changes
