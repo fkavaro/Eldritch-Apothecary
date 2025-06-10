@@ -85680,6 +85680,10 @@ PrefabInstance:
       value: Alchemist
       objectReference: {fileID: 0}
     - target: {fileID: 3904580521758236230, guid: 4b58f239fa5f86d478bcbdeb667d0989, type: 3}
+      propertyPath: puddle
+      value: 
+      objectReference: {fileID: 3537789070638604603, guid: 143910859af12734d8bec903cd54d6a1, type: 3}
+    - target: {fileID: 3904580521758236230, guid: 4b58f239fa5f86d478bcbdeb667d0989, type: 3}
       propertyPath: alchemistTable
       value: 
       objectReference: {fileID: 621026931}
