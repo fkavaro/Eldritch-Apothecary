@@ -4,6 +4,10 @@ using UnityEngine;
 public class PreparingPotion_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    int timeToPrepare = 0;
+>>>>>>> Stashed changes
 =======
     int timeToPrepare = 0;
 >>>>>>> Stashed changes

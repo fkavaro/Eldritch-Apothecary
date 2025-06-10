@@ -37,6 +37,35 @@ public class FinishPotion_AlchemistState : AState<Alchemist, StackFiniteStateMac
         {//IsClose(Spot de las pociones)
          // Asignar el turno actual del alquimista a ese spot
             if (UnityEngine.Random.Range(0, 10) < _controller.failProbability)
+<<<<<<< Updated upstream
+=======
+            {
+                //Se spawnea el charco
+                GameObject.Instantiate(_controller.puddle, _controller.transform.position, _controller.transform.rotation);
+                GameObject.Destroy(_controller.puddle, 5f);
+                SwitchStateAfterCertainTime(1f, _controller.preparingPotionState, _controller.yellAnim, "Prepare potion again");
+
+            }
+            else
+            {
+                emptySpot.Assign(ApothecaryManager.Instance.currentAlchemistTurn);
+                ApothecaryManager.Instance.NextAlchemistTurn();
+                SwitchStateAfterCertainTime(1f, _controller.waitingState, _controller.pickUpAnim, "Placing potion");
+            }
+        }
+    }
+    private IEnumerator WaitUntilSlotAvailable()
+    {
+        float maxWaitTime = 10f;
+        float waited = 0f;
+
+        while (ApothecaryManager.Instance.RandomPreparedPotion(false) == null)
+        {
+            yield return new WaitForSeconds(0.5f);
+            waited += 0.5f;
+
+            if (waited >= maxWaitTime)
+>>>>>>> Stashed changes
             {
                 //Se spawnea el charco
                 GameObject.Instantiate(_controller.puddle, _controller.transform.position, _controller.transform.rotation);

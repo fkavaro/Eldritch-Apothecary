@@ -57,6 +57,9 @@ public class Alchemist : AHumanoid<Alchemist>
 
     public GameObject puddle;
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     #endregion
 
@@ -76,6 +79,9 @@ public class Alchemist : AHumanoid<Alchemist>
     public PickUpIngredients_AlchemistState pickingUpIngredientsState;
     public WaitingForFreeSpace_AlchemistState waitingForSpaceState;
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     #endregion
 
@@ -96,6 +102,55 @@ public class Alchemist : AHumanoid<Alchemist>
         personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
         efficiency = (Efficiency)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
         skill = (Skill)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
+<<<<<<< Updated upstream
+=======
+
+
+        switch (personality)
+        {
+            case Personality.NORMAL:
+                speed = 3f;
+                timeToPrepareMax = 7;
+                timeToPrepareMin = 5;
+                break;
+            case Personality.LAZY:
+                speed = 2f;
+                timeToPrepareMax = 15;
+                timeToPrepareMin = 7;
+                break;
+            case Personality.ENERGISED:
+                speed = 4f;
+                timeToPrepareMax = 4;
+                timeToPrepareMin = 1;
+                break;
+        }
+
+        switch (efficiency)
+        {
+            case Efficiency.NORMAL:
+                numExtraIngredients = UnityEngine.Random.Range(2, 4);
+                break;
+            case Efficiency.EFFICIENT:
+                numExtraIngredients = 1;
+                break;
+            case Efficiency.INEFFICIENT:
+                numExtraIngredients = UnityEngine.Random.Range(4, 8);
+                break;
+        }
+
+        switch (skill)
+        {
+            case Skill.NOOB:
+                failProbability = 9;   // if(random < failProbability) = fallo
+                break;
+            case Skill.ADEPT:
+                failProbability = 5;
+                break;
+            case Skill.MASTER:
+                failProbability = 2;
+                break;
+        }
+>>>>>>> Stashed changes
 
 
         switch (personality)
@@ -200,6 +255,9 @@ public class Alchemist : AHumanoid<Alchemist>
 =======
         pickingUpIngredientsState = new(alchemistSFSM);
         waitingForSpaceState = new(alchemistSFSM);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
         alchemistSFSM.SetInitialState(waitingState);
