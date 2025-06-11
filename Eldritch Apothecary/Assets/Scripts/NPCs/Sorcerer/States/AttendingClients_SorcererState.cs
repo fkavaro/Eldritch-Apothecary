@@ -79,6 +79,8 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
                     if (_controller.debugMode) Debug.Log("Failed Spell");
 
                     failedSpellConsequence = UnityEngine.Random.Range(0, 2);
+
+                    // Makes client either bigger or smaller
                     switch (failedSpellConsequence)
                     {
                         case 0:
@@ -88,7 +90,6 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
                             ApothecaryManager.Instance.sorcererClientsQueue[0].Enlarge();
                             break;
                     }
-                    Debug.Log("Failed Spell");
 
                     // Resets timer
                     waitTimer = 0f;

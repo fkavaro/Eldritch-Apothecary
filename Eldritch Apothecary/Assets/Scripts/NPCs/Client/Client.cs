@@ -145,16 +145,25 @@ public class Client : AHumanoid<Client>
         return scaresCount >= maxScares;
     }
 
+    /// <summary>
+    /// Makes client bigger when spell goes wrong
+    /// </summary>
     public void Enlarge()
     {
         transform.localScale *= 1.2f;
     }
 
+    /// <summary>
+    /// Makes client smaller when spell goes wrong
+    /// </summary>
     public void Shrink()
     {
         transform.localScale *= 0.8f;
     }
-    
+
+    /// <summary>
+    /// Resets client scale
+    /// </summary>
     public void ResetScale()
     {
         transform.localScale = Vector3.one;
@@ -201,28 +210,6 @@ public class Client : AHumanoid<Client>
         }
 
         _serviceText.text = wantedService.ToString();
-    }
-    
-    public void SaveMaterials()
-    {
-        failSkinMaterial = Resources.Load<Material>("Materials/Red");
-        Transform model = transform.Find("Model");
-        if (model != null)
-        {
-            Transform body = model.Find("Body");
-            if (body != null)
-            {
-                SkinnedMeshRenderer skinRenderer = body.GetComponent<SkinnedMeshRenderer>();
-            }
-            else
-            {
-                Debug.LogWarning("No se encontró 'Body' en 'Model'");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No se encontró 'Model' en cliente");
-        }
     }
 
     public void ResetWaitingTime()
