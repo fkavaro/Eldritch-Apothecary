@@ -48,7 +48,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 2
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -98,13 +98,13 @@ MonoBehaviour:
   animationText: {fileID: 0}
   speed: 2
   rotationSpeed: 3
-  maxSamplingDistance: 1
-  stoppingDistance: 0.3
-  nearDistance: 2
   avoidanceRadius: 0.7
   isStopped: 0
   energy: 100
-  lowEnergyThreshold: 10
+  personality: 0
+  efficiency: 0
+  skill: 1
+  spellVFXPrefabs: []
 --- !u!1001 &7642469248375556269
 PrefabInstance:
   m_ObjectHideFlags: 0

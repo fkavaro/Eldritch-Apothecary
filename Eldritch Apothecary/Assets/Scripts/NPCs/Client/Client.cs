@@ -84,6 +84,9 @@ public class Client : AHumanoid<Client>
 
         _serviceText = debugCanvas.Find("Service").GetComponent<TextMeshProUGUI>();
         turnText = debugCanvas.Find("Turn").GetComponent<TextMeshProUGUI>();
+
+        // Random navMeshAgent priority
+        _agent.avoidancePriority = UnityEngine.Random.Range(10, 99);
     }
 
     protected override void OnUpdate()
