@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Client;
 
 /// <summary>
 /// Waits for its service turn sat down.
@@ -11,6 +12,11 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
     public override void StartState()
     {
         ApothecaryManager.Instance.TakeTurn(_controller);
+        // Updates sorcerer clients queue
+        if (_controller.wantedService == WantedService.SPELL)
+        {
+            ApothecaryManager.Instance.sorcererClientsQueue.Add(_controller);
+        }
         _controller.SetDestinationSpot(ApothecaryManager.Instance.RandomWaitingSeat());
     }
 

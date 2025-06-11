@@ -48,6 +48,8 @@ public class Client : AHumanoid<Client>
 
     [HideInInspector] public float lastScareTime = -Mathf.Infinity;
     [HideInInspector] public TextMeshProUGUI turnText;
+
+    public Material failSkinMaterial;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -85,7 +87,6 @@ public class Client : AHumanoid<Client>
         _serviceText = debugCanvas.Find("Service").GetComponent<TextMeshProUGUI>();
         turnText = debugCanvas.Find("Turn").GetComponent<TextMeshProUGUI>();
     }
-
     protected override void OnUpdate()
     {
         base.OnUpdate();
@@ -143,6 +144,21 @@ public class Client : AHumanoid<Client>
     {
         return scaresCount >= maxScares;
     }
+
+    public void Enlarge()
+    {
+        transform.localScale *= 1.2f;
+    }
+
+    public void Shrink()
+    {
+        transform.localScale *= 0.8f;
+    }
+    
+    public void ResetScale()
+    {
+        transform.localScale = Vector3.one;
+    }
     #endregion
 
     #region PRIVATE	METHODS
@@ -153,12 +169,7 @@ public class Client : AHumanoid<Client>
     {
         wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
         /*wantedService = (WantedService)1;*/ // Sets wanted service to spell
-
-        // Updates sorcerer clients queue
-        if (wantedService == WantedService.SPELL)
-        {
-            ApothecaryManager.Instance.sorcererClientsQueue.Add(this);
-        }
+        
         personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
 
         switch (personality)
@@ -190,6 +201,28 @@ public class Client : AHumanoid<Client>
         }
 
         _serviceText.text = wantedService.ToString();
+    }
+    
+    public void SaveMaterials()
+    {
+        failSkinMaterial = Resources.Load<Material>("Materials/Red");
+        Transform model = transform.Find("Model");
+        if (model != null)
+        {
+            Transform body = model.Find("Body");
+            if (body != null)
+            {
+                SkinnedMeshRenderer skinRenderer = body.GetComponent<SkinnedMeshRenderer>();
+            }
+            else
+            {
+                Debug.LogWarning("No se encontró 'Body' en 'Model'");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No se encontró 'Model' en cliente");
+        }
     }
 
     public void ResetWaitingTime()

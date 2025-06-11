@@ -29,6 +29,7 @@ public class Leaving_ClientState : ANPCState<Client, StackFiniteStateMachine<Cli
         else if (_controller.IsCloseTo(exitPosition, 3f))
         {
             ApothecaryManager.Instance.clientsPool.Release(_controller);
+            _controller.ResetScale();
 
             // Wanted a potion
             if (_controller.wantedService == Client.WantedService.POTION)

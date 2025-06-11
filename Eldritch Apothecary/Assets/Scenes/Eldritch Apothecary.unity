@@ -15910,7 +15910,7 @@ MonoBehaviour:
   sorcerer: {fileID: 0}
   replenisher: {fileID: 0}
   receptionist: {fileID: 125054270}
-  simSpeed: 5
+  simSpeed: 7
   generatedSorcererTurns: 0
   currentSorcererTurn: 0
   generatedAlchemistTurns: 0
