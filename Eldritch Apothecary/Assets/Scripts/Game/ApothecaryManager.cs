@@ -11,6 +11,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #region PUBLIC PROPERTIES
     public ObjectPool<Client> clientsPool;
     public WaitingQueue waitingQueue;
+    public List<Client> sorcererClientsQueue = new();
 
     [HideInInspector]
     public List<Shelf> shopShelves = new(),

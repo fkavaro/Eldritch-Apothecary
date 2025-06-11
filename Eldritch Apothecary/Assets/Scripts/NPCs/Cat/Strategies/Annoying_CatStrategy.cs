@@ -46,6 +46,7 @@ public class Annoying_CatStrategy : AStrategy<Cat>
             _controller.lastTimeAlchemistWasAnnoyed = Time.time;
         else
             _controller.lastTimeSorcererWasAnnoyed = Time.time;
+        Cat.RaiseSorcererNoLongerAnnoyed();
 
         if (_controller.debugMode) Debug.Log(_controller.name + " finished annoying");
         _hasAnimationFinished = true;
