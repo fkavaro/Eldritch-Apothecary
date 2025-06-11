@@ -40,10 +40,17 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             if (_shopShelf.Take(_amountNeeded))
             {
                 if (Random.Range(0, 11) <= _shopAgainProbability)
-                    _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Picking up objects", GoToOtherShelf);
+                    _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Picking up goods", GoToOtherShelf);
                 else
-                    // Go to waiting queue after animation
-                    SwitchStateAfterRandomTime(_controller.fsmAction.waitForReceptionistState, _controller.pickUpAnim, "Picking up objects");
+                {
+                    // Client is a SHOPLIFTER
+                    if (_controller.personality == Client.Personality.SHOPLIFTER)
+                        SwitchStateAfterRandomTime(_controller.fsmAction.robbingState, _controller.pickUpAnim, "Picking up goods");
+                    // Is legal
+                    else
+                        // Go to waiting queue after animation
+                        SwitchStateAfterRandomTime(_controller.fsmAction.waitForReceptionistState, _controller.pickUpAnim, "Picking up goods");
+                }
             }
             else
             {

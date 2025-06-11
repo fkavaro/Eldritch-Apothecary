@@ -18,7 +18,8 @@ public class Client : AHumanoid<Client>
     {
         NORMAL, // More wait time and less fear
         IMPATIENT, // Less wait time and mid fear
-        SKITTISH // Less wait time and more fear
+        SKITTISH, // Less wait time and more fear
+        SHOPLIFTER // Will steal shop goods
     }
 
     #region PUBLIC PROPERTIES
@@ -115,6 +116,9 @@ public class Client : AHumanoid<Client>
         return secondsWaiting >= maxMinutesWaiting * 60f;
     }
 
+    /// <summary>
+    /// Client is not affected by anything
+    /// </summary>
     public void DontMindAnything()
     {
         scaresCount = 0;
@@ -155,14 +159,21 @@ public class Client : AHumanoid<Client>
     void RandomizeProperties()
     {
         wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
-        /*wantedService = (WantedService)1;*/ // Sets wanted service to spell
 
         // Updates sorcerer clients queue
         if (wantedService == WantedService.SPELL)
-        {
-            ApothecaryManager.Instance.sorcererClientsQueue.Add(this);
-        }
-        personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
+            ApothecaryManager.Instance.sorcererClientsQueue.Add(this); // TODO: do when is attended by receptionist
+
+        int rndPersonality = UnityEngine.Random.Range(0, 11);
+
+        if (rndPersonality <= 1) // 10% chance
+            personality = Personality.SHOPLIFTER;
+        else if (rndPersonality > 1 && rndPersonality <= 4) // 30% chance
+            personality = Personality.IMPATIENT;
+        else if (rndPersonality > 4 && rndPersonality <= 7) // 30% chance
+            personality = Personality.SKITTISH;
+        else if (rndPersonality > 7 && rndPersonality <= 10) // 30% chance
+            personality = Personality.NORMAL;
 
         switch (personality)
         {
@@ -181,6 +192,16 @@ public class Client : AHumanoid<Client>
                 minDistanceToCat = 1f;
                 minSecondsBetweenScares = 60f;
                 maxScares = UnityEngine.Random.Range(2, 4);
+                break;
+            case Personality.SHOPLIFTER: // Like impatient but is not affected by anything
+                speed = UnityEngine.Random.Range(3, 5);
+                maxMinutesWaiting = 1;
+                fear = UnityEngine.Random.Range(3, 6);
+                minDistanceToCat = 1f;
+                minSecondsBetweenScares = 60f;
+                maxScares = UnityEngine.Random.Range(2, 4);
+                DontMindAnything();
+                wantedService = WantedService.SHOPPING; // Only wants shop goods
                 break;
             case Personality.SKITTISH:
                 speed = UnityEngine.Random.Range(2, 4);
