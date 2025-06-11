@@ -150,7 +150,7 @@ MonoBehaviour:
   animationText: {fileID: 0}
   speed: 2
   rotationSpeed: 4
-  avoidanceRadius: 0.7
+  avoidanceRadius: 0.5
   isStopped: 0
   energy: 100
   personality: 0

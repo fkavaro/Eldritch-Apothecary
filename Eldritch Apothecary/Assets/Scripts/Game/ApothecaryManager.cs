@@ -11,7 +11,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     #region PUBLIC PROPERTIES
     public ObjectPool<Client> clientsPool;
     public WaitingQueue waitingQueue;
-    public List<Client> sorcererClientsQueue = new();
 
     [HideInInspector]
     public List<Shelf> shopShelves = new(),
@@ -36,23 +35,26 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         receptionistAttendingSpot,
         sorcererAttendingSpot;
 
+
+
+    [Header("Simulation")]
+    [Tooltip("Simulation speed"), Range(0, 10)]
+    public float simSpeed = 1;
+
+    [Header("Turns system")]
+    public int generatedSorcererTurns = 0;
+    public int currentSorcererTurn = 0;
+    public List<Client> sorcererClientsQueue = new();
+    public int generatedAlchemistTurns = 0;
+    public int currentAlchemistTurn = 0;
+
+    [Header("Staff")]
+    public GameObject catPrefab;
     [HideInInspector] public Cat cat;
     [HideInInspector] public Alchemist alchemist;
     [HideInInspector] public Sorcerer sorcerer;
     [HideInInspector] public Replenisher replenisher;
     [HideInInspector] public Receptionist receptionist;
-
-    [Header("Simulation")]
-    [Tooltip("Simulation speed"), Range(0, 10)]
-    public float simSpeed = 1;
-    [Tooltip("Controls how far in the future agents predict collisions for avoidance")]
-    //public float avoidancePredictionTime = 3f;
-
-    [Header("Turns system")]
-    public int generatedSorcererTurns = 0;
-    public int currentSorcererTurn = 0;
-    public int generatedAlchemistTurns = 0;
-    public int currentAlchemistTurn = 0;
 
     [Header("Clients pool")]
     [Tooltip("All clients models to be spawned randomly")]
@@ -130,11 +132,14 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         alchemist = GameObject.FindGameObjectWithTag("Alchemist").GetComponent<Alchemist>();
         sorcerer = GameObject.FindGameObjectWithTag("Sorcerer").GetComponent<Sorcerer>();
         replenisher = GameObject.FindGameObjectWithTag("Replenisher").GetComponent<Replenisher>();
-        cat = GameObject.FindGameObjectWithTag("Cat").GetComponent<Cat>();
         _clientsParent = GameObject.FindGameObjectWithTag("Clients parent").GetComponent<Transform>();
 
-        // Cat starts in random position
-        cat.transform.position = RandomPosition(_catSpawningPositions);
+        // Spawn cat in random position
+        cat = Instantiate(
+            catPrefab,
+            RandomPosition(_catSpawningPositions),
+            Quaternion.identity)
+        .GetComponent<Cat>();
 
         //Spots
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), shopShelves);

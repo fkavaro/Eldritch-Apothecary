@@ -133,6 +133,10 @@ public class Cat : ANPC<Cat>
     {
         base.OnAwake();
 
+        alchemistTable = GameObject.FindGameObjectWithTag("Alchemist table").GetComponent<Table>();
+        sorcererTable = GameObject.FindGameObjectWithTag("Sorcerer table").GetComponent<Table>();
+
+
         personality = (Personality)UnityEngine.Random.Range(0, 2); // Chooses a personality randomly
 
         switch (personality)
