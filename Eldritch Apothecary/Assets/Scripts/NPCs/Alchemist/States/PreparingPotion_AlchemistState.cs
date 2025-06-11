@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PreparingPotion_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
-
+    int timeToPrepare = 0;
     public PreparingPotion_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
     : base("Preparing potion", stackFsm) { }
 
@@ -17,7 +17,8 @@ public class PreparingPotion_AlchemistState : ANPCState<Alchemist, StackFiniteSt
     {
         if (_controller.HasArrivedAtDestination())
         {
-            SwitchStateAfterRandomTime(_controller.finishingPotionState, _controller.mixIngredientsAnim, "Preparing Potions");
+            timeToPrepare  = UnityEngine.Random.Range(_controller.timeToPrepareMin, _controller.timeToPrepareMax);
+            SwitchStateAfterCertainTime(timeToPrepare,_controller.finishingPotionState, _controller.mixIngredientsAnim, "Preparing Potions");
 
         }
     }

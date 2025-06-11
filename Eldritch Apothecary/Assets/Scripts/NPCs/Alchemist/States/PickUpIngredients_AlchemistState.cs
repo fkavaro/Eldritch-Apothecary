@@ -12,7 +12,7 @@ public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFinite
         {
             _controller.currentShelf = ApothecaryManager.Instance.RandomAlchemistShelf();
         }
-        numIngredients = UnityEngine.Random.Range(5, 20);
+        numIngredients = UnityEngine.Random.Range(5, 20) + _controller.numExtraIngredients;
         _controller.SetDestinationSpot(_controller.currentShelf);
     }
 

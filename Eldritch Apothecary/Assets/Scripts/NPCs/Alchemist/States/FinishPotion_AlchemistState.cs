@@ -20,8 +20,8 @@ public class FinishPotion_AlchemistState : ANPCState<Alchemist, StackFiniteState
         else
         {
             //cambiar a esperar hueco (HACER ESTADO)
-            _controller.ChangeAnimationTo(_controller.idleAnim);
-            _controller.StartCoroutine(WaitUntilSlotAvailable());
+            SwitchStateAfterCertainTime(1f, _controller.waitingForSpaceState, _controller.idleAnim, "Waiting for free space");
+
         }
     }
 
@@ -31,9 +31,20 @@ public class FinishPotion_AlchemistState : ANPCState<Alchemist, StackFiniteState
         if (_controller.IsCloseToDestination(1))
         {//IsClose(Spot de las pociones)
          // Asignar el turno actual del alquimista a ese spot
-            emptySpot.Assign(ApothecaryManager.Instance.currentAlchemistTurn);
-            ApothecaryManager.Instance.NextAlchemistTurn();
-            SwitchStateAfterCertainTime(1f, _controller.waitingState, _controller.pickUpAnim, "Placing potion");
+            if (UnityEngine.Random.Range(0, 10) < _controller.failProbability)
+            {
+                //Se spawnea el charco
+                GameObject.Instantiate(_controller.puddle, _controller.transform.position, _controller.transform.rotation);
+                GameObject.Destroy(_controller.puddle, 5f);
+                SwitchStateAfterCertainTime(1f, _controller.preparingPotionState, _controller.yellAnim, "Prepare potion again");
+
+            }
+            else
+            {
+                emptySpot.Assign(ApothecaryManager.Instance.currentAlchemistTurn);
+                ApothecaryManager.Instance.NextAlchemistTurn();
+                SwitchStateAfterCertainTime(1f, _controller.waitingState, _controller.pickUpAnim, "Placing potion");
+            }
         }
     }
     private IEnumerator WaitUntilSlotAvailable()
