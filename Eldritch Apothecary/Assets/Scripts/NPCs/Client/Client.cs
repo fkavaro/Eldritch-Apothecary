@@ -49,7 +49,7 @@ public class Client : AHumanoid<Client>
     [HideInInspector] public float lastScareTime = -Mathf.Infinity;
     [HideInInspector] public TextMeshProUGUI turnText;
 
-    public Material failSkinMaterial;
+    Renderer[] renderers;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -168,6 +168,42 @@ public class Client : AHumanoid<Client>
     {
         transform.localScale = Vector3.one;
     }
+
+    public void ChangeColor()
+    {
+        renderers = GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer renderer in renderers)
+        {
+            Material[] materials = renderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                if (materials[i].name.Contains("Skin"))
+                {
+                    materials[i].color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+                }
+            }
+            renderer.materials = materials;
+        }
+    }
+
+    public void ResetColor()
+    {
+        renderers = GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer renderer in renderers)
+        {
+            Material[] materials = renderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                if (materials[i].name.Contains("Skin"))
+                {
+                    materials[i].color = new Color(233f/255f, 200f/255f, 173f/255f, 255f/255f);
+                }
+            }
+            renderer.materials = materials;
+        }
+    }
     #endregion
 
     #region PRIVATE	METHODS
@@ -178,7 +214,7 @@ public class Client : AHumanoid<Client>
     {
         wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
         /*wantedService = (WantedService)1;*/ // Sets wanted service to spell
-        
+
         personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
 
         switch (personality)
