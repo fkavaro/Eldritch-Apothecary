@@ -142,7 +142,7 @@ public class Alchemist : AHumanoid<Alchemist>
         switch (skill)
         {
             case Skill.NOOB:
-                failProbability = 9;   // if(random < failProbability) = fallo
+                failProbability = 7;   // if(random < failProbability) = fallo
                 break;
             case Skill.ADEPT:
                 failProbability = 5;

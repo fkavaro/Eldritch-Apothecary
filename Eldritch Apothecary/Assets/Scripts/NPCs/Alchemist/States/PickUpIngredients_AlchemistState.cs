@@ -56,6 +56,7 @@ public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFinite
                         {
                             _controller.newShelf = true;
                             // Goes to prepare potion state
+                            Debug.Log("Cambio");
                             SwitchStateAfterCertainTime(1f, _controller.preparingPotionState, _controller.pickUpAnim, "Picking up ingredient");
                         }
                         else

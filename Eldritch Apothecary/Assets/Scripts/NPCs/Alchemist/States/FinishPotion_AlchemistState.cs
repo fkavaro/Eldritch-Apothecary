@@ -36,8 +36,8 @@ public class FinishPotion_AlchemistState : ANPCState<Alchemist, StackFiniteState
             {
                 // Spawns a puddle on the alchemist's position
                 GameObject.Instantiate(_controller.puddle, _controller.transform.position, _controller.transform.rotation);
-                // Goes to prepare the potion another time
-                SwitchStateAfterCertainTime(1f, _controller.preparingPotionState, _controller.yellAnim, "Prepare potion again");
+                // Goes to pick ingredients again
+                SwitchStateAfterCertainTime(1f, _controller.pickingUpIngredientsState, _controller.yellAnim, "Prepare potion again");
 
             }
             else
