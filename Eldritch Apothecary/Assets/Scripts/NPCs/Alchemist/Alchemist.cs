@@ -30,20 +30,20 @@ public class Alchemist : AHumanoid<Alchemist>
     [Header("Alchemist Properties")]
     [Header("Personality Properties")]
     public Personality personality = Personality.NORMAL;
-    [Tooltip("Seconds needed to take or replenish supplies"), Range(1, 5)]
+    
     public int timeToPrepareMax = 2;
     public int timeToPrepareMin = 2;
 
 
     [Header("Efficiency Properties")]
     public Efficiency efficiency = Efficiency.NORMAL;
-    [Tooltip("Seconds needed to take or replenish supplies"), Range(1, 5)]
+    
     public int numExtraIngredients = 2;
 
 
     [Header("Skill Properties")]
     public Skill skill = Skill.ADEPT;
-    [Tooltip("Seconds needed to take or replenish supplies"), Range(1, 5)]
+    
     public int failProbability = 2;
 
 
@@ -54,6 +54,7 @@ public class Alchemist : AHumanoid<Alchemist>
     public bool newShelf = true;
 
     public GameObject puddle;
+    public GameObject cat;
 
     #endregion
 
@@ -61,7 +62,7 @@ public class Alchemist : AHumanoid<Alchemist>
     StackFiniteStateMachine<Alchemist> alchemistSFSM;
     TextMeshProUGUI serviceText;
 
-    private bool annoyedByCat = false;
+    public bool annoyedByCat = false;
     #endregion
 
     #region STATES

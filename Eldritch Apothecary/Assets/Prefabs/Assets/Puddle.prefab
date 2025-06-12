@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 387610222174009716}
   - component: {fileID: 8363574772289401073}
   - component: {fileID: 8601044392947969416}
-  - component: {fileID: 7277398029364779877}
+  - component: {fileID: 2906068688850082667}
+  - component: {fileID: 1409265676640961187}
   m_Layer: 0
   m_Name: Puddle
   m_TagString: Untagged
@@ -65,7 +66,10 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: ef46c87a985bfae46a9f88e8865cca0a, type: 2}
+  - {fileID: 2100000, guid: 9006b3e69f2230040a796a4fece4762b, type: 2}
+  - {fileID: 2100000, guid: ab5571c272a1d404389788b322fb621c, type: 2}
+  - {fileID: 2100000, guid: e96492975c5270647b88662ae960dd4d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,8 +91,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7277398029364779877
-MeshCollider:
+--- !u!65 &2906068688850082667
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,10 +106,27 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 3
+  m_Size: {x: 9.999999, y: 4.32, z: 9.999999}
+  m_Center: {x: 0, y: 1.83, z: 0}
+--- !u!114 &1409265676640961187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3537789070638604603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082f447bbe6570c4eb2a9fa2808e9ba4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cat: {fileID: 0}
+  materials:
+  - {fileID: 2100000, guid: ef46c87a985bfae46a9f88e8865cca0a, type: 2}
+  - {fileID: 2100000, guid: 9006b3e69f2230040a796a4fece4762b, type: 2}
+  - {fileID: 2100000, guid: ab5571c272a1d404389788b322fb621c, type: 2}
+  - {fileID: 2100000, guid: e96492975c5270647b88662ae960dd4d, type: 2}

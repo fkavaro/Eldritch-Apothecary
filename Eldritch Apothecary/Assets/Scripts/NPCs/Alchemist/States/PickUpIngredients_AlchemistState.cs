@@ -3,6 +3,7 @@
 public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
     int numIngredients;
+    Shelf oldShelf;
     public PickUpIngredients_AlchemistState(StackFiniteStateMachine<Alchemist> sfsm)
         : base("Picking up ingredient", sfsm) { }
 
@@ -11,6 +12,7 @@ public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFinite
         if (_controller.newShelf)
         {
             _controller.currentShelf = ApothecaryManager.Instance.RandomAlchemistShelf();
+            oldShelf = _controller.currentShelf;    
         }
         numIngredients = UnityEngine.Random.Range(5, 20) + _controller.numExtraIngredients;
         _controller.SetDestinationSpot(_controller.currentShelf);
@@ -44,15 +46,20 @@ public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFinite
                         else
                         {
                             Debug.Log("cambio de estanteria");
-                            _controller.currentShelf = ApothecaryManager.Instance.RandomAlchemistShelf();
+                            while (oldShelf == _controller.currentShelf)
+                            {
+                                _controller.currentShelf = ApothecaryManager.Instance.RandomAlchemistShelf();
+                            }
                             _controller.SetDestinationSpot(_controller.currentShelf);
+                            oldShelf = _controller.currentShelf;
                             numIngredients = UnityEngine.Random.Range(5, 20);
+                            //SwitchState(_controller.pickingUpIngredientsState);
                         }
                     }
                     else
                     {
                         Debug.Log("No hay ingredientes disponibles en esta estantería, esperando...");
-                        SwitchStateAfterCertainTime(1f, _controller.waitingIngredientsState, _controller.waitAnim, "Picking up ingredient");
+                        SwitchState(_controller.waitingIngredientsState);
                     }
                 }
             }

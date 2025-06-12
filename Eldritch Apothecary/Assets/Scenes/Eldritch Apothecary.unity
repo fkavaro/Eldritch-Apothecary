@@ -16113,6 +16113,7 @@ MonoBehaviour:
   normalisedPreparedPotions: 0
   totalPotionsToBeServed: 0
   preparedPotionsCapacity: 0
+  _turnleftPotions: 
 --- !u!43 &371353449
 Mesh:
   m_ObjectHideFlags: 0
@@ -85679,6 +85680,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alchemist
       objectReference: {fileID: 0}
+    - target: {fileID: 3904580521758236230, guid: 4b58f239fa5f86d478bcbdeb667d0989, type: 3}
+      propertyPath: cat
+      value: 
+      objectReference: {fileID: 966011607}
     - target: {fileID: 3904580521758236230, guid: 4b58f239fa5f86d478bcbdeb667d0989, type: 3}
       propertyPath: puddle
       value: 

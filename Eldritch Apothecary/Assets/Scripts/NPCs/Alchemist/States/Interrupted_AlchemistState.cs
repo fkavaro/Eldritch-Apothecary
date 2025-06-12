@@ -16,20 +16,13 @@ public class Interrupted_AlchemistState : ANPCState<Alchemist, StackFiniteStateM
 
     public override void UpdateState()
     {
-
+        if(_controller.annoyedByCat)
+        {
+            _stateMachine.Pop();
+        }
     }
 
     public override void ExitState()
     {
     }
-
-    /*private IEnumerator WaitForCatToLeave()
-    {
-        while (_controller.CatIsBothering())
-        {
-            yield return null; // Espera un frame antes de volver a comprobar
-        }
-
-        _stateMachine.Pop(); // Vuelve al estado anterior cuando el gato se vaya
-}*/
 }

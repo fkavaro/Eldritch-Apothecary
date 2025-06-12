@@ -23,6 +23,8 @@ public class Waiting_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachi
             if (ApothecaryManager.Instance.currentAlchemistTurn < ApothecaryManager.Instance.generatedAlchemistTurns)
             {
                 // Asignar turno a esa poción
+                ApothecaryManager.Instance.NextAlchemistTurn();
+
                 // Next State
                 SwitchState(_controller.pickingUpIngredientsState); 
             }

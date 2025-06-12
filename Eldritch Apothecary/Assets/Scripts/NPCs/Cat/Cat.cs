@@ -31,6 +31,9 @@ public class Cat : ANPC<Cat>
     [HideInInspector] public float lastTimeSorcererWasAnnoyed = -Mathf.Infinity;
     public static event Action OnSorcererAnnoyed;
 
+    public static event Action OnPuddle;
+
+
     #endregion
 
     #region NODES
@@ -205,5 +208,7 @@ public class Cat : ANPC<Cat>
 
         return isNear;
     }
+
+
     #endregion
 }

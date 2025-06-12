@@ -35,14 +35,21 @@ public class FinishPotion_AlchemistState : ANPCState<Alchemist, StackFiniteState
             {
                 //Se spawnea el charco
                 GameObject.Instantiate(_controller.puddle, _controller.transform.position, _controller.transform.rotation);
-                GameObject.Destroy(_controller.puddle, 5f);
                 SwitchStateAfterCertainTime(1f, _controller.preparingPotionState, _controller.yellAnim, "Prepare potion again");
 
             }
             else
             {
+                /* while (ApothecaryManager.Instance._turnleftPotions.Contains(ApothecaryManager.Instance.currentAlchemistTurn))
+                 {
+                     Debug.Log("No está!!");
+                     ApothecaryManager.Instance.NextAlchemistTurn();
+                 }*/
+                //ApothecaryManager.Instance.NextAlchemistTurn();
+
                 emptySpot.Assign(ApothecaryManager.Instance.currentAlchemistTurn);
-                ApothecaryManager.Instance.NextAlchemistTurn();
+                //ApothecaryManager.Instance.NextAlchemistTurn();
+
                 SwitchStateAfterCertainTime(1f, _controller.waitingState, _controller.pickUpAnim, "Placing potion");
             }
         }
