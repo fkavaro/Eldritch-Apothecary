@@ -80,7 +80,9 @@ public class Alchemist : AHumanoid<Alchemist>
     {
 
         base.OnAwake(); // Sets agent and animator components
-       
+        
+        alchemistTable = ApothecaryManager.Instance.alchemistTable;
+
         alchemistTable.AnnoyingOnTable += OnAnnoyedByCat; //Suscribes to event (triggered when the cat is on the table)
         alchemistTable.AnnoyingOffTable += OnStopAnnoyedByCat; //Suscribes to event (triggered when the cat is on the table)
 

@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class Puddle : MonoBehaviour
 {
-    Alchemist alchemist;
-    GameObject GO_alchemist;
-    public GameObject cat;
+
     // Random materials for the puddle
     public List<Material> materials;
     void Awake()
     {
-        GO_alchemist = GameObject.Find("Alchemist");
-        alchemist = GO_alchemist.GetComponent<Alchemist>();
-        cat = alchemist.cat;
         MeshRenderer rendererCharco = GetComponent<MeshRenderer>();
         if (rendererCharco != null && materials.Count > 0)
         {
@@ -30,9 +25,8 @@ public class Puddle : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         //If the triggers is called by the cat
-        if (other.gameObject == cat)
+        if (other.gameObject == ApothecaryManager.Instance.cat.gameObject)
         {
-
             // Searches renderer's child who has the cat materials
             Renderer[] renderers = other.gameObject.GetComponentsInChildren<Renderer>();
 
