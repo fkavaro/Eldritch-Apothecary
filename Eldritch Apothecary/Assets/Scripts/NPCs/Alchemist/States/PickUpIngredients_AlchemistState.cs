@@ -17,7 +17,7 @@ public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFinite
             // Random Shelf calculated
             _controller.currentShelf = ApothecaryManager.Instance.RandomAlchemistShelf();
             // And it is saved
-            oldShelf = _controller.currentShelf;    
+            oldShelf = _controller.currentShelf;
         }
         // Number of Ingredients plus the extra ingredients defined by his personality
         numIngredients = UnityEngine.Random.Range(5, 20) + _controller.numExtraIngredients;
@@ -56,7 +56,7 @@ public class PickUpIngredients_AlchemistState : ANPCState<Alchemist, StackFinite
                         {
                             _controller.newShelf = true;
                             // Goes to prepare potion state
-                            Debug.Log("Cambio");
+                            if (_controller.debugMode) Debug.Log("Cambio");
                             SwitchStateAfterCertainTime(1f, _controller.preparingPotionState, _controller.pickUpAnim, "Picking up ingredient");
                         }
                         else

@@ -57,7 +57,6 @@ public class Dump_ReceptionistAction : ABinaryAction<Receptionist>
 
     void DumpPotion()
     {
-        ApothecaryManager.Instance.DumpPotion(leftPotion);
         hasDumpedPotion = true;
     }
 }

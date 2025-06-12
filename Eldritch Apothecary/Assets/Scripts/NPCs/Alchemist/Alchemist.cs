@@ -5,7 +5,7 @@ using UnityEngine.TextCore.Text;
 
 public class Alchemist : AHumanoid<Alchemist>
 {
-   
+
     public enum Personality
     {
         NORMAL, // Normal speed and normal time required to prepare a potion
@@ -28,39 +28,32 @@ public class Alchemist : AHumanoid<Alchemist>
     //Properties
     #region PUBLIC PROPERTIES
     [Header("Alchemist Properties")]
+    public bool annoyedByCat = false;
     [Header("Personality Properties")]
     public Personality personality = Personality.NORMAL;
-    
+
     public int timeToPrepareMax = 2;
     public int timeToPrepareMin = 2;
 
-
     [Header("Efficiency Properties")]
     public Efficiency efficiency = Efficiency.NORMAL;
-    
+
     public int numExtraIngredients = 2;
 
 
     [Header("Skill Properties")]
     public Skill skill = Skill.ADEPT;
-    
-    public int failProbability = 2;
 
-    [SerializeField] string stateName;
-    public Table alchemistTable;
+    public int failProbability = 2;
     public Shelf currentShelf;
     public bool newShelf = true;
-
-    public GameObject puddle;
-    public GameObject cat;
 
     #endregion
 
     #region PRIVATE PROPERTIES
     StackFiniteStateMachine<Alchemist> alchemistSFSM;
     TextMeshProUGUI serviceText;
-
-    public bool annoyedByCat = false;
+    Table alchemistTable;
     #endregion
 
     #region STATES
@@ -80,7 +73,7 @@ public class Alchemist : AHumanoid<Alchemist>
     {
 
         base.OnAwake(); // Sets agent and animator components
-        
+
         alchemistTable = ApothecaryManager.Instance.alchemistTable;
 
         alchemistTable.AnnoyingOnTable += OnAnnoyedByCat; //Suscribes to event (triggered when the cat is on the table)
@@ -138,32 +131,30 @@ public class Alchemist : AHumanoid<Alchemist>
 
     }
 
-    private void OnStopAnnoyedByCat(GameObject @object)
-    {
-        //When the cat goes off the table, the alchemist stops being annoyed
-        annoyedByCat = false;
-        alchemistSFSM.Pop();
-    }
+
 
     private void OnAnnoyedByCat(GameObject @object)
     {
-        //When the cat goes of the table, the alchemist starts being annoyed
-        //If alchemist is using the table
-        if (alchemistSFSM.IsCurrentState(preparingPotionState))
+        //When the cat goes on the table, the alchemist starts being annoyed
+        if (!alchemistSFSM.IsCurrentState(interruptedState) && alchemistSFSM.IsCurrentState(finishingPotionState))
         {
+            if (debugMode) Debug.Log("Cat is bothering" + name);
             annoyedByCat = true;
-            //Changes to interrupted state
-            stateName = interruptedState.StateName;
+            alchemistSFSM.PushCurrentState();
             alchemistSFSM.SwitchState(interruptedState);
         }
     }
 
-
-    protected override void OnUpdate()
+    private void OnStopAnnoyedByCat(GameObject @object)
     {
-
+        if (alchemistSFSM.IsCurrentState(interruptedState))
+        {
+            //When the cat goes off the table, the alchemist stops being annoyed
+            annoyedByCat = false;
+            alchemistSFSM.Pop();
+            if (debugMode) Debug.Log("Cat is no longer bothering " + name + ". Continuing my tasks");
+        }
     }
-
 
     #region PRIVATE	METHODS
     protected override ADecisionSystem<Alchemist> CreateDecisionSystem()

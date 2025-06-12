@@ -13,12 +13,6 @@ public class Interrupted_AlchemistState : ANPCState<Alchemist, StackFiniteStateM
 
     public override void UpdateState()
     {
-        // If he is not annoyed by the cat
-        if(!_controller.annoyedByCat)
-        {
-            //Goes to the last state
-            _stateMachine.Pop();
-        }
-    }
 
+    }
 }

@@ -14,18 +14,14 @@ public class Table : MonoBehaviour
     public event Action<GameObject> AnnoyingOffTable;
 
     /// <summary>
-    /// The specific GameObject to watch for
-    /// </summary>
-    public GameObject annoyingCreature;
-
-    /// <summary>
     /// Position where the creature will annoy
     /// </summary>
     public Transform annoyPosition;
 
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == annoyingCreature)
+        if (other.gameObject == ApothecaryManager.Instance.cat.gameObject)
         {
             //Debug.Log("Annoying creature over " + name + "!!");
             AnnoyingOnTable?.Invoke(other.gameObject);
@@ -34,7 +30,7 @@ public class Table : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == annoyingCreature)
+        if (other.gameObject == ApothecaryManager.Instance.cat.gameObject)
         {
             //Debug.Log("Annoying creature off " + name);
             AnnoyingOffTable?.Invoke(other.gameObject);

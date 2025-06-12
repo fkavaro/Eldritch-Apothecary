@@ -4,7 +4,7 @@ using TMPro;
 
 public class Potion : MonoBehaviour
 {
-    [SerializeField] int turnNumber = -1;
+    public int turnNumber = -1;
     public GameObject model;
     public TextMeshProUGUI turnText;
 

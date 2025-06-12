@@ -42,6 +42,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     [HideInInspector]
     public Table alchemistTable;
+    public GameObject puddlePrefab;
 
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 10)]
@@ -103,10 +104,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     List<Transform> _queuePositions = new();
     List<Spot> _waitingSeats = new();
     List<Potion> _preparedPotions = new(),
-        _readyPotions = new(),
-        _leftPotions = new();
+        _readyPotions = new();
     float _lastSpawnTime = 0f;
     List<Client> _clientsComplaining = new();
+    List<int> gonePotionTurns = new();
     #endregion
 
     #region EXECUTION METHODS
@@ -150,7 +151,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         clientSeat = GameObject.FindGameObjectWithTag("Client seat").GetComponent<Spot>();
         replenisherSeat = GameObject.FindGameObjectWithTag("Replenisher seat").GetComponent<Spot>();
         sorcererSeat = GameObject.FindGameObjectWithTag("Sorcerer seat").GetComponent<Spot>();
-        alchemistSeat = GameObject.FindGameObjectWithTag("Alchemist Seat").GetComponent<Spot>();
+        alchemistSeat = GameObject.FindGameObjectWithTag("Alchemist seat").GetComponent<Spot>();
         receptionistAttendingSpot = GameObject.FindGameObjectWithTag("Receptionist attending spot").GetComponent<Spot>();
         sorcererAttendingSpot = GameObject.FindGameObjectWithTag("Sorcerer attending spot").GetComponent<Spot>();
         alchemistSpot = GameObject.FindGameObjectWithTag("Alchemist spot").GetComponent<Spot>();
@@ -363,7 +364,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             case Client.WantedService.POTION:
                 client.turnNumber = ++generatedAlchemistTurns;
                 client.turnText.text = client.turnNumber.ToString();
-                //AssignTurnToRandomPotion(); // TODO: should be called after potion is prepared by alchemist
                 break;
             default: // SHOPPING
                 break; // Nothing
@@ -402,28 +402,18 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     {
         Potion leftPotion = null;
 
-        if (_leftPotions.Count > 0)
-            leftPotion = _leftPotions[0];
+        foreach (Potion readyPotion in _readyPotions)
+        {
+            if (gonePotionTurns.Contains(readyPotion.turnNumber))
+                leftPotion = readyPotion;
+        }
 
         return leftPotion;
     }
 
-    public bool IsPotionLeft(Client client)
+    public void GoneClient(Client client)
     {
-        Potion clientsPotion = AssignedPotion(client);
-
-        if (clientsPotion != null)
-        {
-            _leftPotions.Add(clientsPotion);
-            return true;
-        }
-        else
-            return false;
-    }
-
-    public void DumpPotion(Potion potion)
-    {
-        _leftPotions.Remove(potion);
+        gonePotionTurns.Add(client.turnNumber);
     }
     #endregion
 

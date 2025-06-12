@@ -12,7 +12,7 @@ public class PreparingPotion_AlchemistState : ANPCState<Alchemist, StackFiniteSt
     public override void StartState()
     {
         // Goes to the table
-        _controller.SetDestinationSpot(ApothecaryManager.Instance.alchemistTable);
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.alchemistSpot);
     }
 
     public override void UpdateState()
@@ -20,10 +20,9 @@ public class PreparingPotion_AlchemistState : ANPCState<Alchemist, StackFiniteSt
         if (_controller.HasArrivedAtDestination())
         {
             //Generates a random required time, between a min and max number defined by his personality
-            timeToPrepare  = UnityEngine.Random.Range(_controller.timeToPrepareMin, _controller.timeToPrepareMax);
+            timeToPrepare = UnityEngine.Random.Range(_controller.timeToPrepareMin, _controller.timeToPrepareMax);
             //After spending the required time , changes to finishing potion state
-            SwitchStateAfterCertainTime(timeToPrepare,_controller.finishingPotionState, _controller.mixIngredientsAnim, "Preparing Potions");
-
+            SwitchStateAfterCertainTime(timeToPrepare, _controller.finishingPotionState, _controller.mixIngredientsAnim, "Preparing Potions");
         }
     }
 
