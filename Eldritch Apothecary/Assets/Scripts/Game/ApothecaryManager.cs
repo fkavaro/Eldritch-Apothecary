@@ -36,9 +36,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         replenisherSeat,
         sorcererSeat,
         receptionistAttendingSpot,
-        sorcererAttendingSpot;
+        sorcererAttendingSpot,
+        alchemistSpot;
 
-
+    [HideInInspector]
+    public Table alchemistTable;
 
     [Header("Simulation")]
     [Tooltip("Simulation speed"), Range(0, 10)]
@@ -149,6 +151,10 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         sorcererSeat = GameObject.FindGameObjectWithTag("Sorcerer seat").GetComponent<Spot>();
         receptionistAttendingSpot = GameObject.FindGameObjectWithTag("Receptionist attending spot").GetComponent<Spot>();
         sorcererAttendingSpot = GameObject.FindGameObjectWithTag("Sorcerer attending spot").GetComponent<Spot>();
+        alchemistSpot = GameObject.FindGameObjectWithTag("Alchemist spot").GetComponent<Spot>();
+
+        // Table
+        alchemistTable = GameObject.FindGameObjectWithTag("Alchemist table").GetComponent<Table>();
 
         //Positions
         entrancePosition = GameObject.FindGameObjectWithTag("Entrance").transform;

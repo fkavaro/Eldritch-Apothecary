@@ -35,6 +35,7 @@ TagManager:
   - Sorcerer table
   - Cat resting spot
   - Alchemist seat
+  - Alchemist spot
   layers:
   - Default
   - TransparentFX
