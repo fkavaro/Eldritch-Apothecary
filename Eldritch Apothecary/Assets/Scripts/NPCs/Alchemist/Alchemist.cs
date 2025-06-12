@@ -5,25 +5,7 @@ using UnityEngine.TextCore.Text;
 
 public class Alchemist : AHumanoid<Alchemist>
 {
-    /*
-
-
-
-        switch (skill)
-        {
-            case Skill.NOOB:
-                failProbability = 9;   // if(random < failProbability) = fallo
-                break;
-            case Skill.ADEPT:
-                failProbability = 5;
-                break;
-            case Skill.MASTER:
-                failProbability = 2;
-                break;
-        }
-
-    }
-     * */
+   
     public enum Personality
     {
         NORMAL, // Normal speed and normal time required to prepare a potion
@@ -158,7 +140,7 @@ public class Alchemist : AHumanoid<Alchemist>
     {
         //When the cat goes off the table, the alchemist stops being annoyed
         annoyedByCat = false;
-        //alchemistSFSM.Pop();
+        alchemistSFSM.Pop();
     }
 
     private void OnAnnoyedByCat(GameObject @object)

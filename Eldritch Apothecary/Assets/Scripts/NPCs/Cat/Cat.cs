@@ -32,8 +32,6 @@ public class Cat : ANPC<Cat>
     public static event Action OnSorcererAnnoyed;
     public static event Action OnSorcererNoLongerAnnoyed;
 
-    public static event Action OnPuddle;
-
 
     #endregion
 
