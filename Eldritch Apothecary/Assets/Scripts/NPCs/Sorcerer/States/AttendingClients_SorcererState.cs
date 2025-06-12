@@ -80,7 +80,7 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
 
                     failedSpellConsequence = UnityEngine.Random.Range(0, 3);
 
-                    //Makes client either bigger or smaller or changes skin color
+                    // Makes client either bigger or smaller or changes skin color
                     switch (failedSpellConsequence)
                     {
                         case 0:
@@ -97,6 +97,7 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
                     // Resets timer
                     waitTimer = 0f;
                     isWaiting = false;
+
                     // Starts from the beginning
                     SwitchState(_controller.pickUpIngredientsState);
                     return;

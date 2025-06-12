@@ -49,6 +49,7 @@ public class Client : AHumanoid<Client>
     [HideInInspector] public float lastScareTime = -Mathf.Infinity;
     [HideInInspector] public TextMeshProUGUI turnText;
 
+    // Renderes from the game object to change material colors
     Renderer[] renderers;
     #endregion
 
@@ -169,8 +170,12 @@ public class Client : AHumanoid<Client>
         transform.localScale = Vector3.one;
     }
 
+    /// <summary>
+    /// Changes client color when spell goes wrong
+    /// </summary>
     public void ChangeColor()
     {
+        // Accesses renderers in game object
         renderers = GetComponentsInChildren<Renderer>();
 
         foreach (Renderer renderer in renderers)
@@ -178,6 +183,7 @@ public class Client : AHumanoid<Client>
             Material[] materials = renderer.materials;
             for (int i = 0; i < materials.Length; i++)
             {
+                // Changes the skin to a random color
                 if (materials[i].name.Contains("Skin"))
                 {
                     materials[i].color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
@@ -187,6 +193,9 @@ public class Client : AHumanoid<Client>
         }
     }
 
+    /// <summary>
+    /// Resets client skin color
+    /// </summary>
     public void ResetColor()
     {
         renderers = GetComponentsInChildren<Renderer>();
