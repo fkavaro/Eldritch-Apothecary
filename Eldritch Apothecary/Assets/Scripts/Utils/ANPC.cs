@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -288,11 +289,22 @@ where TController : ABehaviourController<TController>
     {
         if (energy < 100)
             energy += amount;
+
+        if (energy > 100)
+            energy = 100;
     }
 
     public bool IsEnergyLow()
     {
-        return energy <= 0;
+        if (energy <= 0)
+        {
+            energy = 0;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool IsEnergyAtMax()

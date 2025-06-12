@@ -61,7 +61,7 @@ public class Cat : ANPC<Cat>
         isEnergyLowStrategy,
         canAnnoyAlchemistStrategy,
         canAnnoySorcererStrategy;
-    RestStrategy<Cat> restStrategy;
+    Resting_CatStrategy<Cat> restStrategy;
     Annoying_CatStrategy annoyingAlchemistStrategy;
     Annoying_CatStrategy annoyingSorcererStrategy;
     #endregion
@@ -154,6 +154,25 @@ public class Cat : ANPC<Cat>
         }
     }
     #endregion
+
+    public Spot CloserRestingSpot()
+    {
+        float minDistance = float.PositiveInfinity;
+        Spot closestRestingSpot = null;
+
+        foreach (Spot spot in ApothecaryManager.Instance.catRestingSpots)
+        {
+            float currentDistance = Vector3.Distance(spot.transform.position, this.transform.position);
+
+            if (currentDistance <= minDistance)
+            {
+                minDistance = currentDistance;
+                closestRestingSpot = spot;
+            }
+        }
+
+        return closestRestingSpot;
+    }
 
     #region PRIVATE	METHODS
     bool CanAnnoyAlchemist()
