@@ -1,32 +1,54 @@
 using System.Collections;
 using UnityEngine;
 
-public class FinishPotion_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
+public class FinishPotion_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
+    //Empty spot where the potion is going to be placed
+    Potion emptySpot;
+
     public FinishPotion_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
     : base("Finish potion", stackFsm) { }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void StartState()
     {
-        //Accion de terminar poci�n (3 segundos mas)
-        _controller.StartCoroutine(FinishPotion());
+        // Generates a random empty spot where the potion can be placed
+        emptySpot = ApothecaryManager.Instance.RandomPreparedPotion(false);
+        // If there is enough free space
+        if (emptySpot != null)
+        {
+            // Goes to tha spot
+            _controller.SetDestination(emptySpot.transform.position);
+        }
+        else
+        {
+            //If there isn't enough space to place the potion, changes to waiting for free space state
+            SwitchStateAfterCertainTime(1f, _controller.waitingForSpaceState, _controller.idleAnim, "Waiting for free space");
+
+        }
     }
 
     public override void UpdateState()
     {
+        if (_controller.IsCloseToDestination(1))
+        {
+         // Checks if the potion has to fall
+            if (UnityEngine.Random.Range(0, 10) < _controller.failProbability)
+            {
+                // Spawns a puddle on the alchemist's position
+                GameObject.Instantiate(_controller.puddle, _controller.transform.position, _controller.transform.rotation);
+                // Goes to pick ingredients again
+                SwitchStateAfterCertainTime(1f, _controller.pickingUpIngredientsState, _controller.yellAnim, "Prepare potion again");
 
+            }
+            else
+            {
+                 // If the potion doesn't fall, he assing to the empty spot a potion with the number of the current client
+                emptySpot.Assign(ApothecaryManager.Instance.currentAlchemistTurn);
+                // After 1 second placing the potion, changes to waiting state
+                SwitchStateAfterCertainTime(1f, _controller.waitingState, _controller.pickUpAnim, "Placing potion");
+            }
+        }
     }
+  
 
-    public override void ExitState()
-    {
-    }
-
-    private IEnumerator FinishPotion()
-    {
-        yield return new WaitForSeconds(3f); // Espera 3 segundos
-
-        // Cambiar al siguiente estado (ejemplo: dejar la poci�n en la mesa)
-        _stateMachine.SwitchState(_controller.waitingState);
-    }
 }

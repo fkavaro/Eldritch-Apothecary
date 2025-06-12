@@ -1,25 +1,33 @@
 using UnityEngine;
 
-public class Waiting_AlchemistState : AState<Alchemist, StackFiniteStateMachine<Alchemist>>
+public class Waiting_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
     public Waiting_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
     : base("Waiting", stackFsm) { }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void StartState()
     {
-        //Accion esperar a cliente (indefinido)
+        // Goes to alchemist seat
+        _controller.SetDestinationSpot(ApothecaryManager.Instance.alchemistSeat);
     }
 
     public override void UpdateState()
     {
-        /*if (_alchemistContext.hasOrder())
+        if (_controller.HasArrivedAtDestination())
         {
-            _alchemistContext.StartCoroutine(WaitAndSwitchState(_alchemistContext.waitingIngredientsState, "Waiting Ingredients"));
-        }*/
+
+            _controller.ChangeAnimationTo(_controller.sitDownAnim);
+
+            // Looks for a non assigned potion
+            if (ApothecaryManager.Instance.currentAlchemistTurn < ApothecaryManager.Instance.generatedAlchemistTurns)
+            {
+                // Asignn a turn to the potion
+                ApothecaryManager.Instance.NextAlchemistTurn();
+
+                // Switches to pick up ingredients state
+                SwitchState(_controller.pickingUpIngredientsState); 
+            }
+        }
     }
 
-    public override void ExitState()
-    {
-    }
 }

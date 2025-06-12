@@ -32,6 +32,7 @@ public class Cat : ANPC<Cat>
     public static event Action OnSorcererAnnoyed;
     public static event Action OnSorcererNoLongerAnnoyed;
 
+
     #endregion
 
     #region NODES
@@ -229,6 +230,8 @@ public class Cat : ANPC<Cat>
 
         return isNear;
     }
+
+
     #endregion
 
     public static void RaiseSorcererNoLongerAnnoyed()
