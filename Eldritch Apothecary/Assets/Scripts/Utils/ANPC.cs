@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -80,12 +81,6 @@ where TController : ABehaviourController<TController>
     {
         if (_destinationSpot == destinationSpot) return;
 
-        if (!_agent.isOnNavMesh)
-        {
-            Debug.LogError("SetDestinationSpot(): NavMeshAgent is not on a NavMesh.");
-            return;
-        }
-
         SetDestination(destinationSpot.transform.position); // Set the target position for the NavMeshAgent
 
         _destinationSpot = destinationSpot;
@@ -98,12 +93,6 @@ where TController : ABehaviourController<TController>
     public void SetDestination(Vector3 destinationPos)
     {
         if (_agent.destination == destinationPos) return;
-
-        if (!_agent.isOnNavMesh)
-        {
-            Debug.LogError("SetDestination(): NavMeshAgent is not on a NavMesh.");
-            return;
-        }
 
         if (_destinationSpot != null)
         {
@@ -171,10 +160,7 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public bool HasArrived(Vector3 destination, bool fixRotation = true, bool fixPosition = true)
     {
-        //Debug.Log($"{gameObject.name} is checking if it has arrived at {destination}.");
-
         if (Vector3.Distance(transform.position, destination) < _stoppingDistance)
-        //if (_agent.remainingDistance <= _agent.stoppingDistance)
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
 
@@ -303,11 +289,22 @@ where TController : ABehaviourController<TController>
     {
         if (energy < 100)
             energy += amount;
+
+        if (energy > 100)
+            energy = 100;
     }
 
     public bool IsEnergyLow()
     {
-        return energy <= 0;
+        if (energy <= 0)
+        {
+            energy = 0;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool IsEnergyAtMax()

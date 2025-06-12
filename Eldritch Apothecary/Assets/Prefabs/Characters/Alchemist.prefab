@@ -48,7 +48,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 3
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -98,14 +98,10 @@ MonoBehaviour:
   animationText: {fileID: 0}
   speed: 2
   rotationSpeed: 3
-  maxSamplingDistance: 1
-  stoppingDistance: 0.3
-  nearDistance: 2
   avoidanceRadius: 0.7
   isStopped: 0
   energy: 100
-  lowEnergyThreshold: 10
-  ingredientsAvailable: 10
+  ingredientsAvailable: 4
   stateName: 
 --- !u!1001 &6147602484460248247
 PrefabInstance:

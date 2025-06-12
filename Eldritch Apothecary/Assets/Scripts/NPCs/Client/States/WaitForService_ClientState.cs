@@ -16,8 +16,9 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
 
     public override void UpdateState()
     {
-        // Has reached the waiting seat
-        if (_controller.HasArrivedAtDestination())
+
+        // Is close to the waiting seat
+        if (_controller.IsCloseToDestination())
         {
             // It's its turn
             if (ApothecaryManager.Instance.IsTurn(_controller))
@@ -40,10 +41,14 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
             // It's not
             else
             {
-                // Increase time waiting
-                _controller.secondsWaiting += Time.deltaTime;
-                // Wait
-                _controller.ChangeAnimationTo(_controller.sitDownAnim);
+                // Has reached the waiting seat
+                if (_controller.HasArrivedAtDestination())
+                {
+                    // Increase time waiting
+                    _controller.secondsWaiting += Time.deltaTime;
+                    // Wait
+                    _controller.ChangeAnimationTo(_controller.sitDownAnim);
+                }
             }
         }
     }

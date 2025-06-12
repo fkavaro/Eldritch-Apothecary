@@ -31,10 +31,9 @@ TagManager:
   - Ready potion
   - Prepared potion
   - Dump
-  - Cat spawn
-  - AlchemistTable
-  - PreparedPotionsCounter
-  - Alchemist Seat
+  - Alchemist table
+  - Sorcerer table
+  - Cat resting spot
   layers:
   - Default
   - TransparentFX

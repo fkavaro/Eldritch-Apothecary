@@ -30,6 +30,7 @@ public class Cat : ANPC<Cat>
     [HideInInspector] public float lastTimeAlchemistWasAnnoyed = -Mathf.Infinity;
     [HideInInspector] public float lastTimeSorcererWasAnnoyed = -Mathf.Infinity;
     public static event Action OnSorcererAnnoyed;
+    public static event Action OnSorcererNoLongerAnnoyed;
 
     public static event Action OnPuddle;
 
@@ -63,7 +64,7 @@ public class Cat : ANPC<Cat>
         isEnergyLowStrategy,
         canAnnoyAlchemistStrategy,
         canAnnoySorcererStrategy;
-    RestStrategy<Cat> restStrategy;
+    Resting_CatStrategy<Cat> restStrategy;
     Annoying_CatStrategy annoyingAlchemistStrategy;
     Annoying_CatStrategy annoyingSorcererStrategy;
     #endregion
@@ -135,6 +136,10 @@ public class Cat : ANPC<Cat>
     {
         base.OnAwake();
 
+        alchemistTable = GameObject.FindGameObjectWithTag("Alchemist table").GetComponent<Table>();
+        sorcererTable = GameObject.FindGameObjectWithTag("Sorcerer table").GetComponent<Table>();
+
+
         personality = (Personality)UnityEngine.Random.Range(0, 2); // Chooses a personality randomly
 
         switch (personality)
@@ -152,6 +157,25 @@ public class Cat : ANPC<Cat>
         }
     }
     #endregion
+
+    public Spot CloserRestingSpot()
+    {
+        float minDistance = float.PositiveInfinity;
+        Spot closestRestingSpot = null;
+
+        foreach (Spot spot in ApothecaryManager.Instance.catRestingSpots)
+        {
+            float currentDistance = Vector3.Distance(spot.transform.position, this.transform.position);
+
+            if (currentDistance <= minDistance)
+            {
+                minDistance = currentDistance;
+                closestRestingSpot = spot;
+            }
+        }
+
+        return closestRestingSpot;
+    }
 
     #region PRIVATE	METHODS
     bool CanAnnoyAlchemist()
@@ -211,4 +235,10 @@ public class Cat : ANPC<Cat>
 
 
     #endregion
+
+    public static void RaiseSorcererNoLongerAnnoyed()
+    {
+        OnSorcererNoLongerAnnoyed?.Invoke();
+    }
+
 }

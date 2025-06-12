@@ -20,6 +20,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             staffSuppliesShelves = new();
 
     [HideInInspector]
+    public readonly List<Spot> catRestingSpots = new();
+
+    [HideInInspector]
     public Transform complainingPosition,
         receptionistCalmDownPosition,
         queueExitPosition,
@@ -38,23 +41,26 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         sorcererAttendingSpot,
         preparedPotionsSpot;
 
+
+
+    [Header("Simulation")]
+    [Tooltip("Simulation speed"), Range(0, 10)]
+    public float simSpeed = 1;
+
+    [Header("Turns system")]
+    public int generatedSorcererTurns = 0;
+    public int currentSorcererTurn = 0;
+    public List<Client> sorcererClientsQueue = new();
+    public int generatedAlchemistTurns = 0;
+    public int currentAlchemistTurn = 0;
+
+    [Header("Staff")]
+    public GameObject catPrefab;
     [HideInInspector] public Cat cat;
     [HideInInspector] public Alchemist alchemist;
     [HideInInspector] public Sorcerer sorcerer;
     [HideInInspector] public Replenisher replenisher;
     [HideInInspector] public Receptionist receptionist;
-
-    [Header("Simulation")]
-    [Tooltip("Simulation speed"), Range(0, 10)]
-    public float simSpeed = 1;
-    [Tooltip("Controls how far in the future agents predict collisions for avoidance")]
-    //public float avoidancePredictionTime = 3f;
-
-    [Header("Turns system")]
-    public int generatedSorcererTurns = 0;
-    public int currentSorcererTurn = 0;
-    public int generatedAlchemistTurns = 0;
-    public int currentAlchemistTurn = 0;
 
     [Header("Clients pool")]
     [Tooltip("All clients models to be spawned randomly")]
@@ -94,8 +100,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     #region PRIVATE PROPERTIES
     Transform _clientsParent;
-    List<Transform> _queuePositions = new(),
-        _catSpawningPositions = new();
+    List<Transform> _queuePositions = new();
     List<Spot> _waitingSeats = new();
     List<Potion> _preparedPotions = new(),
         _readyPotions = new(),
@@ -108,8 +113,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     protected override void Awake()
     {
         base.Awake();// Ensures the Singleton logic runs
-
-        FillTranformList(GameObject.FindGameObjectsWithTag("Cat spawn"), _catSpawningPositions);
 
         queuePositionsParent = GameObject.FindGameObjectWithTag("Queue positions").transform;
         // Fill waiting queue positions in child order
@@ -132,11 +135,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         alchemist = GameObject.FindGameObjectWithTag("Alchemist").GetComponent<Alchemist>();
         sorcerer = GameObject.FindGameObjectWithTag("Sorcerer").GetComponent<Sorcerer>();
         replenisher = GameObject.FindGameObjectWithTag("Replenisher").GetComponent<Replenisher>();
-        cat = GameObject.FindGameObjectWithTag("Cat").GetComponent<Cat>();
         _clientsParent = GameObject.FindGameObjectWithTag("Clients parent").GetComponent<Transform>();
-
-        // Cat starts in random position
-        cat.transform.position = RandomPosition(_catSpawningPositions);
 
         //Spots
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop shelf"), shopShelves);
@@ -145,6 +144,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), shopSuppliesShelves);
         FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), staffSuppliesShelves);
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
+        FillSpotList(GameObject.FindGameObjectsWithTag("Cat resting spot"), catRestingSpots);
         FillPotionList(GameObject.FindGameObjectsWithTag("Ready potion"), _readyPotions);
         FillPotionList(GameObject.FindGameObjectsWithTag("Prepared potion"), _preparedPotions);
         clientSeat = GameObject.FindGameObjectWithTag("Client seat").GetComponent<Spot>();
@@ -164,8 +164,12 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         queueExitPosition = GameObject.FindGameObjectWithTag("Queue exit").transform;
         dump = GameObject.FindGameObjectWithTag("Dump").transform;
 
-        // Setting how far in the future agents predict collisions for avoidance
-        //UnityEngine.AI.NavMesh.avoidancePredictionTime = avoidancePredictionTime;
+        // Spawn cat in random position
+        cat = Instantiate(
+            catPrefab,
+            RandomPosition(catRestingSpots),
+            Quaternion.identity)
+        .GetComponent<Cat>();
     }
 
     void Start()
@@ -485,6 +489,11 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     Vector3 RandomPosition(List<Transform> positions)
     {
         return positions[UnityEngine.Random.Range(0, positions.Count)].position;
+    }
+
+    Vector3 RandomPosition(List<Spot> spots)
+    {
+        return spots[UnityEngine.Random.Range(0, spots.Count)].transform.position;
     }
 
     /// <summary>

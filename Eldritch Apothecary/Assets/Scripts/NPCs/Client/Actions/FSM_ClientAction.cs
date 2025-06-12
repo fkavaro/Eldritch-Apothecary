@@ -13,6 +13,7 @@ public class FSM_ClientAction : StateMachineAction<Client, StackFiniteStateMachi
     public AtSorcerer_ClientState atSorcererState;
     public TakePotion_ClientState pickPotionUpState;
     public Leaving_ClientState leavingState;
+    public Robbing_ClientState robbingState;
     #endregion
 
     public FSM_ClientAction(UtilitySystem<Client> utilitySystem, StackFiniteStateMachine<Client> stateMachine) : base(utilitySystem, stateMachine)
@@ -26,13 +27,16 @@ public class FSM_ClientAction : StateMachineAction<Client, StackFiniteStateMachi
         atSorcererState = new(_stateMachine);
         pickPotionUpState = new(_stateMachine);
         leavingState = new(_stateMachine);
+        robbingState = new(_stateMachine);
 
-        // Initial state
-        // If the client wants to shop, set the shopping state as the initial state
-        // There's also a chance to also go shopping although a service is wanted
-        if (_controller.wantedService == Client.WantedService.SHOPPING ||
-            UnityEngine.Random.Range(0, 11) < 7) // 70% chance
+        int rndInitialState = UnityEngine.Random.Range(0, 11);
+
+        // Starts shopping
+        if (_controller.wantedService == Client.WantedService.SHOPPING || // Only wants to shop
+            _controller.personality == Client.Personality.SHOPLIFTER || // Is a SHOPLIFTER
+            rndInitialState < 7) // random 70% chance
             _stateMachine.SetInitialState(shoppingState);
+        // Directly waits for receptionist
         else
             _stateMachine.SetInitialState(waitForReceptionistState);
     }

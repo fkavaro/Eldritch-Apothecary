@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Picks up an ingredient from a random shelf
+/// </summary>
 public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
     Shelf shelf;
@@ -15,7 +18,7 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
 
     public override void UpdateState()
     {
-        // Is close to the pick up position
+        // If is close to the pick up position
         if (_controller.IsCloseToDestination())
         {
             // Pick up position is occupied
@@ -32,7 +35,21 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
                 // Has reached exact position
                 if (_controller.HasArrivedAtDestination())
                 {
-                    shelf.TakeRandom(20);
+                    // Picks up different amounts according to efficiency
+                    switch (_controller.efficiency)
+                    {
+                        case Sorcerer.Efficiency.INEFFICIENT:
+                            shelf.TakeRandom(40);
+                            break;
+
+                        case Sorcerer.Efficiency.NORMAL:
+                            shelf.TakeRandom(20);
+                            break;
+
+                        case Sorcerer.Efficiency.EFFICIENT:
+                            shelf.TakeRandom(10);
+                            break;
+                    }
                     SwitchStateAfterCertainTime(1f, _controller.attendingClientsState, _controller.pickUpAnim, "Picking up ingredient");
                 }
             }
