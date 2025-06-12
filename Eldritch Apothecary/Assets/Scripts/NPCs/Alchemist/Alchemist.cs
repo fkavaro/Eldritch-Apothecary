@@ -5,25 +5,43 @@ using UnityEngine.TextCore.Text;
 
 public class Alchemist : AHumanoid<Alchemist>
 {
+    /*
+
+
+
+        switch (skill)
+        {
+            case Skill.NOOB:
+                failProbability = 9;   // if(random < failProbability) = fallo
+                break;
+            case Skill.ADEPT:
+                failProbability = 5;
+                break;
+            case Skill.MASTER:
+                failProbability = 2;
+                break;
+        }
+
+    }
+     * */
     public enum Personality
     {
-        NORMAL, // Normal speed and time replenishing each stand. 0.2 to stop idling
-        LAZY, // Lower speed and more time replenishing each stand. 0.3 to stop idling
-        ENERGISED // Higher speed and less time replenishing each stand. 0.1 to stop idling
+        NORMAL, // Normal speed and normal time required to prepare a potion
+        LAZY, // Lower speed and more time required to prepare a potion
+        ENERGISED // Higher speed and less time required to prepare a potion
     }
 
     public enum Efficiency
     {
-        NORMAL, // Normal speed and time replenishing each stand. 0.2 to stop idling
-        EFFICIENT, // Lower speed and more time replenishing each stand. 0.3 to stop idling
-        INEFFICIENT // Higher speed and less time replenishing each stand. 0.1 to stop idling
+        NORMAL, // Normal number of extra ingredients 
+        EFFICIENT, // Lower number of extra ingredients 
+        INEFFICIENT // Higher number of extra ingredients 
     }
-
     public enum Skill
     {
-        NOOB, // Normal speed and time replenishing each stand. 0.2 to stop idling
-        ADEPT, // Lower speed and more time replenishing each stand. 0.3 to stop idling
-        MASTER // Higher speed and less time replenishing each stand. 0.1 to stop idling
+        ADEPT, // Normal probability of a potion falling 
+        NOOB, // Lower probability of a potion falling 
+        MASTER // Higher probability of a potion falling 
     }
     //Properties
     #region PUBLIC PROPERTIES
@@ -46,8 +64,6 @@ public class Alchemist : AHumanoid<Alchemist>
     
     public int failProbability = 2;
 
-
-    public int ingredientsAvailable = 10;
     [SerializeField] string stateName;
     public Table alchemistTable;
     public Shelf currentShelf;
@@ -80,18 +96,15 @@ public class Alchemist : AHumanoid<Alchemist>
 
     protected override void OnAwake()
     {
-        //serviceText = debugCanvas.Find("ServiceText").GetComponent<TextMeshProUGUI>();
-
-        //RandomizeProperties();
 
         base.OnAwake(); // Sets agent and animator components
        
-        alchemistTable.AnnoyingOnTable += OnAnnoyedByCat;
-        alchemistTable.AnnoyingOffTable += OnStopAnnoyedByCat;
+        alchemistTable.AnnoyingOnTable += OnAnnoyedByCat; //Suscribes to event (triggered when the cat is on the table)
+        alchemistTable.AnnoyingOffTable += OnStopAnnoyedByCat; //Suscribes to event (triggered when the cat is on the table)
 
         personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
-        efficiency = (Efficiency)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
-        skill = (Skill)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
+        efficiency = (Efficiency)UnityEngine.Random.Range(0, 3); // Chooses a efficiency randomly
+        skill = (Skill)UnityEngine.Random.Range(0, 3); // Chooses a skill randomly
 
 
         switch (personality)
@@ -143,17 +156,19 @@ public class Alchemist : AHumanoid<Alchemist>
 
     private void OnStopAnnoyedByCat(GameObject @object)
     {
+        //When the cat goes off the table, the alchemist stops being annoyed
         annoyedByCat = false;
-        alchemistSFSM.Pop();
+        //alchemistSFSM.Pop();
     }
 
     private void OnAnnoyedByCat(GameObject @object)
     {
-        //@object = GO_cat.gameObject;
+        //When the cat goes of the table, the alchemist starts being annoyed
+        //If alchemist is using the table
         if (alchemistSFSM.IsCurrentState(preparingPotionState))
         {
-            Debug.Log("Alchemist fue molestado por: " + @object.name);
             annoyedByCat = true;
+            //Changes to interrupted state
             stateName = interruptedState.StateName;
             alchemistSFSM.SwitchState(interruptedState);
         }
@@ -162,36 +177,9 @@ public class Alchemist : AHumanoid<Alchemist>
 
     protected override void OnUpdate()
     {
-        // if (stateName != alchemistSFSM.currentState.stateName)
-        //     stateName = alchemistSFSM.currentState.stateName;
-        //CheckCatProximity();
-
-        //if (!HasReachedMaxScares()) ReactToCat();
-
-        //base.OnUpdate(); // No need: Checks animation
-    }
-
-    #region PUBLIC METHODS
-    /// <returns>If client has been scared enough times</returns>
-    /// <summary>
-    /// Resets the client's properties and behaviour
-    /// </summary>
-    /*
-    public bool HasIngredients()
-    {
-        return ingredientsAvailable > 0;
-    }
-    */
-    /* Para comprobar si tiene algun pedido
-    public bool hasOrder()
-    {
 
     }
-    */
 
-
-
-    #endregion
 
     #region PRIVATE	METHODS
     protected override ADecisionSystem<Alchemist> CreateDecisionSystem()
@@ -213,19 +201,6 @@ public class Alchemist : AHumanoid<Alchemist>
         return alchemistSFSM;
     }
 
-
-    /// <summary>
-    /// Checks if the cat is close enough to scare the client
-    /// </summary>
-    /*void CheckCatProximity()
-    {
-        float distanceToCat = Vector3.Distance(transform.position, ApothecaryManager.Instance.cat.transform.position);
-
-        if (CatIsBothering())
-        {
-            alchemistSFSM.SwitchState(interruptedState);
-        }
-    }*/
 
     public override bool CatIsBothering()
     {

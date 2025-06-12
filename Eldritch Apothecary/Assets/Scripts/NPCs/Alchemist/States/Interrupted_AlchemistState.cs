@@ -5,24 +5,20 @@ public class Interrupted_AlchemistState : ANPCState<Alchemist, StackFiniteStateM
 {
     public Interrupted_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
     : base("Interrupted", stackFsm) { }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void StartState()
     {
-        //Accion no hacer nada hasta que se vaya el gato 
-        // _controller.StartCoroutine(WaitForCatToLeave());
+        // Changes to yell animation
         _controller.ChangeAnimationTo(_controller.yellAnim);
     }
 
     public override void UpdateState()
     {
-        if(_controller.annoyedByCat)
+        // If he is not annoyed by the cat
+        if(!_controller.annoyedByCat)
         {
+            //Goes to the last state
             _stateMachine.Pop();
         }
     }
 
-    public override void ExitState()
-    {
-    }
 }

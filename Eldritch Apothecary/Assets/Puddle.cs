@@ -4,23 +4,17 @@ using UnityEngine;
 
 public class Puddle : MonoBehaviour
 {
-    /// <summary>
-    /// Event triggered when object enters the trigger area
-    /// </summary>
-    public event Action<GameObject> CatOnPuddle;
-
-
     Alchemist alchemist;
     GameObject GO_alchemist;
     public GameObject cat;
-
+    // Random materials for the puddle
     public List<Material> materials;
     void Awake()
     {
         GO_alchemist = GameObject.Find("Alchemist");
         alchemist = GO_alchemist.GetComponent<Alchemist>();
         cat = alchemist.cat;
-        Renderer rendererCharco = GetComponent<Renderer>();
+        MeshRenderer rendererCharco = GetComponent<MeshRenderer>();
         if (rendererCharco != null && materials.Count > 0)
         {
             Material materialAleatorio = materials[UnityEngine.Random.Range(0, materials.Count)];
@@ -35,28 +29,28 @@ public class Puddle : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
+        //If the triggers is called by the cat
         if (other.gameObject == cat)
         {
-            Debug.Log("Colision gato");
-            //CatOnPuddle?.Invoke(other.gameObject);
 
-            // Buscar el renderer en el hijo que contiene los materiales
+            // Searches renderer's child who has the cat materials
             Renderer[] renderers = other.gameObject.GetComponentsInChildren<Renderer>();
 
             foreach (Renderer renderer in renderers)
             {
-                Material[] materials = renderer.materials; // Copia para evitar modificar materiales compartidos
+                Material[] materials = renderer.materials; // Saves each cat's material
 
                 for (int i = 0; i < materials.Length; i++)
                 {
+                    // Looks for the body material
                     if (materials[i].name.Contains("Material.084"))
                     {
-                        // Cambiar a un color aleatorio
+                        // Changes it to a random color
                         materials[i].color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
                     }
                 }
-
-                renderer.materials = materials; // Reasignar por seguridad
+                //Reassign them again
+                renderer.materials = materials; 
             }
         }
 

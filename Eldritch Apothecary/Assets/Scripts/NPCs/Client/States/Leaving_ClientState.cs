@@ -34,7 +34,6 @@ public class Leaving_ClientState : ANPCState<Client, StackFiniteStateMachine<Cli
             if (_controller.wantedService == Client.WantedService.POTION)
                 // Check if client's potion is left
                 ApothecaryManager.Instance.IsPotionLeft(_controller);
-            ApothecaryManager.Instance._turnleftPotions.Add(_controller.turnNumber);
         }
     }
 }

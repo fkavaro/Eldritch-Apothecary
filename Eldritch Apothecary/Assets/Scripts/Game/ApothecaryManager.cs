@@ -100,7 +100,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     List<Potion> _preparedPotions = new(),
         _readyPotions = new(),
         _leftPotions = new();
-    public List<int> _turnleftPotions = new();
     float _lastSpawnTime = 0f;
     List<Client> _clientsComplaining = new();
     #endregion

@@ -5,10 +5,9 @@ public class Waiting_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachi
     public Waiting_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
     : base("Waiting", stackFsm) { }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void StartState()
     {
-        // Go to alchemist Table
+        // Goes to alchemist seat
         _controller.SetDestinationSpot(ApothecaryManager.Instance.alchemistSeat);
     }
 
@@ -19,13 +18,13 @@ public class Waiting_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachi
 
             _controller.ChangeAnimationTo(_controller.sitDownAnim);
 
-            // Look for non assigned potion
+            // Looks for a non assigned potion
             if (ApothecaryManager.Instance.currentAlchemistTurn < ApothecaryManager.Instance.generatedAlchemistTurns)
             {
-                // Asignar turno a esa poción
+                // Asignn a turn to the potion
                 ApothecaryManager.Instance.NextAlchemistTurn();
 
-                // Next State
+                // Switches to pick up ingredients state
                 SwitchState(_controller.pickingUpIngredientsState); 
             }
         }

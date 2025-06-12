@@ -3,23 +3,25 @@ using UnityEngine;
 
 public class FinishPotion_AlchemistState : ANPCState<Alchemist, StackFiniteStateMachine<Alchemist>>
 {
+    //Empty spot where the potion is going to be placed
     Potion emptySpot;
-    private bool waitingForSlot = false;
 
     public FinishPotion_AlchemistState(StackFiniteStateMachine<Alchemist> stackFsm)
     : base("Finish potion", stackFsm) { }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void StartState()
     {
+        // Generates a random empty spot where the potion can be placed
         emptySpot = ApothecaryManager.Instance.RandomPreparedPotion(false);
+        // If there is enough free space
         if (emptySpot != null)
         {
+            // Goes to tha spot
             _controller.SetDestination(emptySpot.transform.position);
         }
         else
         {
-            //cambiar a esperar hueco (HACER ESTADO)
+            //If there isn't enough space to place the potion, changes to waiting for free space state
             SwitchStateAfterCertainTime(1f, _controller.waitingForSpaceState, _controller.idleAnim, "Waiting for free space");
 
         }
@@ -27,53 +29,26 @@ public class FinishPotion_AlchemistState : ANPCState<Alchemist, StackFiniteState
 
     public override void UpdateState()
     {
-        //Añadir probabilidad spawn de charco que se pare, aniamcion yell y spawn charco, material reflectante, en la posicion del controller, ir a picking up, prefab co ntrigger si lo toca el gato que se suscriba al evento que se cambie el color del gatro
         if (_controller.IsCloseToDestination(1))
-        {//IsClose(Spot de las pociones)
-         // Asignar el turno actual del alquimista a ese spot
+        {
+         // Checks if the potion has to fall
             if (UnityEngine.Random.Range(0, 10) < _controller.failProbability)
             {
-                //Se spawnea el charco
+                // Spawns a puddle on the alchemist's position
                 GameObject.Instantiate(_controller.puddle, _controller.transform.position, _controller.transform.rotation);
+                // Goes to prepare the potion another time
                 SwitchStateAfterCertainTime(1f, _controller.preparingPotionState, _controller.yellAnim, "Prepare potion again");
 
             }
             else
             {
-                /* while (ApothecaryManager.Instance._turnleftPotions.Contains(ApothecaryManager.Instance.currentAlchemistTurn))
-                 {
-                     Debug.Log("No está!!");
-                     ApothecaryManager.Instance.NextAlchemistTurn();
-                 }*/
-                //ApothecaryManager.Instance.NextAlchemistTurn();
-
+                 // If the potion doesn't fall, he assing to the empty spot a potion with the number of the current client
                 emptySpot.Assign(ApothecaryManager.Instance.currentAlchemistTurn);
-                //ApothecaryManager.Instance.NextAlchemistTurn();
-
+                // After 1 second placing the potion, changes to waiting state
                 SwitchStateAfterCertainTime(1f, _controller.waitingState, _controller.pickUpAnim, "Placing potion");
             }
         }
     }
-    private IEnumerator WaitUntilSlotAvailable()
-    {
-        float maxWaitTime = 10f;
-        float waited = 0f;
-
-        while (ApothecaryManager.Instance.RandomPreparedPotion(false) == null)
-        {
-            yield return new WaitForSeconds(0.5f);
-            waited += 0.5f;
-
-            if (waited >= maxWaitTime)
-            {
-                Debug.LogWarning("Se agotó el tiempo de espera para encontrar hueco de poción.");
-                SwitchState(_controller.waitingState);
-                yield break;
-            }
-        }
-
-        // Hueco disponible → volver a intentar
-        waitingForSlot = false;
-    }
+  
 
 }
