@@ -8,7 +8,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 {
     Shelf _shopShelf;
     int _amountNeeded, _shopAgainProbability;
-    List<Shelf> _visitedShelf = new();
+    List<Shelf> _visitedShelves = new();
 
 
     public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm)
@@ -20,7 +20,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
         _amountNeeded = Random.Range(5, 16); // Random amount needed
         _shopShelf = ApothecaryManager.Instance.RandomShopShelf();
-        _visitedShelf.Add(_shopShelf);
+        _visitedShelves.Add(_shopShelf);
         _controller.SetDestinationSpot(_shopShelf);
         _controller.ChangeAnimationTo(_controller.walkAnim);
 
@@ -39,9 +39,6 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             // Take needed amount from shelf
             if (_shopShelf.Take(_amountNeeded))
             {
-                // Reduce avoidance radius to avoid being blocked by other clients
-                _controller.SetAvoidanceRadius(0.1f);
-
                 if (Random.Range(0, 11) <= _shopAgainProbability)
                     _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Picking up goods", GoToOtherShelf);
                 else
@@ -89,21 +86,19 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
     public override void ExitState()
     {
-        _controller.ResetAvoidanceRadius();
         _controller.ResetWaitingTime();
         _controller.animationText.text = "";
     }
 
     void GoToOtherShelf()
     {
-        _controller.ResetAvoidanceRadius();
         _controller.ResetWaitingTime();
 
         _amountNeeded = Random.Range(5, 16); // Random amount needed
         _shopShelf = ApothecaryManager.Instance.RandomShopShelf();
-        while (_visitedShelf.Contains(_shopShelf)) // Check that it's new
+        while (_visitedShelves.Contains(_shopShelf)) // Check that it's new
             _shopShelf = ApothecaryManager.Instance.RandomShopShelf();
-        _visitedShelf.Add(_shopShelf);
+        _visitedShelves.Add(_shopShelf);
         _controller.SetDestinationSpot(_shopShelf);
         _controller.ChangeAnimationTo(_controller.walkAnim);
     }
