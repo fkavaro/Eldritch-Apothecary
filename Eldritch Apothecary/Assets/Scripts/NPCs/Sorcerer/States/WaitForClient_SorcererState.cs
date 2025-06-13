@@ -12,10 +12,10 @@ public class WaitForClient_SorcererState : ANPCState<Sorcerer, StackFiniteStateM
     public override void StartState()
     {
         // Instances first turn
-        if (ApothecaryManager.Instance.currentSorcererTurn == 0)
-        {
-            ApothecaryManager.Instance.NextSorcererTurn();
-        }
+        //if (ApothecaryManager.Instance.currentSorcererTurn == 0)
+        //{
+        //    ApothecaryManager.Instance.NextSorcererTurn();
+        //}
         _controller.SetDestinationSpot(ApothecaryManager.Instance.sorcererSeat);
     }
 
