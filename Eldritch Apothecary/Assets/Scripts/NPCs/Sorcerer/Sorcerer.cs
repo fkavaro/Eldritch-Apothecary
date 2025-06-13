@@ -41,6 +41,7 @@ public class Sorcerer : AHumanoid<Sorcerer>
     public StackFiniteStateMachine<Sorcerer> sfsm;
     TextMeshProUGUI _serviceText;
     private Transform spellSpawnPoint;
+    public Transform spellPos;
     #endregion
 
     #region STATES
@@ -98,8 +99,8 @@ public class Sorcerer : AHumanoid<Sorcerer>
     /// </summary>
     public void CastSpellEffect(int spellCastingTime)
     {
-        GameObject spawn = new GameObject("SpellSpawnPoint");
-        spawn.transform.position = new Vector3(-11, 2, 17);
+        GameObject spawn = new("SpellSpawnPoint");
+        spawn.transform.position = spellPos.position;
         spellSpawnPoint = spawn.transform;
 
         if (spellVFXPrefabs != null && spellVFXPrefabs.Length > 0)
