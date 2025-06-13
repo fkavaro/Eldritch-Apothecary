@@ -48,12 +48,15 @@ public class Alchemist : AHumanoid<Alchemist>
     public Shelf currentShelf;
     public bool newShelf = true;
 
+    [SerializeField] public GameObject[] potionVFXPrefabs;
+
     #endregion
 
     #region PRIVATE PROPERTIES
     StackFiniteStateMachine<Alchemist> alchemistSFSM;
     TextMeshProUGUI serviceText;
     Table alchemistTable;
+    private Transform preparePotionSpawnPoint;
     #endregion
 
     #region STATES
@@ -88,18 +91,18 @@ public class Alchemist : AHumanoid<Alchemist>
         {
             case Personality.NORMAL:
                 speed = 3f;
-                timeToPrepareMax = 7;
-                timeToPrepareMin = 5;
+                timeToPrepareMax = 14;
+                timeToPrepareMin = 10;
                 break;
             case Personality.LAZY:
                 speed = 2f;
                 timeToPrepareMax = 15;
-                timeToPrepareMin = 7;
+                timeToPrepareMin = 20;
                 break;
             case Personality.ENERGISED:
                 speed = 4f;
-                timeToPrepareMax = 4;
-                timeToPrepareMin = 1;
+                timeToPrepareMax = 7;
+                timeToPrepareMin = 10;
                 break;
         }
 
@@ -119,13 +122,13 @@ public class Alchemist : AHumanoid<Alchemist>
         switch (skill)
         {
             case Skill.NOOB:
-                failProbability = 7;   // if(random < failProbability) = fallo
+                failProbability = 7;   
                 break;
             case Skill.ADEPT:
                 failProbability = 5;
                 break;
             case Skill.MASTER:
-                failProbability = 2;
+                failProbability = 3;
                 break;
         }
 
@@ -136,7 +139,7 @@ public class Alchemist : AHumanoid<Alchemist>
     private void OnAnnoyedByCat(GameObject @object)
     {
         //When the cat goes on the table, the alchemist starts being annoyed
-        if (!alchemistSFSM.IsCurrentState(interruptedState) && alchemistSFSM.IsCurrentState(finishingPotionState))
+        if (!alchemistSFSM.IsCurrentState(interruptedState) && !alchemistSFSM.IsCurrentState(finishingPotionState))
         {
             if (debugMode) Debug.Log("Cat is bothering" + name);
             annoyedByCat = true;
@@ -155,8 +158,6 @@ public class Alchemist : AHumanoid<Alchemist>
             if (debugMode) Debug.Log("Cat is no longer bothering " + name + ". Continuing my tasks");
         }
     }
-
-    #region PRIVATE	METHODS
     protected override ADecisionSystem<Alchemist> CreateDecisionSystem()
     {
         // Stack Finite State Machine
@@ -177,6 +178,52 @@ public class Alchemist : AHumanoid<Alchemist>
     }
 
 
+    #region PUBLIC METHODS
+
+    public void PreparePotionEffect(int spellCastingTime)
+    {
+        GameObject spawn = new GameObject("PreparePotionSpawnPoint");
+        spawn.transform.position = new Vector3(1, 1.5f, 11);
+        preparePotionSpawnPoint = spawn.transform;
+
+        if (potionVFXPrefabs != null && potionVFXPrefabs.Length > 0)
+        {
+            int index = UnityEngine.Random.Range(0, potionVFXPrefabs.Length);
+            GameObject selectedVFX = potionVFXPrefabs[index];
+
+            Vector3 spawnPos = preparePotionSpawnPoint.position;
+            Quaternion rotation = preparePotionSpawnPoint.rotation;
+
+            GameObject vfx = GameObject.Instantiate(selectedVFX, spawnPos, rotation);
+            Destroy(vfx, spellCastingTime);
+        }
+
+        Destroy(spawn);
+
+        if (debugMode) Debug.Log("Casting spell");
+    }
+
+    public void FallenPotionEffect(Vector3 puddlePos)
+    {
+        GameObject spawn = new GameObject("FallenPotionSpawnPoint");
+        spawn.transform.position = puddlePos;
+        preparePotionSpawnPoint = spawn.transform;
+
+        if (potionVFXPrefabs != null && potionVFXPrefabs.Length > 0)
+        {
+            int index = UnityEngine.Random.Range(0, potionVFXPrefabs.Length);
+            GameObject selectedVFX = potionVFXPrefabs[index];
+
+            Vector3 spawnPos = preparePotionSpawnPoint.position;
+            Quaternion rotation = preparePotionSpawnPoint.rotation;
+
+            GameObject vfx = GameObject.Instantiate(selectedVFX, spawnPos, rotation);
+            Destroy(vfx, 1);
+        }
+        Destroy(spawn);
+
+        if (debugMode) Debug.Log("Casting spell");
+    }
     public override bool CatIsBothering()
     {
         return annoyedByCat;
