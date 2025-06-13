@@ -1,22 +1,24 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Plays yell animation until the cat leaves the table
-/// </summary>
 public class Interrupted_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
     public Interrupted_SorcererState(StackFiniteStateMachine<Sorcerer> sfsm)
-        : base("Interrupted", sfsm) { }
+    : base("Interrupted", sfsm) { }
 
     public override void StartState()
     {
-        // Yell animation while the cat is on the table
+        _controller.SetIfStopped(true);
         _controller.ChangeAnimationTo(_controller.yellAnim);
     }
 
     public override void UpdateState()
     {
-        // Keeps complaining until the cat leaves the table
+        _controller.transform.LookAt(ApothecaryManager.Instance.cat.transform.position);
+    }
+
+    public override void ExitState()
+    {
+        _controller.SetIfStopped(false);
     }
 }
