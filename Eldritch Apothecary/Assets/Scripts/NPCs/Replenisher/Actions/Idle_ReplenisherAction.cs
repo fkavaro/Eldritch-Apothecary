@@ -14,6 +14,8 @@ public class Idle_ReplenisherAction : ABinaryAction<Replenisher>
 
     public override void StartAction()
     {
+        _controller.nodeText.text = "";
+
         // Move to counter and wait doing nothing
         _controller.SetDestinationSpot(ApothecaryManager.Instance.replenisherSeat);
     }

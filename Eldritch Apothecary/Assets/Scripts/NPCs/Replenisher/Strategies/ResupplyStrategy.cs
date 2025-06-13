@@ -57,8 +57,10 @@ public class ResupplyStrategy : AStrategy<Replenisher>
             }
         }
 
-        if (_nextShelf == null && _controller.debugMode)
-            Debug.LogWarning("Shelf to resupply not found");
+        if (_nextShelf == null)
+        {
+            if (_controller.debugMode) Debug.LogWarning("Shelf to resupply not found");
+        }
         else
             _controller.SetDestinationSpot(_nextShelf);
     }

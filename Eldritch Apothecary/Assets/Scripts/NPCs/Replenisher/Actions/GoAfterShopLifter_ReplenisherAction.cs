@@ -18,6 +18,8 @@ public class GoAfterShopLifter_ReplenisherAction : ABinaryAction<Replenisher>
 
     public override void StartAction()
     {
+        _controller.nodeText.text = "";
+
         previousSpeed = _controller.speed;
         _controller.speed = 5f;
         hasFinished = false;
