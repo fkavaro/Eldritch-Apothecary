@@ -152,6 +152,9 @@ MonoBehaviour:
   speed: 2
   rotationSpeed: 4
   avoidanceRadius: 0.5
+  maxSamplingDistance: 1
+  stoppingDistance: 0.5
+  nearDistance: 2
   isStopped: 0
   energy: 100
   personality: 0

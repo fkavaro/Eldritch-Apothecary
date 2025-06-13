@@ -26,17 +26,14 @@ where TController : ABehaviourController<TController>
     public float rotationSpeed = 3f;
     [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
     public float avoidanceRadius = 0.7f;
+    public float maxSamplingDistance = 1f, // Max distance from the random point to a point on the navmesh, for target position sampling
+         stoppingDistance = 0.3f, // Distance to which it's considered as arrived
+         nearDistance = 2f; // Distance to which it's close to the destination
     public bool isStopped = false;
 
     [Header("Energy Properties")]
     [Tooltip("Energy value"), Range(0, 100)]
     public float energy = 100;
-    #endregion
-
-    #region PRIVATE PROPERTIES
-    float _maxSamplingDistance = 1f, // Max distance from the random point to a point on the navmesh, for target position sampling
-         _stoppingDistance = 0.3f, // Distance to which it's considered as arrived
-         _nearDistance = 2f; // Distance to which it's close to the destination
     #endregion
 
     #region INHERITED METHODS
@@ -50,7 +47,7 @@ where TController : ABehaviourController<TController>
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = speed;
         _agent.angularSpeed = rotationSpeed * 100f;
-        _agent.stoppingDistance = _stoppingDistance;
+        _agent.stoppingDistance = stoppingDistance;
         _agent.radius = avoidanceRadius;
     }
 
@@ -122,8 +119,8 @@ where TController : ABehaviourController<TController>
 
     public bool IsCloseTo(Vector3 destination, float checkingDistance = 2f, bool fixRotation = false)
     {
-        if (checkingDistance <= _nearDistance)
-            checkingDistance = _nearDistance;
+        if (checkingDistance <= nearDistance)
+            checkingDistance = nearDistance;
 
         if (Vector3.Distance(transform.position, destination) < checkingDistance)
         {
@@ -160,7 +157,7 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public bool HasArrived(Vector3 destination, bool fixRotation = true, bool fixPosition = true)
     {
-        if (Vector3.Distance(transform.position, destination) < _stoppingDistance)
+        if (Vector3.Distance(transform.position, destination) < stoppingDistance)
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
 
@@ -202,7 +199,7 @@ where TController : ABehaviourController<TController>
     {
         NavMeshHit hitLocation;
 
-        if (NavMesh.SamplePosition(targetPos, out hitLocation, _maxSamplingDistance, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(targetPos, out hitLocation, maxSamplingDistance, NavMesh.AllAreas))
         {
             reachablePos = hitLocation.position;
             return true;
@@ -296,8 +293,9 @@ where TController : ABehaviourController<TController>
 
     public bool IsEnergyLow()
     {
-        if (energy <= 10)
+        if (energy <= 0)
         {
+            energy = 0;
             return true;
         }
         else

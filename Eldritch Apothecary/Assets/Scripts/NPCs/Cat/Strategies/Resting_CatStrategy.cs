@@ -21,13 +21,7 @@ public class Resting_CatStrategy<TController> : AStrategy<Cat>
         if (restingSpot == null)
         {
             restingSpot = _controller.CloserRestingSpot();
-
-            if (restingSpot == null)
-            {
-                if (_controller.debugMode) Debug.Log(_controller.name + " has nowhere to rest");
-            }
-            else
-                _controller.SetDestinationSpot(restingSpot);
+            _controller.SetDestinationSpot(restingSpot);
         }
         else if (_controller.HasArrived(restingSpot))
         {
@@ -39,6 +33,7 @@ public class Resting_CatStrategy<TController> : AStrategy<Cat>
             {
                 if (_controller.debugMode) Debug.Log(_controller.name + " is fully rested");
                 _controller.isStopped = false;
+                restingSpot = null;
                 return Node<Cat>.Status.Success;
             }
             else
