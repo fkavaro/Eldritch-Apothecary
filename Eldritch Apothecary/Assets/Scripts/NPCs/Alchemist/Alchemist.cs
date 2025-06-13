@@ -64,7 +64,6 @@ public class Alchemist : AHumanoid<Alchemist>
     public Interrupted_AlchemistState interruptedState;
     public PreparingPotion_AlchemistState preparingPotionState;
     public Waiting_AlchemistState waitingState;
-    public WaitingIngredients_AlchemistState waitingIngredientsState;
     public PickUpIngredients_AlchemistState pickingUpIngredientsState;
     public WaitingForFreeSpace_AlchemistState waitingForSpaceState;
 
@@ -168,7 +167,6 @@ public class Alchemist : AHumanoid<Alchemist>
         interruptedState = new(alchemistSFSM);
         preparingPotionState = new(alchemistSFSM);
         waitingState = new(alchemistSFSM);
-        waitingIngredientsState = new(alchemistSFSM);
         pickingUpIngredientsState = new(alchemistSFSM);
         waitingForSpaceState = new(alchemistSFSM);
 
