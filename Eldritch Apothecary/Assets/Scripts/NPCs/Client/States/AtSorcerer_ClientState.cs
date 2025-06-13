@@ -3,10 +3,10 @@ using UnityEngine;
 /// <summary>
 /// Attends the sorcerer until its service is finished
 /// </summary>
-public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
+public class AtSorcerer_ClientState : ANPCState<Client, FiniteStateMachine<Client>>
 {
-    public AtSorcerer_ClientState(StackFiniteStateMachine<Client> sfsm)
-    : base("At sorcerer", sfsm) { }
+    public AtSorcerer_ClientState(FiniteStateMachine<Client> fsm)
+    : base("At sorcerer", fsm) { }
 
     public override void StartState()
     {

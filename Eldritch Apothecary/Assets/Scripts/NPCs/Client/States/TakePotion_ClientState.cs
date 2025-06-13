@@ -3,12 +3,12 @@ using UnityEngine;
 /// <summary>
 /// Picks up its potion
 /// </summary>
-public class TakePotion_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
+public class TakePotion_ClientState : ANPCState<Client, FiniteStateMachine<Client>>
 {
     Potion assignedPotion;
 
-    public TakePotion_ClientState(StackFiniteStateMachine<Client> sfsm)
-    : base("Picking potion", sfsm) { }
+    public TakePotion_ClientState(FiniteStateMachine<Client> fsm)
+    : base("Picking potion", fsm) { }
 
     public override void StartState()
     {

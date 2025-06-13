@@ -55,7 +55,7 @@ public class Client : AHumanoid<Client>
     #endregion
 
     #region PRIVATE PROPERTIES
-    StackFiniteStateMachine<Client> _sfsm;
+    FiniteStateMachine<Client> _fsm;
     UtilitySystem<Client> _us;
     TextMeshProUGUI _serviceText;
     #endregion
@@ -70,12 +70,12 @@ public class Client : AHumanoid<Client>
     protected override ADecisionSystem<Client> CreateDecisionSystem()
     {
         // Finite State Machine
-        _sfsm = new(this);
+        _fsm = new(this);
         // Utility System
         _us = new(this);
 
         // Action
-        fsmAction = new(_us, _sfsm);
+        fsmAction = new(_us, _fsm);
         stunnedByCatAction = new(_us);
         complainAction = new(_us);
 
@@ -138,7 +138,7 @@ public class Client : AHumanoid<Client>
         if (currentDistanceToCat < minDistanceToCat // Cat is close
             && enoughTimeSinceLastScare // Enough time has passed since last scare
             && _us.IsCurrentAction(fsmAction) // Executing SFSM (not stunned nor complaining)
-            && !_sfsm.IsCurrentState(fsmAction.leavingState) // Not leaving
+            && !_fsm.IsCurrentState(fsmAction.leavingState) // Not leaving
             && !ApothecaryManager.Instance.waitingQueue.Contains(this) // Not in waiting queue
             && UnityEngine.Random.Range(0, 10) < fear // Checks scare probability
         )

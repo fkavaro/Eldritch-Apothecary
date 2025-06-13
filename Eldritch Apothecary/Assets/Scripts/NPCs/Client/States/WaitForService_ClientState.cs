@@ -4,10 +4,10 @@ using static Client;
 /// <summary>
 /// Waits for its service turn sat down.
 /// </summary>
-public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
+public class WaitForService_ClientState : ANPCState<Client, FiniteStateMachine<Client>>
 {
-    public WaitForService_ClientState(StackFiniteStateMachine<Client> sfsm)
-    : base("Waiting for service", sfsm) { }
+    public WaitForService_ClientState(FiniteStateMachine<Client> fsm)
+    : base("Waiting for service", fsm) { }
 
     public override void StartState()
     {

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FSM_ClientAction : StateMachineAction<Client, StackFiniteStateMachine<Client>>
+public class FSM_ClientAction : StateMachineAction<Client, FiniteStateMachine<Client>>
 {
-    readonly StackFiniteStateMachine<Client> _stateMachine;
+    readonly FiniteStateMachine<Client> _stateMachine;
 
     #region STATES
     public Shopping_ClientState shoppingState;
@@ -16,7 +16,7 @@ public class FSM_ClientAction : StateMachineAction<Client, StackFiniteStateMachi
     public Robbing_ClientState robbingState;
     #endregion
 
-    public FSM_ClientAction(UtilitySystem<Client> utilitySystem, StackFiniteStateMachine<Client> stateMachine) : base(utilitySystem, stateMachine)
+    public FSM_ClientAction(UtilitySystem<Client> utilitySystem, FiniteStateMachine<Client> stateMachine) : base(utilitySystem, stateMachine)
     {
         _stateMachine = stateMachine;
 

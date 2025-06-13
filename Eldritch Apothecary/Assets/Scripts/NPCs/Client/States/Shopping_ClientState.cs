@@ -4,15 +4,15 @@ using UnityEngine;
 /// <summary>
 /// Picks up a product or waits in line directly
 /// </summary>
-public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
+public class Shopping_ClientState : ANPCState<Client, FiniteStateMachine<Client>>
 {
     int _amountNeeded, _shopAgainProbability;
     Shelf _shopShelf;
     List<Shelf> _visitedShelves = new();
 
 
-    public Shopping_ClientState(StackFiniteStateMachine<Client> sfsm)
-    : base("Shopping", sfsm) { }
+    public Shopping_ClientState(FiniteStateMachine<Client> fsm)
+    : base("Shopping", fsm) { }
 
     public override void StartState()
     {

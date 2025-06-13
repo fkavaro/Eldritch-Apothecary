@@ -3,12 +3,12 @@ using UnityEngine;
 /// <summary>
 /// Leaves the apothecary, returning to the pool.
 /// </summary>
-public class Leaving_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
+public class Leaving_ClientState : ANPCState<Client, FiniteStateMachine<Client>>
 {
     Vector3 queueExitPosition, exitPosition;
 
-    public Leaving_ClientState(StackFiniteStateMachine<Client> sfsm)
-    : base("Leaving", sfsm) { }
+    public Leaving_ClientState(FiniteStateMachine<Client> fsm)
+    : base("Leaving", fsm) { }
 
     public override void StartState()
     {

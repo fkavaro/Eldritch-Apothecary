@@ -1,13 +1,12 @@
 using System;
 using UnityEngine;
 
-public class Robbing_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
+public class Robbing_ClientState : ANPCState<Client, FiniteStateMachine<Client>>
 {
     Vector3 entrancePosition;
-    float previousSpeed;
 
-    public Robbing_ClientState(StackFiniteStateMachine<Client> sfsm)
-    : base("Robbing", sfsm) { }
+    public Robbing_ClientState(FiniteStateMachine<Client> fsm)
+    : base("Robbing", fsm) { }
 
     public override void StartState()
     {

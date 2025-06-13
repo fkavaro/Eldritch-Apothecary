@@ -4,10 +4,10 @@ using static Client;
 /// <summary>
 /// Waits in line to be attended by the receptionist 
 /// </summary>
-public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
+public class WaitForReceptionist_ClientState : ANPCState<Client, FiniteStateMachine<Client>>
 {
-    public WaitForReceptionist_ClientState(StackFiniteStateMachine<Client> sfsm)
-    : base("Waiting in line", sfsm) { }
+    public WaitForReceptionist_ClientState(FiniteStateMachine<Client> fsm)
+    : base("Waiting in line", fsm) { }
 
     public override void StartState()
     {
