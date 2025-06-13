@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -34,5 +35,10 @@ public class UIManager : MonoBehaviour
         sorcererSuppliesBar.value = 1f - ApothecaryManager.Instance.normalisedSorcererLack;
         alchemistSuppliesBar.value = 1f - ApothecaryManager.Instance.normalisedAlchemistLack;
         shopSuppliesBar.value = 1f - ApothecaryManager.Instance.normalisedShopLack;
+    }
+
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
