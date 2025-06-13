@@ -1,4 +1,5 @@
 using UnityEngine;
+using static Client;
 
 /// <summary>
 /// Waits in line to be attended by the receptionist 

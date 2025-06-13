@@ -49,6 +49,9 @@ public class Client : AHumanoid<Client>
 
     [HideInInspector] public float lastScareTime = -Mathf.Infinity;
     [HideInInspector] public TextMeshProUGUI turnText;
+
+    // Renderes from the game object to change material colors
+    Renderer[] renderers;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -89,7 +92,6 @@ public class Client : AHumanoid<Client>
         // Random navMeshAgent priority
         _agent.avoidancePriority = UnityEngine.Random.Range(10, 99);
     }
-
     protected override void OnUpdate()
     {
         base.OnUpdate();
@@ -149,6 +151,74 @@ public class Client : AHumanoid<Client>
     public bool TooScared()
     {
         return scaresCount >= maxScares;
+    }
+
+    /// <summary>
+    /// Makes client bigger when spell goes wrong
+    /// </summary>
+    public void Enlarge()
+    {
+        transform.localScale *= 1.2f;
+    }
+
+    /// <summary>
+    /// Makes client smaller when spell goes wrong
+    /// </summary>
+    public void Shrink()
+    {
+        transform.localScale *= 0.8f;
+    }
+
+    /// <summary>
+    /// Resets client scale
+    /// </summary>
+    public void ResetScale()
+    {
+        transform.localScale = Vector3.one;
+    }
+
+    /// <summary>
+    /// Changes client color when spell goes wrong
+    /// </summary>
+    public void ChangeColor()
+    {
+        // Accesses renderers in game object
+        renderers = GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer renderer in renderers)
+        {
+            Material[] materials = renderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                // Changes the skin to a random color
+                if (materials[i].name.Contains("Skin"))
+                {
+                    materials[i].color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
+                }
+            }
+            renderer.materials = materials;
+        }
+    }
+
+    /// <summary>
+    /// Resets client skin color
+    /// </summary>
+    public void ResetColor()
+    {
+        renderers = GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer renderer in renderers)
+        {
+            Material[] materials = renderer.materials;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                if (materials[i].name.Contains("Skin"))
+                {
+                    materials[i].color = new Color(233f / 255f, 200f / 255f, 173f / 255f, 255f / 255f);
+                }
+            }
+            renderer.materials = materials;
+        }
     }
     #endregion
 

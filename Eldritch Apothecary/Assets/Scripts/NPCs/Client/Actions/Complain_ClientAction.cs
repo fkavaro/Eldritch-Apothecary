@@ -16,12 +16,12 @@ public class Complain_ClientAction : ABinaryAction<Client>
         _controller.animationText.text = "";
 
         // If the client leaving is the next in line to the sorcerer, adds one to the sorcerer turn
-        if ((_controller.wantedService == Client.WantedService.SPELL) && (_controller.turnNumber == ApothecaryManager.Instance.currentSorcererTurn))
-        {
-            ApothecaryManager.Instance.NextSorcererTurn();
-            // Updates sorcerer clients list
-            ApothecaryManager.Instance.sorcererClientsQueue.Remove(_controller);
-        }
+        //if ((_controller.wantedService == Client.WantedService.SPELL) && (_controller.turnNumber == ApothecaryManager.Instance.currentSorcererTurn))
+        //{
+        //    ApothecaryManager.Instance.NextSorcererTurn();
+        //    // Updates sorcerer clients list
+        //    ApothecaryManager.Instance.sorcererClientsQueue.Remove(_controller);
+        //}
 
         // Still in waiting queue 
         if (ApothecaryManager.Instance.waitingQueue.Contains(_controller))

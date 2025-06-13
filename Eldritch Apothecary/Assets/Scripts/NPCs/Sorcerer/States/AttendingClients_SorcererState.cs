@@ -7,6 +7,7 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
 {
     int spellCastingTime;
     int failedSpell;
+    int failedSpellConsequence;
 
     private float waitTimer = 0f;
     private bool isWaiting = false;
@@ -76,9 +77,27 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
                 if (failedSpell == 1)
                 {
                     if (_controller.debugMode) Debug.Log("Failed Spell");
+
+                    failedSpellConsequence = UnityEngine.Random.Range(0, 3);
+
+                    // Makes client either bigger or smaller or changes skin color
+                    switch (failedSpellConsequence)
+                    {
+                        case 0:
+                            ApothecaryManager.Instance.sorcererClientsQueue[0].Shrink();
+                            break;
+                        case 1:
+                            ApothecaryManager.Instance.sorcererClientsQueue[0].Enlarge();
+                            break;
+                        case 2:
+                            ApothecaryManager.Instance.sorcererClientsQueue[0].ChangeColor();
+                            break;
+                    }
+
                     // Resets timer
                     waitTimer = 0f;
                     isWaiting = false;
+
                     // Starts from the beginning
                     SwitchState(_controller.pickUpIngredientsState);
                     return;
