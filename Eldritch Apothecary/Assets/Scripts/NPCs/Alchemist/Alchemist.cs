@@ -66,10 +66,7 @@ public class Alchemist : AHumanoid<Alchemist>
     public Waiting_AlchemistState waitingState;
     public PickUpIngredients_AlchemistState pickingUpIngredientsState;
     public WaitingForFreeSpace_AlchemistState waitingForSpaceState;
-
     #endregion
-
-
 
     protected override void OnAwake()
     {
@@ -84,7 +81,6 @@ public class Alchemist : AHumanoid<Alchemist>
         personality = (Personality)UnityEngine.Random.Range(0, 3); // Chooses a personality randomly
         efficiency = (Efficiency)UnityEngine.Random.Range(0, 3); // Chooses a efficiency randomly
         skill = (Skill)UnityEngine.Random.Range(0, 3); // Chooses a skill randomly
-
 
         switch (personality)
         {
@@ -121,19 +117,16 @@ public class Alchemist : AHumanoid<Alchemist>
         switch (skill)
         {
             case Skill.NOOB:
-                failProbability = 7;   
-                break;
-            case Skill.ADEPT:
                 failProbability = 5;
                 break;
+            case Skill.ADEPT:
+                failProbability = 4;
+                break;
             case Skill.MASTER:
-                failProbability = 3;
+                failProbability = 2;
                 break;
         }
-
     }
-
-
 
     private void OnAnnoyedByCat(GameObject @object)
     {
