@@ -104,11 +104,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1991120730176612880, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_VersionIndex
-      value: 4174
+      value: 4192
       objectReference: {fileID: 0}
     - target: {fileID: 2938478958172959159, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_VersionIndex
-      value: 2128
+      value: 2146
       objectReference: {fileID: 0}
     - target: {fileID: 4827566160370592624, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -160,15 +160,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5136916126235023369, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_VersionIndex
-      value: 2072
+      value: 2090
       objectReference: {fileID: 0}
     - target: {fileID: 6594224806366185398, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_VersionIndex
-      value: 4502
+      value: 4520
       objectReference: {fileID: 0}
     - target: {fileID: 7654935309644284157, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_VersionIndex
       value: 2229
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438419947069002580, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3584
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438419947069002580, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_SelectedEdges.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438419947069002580, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_SelectedFaces.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438419947069002580, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
+      propertyPath: m_SelectedVertices.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8828539712338053753, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_Name
@@ -176,7 +192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9020744517142977068, guid: 55e7d1703b6c94b42b3ebc878e6591a3, type: 3}
       propertyPath: m_VersionIndex
-      value: 5237
+      value: 5255
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

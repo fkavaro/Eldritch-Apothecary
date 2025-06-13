@@ -204,6 +204,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1991120730176612880, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3665
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938478958172959159, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_VersionIndex
+      value: 1723
+      objectReference: {fileID: 0}
     - target: {fileID: 4827566160370592624, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -244,9 +252,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5136916126235023369, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_VersionIndex
+      value: 1723
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594224806366185398, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3889
+      objectReference: {fileID: 0}
+    - target: {fileID: 7654935309644284157, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2685
+      objectReference: {fileID: 0}
     - target: {fileID: 8828539712338053753, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
       propertyPath: m_Name
       value: Shop shelves
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020744517142977068, guid: d6a65433a011f0043a48a9f10fa7bfd2, type: 3}
+      propertyPath: m_VersionIndex
+      value: 5184
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -39,6 +39,9 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
             // Take needed amount from shelf
             if (_shopShelf.Take(_amountNeeded))
             {
+                // Reduce avoidance radius to avoid being blocked by other clients
+                _controller.SetAvoidanceRadius(0.1f);
+
                 if (Random.Range(0, 11) <= _shopAgainProbability)
                     _controller.PlayAnimationRandomTime(_controller.pickUpAnim, "Picking up goods", GoToOtherShelf);
                 else
@@ -86,12 +89,14 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
 
     public override void ExitState()
     {
+        _controller.ResetAvoidanceRadius();
         _controller.ResetWaitingTime();
         _controller.animationText.text = "";
     }
 
     void GoToOtherShelf()
     {
+        _controller.ResetAvoidanceRadius();
         _controller.ResetWaitingTime();
 
         _amountNeeded = Random.Range(5, 16); // Random amount needed
