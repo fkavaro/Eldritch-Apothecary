@@ -37,6 +37,8 @@ public class FinishPotion_AlchemistState : ANPCState<Alchemist, StackFiniteState
             // Checks if the potion has to fall
             if (UnityEngine.Random.Range(0, 10) < _controller.failProbability)
             {
+                //Puddle VFX
+                _controller.FallenPotionEffect(_controller.transform.position);
                 // Spawns a puddle on the alchemist's position
                 GameObject.Instantiate(puddle, _controller.transform.position, _controller.transform.rotation);
                 // Goes to pick ingredients again

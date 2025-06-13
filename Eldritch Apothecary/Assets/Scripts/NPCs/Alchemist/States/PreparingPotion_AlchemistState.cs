@@ -21,6 +21,8 @@ public class PreparingPotion_AlchemistState : ANPCState<Alchemist, StackFiniteSt
         {
             //Generates a random required time, between a min and max number defined by his personality
             timeToPrepare = UnityEngine.Random.Range(_controller.timeToPrepareMin, _controller.timeToPrepareMax);
+            //Spawn VFX Effect
+            _controller.PreparePotionEffect(timeToPrepare);
             //After spending the required time , changes to finishing potion state
             SwitchStateAfterCertainTime(timeToPrepare, _controller.finishingPotionState, _controller.mixIngredientsAnim, "Preparing Potions");
         }
