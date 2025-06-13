@@ -5,21 +5,53 @@ using UnityEngine;
 /// </summary>
 public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
-    Shelf shelf;
+    Shelf _shelf;
+    int amountNeeded;
 
     public PickUpIngredients_SorcererState(StackFiniteStateMachine<Sorcerer> sfsm)
         : base("Picking up ingredient", sfsm) { }
 
     public override void StartState()
     {
-        shelf = ApothecaryManager.Instance.RandomSorcererShelf();
-        _controller.SetDestinationSpot(shelf);
+        _shelf = ApothecaryManager.Instance.RandomSorcererShelf();
+        _controller.SetDestinationSpot(_shelf);
+
+        // Picks up different amounts according to efficiency
+        switch (_controller.efficiency)
+        {
+            case Sorcerer.Efficiency.INEFFICIENT:
+                amountNeeded = Random.Range(20, 40);
+                break;
+
+            case Sorcerer.Efficiency.NORMAL:
+                amountNeeded = Random.Range(10, 20);
+                break;
+
+            case Sorcerer.Efficiency.EFFICIENT:
+                amountNeeded = Random.Range(5, 10);
+                break;
+        }
     }
 
     public override void UpdateState()
     {
+        // Has reached exact position
+        if (_controller.HasArrivedAtDestination())
+        {
+            if (_shelf.CanTake(amountNeeded))
+            {
+                _shelf.Take(amountNeeded);
+                SwitchStateAfterCertainTime(1f, _controller.attendingClientsState, _controller.pickUpAnim, "Picking up ingredient");
+            }
+            else
+            {
+                _controller.ChangeAnimationTo(_controller.waitAnim);
+                _controller.animationText.text = "Waiting for replenishment";
+            }
+        }
+
         // If is close to the pick up position
-        if (_controller.IsCloseToDestination())
+        else if (_controller.IsCloseToDestination())
         {
             // Pick up position is occupied
             if (_controller.DestinationSpotIsOccupied())
@@ -31,27 +63,6 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
             else // Pick up position is free
             {
                 _controller.SetIfStopped(false);
-
-                // Has reached exact position
-                if (_controller.HasArrivedAtDestination())
-                {
-                    // Picks up different amounts according to efficiency
-                    switch (_controller.efficiency)
-                    {
-                        case Sorcerer.Efficiency.INEFFICIENT:
-                            shelf.TakeRandom(40);
-                            break;
-
-                        case Sorcerer.Efficiency.NORMAL:
-                            shelf.TakeRandom(20);
-                            break;
-
-                        case Sorcerer.Efficiency.EFFICIENT:
-                            shelf.TakeRandom(10);
-                            break;
-                    }
-                    SwitchStateAfterCertainTime(1f, _controller.attendingClientsState, _controller.pickUpAnim, "Picking up ingredient");
-                }
             }
         }
     }
