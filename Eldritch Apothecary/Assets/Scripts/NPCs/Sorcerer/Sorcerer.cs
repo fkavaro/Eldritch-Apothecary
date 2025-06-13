@@ -39,7 +39,6 @@ public class Sorcerer : AHumanoid<Sorcerer>
     #region PRIVATE PROPERTIES
 
     public StackFiniteStateMachine<Sorcerer> sfsm;
-    TextMeshProUGUI _serviceText;
     private Transform spellSpawnPoint;
     public Transform spellPos;
     #endregion

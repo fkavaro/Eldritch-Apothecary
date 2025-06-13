@@ -6,7 +6,7 @@ using UnityEngine;
 public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteStateMachine<Sorcerer>>
 {
     Shelf _shelf;
-    int amountNeeded;
+    int _amountNeeded;
 
     public PickUpIngredients_SorcererState(StackFiniteStateMachine<Sorcerer> sfsm)
         : base("Picking up ingredient", sfsm) { }
@@ -20,15 +20,15 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
         switch (_controller.efficiency)
         {
             case Sorcerer.Efficiency.INEFFICIENT:
-                amountNeeded = Random.Range(15, 25);
+                _amountNeeded = Random.Range(15, 25);
                 break;
 
             case Sorcerer.Efficiency.NORMAL:
-                amountNeeded = Random.Range(10, 15);
+                _amountNeeded = Random.Range(10, 15);
                 break;
 
             case Sorcerer.Efficiency.EFFICIENT:
-                amountNeeded = Random.Range(5, 10);
+                _amountNeeded = Random.Range(5, 10);
                 break;
         }
     }
@@ -38,10 +38,9 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
         // Has reached exact position
         if (_controller.HasArrivedAtDestination())
         {
-            if (_shelf.CanTake(amountNeeded))
+            if (_shelf.Take(_amountNeeded))
             {
-                _shelf.Take(amountNeeded);
-                SwitchStateAfterCertainTime(1f, _controller.attendingClientsState, _controller.pickUpAnim, "Picking up ingredient");
+                SwitchStateAfterCertainTime(2f, _controller.attendingClientsState, _controller.pickUpAnim, "Picking up ingredient");
             }
             else
             {
@@ -49,20 +48,25 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
                 _controller.animationText.text = "Waiting for replenishment";
             }
         }
-
         // If is close to the pick up position
         else if (_controller.IsCloseToDestination())
         {
-            // Pick up position is occupied
-            if (_controller.DestinationSpotIsOccupied())
+            // Pick up position is occupied or not enough supply for needed amount
+            if (_controller.DestinationSpotIsOccupied() || !_shelf.CanTake(_amountNeeded))
             {
                 // Stop and wait
                 _controller.SetIfStopped(true);
                 _controller.ChangeAnimationTo(_controller.waitAnim);
+
+                // Not enough supply
+                if (!_shelf.CanTake(_amountNeeded))
+                    _controller.animationText.text = "Waiting for replenishment";
             }
-            else // Pick up position is free
+            // Shelf is free and has enough supplies
+            else if (!_controller.DestinationSpotIsOccupied() && _shelf.CanTake(_amountNeeded))
             {
                 _controller.SetIfStopped(false);
+                _controller.ChangeAnimationTo(_controller.walkAnim);
             }
         }
     }

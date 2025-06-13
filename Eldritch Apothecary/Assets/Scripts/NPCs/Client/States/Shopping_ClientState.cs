@@ -6,8 +6,8 @@ using UnityEngine;
 /// </summary>
 public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Client>>
 {
-    Shelf _shopShelf;
     int _amountNeeded, _shopAgainProbability;
+    Shelf _shopShelf;
     List<Shelf> _visitedShelves = new();
 
 
@@ -75,7 +75,7 @@ public class Shopping_ClientState : ANPCState<Client, StackFiniteStateMachine<Cl
                 if (!_shopShelf.CanTake(_amountNeeded))
                     _controller.animationText.text = "Waiting for replenishment";
             }
-            // Spot is free and has enough supplies
+            // Shelf is free and has enough supplies
             else if (!_controller.DestinationSpotIsOccupied() && _shopShelf.CanTake(_amountNeeded))
             {
                 _controller.SetIfStopped(false);

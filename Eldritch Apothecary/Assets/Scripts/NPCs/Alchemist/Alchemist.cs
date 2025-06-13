@@ -45,16 +45,12 @@ public class Alchemist : AHumanoid<Alchemist>
     public Skill skill = Skill.ADEPT;
 
     public int failProbability = 2;
-    public Shelf currentShelf;
-    public bool newShelf = true;
 
-    [SerializeField] public GameObject[] potionVFXPrefabs;
-
+    public GameObject[] potionVFXPrefabs;
     #endregion
 
     #region PRIVATE PROPERTIES
     StackFiniteStateMachine<Alchemist> alchemistSFSM;
-    TextMeshProUGUI serviceText;
     Table alchemistTable;
     private Transform preparePotionSpawnPoint;
     #endregion
@@ -173,8 +169,8 @@ public class Alchemist : AHumanoid<Alchemist>
 
     public void PreparePotionEffect(int spellCastingTime)
     {
-        GameObject spawn = new GameObject("PreparePotionSpawnPoint");
-        spawn.transform.position = new Vector3(1, 1.5f, 11);
+        GameObject spawn = new("PreparePotionSpawnPoint");
+        spawn.transform.position = new(1, 1.5f, 11);
         preparePotionSpawnPoint = spawn.transform;
 
         if (potionVFXPrefabs != null && potionVFXPrefabs.Length > 0)
@@ -215,10 +211,10 @@ public class Alchemist : AHumanoid<Alchemist>
 
         if (debugMode) Debug.Log("Casting spell");
     }
+
     public override bool CatIsBothering()
     {
         return annoyedByCat;
     }
-
     #endregion
 }
