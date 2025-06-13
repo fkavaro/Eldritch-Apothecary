@@ -33,6 +33,13 @@ public class Leaving_ClientState : ANPCState<Client, StackFiniteStateMachine<Cli
             _controller.ResetScale();
             _controller.ResetColor();
 
+            if ((_controller.wantedService == Client.WantedService.SPELL) && (ApothecaryManager.Instance.sorcererClientsQueue.Contains(_controller)))
+            {
+                //ApothecaryManager.Instance.NextSorcererTurn();
+                // Updates sorcerer clients list
+                ApothecaryManager.Instance.sorcererClientsQueue.Remove(_controller);
+            }
+
             // Wanted a potion
             if (_controller.wantedService == Client.WantedService.POTION)
                 // Check if client's potion is left

@@ -25,9 +25,9 @@ public class AtSorcerer_ClientState : ANPCState<Client, StackFiniteStateMachine<
             if (ApothecaryManager.Instance.sorcerer.sfsm.IsCurrentState(ApothecaryManager.Instance.sorcerer.waitForClientState)
                 && !ApothecaryManager.Instance.IsCurrentSorcererTurn(_controller))
             {
-                SwitchState(_controller.fsmAction.leavingState);
                 // Updates sorcerer clients list
                 ApothecaryManager.Instance.sorcererClientsQueue.Remove(_controller);
+                SwitchState(_controller.fsmAction.leavingState);
             }
         }
         // Is close to the sorcerer seat

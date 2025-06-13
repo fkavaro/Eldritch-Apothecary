@@ -107,6 +107,8 @@ public class AttendingClients_SorcererState : ANPCState<Sorcerer, StackFiniteSta
                 failedSpell = 0;
                 // Adds one to the sorcerer turn
                 ApothecaryManager.Instance.NextSorcererTurn();
+                // ApothecaryManager.Instance.currentSorcererTurn = 0;
+                // ApothecaryManager.Instance.sorcererClientsQueue.RemoveAt(0);
                 // Sorcerer waits for the next client
                 SwitchState(_controller.waitForClientState);
 
