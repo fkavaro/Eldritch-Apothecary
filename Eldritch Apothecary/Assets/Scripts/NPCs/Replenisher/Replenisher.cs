@@ -27,7 +27,6 @@ public class Replenisher : AHumanoid<Replenisher>
     [Header("Supply Canvas")]
     public Slider supplyBar;
     public TextMeshProUGUI valueText;
-
     #endregion
 
     #region UTILITY SYSTEM
@@ -138,7 +137,6 @@ public class Replenisher : AHumanoid<Replenisher>
     {
         if (currentAmount >= capacity)
         {
-            currentAmount = capacity;
             return true;
         }
         else

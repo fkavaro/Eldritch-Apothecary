@@ -14,7 +14,7 @@ where TController : ABehaviourController<TController>
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] public bool isExecutionPaused = false;
 
-    [HideInInspector] public TextMeshProUGUI actionText, animationText;
+    [HideInInspector] public TextMeshProUGUI actionText, nodeText, animationText;
     protected Transform debugCanvas;
     ADecisionSystem<TController> _decisionSystem;
 
@@ -37,6 +37,15 @@ where TController : ABehaviourController<TController>
         debugCanvas = transform.Find("DebugCanvas")?.transform;
         actionText = debugCanvas?.Find("Action").GetComponent<TextMeshProUGUI>();
         animationText = debugCanvas?.Find("Animation").GetComponent<TextMeshProUGUI>();
+
+        try
+        {
+            nodeText = debugCanvas?.Find("Node").GetComponent<TextMeshProUGUI>();
+        }
+        catch
+        {
+
+        }
 
         OnAwake();
         _decisionSystem?.Awake();

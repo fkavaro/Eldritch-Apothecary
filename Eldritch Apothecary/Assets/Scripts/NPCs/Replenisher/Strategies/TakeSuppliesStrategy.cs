@@ -16,6 +16,10 @@ public class TakeSuppliesStrategy : AStrategy<Replenisher>
 
     public override Node<Replenisher>.Status Update()
     {
+        // Can't take anymore supplies
+        if (_controller.IsFull() || _controller.currentAmount >= _lackingAmount)
+            return Node<Replenisher>.Status.Success;
+
         if (_nextShelf == null)
             NextRandomSupplyShelf();
 
@@ -23,13 +27,7 @@ public class TakeSuppliesStrategy : AStrategy<Replenisher>
         if (_controller.HasArrivedAtDestination())
         {
             _controller.PlayAnimationCertainTime(_controller.timeToReplenish, _controller.pickUpAnim, "Taking supplies", TakeSupply, false);
-
-            // Can't take anymore supplies
-            if (_controller.IsFull() || _controller.currentAmount >= _lackingAmount)
-                return Node<Replenisher>.Status.Success;
-            // Replenisher still can carry more lacking supplies 
-            else
-                return Node<Replenisher>.Status.Running;
+            return Node<Replenisher>.Status.Running;
         }
         // Hasn't arrived to shelf
         else
@@ -54,23 +52,27 @@ public class TakeSuppliesStrategy : AStrategy<Replenisher>
         _controller.currentAmount += amountToTake;
 
         // Can't take anymore supplies
-        if (_controller.IsFull() || _controller.currentAmount >= _lackingAmount)
+        if (_controller.IsFull())
         {
             // Fix carried amount
-            if (_controller.currentAmount > _lackingAmount)
-                _controller.currentAmount = _lackingAmount;
+            _controller.currentAmount = 100;
         }
-        // Replenisher still can carry more lacking supplies 
-        else
+        else if (_controller.currentAmount > _lackingAmount)
         {
-            // Go to another supply shelf
-            NextRandomSupplyShelf();
+            // Fix carried amount
+            _controller.currentAmount = _lackingAmount;
         }
+
+        _nextShelf = null;
     }
 
     private void NextRandomSupplyShelf()
     {
         _nextShelf = ApothecaryManager.Instance.RandomShelf(_supplyShelves);
-        _controller.SetDestinationSpot(_nextShelf);
+
+        if (_nextShelf == null && _controller.debugMode)
+            Debug.LogWarning("Shelf to replenish not found");
+        else
+            _controller.SetDestinationSpot(_nextShelf);
     }
 }

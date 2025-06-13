@@ -63,7 +63,6 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
 
     public override bool IsFinished()
     {
-
         return _replenishBT.status != Node<Replenisher>.Status.Running || // Behaviour tree has finished its sequence or failed
             (_goAfterRobber && ApothecaryManager.Instance.isSomeoneRobbing); // Will go after robber an someone is robbing
     }

@@ -230,11 +230,11 @@ public class Client : AHumanoid<Client>
     {
         wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
 
-        int rndPersonality = UnityEngine.Random.Range(0, 11);
+        float rndPersonality = UnityEngine.Random.Range(0, 11);
 
-        if (rndPersonality <= 1) // 10% chance
+        if (rndPersonality <= 0.5) // 10% chance
             personality = Personality.SHOPLIFTER;
-        else if (rndPersonality > 1 && rndPersonality <= 4) // 30% chance
+        else if (rndPersonality > 0.5 && rndPersonality <= 4) // 30% chance
             personality = Personality.IMPATIENT;
         else if (rndPersonality > 4 && rndPersonality <= 7) // 30% chance
             personality = Personality.SKITTISH;

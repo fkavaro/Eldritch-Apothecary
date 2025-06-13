@@ -6,7 +6,6 @@ public class ResupplyStrategy : AStrategy<Replenisher>
 {
     List<Shelf> _shelvesToResupply;
     Shelf _nextShelf;
-    bool _foundShelfToResupply;
 
     public ResupplyStrategy(Replenisher controller, List<Shelf> shelvesToResupply) : base(controller)
     {
@@ -15,44 +14,31 @@ public class ResupplyStrategy : AStrategy<Replenisher>
 
     public override Node<Replenisher>.Status Update()
     {
+        // Isn't carrying anymore supplies or no more lacking supplies
+        if (_controller.IsEmpty() || ApothecaryManager.Instance.GetNormalisedLack(_shelvesToResupply) <= 0)
+            return Node<Replenisher>.Status.Success;
+
+        // Don't know where to go
         if (_nextShelf == null)
-            NextMostLackingShelf();
-
-        // Has arrived to shelf to be resupplied
-        if (_controller.HasArrivedAtDestination())
         {
-            _controller.PlayAnimationCertainTime(_controller.timeToReplenish, _controller.pickUpAnim, "Resuplying", Resupply, false);
-
-            if (_foundShelfToResupply)
-                _controller.SetDestinationSpot(_nextShelf);
-            else
-            {
-                if (_controller.debugMode)
-                    Debug.LogWarning("There was supposed to be a lacking shelf to resupply");
-
-                return Node<Replenisher>.Status.Failure;
-            }
-
-            // Isn't carrying anymore supplies or no more lacking supplies
-            if (_controller.IsEmpty() || ApothecaryManager.Instance.GetNormalisedLack(_shelvesToResupply) <= 0)
-                return Node<Replenisher>.Status.Success;
-            else
-                return Node<Replenisher>.Status.Running;
-        }
-        // Hasn't arrived to shelf
-        else
+            NextMostLackingShelf();
             return Node<Replenisher>.Status.Running;
+        }
+        else
+        {
+            // Has arrived to shelf to be resupplied
+            if (_controller.HasArrived(_nextShelf))
+                _controller.PlayAnimationCertainTime(_controller.timeToReplenish, _controller.pickUpAnim, "Resuplying", Resupply, false);
 
+            return Node<Replenisher>.Status.Running;
+        }
     }
 
     void Resupply()
     {
         // Replenish it, reducing carried amount
         _controller.currentAmount = _nextShelf.Replenish(_controller.currentAmount);
-
-        // Is carrying more supplies
-        if (!_controller.IsEmpty())
-            NextMostLackingShelf();
+        _nextShelf = null;
     }
 
     void NextMostLackingShelf()
@@ -71,9 +57,9 @@ public class ResupplyStrategy : AStrategy<Replenisher>
             }
         }
 
-        if (_nextShelf != null)
-            _foundShelfToResupply = true;
+        if (_nextShelf == null && _controller.debugMode)
+            Debug.LogWarning("Shelf to resupply not found");
         else
-            _foundShelfToResupply = false;
+            _controller.SetDestinationSpot(_nextShelf);
     }
 }
