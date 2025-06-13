@@ -230,10 +230,6 @@ public class Client : AHumanoid<Client>
     {
         wantedService = (WantedService)UnityEngine.Random.Range(0, 3); // Chooses a service randomly
 
-        // Updates sorcerer clients queue
-        if (wantedService == WantedService.SPELL)
-            ApothecaryManager.Instance.sorcererClientsQueue.Add(this); // TODO: do when is attended by receptionist
-
         int rndPersonality = UnityEngine.Random.Range(0, 11);
 
         if (rndPersonality <= 1) // 10% chance
