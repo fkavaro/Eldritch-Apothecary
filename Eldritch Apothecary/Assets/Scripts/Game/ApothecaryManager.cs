@@ -404,7 +404,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
         foreach (Potion readyPotion in _readyPotions)
         {
-            if (gonePotionTurns.Contains(readyPotion.turnNumber))
+            if (gonePotionTurns.Contains(readyPotion.turnNumber) && readyPotion.model.activeSelf)
                 leftPotion = readyPotion;
         }
 
