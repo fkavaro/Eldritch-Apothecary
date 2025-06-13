@@ -48,8 +48,16 @@ public class WaitForService_ClientState : ANPCState<Client, StackFiniteStateMach
                     _controller.secondsWaiting += Time.deltaTime;
                     // Wait
                     _controller.ChangeAnimationTo(_controller.sitDownAnim);
+                    // Reduce avoidance radius to avoid being blocked by other clients
+                    _controller.SetAvoidanceRadius(0.1f);
                 }
             }
         }
+    }
+
+    public override void ExitState()
+    {
+        _controller.ResetAvoidanceRadius();
+        _controller.ResetWaitingTime();
     }
 }
