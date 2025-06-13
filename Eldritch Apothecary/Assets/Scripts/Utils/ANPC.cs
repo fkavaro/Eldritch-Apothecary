@@ -296,9 +296,8 @@ where TController : ABehaviourController<TController>
 
     public bool IsEnergyLow()
     {
-        if (energy <= 0)
+        if (energy <= 10)
         {
-            energy = 0;
             return true;
         }
         else

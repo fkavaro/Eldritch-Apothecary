@@ -29,7 +29,7 @@ public class Resting_CatStrategy<TController> : AStrategy<Cat>
             else
                 _controller.SetDestinationSpot(restingSpot);
         }
-        else if (_controller.HasArrivedAtDestination())
+        else if (_controller.HasArrived(restingSpot))
         {
             _controller.ChangeAnimationTo(_controller.idleAnim);
 
