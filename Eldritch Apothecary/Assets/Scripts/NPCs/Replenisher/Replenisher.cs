@@ -26,7 +26,6 @@ public class Replenisher : AHumanoid<Replenisher>
     public int remainingAmount;
     [Header("Supply Canvas")]
     public Slider supplyBar;
-    public Image fill;
     public TextMeshProUGUI valueText;
 
     #endregion
@@ -36,6 +35,7 @@ public class Replenisher : AHumanoid<Replenisher>
     Replenish_ReplenisherAction replenishShopAction;
     Replenish_ReplenisherAction replenishAlchemistAction;
     Replenish_ReplenisherAction replenishSorcererAction;
+    GoAfterShopLifter_ReplenisherAction goAfterShopLifter_ReplenisherAction;
     Idle_ReplenisherAction idleAction;
     #endregion
 
@@ -50,7 +50,8 @@ public class Replenisher : AHumanoid<Replenisher>
             "Replenishing shop",
             _replenisherUS,
             ApothecaryManager.Instance.shopShelves,
-            ApothecaryManager.Instance.shopSuppliesShelves
+            ApothecaryManager.Instance.shopSuppliesShelves,
+            true
         );
 
         replenishAlchemistAction = new(
@@ -68,6 +69,8 @@ public class Replenisher : AHumanoid<Replenisher>
         );
 
         idleAction = new(_replenisherUS);
+
+        goAfterShopLifter_ReplenisherAction = new(_replenisherUS);
 
         return _replenisherUS;
     }

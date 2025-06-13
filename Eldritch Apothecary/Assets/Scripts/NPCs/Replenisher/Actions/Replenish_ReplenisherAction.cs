@@ -7,6 +7,7 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
     #region PROPERTIES
     List<Shelf> _supplyShelves,
         _shelvesToResupply;
+    bool _goAfterRobber = false;
     #endregion
 
     #region NODES
@@ -20,11 +21,12 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
     ResupplyStrategy _resupplyStrategy;
     #endregion
 
-    public Replenish_ReplenisherAction(string name, UtilitySystem<Replenisher> utilitySystem, List<Shelf> shelvesToResupply, List<Shelf> supplyShelves)
+    public Replenish_ReplenisherAction(string name, UtilitySystem<Replenisher> utilitySystem, List<Shelf> shelvesToResupply, List<Shelf> supplyShelves, bool goAfterRobber = false)
     : base(name, utilitySystem)
     {
         _shelvesToResupply = shelvesToResupply;
         _supplyShelves = supplyShelves;
+        _goAfterRobber = goAfterRobber;
     }
 
     protected override float SetDecisionFactor()
@@ -61,7 +63,8 @@ public class Replenish_ReplenisherAction : ALinearAction<Replenisher>
 
     public override bool IsFinished()
     {
-        // Behaviour tree has finished its sequence or failed
-        return _replenishBT.status != Node<Replenisher>.Status.Running;
+
+        return _replenishBT.status != Node<Replenisher>.Status.Running || // Behaviour tree has finished its sequence or failed
+            (_goAfterRobber && ApothecaryManager.Instance.isSomeoneRobbing); // Will go after robber an someone is robbing
     }
 }

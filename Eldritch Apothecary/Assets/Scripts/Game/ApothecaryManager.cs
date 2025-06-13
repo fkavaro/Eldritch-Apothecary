@@ -42,11 +42,17 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
     [HideInInspector]
     public Table alchemistTable;
-    public GameObject puddlePrefab;
+
+    [HideInInspector] public Cat cat;
+    [HideInInspector] public Alchemist alchemist;
+    [HideInInspector] public Sorcerer sorcerer;
+    [HideInInspector] public Replenisher replenisher;
+    [HideInInspector] public Receptionist receptionist;
 
     [Header("Simulation")]
-    [Tooltip("Simulation speed"), Range(0, 10)]
+    [Tooltip("Simulation speed"), Range(0, 5)]
     public float simSpeed = 1;
+    public bool isSomeoneRobbing = false;
 
     [Header("Turns system")]
     public int generatedSorcererTurns = 0;
@@ -55,13 +61,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
     public int generatedAlchemistTurns = 0;
     public int currentAlchemistTurn = 0;
 
-    [Header("Staff")]
+    [Header("Prefabs")]
     public GameObject catPrefab;
-    [HideInInspector] public Cat cat;
-    [HideInInspector] public Alchemist alchemist;
-    [HideInInspector] public Sorcerer sorcerer;
-    [HideInInspector] public Replenisher replenisher;
-    [HideInInspector] public Receptionist receptionist;
+    public GameObject puddlePrefab;
 
     [Header("Clients pool")]
     [Tooltip("All clients models to be spawned randomly")]

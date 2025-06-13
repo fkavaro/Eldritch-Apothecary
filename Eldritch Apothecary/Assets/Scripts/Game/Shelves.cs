@@ -20,8 +20,8 @@ public class Shelves : MonoBehaviour
     {
         supplyBar.maxValue = capacity;
 
-        // Calculate 90% of capacity
-        float fractionCapacity = capacity * 0.9f;
+        // Calculate 80% of capacity
+        float fractionCapacity = capacity * 0.8f;
         // Randomly generate a number between fractionCapacity and capacity + 1
         currentAmount = (int)Random.Range(fractionCapacity, capacity + 1);
 

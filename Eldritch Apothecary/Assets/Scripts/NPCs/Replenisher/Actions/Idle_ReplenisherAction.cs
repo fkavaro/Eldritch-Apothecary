@@ -26,6 +26,9 @@ public class Idle_ReplenisherAction : ABinaryAction<Replenisher>
 
     public override bool IsFinished()
     {
-        return true; // Allows avaluation of other actions
+        if (ApothecaryManager.Instance.isSomeoneRobbing)
+            return false;
+        else
+            return true;
     }
 }
