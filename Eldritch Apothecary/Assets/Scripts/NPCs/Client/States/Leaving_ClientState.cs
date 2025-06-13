@@ -22,11 +22,8 @@ public class Leaving_ClientState : ANPCState<Client, StackFiniteStateMachine<Cli
 
     public override void UpdateState()
     {
-        // Is close to the queue exit
-        if (_controller.IsCloseTo(queueExitPosition, 3f))
-            _controller.SetDestination(exitPosition);
         // Is close to the apothecary exit
-        else if (_controller.IsCloseTo(exitPosition, 3f))
+        if (_controller.IsCloseTo(exitPosition, 3f))
         {
             ApothecaryManager.Instance.clientsPool.Release(_controller);
             // Sets scale to 1 in case it was modified by a failed spell
@@ -34,15 +31,20 @@ public class Leaving_ClientState : ANPCState<Client, StackFiniteStateMachine<Cli
             _controller.ResetColor();
 
             // Checks if client is still on the sorcerer clients list
-            if ((_controller.wantedService == Client.WantedService.SPELL) && (ApothecaryManager.Instance.sorcererClientsQueue.Contains(_controller)))
+            if (_controller.wantedService == Client.WantedService.SPELL &&
+                ApothecaryManager.Instance.sorcererClientsQueue.Contains(_controller))
             {
                 // Updates sorcerer clients list
                 ApothecaryManager.Instance.sorcererClientsQueue.Remove(_controller);
             }
 
             // Wanted a potion
-            if (_controller.wantedService == Client.WantedService.POTION)
+            else if (_controller.wantedService == Client.WantedService.POTION)
                 ApothecaryManager.Instance.GoneClient(_controller);
         }
+        //Is close to the queue exit
+        else if (_controller.IsCloseTo(queueExitPosition, 3f))
+            _controller.SetDestination(exitPosition);
+
     }
 }

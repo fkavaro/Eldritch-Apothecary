@@ -117,13 +117,13 @@ public class Alchemist : AHumanoid<Alchemist>
         switch (skill)
         {
             case Skill.NOOB:
-                failProbability = 5;
+                failProbability = 3;
                 break;
             case Skill.ADEPT:
-                failProbability = 4;
+                failProbability = 2;
                 break;
             case Skill.MASTER:
-                failProbability = 2;
+                failProbability = 1;
                 break;
         }
     }

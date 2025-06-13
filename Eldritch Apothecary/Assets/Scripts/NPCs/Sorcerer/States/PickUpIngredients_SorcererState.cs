@@ -20,11 +20,11 @@ public class PickUpIngredients_SorcererState : ANPCState<Sorcerer, StackFiniteSt
         switch (_controller.efficiency)
         {
             case Sorcerer.Efficiency.INEFFICIENT:
-                amountNeeded = Random.Range(20, 40);
+                amountNeeded = Random.Range(15, 25);
                 break;
 
             case Sorcerer.Efficiency.NORMAL:
-                amountNeeded = Random.Range(10, 20);
+                amountNeeded = Random.Range(10, 15);
                 break;
 
             case Sorcerer.Efficiency.EFFICIENT:
