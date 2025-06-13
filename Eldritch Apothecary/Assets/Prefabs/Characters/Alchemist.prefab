@@ -101,8 +101,25 @@ MonoBehaviour:
   avoidanceRadius: 0.7
   isStopped: 0
   energy: 100
-  ingredientsAvailable: 4
-  stateName: 
+  annoyedByCat: 0
+  personality: 0
+  timeToPrepareMax: 2
+  timeToPrepareMin: 2
+  efficiency: 0
+  numExtraIngredients: 2
+  skill: 0
+  failProbability: 2
+  currentShelf: {fileID: 0}
+  newShelf: 1
+  potionVFXPrefabs:
+  - {fileID: 5238538877814813142, guid: 47096eff328e11a418ace7db2d72aa97, type: 3}
+  - {fileID: 7856939199014537196, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
+  - {fileID: 1835355836541019294, guid: 4790206eadc817b4196e071640e653af, type: 3}
+  - {fileID: 162584487599433031, guid: 39f852c28f9c3fd45a427c24f3564ba7, type: 3}
+  - {fileID: 7275548786892498063, guid: 5bc9a0bf98f67d240a936bf476ba2082, type: 3}
+  - {fileID: 8762405910555896786, guid: fcb74f28d107e284e80af037bfec14ca, type: 3}
+  - {fileID: 4515497926535975121, guid: bddb971e34eb14d48be30c7b922eb077, type: 3}
+  - {fileID: 362261158077530393, guid: 20fda529c996a334da7fd65b48ea40df, type: 3}
 --- !u!1001 &6147602484460248247
 PrefabInstance:
   m_ObjectHideFlags: 0
