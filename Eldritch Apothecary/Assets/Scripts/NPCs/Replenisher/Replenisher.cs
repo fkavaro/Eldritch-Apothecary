@@ -85,12 +85,12 @@ public class Replenisher : AHumanoid<Replenisher>
             case Personality.NORMAL:
                 speed = 3f;
                 timeToReplenish = UnityEngine.Random.Range(2, 4);
-                replenishThreshold = 0.2f;
+                replenishThreshold = 0.1f;
                 break;
             case Personality.LAZY:
                 speed = 2f;
                 timeToReplenish = UnityEngine.Random.Range(4, 6);
-                replenishThreshold = 0.3f;
+                replenishThreshold = 0.2f;
                 break;
             case Personality.ENERGISED:
                 speed = 4f;

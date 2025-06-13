@@ -20,12 +20,11 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
     public override void UpdateState()
     {
         // Is close to the last position in line and is not in the queue
-        if (_controller.IsCloseTo(ApothecaryManager.Instance.waitingQueue.LastInLinePos())
-            && !ApothecaryManager.Instance.waitingQueue.Contains(_controller))
+        if (_controller.IsCloseTo(ApothecaryManager.Instance.waitingQueue.LastInLinePos()))
         {
             // Reduce avoidance radius to avoid being blocked by other clients
             _controller.SetAvoidanceRadius(0.5f);
-            // Enters queue
+            // Enters queue (if not already)
             ApothecaryManager.Instance.waitingQueue.Enter(_controller);
         }
         // Has arrived the receptionist counter, first position in line
@@ -36,7 +35,7 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, StackFiniteStat
             // Can interact with receptionist: is ready to attend clients at the counter
             if (ApothecaryManager.Instance.receptionist.canAttend)
             {
-                if (_controller.wantedService == Client.WantedService.SHOPPING)
+                if (_controller.wantedService == WantedService.SHOPPING)
                     SwitchStateAfterRandomTime(_controller.fsmAction.leavingState, _controller.talkAnim, "Talking");
                 else
                     SwitchStateAfterRandomTime(_controller.fsmAction.waitForServiceState, _controller.talkAnim, "Talking");
