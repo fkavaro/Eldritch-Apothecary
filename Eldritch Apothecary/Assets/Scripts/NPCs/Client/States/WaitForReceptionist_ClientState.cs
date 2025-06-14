@@ -6,6 +6,8 @@ using static Client;
 /// </summary>
 public class WaitForReceptionist_ClientState : ANPCState<Client, FiniteStateMachine<Client>>
 {
+    Vector3 lastInLinePos, firstInLinePos;
+
     public WaitForReceptionist_ClientState(FiniteStateMachine<Client> fsm)
     : base("Waiting in line", fsm) { }
 
@@ -13,14 +15,17 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, FiniteStateMach
     {
         _controller.ResetWaitingTime();
 
+        lastInLinePos = ApothecaryManager.Instance.waitingQueue.LastInLinePos();
+        firstInLinePos = ApothecaryManager.Instance.waitingQueue.FirstInLinePos();
+
         // Set target to the last position in line
-        _controller.SetDestination(ApothecaryManager.Instance.waitingQueue.LastInLinePos());
+        _controller.SetDestination(lastInLinePos);
     }
 
     public override void UpdateState()
     {
         // Is close to the last position in line and is not in the queue
-        if (_controller.IsCloseTo(ApothecaryManager.Instance.waitingQueue.LastInLinePos()))
+        if (_controller.IsCloseTo(lastInLinePos) || _controller.HasArrived(lastInLinePos))
         {
             // Reduce avoidance radius to avoid being blocked by other clients
             _controller.SetAvoidanceRadius(0.5f);
@@ -28,7 +33,7 @@ public class WaitForReceptionist_ClientState : ANPCState<Client, FiniteStateMach
             ApothecaryManager.Instance.waitingQueue.Enter(_controller);
         }
         // Has arrived the receptionist counter, first position in line
-        else if (_controller.HasArrived(ApothecaryManager.Instance.waitingQueue.FirstInLinePos()))
+        else if (_controller.HasArrived(firstInLinePos))
         {
             _controller.transform.LookAt(ApothecaryManager.Instance.receptionist.transform.position);
 
