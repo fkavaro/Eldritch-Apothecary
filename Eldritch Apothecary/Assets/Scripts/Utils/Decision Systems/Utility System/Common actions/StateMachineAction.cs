@@ -59,4 +59,9 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
     {
         _stateMachine.ForceState(newState);
     }
+
+    public bool IsCurrentState(AState<TController, TStateMachine> state)
+    {
+        return _stateMachine.IsCurrentState(state);
+    }
 }

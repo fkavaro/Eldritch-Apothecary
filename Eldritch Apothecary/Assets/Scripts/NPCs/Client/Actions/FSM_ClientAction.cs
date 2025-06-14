@@ -41,9 +41,4 @@ public class FSM_ClientAction : StateMachineAction<Client, FiniteStateMachine<Cl
         else
             _stateMachine.SetInitialState(waitForReceptionistState);
     }
-
-    public bool IsCurrentState(ANPCState<Client, FiniteStateMachine<Client>> state)
-    {
-        return _stateMachine.IsCurrentState(state);
-    }
 }
