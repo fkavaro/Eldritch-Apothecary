@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class FSM_ClientAction : StateMachineAction<Client, FiniteStateMachine<Client>>
@@ -39,5 +40,10 @@ public class FSM_ClientAction : StateMachineAction<Client, FiniteStateMachine<Cl
         // Directly waits for receptionist
         else
             _stateMachine.SetInitialState(waitForReceptionistState);
+    }
+
+    public bool IsCurrentState(ANPCState<Client, FiniteStateMachine<Client>> state)
+    {
+        return _stateMachine.IsCurrentState(state);
     }
 }
