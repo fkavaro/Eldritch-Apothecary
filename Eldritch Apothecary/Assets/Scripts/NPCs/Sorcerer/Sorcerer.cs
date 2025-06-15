@@ -32,12 +32,12 @@ public class Sorcerer : AHumanoid<Sorcerer>
     public Personality personality = Personality.NORMAL;
     public Efficiency efficiency = Efficiency.NORMAL;
     public Skill skill = Skill.ADEPT;
-
+    public bool annoyedByCat = false;
     [SerializeField] public GameObject[] spellVFXPrefabs;
     #endregion    
 
     #region PRIVATE PROPERTIES
-
+    Table sorcererTable;
     public StackFiniteStateMachine<Sorcerer> sfsm;
     private Transform spellSpawnPoint;
     public Transform spellPos;
@@ -72,6 +72,12 @@ public class Sorcerer : AHumanoid<Sorcerer>
     protected override void OnAwake()
     {
         base.OnAwake();
+
+        sorcererTable = ApothecaryManager.Instance.sorcererTable;
+
+        sorcererTable.AnnoyingOnTable += OnCatAnnoyedMe; //Suscribes to event (triggered when the cat is on the table)
+        sorcererTable.AnnoyingOffTable += OnCatStoppedAnnoying; //Suscribes to event (triggered when the cat is off the table)
+
 
         personality = (Personality)UnityEngine.Random.Range(0, 3);
         efficiency = (Efficiency)UnityEngine.Random.Range(0, 3);
@@ -119,44 +125,22 @@ public class Sorcerer : AHumanoid<Sorcerer>
         if (debugMode) Debug.Log("Casting spell");
     }
 
-
-    /// <summary>
-    /// Determines if the cat is currently bothering the sorcerer 
-    /// Always returns false in this implementation
-    /// </summary>
     public override bool CatIsBothering()
     {
-        return false;
+        return annoyedByCat;
     }
     #endregion
 
     #region PRIVATE METHODS
     /// <summary>
-    /// Subscribes the client to cat annoyance events when the sorcerer is enabled
-    /// </summary>
-    void OnEnable()
-    {
-        Cat.OnSorcererAnnoyed += OnCatAnnoyedMe;
-        Cat.OnSorcererNoLongerAnnoyed += OnCatStoppedAnnoying;
-    }
-
-    /// <summary>
-    /// Unsubscribes the client from cat annoyance events when the sorcerer is disabled
-    /// </summary>
-    void OnDisable()
-    {
-        Cat.OnSorcererAnnoyed -= OnCatAnnoyedMe;
-        Cat.OnSorcererNoLongerAnnoyed -= OnCatStoppedAnnoying;
-    }
-
-    /// <summary>
     /// Saves the current state and switches to the interrupted state
     /// </summary>
-    void OnCatAnnoyedMe()
+    void OnCatAnnoyedMe(GameObject @object)
     {
-        if (!(sfsm.Peek() is Interrupted_SorcererState))
+        if (!sfsm.IsCurrentState(interruptedState))
         {
             if (debugMode) Debug.Log("Cat is bothering me");
+            annoyedByCat = true;
             sfsm.PushCurrentState();
             sfsm.SwitchState(interruptedState);
         }
@@ -165,10 +149,11 @@ public class Sorcerer : AHumanoid<Sorcerer>
     /// <summary>
     /// Pops the state stack to resume previous behavior
     /// </summary>
-    void OnCatStoppedAnnoying()
+    void OnCatStoppedAnnoying(GameObject @object)
     {
-        if (sfsm.Peek() is Interrupted_SorcererState)
+        if (sfsm.IsCurrentState(interruptedState))
         {
+            annoyedByCat = false;
             sfsm.Pop();
             if (debugMode) Debug.Log("Cat is no longer bothering me. Continuing my tasks");
         }

@@ -7,8 +7,8 @@ public class Replenisher : AHumanoid<Replenisher>
 {
     public enum Personality
     {
-        NORMAL, // Normal speed and time replenishing each stand. 0.2 to stop idling
-        LAZY, // Lower speed and more time replenishing each stand. 0.3 to stop idling
+        NORMAL, // Normal speed and time replenishing each stand. 0.1 to stop idling
+        LAZY, // Lower speed and more time replenishing each stand. 0.2 to stop idling
         ENERGISED // Higher speed and less time replenishing each stand. 0.1 to stop idling
     }
 

@@ -16,7 +16,7 @@ public class Annoying_CatStrategy : AStrategy<Cat>
 
     public override Node<Cat>.Status Update()
     {
-        // Set position where annoy as destination if it's not already
+        // Set position where annoy as destination if it's not already there
         if (_controller.GetDestinationPos() != _positionWhereAnnoy.position)
             _controller.SetDestination(_positionWhereAnnoy.position);
 
@@ -46,7 +46,6 @@ public class Annoying_CatStrategy : AStrategy<Cat>
             _controller.lastTimeAlchemistWasAnnoyed = Time.time;
         else
             _controller.lastTimeSorcererWasAnnoyed = Time.time;
-        Cat.RaiseSorcererNoLongerAnnoyed();
 
         if (_controller.debugMode) Debug.Log(_controller.name + " finished annoying");
         _hasAnimationFinished = true;

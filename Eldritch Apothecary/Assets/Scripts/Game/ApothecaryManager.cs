@@ -41,7 +41,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         alchemistSpot;
 
     [HideInInspector]
-    public Table alchemistTable;
+    public Table alchemistTable, sorcererTable;
 
     [HideInInspector] public Cat cat;
     [HideInInspector] public Alchemist alchemist;
@@ -158,8 +158,9 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         sorcererAttendingSpot = GameObject.FindGameObjectWithTag("Sorcerer attending spot").GetComponent<Spot>();
         alchemistSpot = GameObject.FindGameObjectWithTag("Alchemist spot").GetComponent<Spot>();
 
-        // Table
+        // Tables
         alchemistTable = GameObject.FindGameObjectWithTag("Alchemist table").GetComponent<Table>();
+        sorcererTable = GameObject.FindGameObjectWithTag("Sorcerer table").GetComponent<Table>();
 
         //Positions
         entrancePosition = GameObject.FindGameObjectWithTag("Entrance").transform;
@@ -234,16 +235,6 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
 
         return clientPotion;
     }
-
-    /// <summary>
-    /// Assigns a current turn to unassigned prepared potion
-    /// </summary>
-    /*public Potion AssignTurnToRandomPotion()
-    {
-        Potion randomPotion = RandomPreparedPotion(false);
-        randomPotion.Assign(++currentAlchemistTurn);
-        return randomPotion;
-    }*/
 
     public Potion RandomPreparedPotion(bool isAssigned)
     {
