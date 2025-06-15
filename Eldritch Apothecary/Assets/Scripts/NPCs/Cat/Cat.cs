@@ -157,7 +157,7 @@ public class Cat : ANPC<Cat>
         float minDistance = float.PositiveInfinity;
         Spot closestRestingSpot = null;
 
-        foreach (Spot spot in ApothecaryManager.Instance.catRestingSpots)
+        foreach (Spot spot in ApothecaryManager.Instance.catBeds)
         {
             float currentDistance = Vector3.Distance(spot.transform.position, this.transform.position);
 

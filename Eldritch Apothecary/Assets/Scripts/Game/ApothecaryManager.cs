@@ -20,7 +20,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
             staffSuppliesShelves = new();
 
     [HideInInspector]
-    public readonly List<Spot> catRestingSpots = new();
+    public readonly List<Spot> catBeds = new();
 
     [HideInInspector]
     public Transform complainingPosition,
@@ -147,7 +147,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         FillShelfList(GameObject.FindGameObjectsWithTag("Shop supply shelf"), shopSuppliesShelves);
         FillShelfList(GameObject.FindGameObjectsWithTag("Staff supply shelf"), staffSuppliesShelves);
         FillSpotList(GameObject.FindGameObjectsWithTag("Waiting seat"), _waitingSeats);
-        FillSpotList(GameObject.FindGameObjectsWithTag("Cat resting spot"), catRestingSpots);
+        FillSpotList(GameObject.FindGameObjectsWithTag("Cat resting spot"), catBeds);
         FillPotionList(GameObject.FindGameObjectsWithTag("Ready potion"), _readyPotions);
         FillPotionList(GameObject.FindGameObjectsWithTag("Prepared potion"), _preparedPotions);
         clientSeat = GameObject.FindGameObjectWithTag("Client seat").GetComponent<Spot>();
@@ -173,7 +173,7 @@ public class ApothecaryManager : Singleton<ApothecaryManager>
         // Spawn cat in random position
         cat = Instantiate(
             catPrefab,
-            RandomPosition(catRestingSpots),
+            RandomPosition(catBeds),
             Quaternion.identity)
         .GetComponent<Cat>();
     }
